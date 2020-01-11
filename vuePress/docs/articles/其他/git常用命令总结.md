@@ -43,7 +43,8 @@
 > 3、将远程仓库的内容拉取到本地且和本地分支合并
 
 ```js
-git pull origin master
+git  pull origin master	//origin仓库名称，master分支名称
+git  pull origin <远程分支名>:<本地分支名> //将远程指定分支 拉取到 本地指定分支上：
 ```
 
 > 4、将远程仓库的内容拉取到本地
@@ -57,7 +58,7 @@ git fetch [remote-name]	//访问远程仓库，从中拉取所有你还没有的
 ```js
 git push [remote-name] [branch-name]
 git push -u origin master
-//将本地库的所有内容推送到远程库。将当前分支master推送到远程。参数u使得Git不但会吧本地的master分支内容推送到远程的master分支，还会把本地的master分支和远程的master分支关联起来。在以后的推送和拉取就可以简话化命令了。之后的推送就可以不用加u了。
+//将本地库的所有内容推送到远程库。将当前分支master推送到远程。参数u使得Git不但会把本地的master分支内容推送到远程的master分支，还会把本地的master分支和远程的master分支关联起来。在以后的推送和拉取就可以简话化命令了。之后的推送就可以不用加u了。
 git push origin dev 或者git push origin dev:dev 
 //表示将当前分支推送到dev远程分支。origin是默认仓库名称，也可以使用其他名称
 git push origin dev:test
@@ -251,13 +252,50 @@ git blame 文件名 -L//参数L来检查需要修改的某几行。
 ```
 
 **1、下图是--pretty=format常用选项**<br>
-<img src="../../images/git-format.jpg" alt="暂无图片"/><br>
 
-**2、下面是git log的常用选项**<br>
-<img src="../../images/git-log.jpg" alt="暂无图片"/>
+```js
+%H		提交对象（commit）的完整哈希字串
+%h		提交对象的简短哈希字串
+%T		树对象（tree）的完整哈希字串
+%t		树对象简短哈希字串
+%P		父对象（parent）的完整哈希字串
+%p		父对象（parent）的简短哈希字串
+%an		作者的名字
+%ae		作者的电子邮件地址
+%ad		作者修订地址（可以用--date="选项定制格式"）
+%ar		作者修订日期，按多久以前的方式显示
+%cn		提交者的名字
+%ce		提交者的电子邮件地址
+%cd		提交日期
+%cr		提交日期，按多久以前的格式显示
+%s		提交说明
+```
 
-**3、下图是限制git log输出的选项**<br>
-<img src="../../images/git-log2.jpg" alt="暂无图片">
+**2、下面是git log的常用选项**
+
+```js
+-p					按不定格式显示每个更新之间的差异
+--stat				显示每次更新的文件修改统计信息。
+--shortstat			只显示——stat中最后的行数修改添加移除统计。
+--name-only			仅在提交信息后显示已修改的文件清单。
+--name-status		显示新增、修改、删除的文件清单。
+--abbrev-commit		仅显示SHA-1的前几个字符，而非所有的40个字符。
+--relative-date		使用较短的相对时间显示（比如 "2 weeks ago"）
+--graph				显示ASCII图表的分支合并历史
+--pretty			使用其他格式显示历史信息。选项有oneline，short，full和format(后跟指定格式)
+```
+
+**3、下图是限制git log输出的选项**
+
+```js
+-(n)				仅显示最近的n条提交
+--since,--after		仅显示指定时间之后的提交
+--until,--before	仅显示指定时间之前的提交
+--author			仅显示指定作者相关的提交
+--committer			仅显示指定提交者相关的提交
+--grep				仅显示指定关键字的提交
+-S					仅显示添加或移除了某个关键字的提交
+```
 
 ### **5、工作区和暂存区**
 <img src="../../images/git.jpg" alt="暂无图片" >
