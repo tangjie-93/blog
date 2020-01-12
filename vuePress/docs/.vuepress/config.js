@@ -59,7 +59,7 @@ function getLink (link) {
 const sidebar = createSideBar(createSidebarMapObject(pathName));
 
 module.exports = {
-    base: '/',
+    base: '/blog/',
     title: '个人博客',
     description: "个人博客",
     markdown: {
@@ -68,7 +68,7 @@ module.exports = {
     port: 8002,
     themeConfig: {
         // 你的GitHub仓库，请正确填写
-        repo: 'https://github.com/tangjie-93/tangjie-93.github.io',
+        repo: 'https://github.com/tangjie-93/blog',
         // 自定义仓库链接文字。
         repoLabel: 'GitHub',
         nav: [

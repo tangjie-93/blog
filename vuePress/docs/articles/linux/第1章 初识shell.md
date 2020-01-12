@@ -119,22 +119,22 @@ ls命令一些常用的选项如下：
 
 + **mkdir 创建目录**
 
-```js
-mkdir directory... //三个原点意味着该参数可以重复
-mkdir dir1 dir2 dir3 //创建三个目录 
-mkdir -p test/dir //-p 能保证在test文件夹不存在情况下也能创建dir文件夹
-```
+  ```bash
+  mkdir directory... //三个原点意味着该参数可以重复
+  mkdir dir1 dir2 dir3 //创建三个目录 
+  mkdir -p test/dir //-p 能保证在test文件夹不存在情况下也能创建dir文件夹
+  ```
 
 + **cd  更改目录**
 
   ```bash
-  cd		更改工作目录到根目录。
-  cd ~  	更改工作目录到根目录。
-  cd .. 	返回上一级目录
-cd ../..返回上两级目录
-  cd - 	更改目录到先前工作目录。
-cd /	进入更目录
-  cd -user_name 更改目录到当前根目录。例如cd -james表示更改工作目录到用户james的根目录。
+  cd			更改工作目录到根目录。
+  cd ~  		更改工作目录到根目录。
+  cd .. 		返回上一级目录
+cd ../..	返回上两级目录
+  cd - 		更改目录到先前工作目录。
+cd /		进入更目录
+  cd -user	更改目录到当前根目录。例如cd -james表示更改工作目录到用户james的根目录。
   ```
   
 + **cp 复制文件和目录**

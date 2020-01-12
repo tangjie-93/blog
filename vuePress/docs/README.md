@@ -1,6 +1,6 @@
 ---
 home: true
-heroImage: /image/logo.png
+# heroImage: /image/logo.png
 actionText: 来！走起！
 actionLink: /articles/javascript/js设计模式.md
 features:
