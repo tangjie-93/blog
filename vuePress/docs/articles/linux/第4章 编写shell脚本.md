@@ -641,7 +641,7 @@ done < test.txt //从test.txt文件中读取数据
 **1、防错编程**
 
 ```bash
-//先验证目录是否存在，存在再切换目录，删除文件
+#先验证目录是否存在，存在再切换目录，删除文件
 if [[ -d $dir_name ]]; then 
 	if cd $dir_name; then 
 		rm * 
@@ -660,7 +660,7 @@ fi
 ​		通过 -x 选项和 set 命令加上 -x 选项两种途径实现
 
 ```bash
-//整个脚本追踪
+#整个脚本追踪
 #!/bin/bash -x 
 # trouble: script to demonstrate common errors 
 number=1 
@@ -672,7 +672,7 @@ fi
 ```
 
 ```bash
-//追踪一块区域
+#追踪一块区域
 #!/bin/bash 
 # trouble: script to demonstrate common errors 
 number=1 
