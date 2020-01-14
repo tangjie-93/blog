@@ -1,3 +1,5 @@
+## Axios源码详解
+
 > **Axios是前端使用的比较广泛的一个js库。以前一直是只知道使用，但是对于其内部实现一直不太了解，现在花点时间好好来研究源码，了解一下其中的实现过程**
 
 ​		对于使用过`Axios`的人应该都知道，它既可以作为函数使用，也可以作为一个对象使用。
@@ -225,7 +227,7 @@ instance.interceptors.response.use(res=>{},err=>{})；
 
 **1、原型方法——InterceptorManager.prototype.use**
 
-​		该方法的主要作用是将拦截操作添加到数组中。并返回添加到数组中的索引值。
+​		该方法的主要作用是将拦截操作添加到数组中。
 
 ```js
 // Add a new interceptor to the stack
@@ -240,7 +242,7 @@ InterceptorManager.prototype.use = function use(fulfilled, rejected) {
 
 **2、原型方法——InterceptorManager.prototype.reject**
 
-​		该方法的主要作用是将拦截操作从拦截数组中删除。将该拦截操作的索引值置空。
+​		该方法的主要作用是将拦截操作从拦截数组中删除。
 
 ```js
 //Remove an interceptor from the stack
@@ -389,6 +391,4 @@ CancelToken.source = function source() {
   };
 };
 ```
-
-<Valine></Valine>
 

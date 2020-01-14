@@ -1,7 +1,11 @@
+
 const fs = require("fs");
 const path = require("path")
 const join = path.join;
 const resolve = path.resolve;
+const pathName = "articles"
+
+//创建文件夹和文件的映射
 function createSidebarMapObject (dir) {
     let fileMapObj = {};
     const temPath = resolve(__dirname, "..", dir);
@@ -18,8 +22,8 @@ function createSidebarMapObject (dir) {
                 const fileObj = path.parse(fPath);
                 const fileName = fileObj.name;
                 if (Array.isArray(fileMapObj[curPath])) {
-                    const link = getLink(fPath)
-                    fileMapObj[curPath].push([link, fileName])
+                    // const link = getLink(fPath)
+                    fileName === "README" ? fileMapObj[curPath].unshift('') : fileMapObj[curPath].push(fileName)
                 }
                 // console.log(fileName);
                 // if(typeof fileMapObj[curPath]==='undefined'){
@@ -34,30 +38,38 @@ function createSidebarMapObject (dir) {
     getAllFiles(temPath)
     return fileMapObj;
 }
+function getLink (link) {
+    let tempLink = link.replace(/\\/g, "/");
+    const index = tempLink.indexOf(pathName);
+    tempLink = tempLink.slice(index - 1) + "/";
+    return tempLink;
+}
+
+function createArticlesNavItem (fileMapObj) {
+    let navItem = [];
+    Object.keys(fileMapObj).forEach(function (title) {
+        let tempTitle = title.replace(/\\/g, "/");
+        const index = tempTitle.indexOf(pathName);
+        const lastIndex = tempTitle.lastIndexOf("/");
+        const link = tempTitle.slice(index - 1) + "/";
+        const text = tempTitle.slice(lastIndex + 1);
+        navItem.push({ text, link });
+    })
+
+    return navItem;
+}
 function createSideBar (fileMapObj) {
-    const sidebar = [];
+    const sidebar = {};
     Object.keys(fileMapObj).forEach(function (key) {
-        sidebar.push({
-            title: getTitle(key),
-            children: fileMapObj[key]
-        });
+        const link = getLink(key);
+        // const fileArr=fileMapObj[key].unshift("");
+        sidebar[link] = fileMapObj[key];
     })
     return sidebar;
 }
-const pathName = "articles"
-function getTitle (title) {
-    const index = title.lastIndexOf("\\");
-    title = title.slice(index + 1);
-    return title;
-}
-function getLink (link) {
-    let templink = link.replace(/\\/g, "/");
-    const index = templink.indexOf(pathName);
-    templink = templink.slice(index - 1);
-    return templink;
-}
-const sidebar = createSideBar(createSidebarMapObject(pathName));
-
+const getSidebarMapObject = createSidebarMapObject(pathName)
+const sidebar = createSideBar(getSidebarMapObject);
+const articlesNavItem = createArticlesNavItem(getSidebarMapObject)
 module.exports = {
     base: '/blog/',
     title: '个人博客',
@@ -73,24 +85,17 @@ module.exports = {
         repoLabel: 'GitHub',
         nav: [
             { text: '首页', link: '/' },
-            { text: '标签库', link: '/tags/' },
-            { text: '关于', link: '/articles/其他/personal.md' },
-            { text: '留言板', link: '/massage/' },
+            {
+                text: '技术栈',
+                items: articlesNavItem,
+            },
+            { text: '关于', link: '/about/' },
             { text: '掘金', link: 'https://juejin.im/user/5bd074165188251ce71d8e2c' },
         ],
-        // sidebar,
+        sidebar,
         sidebarDepth: 2,
         displayAllHeaders: true,
         lastUpdated: 'Last Updated',
-        smoothScroll: true,
-        plugins: [
-            [
-                '@vuepress/register-components',
-                {
-                    componentsDir: './components'
-                }
-            ]
-        ]
-
+        smoothScroll: true
     }
 }

@@ -1,3 +1,5 @@
+## Vue父子组件钩子函数运行先后情况
+
 **&#8195;&#8195;钩子函数的运行情况，及各钩子函数的意义如下**
 ```HTML
 <!DOCTYPE html>
@@ -71,116 +73,116 @@
 >**第一种情况(动态引入)**：直接在components中通过import动态引入。
 
 ```javascript     
-    //hookParent.vue
-<template>
-    <div>
-        <hook-child/>
-    </div>
-</template>
-
-<script>
-import hookChild from "./hookChild"
-export default {
-    name:"hookParent",
-        data(){
-        return{
-            show:false
-        }
-    },
-    components:{
-        hookChild
-        // hookChild:()=>import("./hookChild")
-    },
-    beforeCreate(){
-            console.log("parent beforeCreate");
-    },
-    created(){
-        console.log("parent created");
-    },
-    beforeMount(){
-        console.log("parent beforeMount");
-    },
-    mounted(){
-        console.log("parent mounted");
-    },
-        beforeUpdate(){
-            console.log("parent beforeUpdate");
-    },
-    updated(){
-        console.log("parent updated")
-    },
-        beforeDestroy(){
-            console.log("parent beforeDestroy");
-    },
-    destroyed(){
-        console.log("parent destroyed");
-    },
-        activated(){
-            console.log("parent activated");
-    },
-    deactivated(){
-        console.log("parent deactivated")
-    },
-}
-</script>
-
-//hookChild.vue
-<template>
-    <div>
-        <div @click="update">修改msg的值————{{msg}}</div>
+         //hookParent.vue
+        <template>
+            <div>
+                <hook-child/>
+            </div>
+        </template>
         
-        <div @click="destroy">销毁子组件</div>
-    </div>
-</template>
+        <script>
+        import hookChild from "./hookChild"
+        export default {
+            name:"hookParent",
+             data(){
+                return{
+                    show:false
+                }
+            },
+            components:{
+                hookChild
+                // hookChild:()=>import("./hookChild")
+            },
+            beforeCreate(){
+                 console.log("parent beforeCreate");
+            },
+            created(){
+                console.log("parent created");
+            },
+            beforeMount(){
+                console.log("parent beforeMount");
+            },
+            mounted(){
+                console.log("parent mounted");
+            },
+             beforeUpdate(){
+                 console.log("parent beforeUpdate");
+            },
+            updated(){
+                console.log("parent updated")
+            },
+             beforeDestroy(){
+                 console.log("parent beforeDestroy");
+            },
+            destroyed(){
+                console.log("parent destroyed");
+            },
+             activated(){
+                 console.log("parent activated");
+            },
+            deactivated(){
+                console.log("parent deactivated")
+            },
+        }
+        </script>
 
-<script>
-export default {
-    name:"hookChild",
-    data(){
-        return{
-            msg:"ceshi"
+        //hookChild.vue
+        <template>
+            <div>
+                <div @click="update">修改msg的值————{{msg}}</div>
+                
+                <div @click="destroy">销毁子组件</div>
+            </div>
+        </template>
+
+        <script>
+        export default {
+            name:"hookChild",
+            data(){
+                return{
+                    msg:"ceshi"
+                }
+            },
+             beforeCreated(){
+                 console.log("child beforeCreated");
+            },
+            created(){
+                console.log("child created");
+            },
+             beforeMount(){
+                console.log("child beforeMount");
+            },
+            mounted(){
+                console.log("child mounted");
+            },
+             beforeUpdate(){
+                 console.log("child beforeUpdate");
+            },
+            updated(){
+                console.log("child updated")
+            },
+             beforeDestroy(){
+                 console.log("child beforeDestroy");
+            },
+            destroyed(){
+                console.log("child destroyed");
+            },
+             activated(){
+                 console.log("child activated");
+            },
+            deactivated(){
+                console.log("child deactivated")
+            },
+            methods:{
+                change(){
+                    this.msg="修改了";
+                },
+                destroy(){
+                    this.$destroy();
+                }
+            }
         }
-    },
-        beforeCreated(){
-            console.log("child beforeCreated");
-    },
-    created(){
-        console.log("child created");
-    },
-        beforeMount(){
-        console.log("child beforeMount");
-    },
-    mounted(){
-        console.log("child mounted");
-    },
-        beforeUpdate(){
-            console.log("child beforeUpdate");
-    },
-    updated(){
-        console.log("child updated")
-    },
-        beforeDestroy(){
-            console.log("child beforeDestroy");
-    },
-    destroyed(){
-        console.log("child destroyed");
-    },
-        activated(){
-            console.log("child activated");
-    },
-    deactivated(){
-        console.log("child deactivated")
-    },
-    methods:{
-        change(){
-            this.msg="修改了";
-        },
-        destroy(){
-            this.$destroy();
-        }
-    }
-}
-</script>
+        </script>
 ```
 此时父子组件的钩子函数的输出结果如下所示：
 ![](https://user-gold-cdn.xitu.io/2019/5/27/16af9b6c99b906c7?w=1920&h=306&f=png&s=48164)
@@ -196,4 +198,3 @@ export default {
 **总结：**  
 1、在销毁父组件时（不管是在子组件中销毁父组件还是直接在父组件中销毁父组件），都会先销毁子组件，然后才会销毁父子键。
 2、父子组件中单独更新各自的数据相互不会受影响。就算有影响也是父组件先调用beforeUpdate()函数，然后子组件调用beforeUpdate()和updated()函数，其次才是父组件的updated()函数。
-<Valine></Valine>

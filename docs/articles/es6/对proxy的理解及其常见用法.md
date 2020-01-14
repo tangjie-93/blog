@@ -1,3 +1,5 @@
+## 对proxy的理解及其常见用法
+
 ​		虽然以前看过proxy的相关文章，但是最近在看到某为大神用proxy实现了单例及数据双向绑定，所以决定再次好好的来了解一下proxy的用法，谨以此文来记录我对它的理解及用法。
 <h3>1、什么是Proxy?</h3>
 &#8195;&#8195;Proxy 用于修改某些操作的默认行为,可以理解成，在**目标对象之前架设一层“拦截”，外界对该对象的访问，都必须先通过这层拦截**，因此提供了一种机制，可以对外界的访问进行过滤和改写。
@@ -337,4 +339,3 @@ console.log(new proxy(10,20));//200
 [2、ECMAScript6 入门](http://es6.ruanyifeng.com/#docs/proxy)    
 [3、ES6 系列之 defineProperty 与 proxy](https://juejin.im/post/5be4f7cfe51d453339084530#heading-4)   
 [4、快来围观一下JavaScript的Proxy](https://juejin.im/post/5b09234d6fb9a07acf569905)
-<Valine></Valine>

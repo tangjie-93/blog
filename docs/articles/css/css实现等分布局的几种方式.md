@@ -1,3 +1,5 @@
+# css实现等分布局的几种方式
+
 ```HTML
     <div class="parent">
         <div class="child" style="background: lightblue"></div>
@@ -108,4 +110,3 @@
             border: 5px solid;
         }
 ```
-<Valine></Valine>

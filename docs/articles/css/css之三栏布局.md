@@ -1,3 +1,5 @@
+## 三栏布局的实现方式
+
 ```HTML
     <div class="container">
         <div class="left"></div>
@@ -166,4 +168,3 @@
     margin-left:-200px;
   }
 ```
-<Valine></Valine>

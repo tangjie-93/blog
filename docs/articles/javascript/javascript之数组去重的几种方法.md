@@ -1,3 +1,5 @@
+## javascript之数组去重的几种方法
+
 &#8195;&#8195;平时工作当中经常会遇到数组去重的需求，所以在这里整理一下有哪些方法可以实现数组的去重。
 
 <h3>1、双层for循环</h3>
@@ -115,4 +117,3 @@ function removeSameEle(arr){
     return res;
 }
 ```
-<Valine></Valine>

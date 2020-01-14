@@ -1,3 +1,5 @@
+# 字符串Z型排列
+
 ```js
 function convert(s, numRows) {
   if (numRows == 1) return s;

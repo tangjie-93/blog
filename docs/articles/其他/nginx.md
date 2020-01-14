@@ -1,3 +1,6 @@
+
+## nginx常用知识点总结
+
 **nginx是一款轻量级的HTTP服务器，采用事件驱动的异步非阻塞处理方式，时常用于服务器的反向代理和负载均衡。**
 nginx和node.js的对比。
 >nginx的优势：更擅长底层服务器端资源的处理。如静态资源处理转发，反向代理和负载均衡。
@@ -10,7 +13,7 @@ nginx和node.js的对比。
 <img alt="nginx-proxy" data-width="625" data-height="467" src="https://user-gold-cdn.xitu.io/2018/9/27/1661ac31c06b0681?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
 ### 2.2 反向代理
 &#8195;&#8195;代理服务器跟内部服务器之间可以互相访问，属于同一个局域网（LAN）；代理对用户是透明的，即无感知，即加不加这个代理，用户都会通过相同的请求进行的。且不需要任何额外的操作；代理服务器通过代理内部服务器接收域外客户端的请求，并将请求发送到对应的内部服务器上。反向代理的意思——代理服务器。
-<img alt="nginx-proxy-reverse"  data-width="655" data-height="499" src="https://user-gold-cdn.xitu.io/2018/9/27/1661ac31c192d22f?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<img alt="nginx-proxy-reverse"data-width="655" data-height="499" src="https://user-gold-cdn.xitu.io/2018/9/27/1661ac31c192d22f?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
 **反向代理的好处？**
 + 1、安全及权限。使用反向代理后，用户端将无法直接访问正真的内容服务器，而是通过Nginx将没有权限或者危险的请求内容过滤掉，从而保证服务器的安全。
 + 2、负载均衡。一个网站上的内容可以部署到多态服务器上，形成一个集群。那么Nginx可以将接收到的客户端请求“均匀地”分配到这个集群中所有的服务器上（内部模块提供了多种负载均衡算法），从而实现服务器压力的负载均衡。同时Nginx还带有（服务器心跳检查功能），来检查服务器是否异常，从而保证客户端请求的稳定性。
