@@ -1,3 +1,10 @@
+---
+title: 初识shell
+date: '2020-01-14'
+type: 技术
+tags: linux
+note: 初识shell
+---
 # 初识shell
 
 ### 1、什么是shell？

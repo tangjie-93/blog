@@ -1,4 +1,11 @@
-## shell脚本编写
+---
+title: shell脚本编写
+date: '2020-01-14'
+type: 技术
+tags: linux
+note: shell脚本编写
+---
+# shell脚本编写
 
 ### 1、什么是shell脚本？
 

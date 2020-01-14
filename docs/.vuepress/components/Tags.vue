@@ -51,9 +51,7 @@ export default {
   },
   computed: {
     tags() {
-      debugger;
       const ret = [];
-      console.log(this.$site);
       this.$site.pages.forEach(item => {
         if (item.frontmatter.tags) {
           let tagArr = item.frontmatter.tags.split('|');

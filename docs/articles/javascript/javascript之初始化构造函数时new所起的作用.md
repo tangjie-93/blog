@@ -1,3 +1,12 @@
+---
+title: 初始化构造函数时new所起的作用
+date: '2020-01-14'
+type: 技术
+tags: javascript
+note: 初始化构造函数时new所起的作用
+---
+# 初始化构造函数时new所起的作用
+
 <ul>
     <li><a href="#new">new关键字的作用</a></li>
     <li><a href="#useNew">调用构造函数使用new关键字的情况</a></li>
@@ -61,20 +70,20 @@ window.age=24;
 
 <h4><span id="return">4、调用构造函数时，在内部有retun语句的情况</span></h4>
 ```javascript	 
-         function Person(name,age){
-		this.name=name;
-		this.age=age;
-		return name;
-	 }
-	 var p1=new Person("黎明"，23)；
-	 console.log(p1);//{name: "黎明",age:23}
-	 function Person(name,age){
-		this.name=name;
-		this.age=age;
-		return {};
+function Person(name,age){
+	this.name=name;
+	this.age=age;
+	return name;
 	}
-	 var p1=new Person("黎明"，23)；
-	 console.log(p1);//{}
+	var p1=new Person("黎明"，23)；
+	console.log(p1);//{name: "黎明",age:23}
+	function Person(name,age){
+	this.name=name;
+	this.age=age;
+	return {};
+}
+var p1=new Person("黎明"，23)；
+console.log(p1);//{}
 ```
 ​		原因分析：构造函数不需要显示的返回值。使用new来创建对象(调用构造函数)时，如果return返回的是非对象(数字、字符串、布尔类型等)会忽略返回值；如果return的是对象，则返回该对象(注：若return null也会忽略返回值）。
 <Valine></Valine>

@@ -90,11 +90,13 @@ module.exports = {
                 items: articlesNavItem,
             },
             { text: '关于', link: '/about/' },
+            { text: '标签', link: '/tags/' },
+            { text: "留言板", link: '/comments/' },
             { text: '掘金', link: 'https://juejin.im/user/5bd074165188251ce71d8e2c' },
         ],
         sidebar,
         sidebarDepth: 2,
-        displayAllHeaders: true,
+        // displayAllHeaders: true,
         lastUpdated: 'Last Updated',
         smoothScroll: true
     }

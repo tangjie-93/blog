@@ -1,4 +1,4 @@
 ---
 title: 【留言板】
 ---
-<Valine></Valine>
+<Valine/>

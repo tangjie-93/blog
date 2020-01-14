@@ -1,3 +1,10 @@
+---
+title: vue之虚拟dom
+date: '2020-01-14'
+type: 技术
+tags: vue
+note: vue之虚拟dom
+---
 # vue之虚拟dom
 
 ### 1、什么叫虚拟dom？

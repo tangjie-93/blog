@@ -1,3 +1,12 @@
+---
+title: Object.freeze和Object.Seal()的区别
+date: '2020-01-14'
+type: 技术
+tags: javascript
+note: Object.freeze和Object.Seal()的区别。
+---
+# Object.freeze和Object.Seal()的区别
+
 **Object.freeze()**
 
 ​		顾名思义是冻结对象,一个冻结的对象再也不能被修改。冻结之后**不能添加新的属性，不能删除已有属性，也不会修改已有属性的值**。此外，冻结一个对象后该对象的原型也不能被修改。

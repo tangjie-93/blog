@@ -1,3 +1,12 @@
+---
+title: 改造一个for循环，使之输出0到9
+date: '2020-01-14'
+type: 技术
+tags: javascript
+note: 改造一个for循环，使之输出0到9
+---
+# 改造一个for循环，使之输出0到9
+
 改造下面的代码，使之输出0 - 9，写出你能想到的所有解法。
 ```javascript
 for (var i = 0; i< 10; i++){

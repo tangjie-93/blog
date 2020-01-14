@@ -1,4 +1,13 @@
-​		在工作中经常看到有使用call和apply这连个方法，每次看到后都会去网上搜一下用法，然而过一段时间就又不会了，归根到底是自己没有理解他的原理，这次准备彻底弄懂，并把自己的理解总结下来。
+---
+title: call、apply、及bind的源码实现
+date: '2020-01-14'
+type: 技术
+tags: javascript
+note: 在工作中经常看到有使用call和apply这连个方法，每次看到后都会去网上搜一下用法，然而过一段时间就又不会了，归根到底是自己没有理解他的原理，这次准备彻底弄懂，并把自己的理解总结下来。
+---
+# call、apply、及bind的源码实现
+​		
+在工作中经常看到有使用call和apply这连个方法，每次看到后都会去网上搜一下用法，然而过一段时间就又不会了，归根到底是自己没有理解他的原理，这次准备彻底弄懂，并把自己的理解总结下来。
 <ul>
     <li><a href="#call">fun.call(thisArg, arg1, arg2, ...)  </a></li>
     <li><a href="#apply">fun.apply(thisArg, [argsArray])     </a></li>

@@ -1,3 +1,12 @@
+---
+title: HTTP权威指南学习笔记
+date: '2020-01-14'
+type: 技术
+tags: http
+note: HTTP权威指南学习笔记
+---
+# HTTP权威指南学习笔记
+
 ## 第1章	http概述
 
 

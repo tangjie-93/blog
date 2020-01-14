@@ -1,4 +1,13 @@
-​		我们知道js的最大特点就是单线程，就是同一时间只能做一件事。即便HTML5提出Web Worker允许JavaScript脚本创建多个线程，但是子线程完全受主线程控制，且不得操作DOM。所以，这个新标准并没有改变JavaScript单线程的本质。
+---
+title: javascript之EventLoop
+date: '2020-01-14'
+type: 技术
+tags: javascript
+note: 我们知道js的最大特点就是单线程，就是同一时间只能做一件事。即便HTML5提出Web Worker允许JavaScript脚本创建多个线程，但是子线程完全受主线程控制，且不得操作DOM。所以，这个新标准并没有改变JavaScript单线程的本质。
+---
+# javascript之EventLoop
+​		
+我们知道js的最大特点就是单线程，就是同一时间只能做一件事。即便HTML5提出Web Worker允许JavaScript脚本创建多个线程，但是子线程完全受主线程控制，且不得操作DOM。所以，这个新标准并没有改变JavaScript单线程的本质。
 
 <h3>1、任务队列</h3>
 &#8195;&#8195;因为js的单线程的特性，所有运行在js线程中的代码需要根据某种规则来按队列执行。因为js中既有同步事件，又有异步事件，所以有时候我们在工作中写js代码时总会一脸懵逼，特别是在浏览器环境中进行断点调试时，所以弄懂js代码的执行顺序非常重要。                

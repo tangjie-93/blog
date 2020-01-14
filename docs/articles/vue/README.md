@@ -1,4 +1,11 @@
-# ​	vue通信方法EventBus的实现
+---
+title: ​vue通信方法EventBus的实现
+date: '2020-01-14'
+type: 技术
+tags: vue
+note: ​vue通信方法EventBus的实现
+---
+# ​vue通信方法EventBus的实现
 
 vue通信方式有很多，项目中用的比较多的的有`pros、vuex、$emit/$on`这3种，还有`provide/inject`(适合高阶组件)、`$attrs和$listeners`(适合高阶组件)以及`$parent/$child/ref、eventBus`等这3种方式。很多时候我们都是只会使用api，而懂得原理以及实现，但我就觉得懂得原理以及实现跟一个只会调用api的开发人员时不在同一层次的。所以这里就像把跨组件通信的`eventBus`通信的原理给大家展示一下。这也是自己学到大佬的的东西后并在此记录（转载）一下。
 

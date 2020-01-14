@@ -1,3 +1,10 @@
+---
+title: 我所理解的promise
+date: '2020-01-14'
+type: 技术
+tags: es6
+note: 我所理解的promise
+---
 # 我所理解的promise
 
 虽然项目中一直在用到promise，虽然以前也学习过promise，但是对于promise真的是没有很好的学以致用，有时候看到别人用promise的时候也是一脸懵逼，所以就决定花点时间再来好好研究一下promise到底是什么?应该怎么样用？

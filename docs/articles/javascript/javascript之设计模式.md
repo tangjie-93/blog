@@ -1,3 +1,12 @@
+---
+title: javascript之设计模式
+date: '2020-01-14'
+type: 技术
+tags: javascript
+note: javascript之设计模式
+---
+# javascript之设计模式
+
 ## 一、设计模式分类
 
 ### 1、单例模式

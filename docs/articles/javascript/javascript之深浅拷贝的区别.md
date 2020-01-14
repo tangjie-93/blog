@@ -1,4 +1,11 @@
-
+---
+title: javascript之深浅拷贝的区别
+date: '2020-01-14'
+type: 技术
+tags: javascript
+note: javascript之深浅拷贝的区别
+---
+# javascript之深浅拷贝的区别
 
 <h3 id="a15">15、浅拷贝和深拷贝的区别</h3>
 
