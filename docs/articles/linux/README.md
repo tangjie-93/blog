@@ -5,8 +5,6 @@ type: 技术
 tags: linux
 note: 初识shell
 ---
-# 初识shell
-
 ### 1、什么是shell？
 
 ​		是一个程序，接受从键盘输入的指令，然后把命令传递给操作系统去执行。`bash`指的是"Bourne Again SHell"的简称。`bash`是最初`UNIX`上由SteveBourne写成shell程序sh的增强版。

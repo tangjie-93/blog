@@ -5,8 +5,6 @@ type: 技术
 tags: vue
 note: require与import的区别
 ---
-# require与import的区别
-
 ### 1、common.js(node环境)
 &#8195;&#8195;commonjs是"运行时加载"，在运行时才能得到这个对象。CommonJS 模块输出的是值的缓存，或者说是值的拷贝。
 ```javascript

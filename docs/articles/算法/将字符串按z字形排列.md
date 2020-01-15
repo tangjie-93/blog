@@ -5,7 +5,6 @@ type: 技术
 tags: 算法
 note: 字符串Z型排列
 ---
-# 字符串Z型排列
 
 ```js
 function convert(s, numRows) {

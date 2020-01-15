@@ -5,8 +5,6 @@ type: 技术
 tags: typescript
 note: typescript在vue中的使用
 ---
-# typescript在vue中的使用
-
 &#8195;&#8195;**将`Typescript`引入`Vue`的原因有以下几个：**
 + **可读性。** ts是js的超集，支持js的所有语法，并对js进行了一些扩展。大大提高了代码的可阅读性。
 + **静态类型检查。** 静态类型检查可以避免很多不必要的错误，不用通过调试来发现这些问题。

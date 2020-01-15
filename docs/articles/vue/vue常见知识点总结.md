@@ -5,8 +5,6 @@ type: 技术
 tags: vue
 note: vue常见知识点总结
 ---
-# vue常见知识点总结
-
 &#8195;&#8195;平时在项目开发过程中会用到一些知识点，自己觉得有些用，便整理下来供以后自己去回顾。
 
 <ul>
@@ -23,7 +21,6 @@ note: vue常见知识点总结
 </ul>
 
 <h3 id="a1">1、混入（mixins）</h3>
-
 &#8195;&#8195;混入 (mixins) 是一种分发 Vue 组件中可复用功能的非常灵活的方式。混入对象可以包含任意组件选项。当组件使用混入对象时，所有混入对象的选项将被混入该组件本身的选项。
 
 例子：定义一个混入
@@ -73,18 +70,17 @@ var vm=new Vue({
 ```js      
         'created:hello from mixin!'   第一行；    
         'created:{ "message": "goodbye", "foo": "abc", "bar": "def" }'  第二行；
-```  
+```
  &#8195;&#8195; 在值为对象的这些Vue属性中，例如 methods, components 和 directives，将被混合为同一个对象。**当mixin对象和Vue实例两个对象中键名冲突时，取Vue实例对象的键值对。** 因此在调用methods中的方法时。**会将Vue实例中没有的，mixin中有的添加到Vue实例中去。**
 ```js        
 vm.getName("黎明")；//我在vue中的名字为：黎明。  
 vm.getAge(20);//我今年20岁了。
         
 
-```  
+```
   &#8195;&#8195; mixin有点跟jQuery中的$.extend()和es6的object.assign()方法在功能上有些相似。
 
 <h3 id="a2">2、Vue.nextTick()</h3>   
-
 &#8195;&#8195;在下次 DOM 更新循环结束之后执行延迟回调。在修改数据之后立即使用这个方法，获取更新后的 DOM。    
 &#8195;&#8195;在项目开发过程中遇到dom元素被隐藏或显示等都没元素状态发生改变时，最好是使用nextTick()方法，不然可能不能正常获取dom元素的属性信息。
 ```js            
@@ -103,9 +99,8 @@ new Vue({
     }
     }
 })
-```    
+```
 <h3 id="a3">3、Vue.set( target, key, value )</h3>
-
  >target：要更改的数据源(可以是对象或者数组)<br>
     key：要更改的具体数据<br>
     value ：重新赋的值<br> 
@@ -148,7 +143,7 @@ new Vue({
         })
     }
 </script>
-```	
+```
 点击事件操作结果如下所示：
 ![](https://user-gold-cdn.xitu.io/2019/1/8/1682c3e7198d25d8?w=1245&h=266&f=png&s=52950)
 
@@ -161,7 +156,6 @@ new Vue({
 &#8195;&#8195;总结：通过数组的变异方法（Vue数组变异方法）我们可以动态控制数据的增减，但是我们却无法做到对某一条数据的修改，**修改数据我们可以使用Vue.set()方法。**
 
 <h3 id="a4">4、Vue.extend()</h3>    
-
 &#8195;&#8195;使用基础 Vue 构造器，创建一个“子类”。参数是一个包含组件选项的对象。data 选项是特例，需要注意 - 在 Vue.extend() 中它必须是函数。<br>
 &#8195;&#8195;这里就我个人理解其实就是在定义组件，支持我们在框架中是直接定义.vue文件。使用这种情况比较多的是在页面中单独引入vue.js文件，然后在页面中定义组件用的。在框架中开发中这种全局方法用的比较少。    
 例子：      
@@ -238,17 +232,15 @@ new Profile().$mount('#mount-point')
 <div id="mount-point"></div>将会被渲染成<p>Walter White aka Heisenberg</p>
 ```
 <h3 id="a5">5、delimiters</h3>
-
 &#8195;&#8195;delimiters的作用是改变我们插值的符号。Vue默认的插值是双大括号{{}}。但有时我们会有需求更改这个插值的形式。
 ```js           
          delimiters:['${','}']
-```        
+```
 现在我们的插值形式就变成了${}。代替了{{ }}。
 
 <h3 id="a6">6、BEM设计模式</h3>
-
  &#8195;&#8195;BEM是(Block Element Modifier)的简称,翻译为块级元素修饰符。是由Yandex团队提出的一种前端命名方法论。这种巧妙的命名方法让你的CSS类对其他开发者来说更加透明而且更有意义。BEM命名约定更加严格，而且包含更多的信息，它们用于一个团队开发一个耗时的大项目。
- 
+
 
 >B: 表示块，可以抽象成一个组件<br>
 >E: 表示元素，组件下的一个元素，多个元素形成一个组件<br>
@@ -274,11 +266,9 @@ new Profile().$mount('#mount-point')
 <div class="button button--warning">
     <span class="button__text">红色按钮</span>
 </div>    
-```       
+```
 <h3 id="a7">7、组价间通信的几种方式</h3>
-
 <h4>1、props</h4>
-
 &#8195;&#8195;这是父子间组件通信的常见方式，一般用于父组件向子组件传递数据，并且是**响应式**的。一般情况下子组件不会去直接改变从父组件同过prop传过来的数据，一般会在子组件data中定义一个变量来进行接收：    
 &#8195;&#8195;注意：这种通信方式是响应式的，一般情况下是用于单项通信的（父向子传递数据），但是如果在通过prop特性传的是一个引用类型的数据（如Object和Array）时，在子组件修改该引用类型的数据时，也会改变父组件中该prop的值。
 ```js        
@@ -337,14 +327,12 @@ Action 可以包含任意异步操作。Action 通过 store.dispatch 方法触�
 
 
 <h4>4、$attrs和$listeners</h4>
-
 >**attrs:**  包含了父作用域中不被 prop 所识别 (且获取) 的特性绑定 (class 和 style 除外)。当一个组件没有声明任何 prop 时，这里会包含所有父作用域的绑定 (class 和 style 除外)，并且可以通过 v-bind="$attrs" 传入内部组件。通常配合 inheritAttrs 选项一起使用。
 inheritAttrs为true时，表示在该组件上显示哪些非prop属性，为false则不显示。
 
 >**listeners：** 包含了父作用域中的 (不含 .native 修饰器的) v-on 事件监听器。它可以通过 v-on="$listeners" 传入内部组件。
 
 <h4>5、provide和inject</h4>
-
  &#8195; &#8195;provide 选项应该是一个对象或返回一个对象的函数。该对象包含可注入其子孙的属性。  子孙组件通过inject注入获取到祖级和父级provide的数据。
 
 >注意：provide 和 inject 绑定并不是可响应的。这是刻意为之的。然而，如果你传入了一个可监听的对象，那么其对象的属性还是可响应的。    
@@ -354,7 +342,6 @@ inheritAttrs为true时，表示在该组件上显示哪些非prop属性，为fal
 >2、使用2.6最新API Vue.observable 优化响应式 provide(推荐)
 
 <h4>6、$parent / $children与 ref</h4>
-
 >**ref**：如果在普通的 DOM 元素上使用，引用指向的就是 DOM 元素；如果用在子组件上，引用就指向组件实例。    
 >**parent / children**：访问父 / 子实例
 
@@ -365,7 +352,6 @@ inheritAttrs为true时，表示在该组件上显示哪些非prop属性，为fal
 更详细的请参考大神的介绍——[vue组件间通信六种方式](https://juejin.im/post/5cde0b43f265da03867e78d3#heading-13)
 
 <h3 id="a8">8、立即触发watch的方法</h3>
-
 ```js
 watch:{
     "type":function(){
@@ -379,7 +365,6 @@ watch:{
 }
 ```
 <h3 id="a9">9、computed和methods及watch的对比</h3>
-
 **1、computed** <br>
 + 1、computed是计算属性,也就是计算值,它更多用于计算值的场景
 + 2、computed具有缓存性,computed的值在getter执行后是会缓存的，只有在它依赖的属性值改变之后，下一次获取computed的值时才会重新调用对应的getter来计算
@@ -395,7 +380,6 @@ watch:{
 如果你需要在某个数据变化时做一些事情，使用watch来观察这个数据变化。
 
 <h3 id="a10">10、require.context()的用法</h3>
-
 ```javascript
 require.context(directory,useSubdirectories,regExp)
 //directory:表示检索的目录

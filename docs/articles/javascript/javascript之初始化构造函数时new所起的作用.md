@@ -5,8 +5,6 @@ type: 技术
 tags: javascript
 note: 初始化构造函数时new所起的作用
 ---
-# 初始化构造函数时new所起的作用
-
 <ul>
     <li><a href="#new">new关键字的作用</a></li>
     <li><a href="#useNew">调用构造函数使用new关键字的情况</a></li>

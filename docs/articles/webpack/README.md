@@ -3,10 +3,8 @@ title: webpack基础知识点总结
 date: '2020-01-14'
 type: 技术
 tags: webpack
-note: webpack基础知识点总结
+note: <该思维导图是根据`<<深入浅出webpack>>`章节大纲总结出来的。通过阅读这本书梳理webpack所包含的知识点，了解了webpack（版本为4.X）的相关配置，以及loader和plugin的原理以及编写。思维导图能够很形象的描述出各知识点之间的关系，同时也能加深知识点在我们心中的印象。画此思维导图的目的也是为了供以后自己复习用的。
 ---
-# webpack基础知识点总结
-
 &#8195;&#8195;<该思维导图是根据`<<深入浅出webpack>>`章节大纲总结出来的。通过阅读这本书梳理webpack所包含的知识点，了解了webpack（版本为4.X）的相关配置，以及loader和plugin的原理以及编写。思维导图能够很形象的描述出各知识点之间的关系，同时也能加深知识点在我们心中的印象。画此思维导图的目的也是为了供以后自己复习用的。
 
 <img src="https://raw.githubusercontent.com/tangjie-93/tangjie-93.github.io/fd95264a2b93c751839dbb5c922926a2ab74543c/images/webpack.png" alt="webpack.png">
@@ -1101,7 +1099,7 @@ note: webpack基础知识点总结
             // 省略代码压缩插件配置...
           ],
         };
-``` 
+```
 &#8195;&#8195;&#8195;4)、使用Tree-Shaking删除无用的代码
 ```javascript
     Tree Shaking 可以用来剔除 JavaScript 中用不上的死代码。它依赖静态的 ES6 模块化语法。

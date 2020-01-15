@@ -1,4 +1,10 @@
-# css实现等分布局的几种方式
+---
+title: css实现等分布局的几种方式
+date: '2020-01-14'
+type: 技术
+tags: css
+note: css实现等分布局的几种方式
+---
 
 ```HTML
     <div class="parent">

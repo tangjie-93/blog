@@ -5,8 +5,6 @@ type: 技术
 tags: typescript
 note: typescript基本知识点总结
 ---
-# typescript基本知识点总结
-
 ## 1、基本类型和扩展类型
 
 &#8195;&#8195;ts和js共享相同的基本类型，还有一些其独有的类型如`元组、枚举、和any及void`。

@@ -5,8 +5,6 @@ type: 技术
 tags: javascript
 note: Undefined 类型只有一个值，即特殊的undefined。实际上，undefined值是继承自null值得。undefined==null 为true。null值表示一个空对象指针，要意在保存对象的变量还没有真正保存对象。而这也正是使用 typeof 操作符检测 null值时会返回"object"的原因。null===null为true。
 ---
-#  undefined和null的区别
-
 <ul>
     <li><a href="#a1">Undefined</a></li>
     <li><a href="#a2">Null</a></li>

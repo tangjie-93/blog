@@ -1,12 +1,16 @@
-# 浮动定位和绝对定位的区别
-
+---
+title: 绝对定位absolute和浮动定位float的区别
+date: '2020-01-14'
+type: 技术
+tags: css
+note: 绝对定位absolute和浮动定位float的区别
+---
 <ul>
     <li><a href="#a1">元素定位的方式</a></li>
     <li><a href="#a2">absoute和float的异同</a></li>
 </ul>
 
 <h3 id="a1">1、元素定位的方式主要有以下几种：</h3>
-
 >1)	absolute:生成绝对定位的元素， 相对于最近一级的定位不是 static 的父元素来进行定位。        
 >2)	fixed（老IE不支持）：生成绝对定位的元素，通常相对于浏览器窗口或 frame 进行定位。
 >3)	relative：生成相对定位的元素，相对于其在普通流中的位置进行定位。
@@ -14,7 +18,6 @@
 >5)	sticky：生成粘性定位的元素，容器的位置根据正常文档流计算得出
 
 <h3 id="a2">2、absoute和float的异同：</h3>
-
 absolue定位效果如下
 ```html        
 #test1{

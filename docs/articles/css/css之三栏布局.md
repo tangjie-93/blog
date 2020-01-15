@@ -1,4 +1,10 @@
-# 三栏布局的实现方式
+---
+title: 三栏布局的实现方式
+date: '2020-01-14'
+type: 技术
+tags: css
+note: 三栏布局的实现方式
+---
 
 ```HTML
     <div class="container">
