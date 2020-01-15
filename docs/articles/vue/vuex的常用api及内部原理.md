@@ -1,3 +1,10 @@
+---
+title: vuex的常用api及内部原理
+date: '2020-01-14'
+type: 技术
+tags: vue
+note: vuex的常用api及内部原理
+---
 # vuex的常用api及内部原理
 
 **1、什么是vuex?**<br>

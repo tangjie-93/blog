@@ -1,4 +1,10 @@
-
+---
+title: typescript在vue中的使用
+date: '2020-01-14'
+type: 技术
+tags: typescript
+note: typescript在vue中的使用
+---
 # typescript在vue中的使用
 
 &#8195;&#8195;**将`Typescript`引入`Vue`的原因有以下几个：**

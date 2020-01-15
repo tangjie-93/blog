@@ -1,3 +1,10 @@
+---
+title: typescript基本知识点总结
+date: '2020-01-14'
+type: 技术
+tags: typescript
+note: typescript基本知识点总结
+---
 # typescript基本知识点总结
 
 ## 1、基本类型和扩展类型
@@ -1372,8 +1379,8 @@ let myUrl = URL.parse("http://www.typescriptlang.org");
 
   上面的代码告诉编译器所有匹配`*`模式的模块导入会在以下两个位置查找。
 
-  + `*`表示名字不发生改变，映射为`<moduleName>=><baseUrl>/<moduleName>。
-  + `generated/*`表示模块名添加了`generated`前缀，所以映射为`<moduleName>=><baseUrl>/generated/<moduleName>`
+  + `*`表示名字不发生改变，映射为`moduleName=>baseUrl/moduleName`。
+  + `generated/*`表示模块名添加了`generated`前缀，所以映射为`moduleName=>baseUrl/generated/moduleName`
 
 + **利用`rootDirs`指定虚拟目录。**
 

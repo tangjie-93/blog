@@ -1,3 +1,10 @@
+---
+title: mvvm概念、原理及实现
+date: '2020-01-14'
+type: 技术
+tags: vue
+note: mvvm概念、原理及实现
+---
 # mvvm概念、原理及实现
 
 ### 1、MVVM的概念
@@ -322,5 +329,7 @@ class Observer{
     }
 }
 ```
+
+<Valine></Valine>
 
 

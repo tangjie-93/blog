@@ -1,3 +1,10 @@
+---
+title: shell环境​配置
+date: '2020-01-14'
+type: 技术
+tags: linux
+note: shell环境​配置
+---
 # shell环境​配置
 
 		`shell`在环境中存储了两种基本类型的数据——**环境变量和`shell`变量**。`shell`变量是`bash`存放的少量数据，剩下的基本都是环境变量。

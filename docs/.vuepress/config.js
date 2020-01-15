@@ -23,7 +23,7 @@ function createSidebarMapObject (dir) {
                 const fileName = fileObj.name;
                 if (Array.isArray(fileMapObj[curPath])) {
                     // const link = getLink(fPath)
-                    fileName==="README"?fileMapObj[curPath].unshift(''):fileMapObj[curPath].push(fileName)                    
+                    fileName === "README" ? fileMapObj[curPath].unshift('') : fileMapObj[curPath].push(fileName)
                 }
                 // console.log(fileName);
                 // if(typeof fileMapObj[curPath]==='undefined'){
@@ -38,38 +38,38 @@ function createSidebarMapObject (dir) {
     getAllFiles(temPath)
     return fileMapObj;
 }
-function getLink(link){
+function getLink (link) {
     let tempLink = link.replace(/\\/g, "/");
     const index = tempLink.indexOf(pathName);
-    tempLink = tempLink.slice(index - 1)+"/";
+    tempLink = tempLink.slice(index - 1) + "/";
     return tempLink;
 }
 
-function createArticlesNavItem(fileMapObj){
-    let navItem=[];
-    Object.keys(fileMapObj).forEach(function(title){
+function createArticlesNavItem (fileMapObj) {
+    let navItem = [];
+    Object.keys(fileMapObj).forEach(function (title) {
         let tempTitle = title.replace(/\\/g, "/");
         const index = tempTitle.indexOf(pathName);
-        const lastIndex=tempTitle.lastIndexOf("/");
-        const link = tempTitle.slice(index - 1)+"/";
-        const text=tempTitle.slice(lastIndex+1);
-        navItem.push({text,link});
+        const lastIndex = tempTitle.lastIndexOf("/");
+        const link = tempTitle.slice(index - 1) + "/";
+        const text = tempTitle.slice(lastIndex + 1);
+        navItem.push({ text, link });
     })
-    
+
     return navItem;
 }
 function createSideBar (fileMapObj) {
     const sidebar = {};
     Object.keys(fileMapObj).forEach(function (key) {
-        const link=getLink(key);
+        const link = getLink(key);
         // const fileArr=fileMapObj[key].unshift("");
-        sidebar[link]=fileMapObj[key];
+        sidebar[link] = fileMapObj[key];
     })
     return sidebar;
 }
-const getSidebarMapObject=createSidebarMapObject(pathName)
+const getSidebarMapObject = createSidebarMapObject(pathName)
 const sidebar = createSideBar(getSidebarMapObject);
-const articlesNavItem=createArticlesNavItem(getSidebarMapObject)
+const articlesNavItem = createArticlesNavItem(getSidebarMapObject)
 module.exports = {
     base: '/blog/',
     title: '个人博客',
@@ -90,11 +90,13 @@ module.exports = {
                 items: articlesNavItem,
             },
             { text: '关于', link: '/about/' },
+            { text: '标签', link: '/tags/' },
+            { text: "留言板", link: '/comments/' },
             { text: '掘金', link: 'https://juejin.im/user/5bd074165188251ce71d8e2c' },
         ],
         sidebar,
         sidebarDepth: 2,
-        displayAllHeaders: true,
+        // displayAllHeaders: true,
         lastUpdated: 'Last Updated',
         smoothScroll: true
     }

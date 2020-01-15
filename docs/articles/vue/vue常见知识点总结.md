@@ -1,3 +1,10 @@
+---
+title: vue常见知识点总结
+date: '2020-01-14'
+type: 技术
+tags: vue
+note: vue常见知识点总结
+---
 # vue常见知识点总结
 
 &#8195;&#8195;平时在项目开发过程中会用到一些知识点，自己觉得有些用，便整理下来供以后自己去回顾。
@@ -426,5 +433,6 @@ requireComponents.keys().forEach(fileName => {
   Vue.component(reqComName, reqCom.default || reqCom)
 })
 ```
+<Valine></Valine>
 
 

@@ -1,4 +1,11 @@
-## canvas基础api总结
+---
+title: canvas基础api总结
+date: '2020-01-4'
+type: 技术
+tags: canvas
+note: canvas基础api总结
+---
+# canvas基础api总结
 
 &#8195;&#8195;**canvas是一种基于javascript的绘图api。而是svg和VML是使用XML来进行描述绘图。各有缺点和优势。svg绘图时容易编辑，只要重描述中移除元素就行，而canvas要移除原有的元素进行重新绘制。**
  ### **1、颜色、样式及阴影设置**

@@ -1,3 +1,10 @@
+---
+title: require与import的区别
+date: '2020-01-14'
+type: 技术
+tags: vue
+note: require与import的区别
+---
 # require与import的区别
 
 ### 1、common.js(node环境)
