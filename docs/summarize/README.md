@@ -2,22 +2,32 @@
 
 ### web知识相关的github地址
 [1、前端面试手册](https://github.com/yangshun/front-end-interview-handbook/blob/master/Translations/Chinese/README.md)
+
 [2、JavaScript 算法与数据结构](https://github.com/trekhleb/javascript-algorithms/blob/master/README.zh-CN.md)
+
 [3、JavaScript 资源大全中文版](https://github.com/jobbole/awesome-javascript-cn#scroll)
 
 [4、令人敬畏的javascript](https://github.com/sorrycc/awesome-javascript)
+
 [5、JavaScript开发者应懂的33个概念 ](https://github.com/stephentian/33-js-concepts)
+
 [6、前端面试之道](https://github.com/InterviewMap/CS-Interview-Knowledge-Map)
+
 [7、数据结构和算法](https://github.com/InterviewMap/CS-Interview-Knowledge-Map/blob/master/Algorithm/algorithm-ch.md)
+
 [8、前端进阶之道](https://yuchengkai.cn/docs/frontend/#async-%E5%92%8C-await)
+
 [9、组件设计-渲染器](http://hcysun.me/vue-design/zh/)
 
 [10、What the f*ck JavaScript?](https://github.com/denysdovhan/wtfjs/blob/master/README-zh-cn.md)
 
 ### 大佬github地址
 [花裤衩](https://github.com/PanJiaChen)
+
 [阮一峰](https://github.com/ruanyf)
+
 [yck](https://github.com/KieSun)
+
 [梁少峰](https://github.com/youngwind/blog)
 
 ### 算法相关网站及文章

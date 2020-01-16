@@ -62,7 +62,6 @@ function createSideBar (fileMapObj) {
     const sidebar = {};
     Object.keys(fileMapObj).forEach(function (key) {
         const link = getLink(key);
-        // const fileArr=fileMapObj[key].unshift("");
         sidebar[link] = fileMapObj[key];
     })
     return sidebar;
@@ -73,7 +72,7 @@ const articlesNavItem = createArticlesNavItem(getSidebarMapObject)
 module.exports = {
     base: '/blog/',
     title: '前端技术积累',
-    description: "个人博客",
+    description: "该博客主要是用来记录自己的学习笔记，对自己的学习历程进行一个简单的记录，也会写一些深入总结性的博客。",
     markdown: {
         lineNumbers: true // 代码块显示行号
     },
@@ -92,6 +91,7 @@ module.exports = {
             { text: '关于', link: '/about/' },
             { text: '标签', link: '/tags/' },
             { text: "留言板", link: '/comments/' },
+            { text: "充电站", link: "/summarize/" },
             { text: '掘金', link: 'https://juejin.im/user/5bd074165188251ce71d8e2c' },
         ],
         sidebar,
