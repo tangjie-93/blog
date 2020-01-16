@@ -72,7 +72,7 @@ const sidebar = createSideBar(getSidebarMapObject);
 const articlesNavItem = createArticlesNavItem(getSidebarMapObject)
 module.exports = {
     base: '/blog/',
-    title: '个人博客',
+    title: '前端技术积累',
     description: "个人博客",
     markdown: {
         lineNumbers: true // 代码块显示行号
