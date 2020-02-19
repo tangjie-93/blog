@@ -46,6 +46,7 @@ baz(); // <-- baz 的调用位置
 
 <h4>&#8195;2.1  默认绑定</h4>
 		函数独立调用，非严格模式this 指向全局对象.严格模式下，this指向undefined。 详情请看如下代码：
+
 ```javascript     
 var a=2;
 function test(){
@@ -105,6 +106,7 @@ obj.foo(); // 2
         obj1.obj2.obj3.foo(); // 32
 ```
 &#8195;&#8195;隐式绑定容易发生隐式丢失的问题，也就是被隐式绑定的函数会丢失绑定对象。也就是说它会应用默认绑定，从而把 this 绑定到全局对象或者 undefined 上（取决于是否是严格模式）。 
+
 ```javascript     
 function foo() {
     console.log( this.a );
