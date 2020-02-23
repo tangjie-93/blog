@@ -83,7 +83,7 @@ module.exports = {
         // 自定义仓库链接文字。
         repoLabel: 'GitHub',
         nav: [
-            { text: '首页', link: '/timeLine/' },
+            { text: '首页', link: '/timeline/' },
             {
                 text: '技术栈',
                 items: articlesNavItem,

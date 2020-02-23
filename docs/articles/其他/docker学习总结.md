@@ -1,4 +1,3 @@
-
 ---
 title: docker学习总结
 date: '2020-02-20'
@@ -410,7 +409,7 @@ docker restart helloworld
   ```
 
   ```bash
-  docker build -t hello .//使用当前目录的dockerfile创建名为hello的镜像。
+  docker build -t hello .//使用当前目录的dockerfile创建名为hello的镜像。-t表示要创建的目标镜像名。
   docker build github/creack/dicker-firefox //使用url创建镜像。
   docker build -f ./dockerfile . //通过-f来指定Dockerfile文件的位置
   ```
@@ -433,8 +432,6 @@ docker restart helloworld
   docker load --input fedora.tar
   ```
 
-  
-
 + **docker import：从归档文件中创建镜像。**
 
   ```bash
@@ -442,28 +439,13 @@ docker restart helloworld
   docker import  my_ubuntu_v3.tar runoob/ubuntu:v4  
   ```
 
-  
 
 
+### 4、docker之Dockerfile详解
 
+​		Dockfile是一种被Docker程序解释的脚本，Dockerfile由一条一条的指令组成，每条指令对应Linux下面的一条命令。Docker程序将这些Dockerfile指令翻译真正的Linux命令。Dockerfile有自己书写格式和支持的命令，Docker程序解决这些命令间的依赖关系，类似于Makefile。**Docker程序将读取Dockerfile，根据指令生成定制的image（镜像）。**
 
-
-  
-
-  
-
-  
-
-
-
-
-
-
-
-
-### docker之Dockerfile详解
-
-​		Dockfile是一种被Docker程序解释的脚本，Dockerfile由一条一条的指令组成，每条指令对应Linux下面的一条命令。Docker程序将这些Dockerfile指令翻译真正的Linux命令。Dockerfile有自己书写格式和支持的命令，Docker程序解决这些命令间的依赖关系，类似于Makefile。**Docker程序将读取Dockerfile，根据指令生成定制的image。**
+**注意：**指令越多，构建的镜像越大，所以尽可能使用`&&`来将多条指令连接成一条指令。
 
 **1、FROM**
 
@@ -475,10 +457,106 @@ docker restart helloworld
 
 **2、COPY**
 
-​		COPY 将文件从路径 `src` 复制添加到容器内部路径 `dest`。`src`必须是相对源文件夹的一个文件或目录，也可以是一个远程的url，`dest`是目标容器中的绝对路径。
+​		COPY 将文件从路径 `src` 复制添加到容器内部路径 `dest`。
+
++ `src`必须是相对源文件夹的一个文件或目录，也可以是一个远程的url。可以使用通配符表达式，其通配符规则要满足 Go 的 filepath.Match 规则。
++ `dest`是目标容器中的绝对路径。该路径不用事先建好，路径不存在的话，会自动创建。
+
+```bash
+COPY [--chown=<user>:<group>] <源路径1>...  <目标路径>
+COPY [--chown=<user>:<group>] ["<源路径1>",...  "<目标路径>"]
+```
 
 **3、CMD**
 
-​		dockerfile中只能有一个`CMD`指令。如果指定了多个，那么最后的`CMD`命令才会生效。`CMD`指令的主要作用是提供默认的执行容器。这些默认值可以包括
+​		dockerfile中只能有一个`CMD`指令。如果指定了多个，那么最后的`CMD`命令才会生效。`CMD`指令的主要作用是提供默认的执行程序。这些默认值可以包括可执行文件，也可以省略可执行文件。CMD 指令指定的程序可被 docker run 命令行参数中指定要运行的程序所覆盖。当你使用shell或者exec格式时，cmd会自动执行这个命令。
 
-可执行文件，也可以省略可执行文件。当你使用shell或者exec格式时，cmd会自动执行这个命令。
+类似于`RUN`指令。但二者运行的时间点不同。
+
++ CMD在docker run时运行。
++ RUN在docker build时运行。
+
+```bash
+CMD <shell 命令> 
+CMD ["<可执行文件或命令>","<param1>","<param2>",...] //默认可执行文件是sh
+```
+
+**4、RUN**
+
+​		用于执行后面跟着的命令行命令。主要有两种格式。
+
++ shell格式
+
+  ```bash
+  RUN <命令行命令>  //命令行命令等同于终端操作的shell命令
+  ```
+
++ exec格式
+
+  ```bash
+  RUN ["可执行文件","参数1","参数2"]
+  ```
+
+**5、ENTRYPOINT**
+
+​		类似于 CMD 指令，但其不会被 docker run 的命令行参数指定的指令所覆盖，而且这些命令行参数会被当作参数送给 ENTRYPOINT 指令指定的程序。Dockerfile 中如果存在多个 ENTRYPOINT 指令，仅最后一个生效。
+
+```bash
+ENTRYPOINT ["<executeable>","<param1>","<param2>",...]
+```
+
+​		可以搭配 CMD 命令使用：一般是变参才会使用 CMD ，这里的 CMD 等于是在给 ENTRYPOINT 传参。
+
+```bash
+FROM nginx
+ENTRYPOINT ["nginx", "-c"] # 定参
+CMD ["/etc/nginx/nginx.conf"] # 变参 
+```
+
+1、假如已经通过Dockerfile(`docker build -t nginx:v1 .`)构建了镜像，此时不传参运行时。
+
+```
+docker run nginx:v1
+```
+
+容器内会默认运行以下命令，开启主进程。
+
+```bash
+nginx -c /etc/nginx/nginx.conf
+```
+
+2、传参运行
+
+```bash
+docker run  nginx:test -c /etc/nginx/new.conf
+```
+
+**6、ENV**
+
+​		设置环境变量，定义环境变量，在后续的指令中，就可以使用这个环境变量。
+
+```bash
+ENV <key> <value>
+```
+
+**7、ARG**
+
+​		构建参数，与 ENV 作用一至。ARG 设置的环境变量仅对 Dockerfile 内有效，也就是说只有 docker build 的过程中有效，构建好的镜像内不存在此环境变量。
+
+```bash
+ARG <参数名>[=<默认值>]
+```
+
+**8、EXPOSE**
+
+​		申明端口。在运行时使用随机端口映射时，也就是 docker run -P 时，会自动随机映射 EXPOSE 的端口。
+
+### 5、Docker Compose
+
+​		Compose 是用于定义和运行多容器 Docker 应用程序的工具。通过 Compose，您可以使用 YML 文件来配置应用程序需要的所有服务。然后，使用一个命令，就可以从 YML 文件配置中创建并启动所有服务。
+
+Compose使用的三个步骤：
+
+- 使用 Dockerfile 定义应用程序的环境。
+- 使用 docker-compose.yml 定义构成应用程序的服务，这样它们可以在隔离环境中一起运行。
+- 最后，执行 docker-compose up 命令来启动并运行整个应用程序。
