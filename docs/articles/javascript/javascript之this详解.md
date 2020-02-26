@@ -412,4 +412,65 @@ var obj={
 foo.call(obj);
 ```
 
+<h4>2.6 一些this指向问题的实例</h4>
+**实例1 在new过程中判断this 的指向**
+
+```javascript   
+function fun () {
+    this.a = 0;
+    this.b = function () {
+        console.log(this);
+        console.log(this.a);
+    };
+}
+fun.prototype = {
+    b: function () {
+        this.a = 20;
+        console.log(this.a);
+    },
+    c: function () {
+        this.a = 30;
+        console.log(this.a);
+    }
+};
+
+var my_fun = new fun();
+my_fun.b(); //私有方法,fun函数中的this指向fun构造函数的实例,即this=>my_fun,this.a=0
+console.log(my_fun.a);//0
+my_fun.c();//公有方法	this=>my_fun this.a = 30（私有属性a修改为30）
+console.log(my_fun.a);//30
+var my_fun2 = new fun();
+console.log(my_fun2.a);//0,私有属性
+my_fun2.__proto__.c();//this=>my_fun2.__proto__ 当前实例·通过原型链在共有属性增加的了一a:30
+console.log(my_fun2.a);//0,私有属性
+console.log(my_fun2.__proto__.a);//30,原型属性
+//输出顺序为 0,0,30,30,0,30,0,30
+```
+**实例2**
+```javascript
+var length = 1
+  function fn() {
+      console.log(this.length)
+  } 
+  
+  var obj = {
+    length: 3,
+    me:function(fn){
+      fn() // 1,fn中的this指向的是window
+      arguments[0]() // 2,fn中this指向的是arguments
+    }
+  }
+  obj.me(fn, 1)
+
+```
+
+
+
+
+
+
+
+
+ 
+
 <Valine></Valine>
