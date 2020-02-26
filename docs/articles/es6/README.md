@@ -5,7 +5,7 @@ type: 技术
 tags: es6
 note: 我所理解的promise
 ---
-​		虽然项目中一直在用到promise，虽然以前也学习过promise，但是对于promise真的是没有很好的学以致用，有时候看到别人用promise的时候也是一脸懵逼，所以就决定花点时间再来好好研究一下promise到底是什么?应该怎么样用？
+&#8195;&#8195;虽然项目中一直在用到promise，虽然以前也学习过promise，但是对于promise真的是没有很好的学以致用，有时候看到别人用promise的时候也是一脸懵逼，所以就决定花点时间再来好好研究一下promise到底是什么?应该怎么样用？
 <h3>1、什么是promise?</h3>
 &#8195;&#8195;Promise 是异步编程的一种解决方案，使得执行异步操作变得像同步操作一样。**它可以被看成一个容器，容器里面是我们无法干预的，里面保存着某个未来才会结束的事件的结果。**
 Promise 对象用于表示一个异步操作的最终状态（完成或失败），以及该异步操作的结果值。
@@ -27,7 +27,9 @@ Promise 对象用于表示一个异步操作的最终状态（完成或失败）
 ```
 
 &#8195;&#8195;Promise 是一个构造函数， new Promise 返回一个 promise对象，**Promise 对象是一个代理对象（代理一个值），被代理的值在Promise对象创建时可能是未知的**。构造函数接收一个excutor执行函数作为参数， excutor有两个函数形参resolve和reject，分别作为异步操作成功和失败的回调函数。但该回调函数并不是立即返回最终执行结果，而是一个能代表未来出现的结果的promise对象。resolve和reject函数在调用promise对象时才会被执行。
+
 <h3>2、Promise对象的特点</h3>
+
 >**1、对象的状态不受外界影响。** Promise对象有三种状态（resolve,reject,pending）。只有异步操作的结果，可以决定当前是哪一种状态，任何其他操作都无法改变这个状态。 
 + pending: 初始状态，既不是成功，也不是失败状态。
 + fulfilled: 意味着操作成功完成。
@@ -49,8 +51,10 @@ Promise 对象用于表示一个异步操作的最终状态（完成或失败）
         //所以上面的输出为7、1、5
 ```
 <h3>3、Promise的实例方法</h3>
+
 <h4>&#8195;1、Promise.prototype.then(onFulfilled, onRejected)</h4>
-&#8195;&#8195;onFulfilled和onRejected分别是Promise实例对象 的成功和失败情况的回调函数。该方法返回一个新的 promise实例对象,  **将以回调的返回值作为resolve的参数**。并且then方法可以被同一个 promise 对象调用多次。
+
+&#8195;&#8195;onFulfilled和onRejected分别是Promise实例对象 的成功和失败情况的回调函数。该方法返回一个新的 promise实例对象, **将以回调的返回值作为resolve的参数。** 并且then方法可以被同一个 promise 对象调用多次。
 
 ```javascript     
         var promise1 = new Promise(function(resolve, reject) {
@@ -83,233 +87,234 @@ Promise 对象用于表示一个异步操作的最终状态（完成或失败）
 &#8195;&#8195;2、then方法允许链式调用。通过return将结果传递到下一个then,或者通过在then方法中新建一个promise实例，以resolve(value)或者reject(value)方法向下一个then方法传递参数
 
 ```javascript     
-        //例子1
-        Promise.resolve("foo")
-        .then(function (string) {
-            return string;
-        })
-        .then(function (string) {
-            setTimeout(function () {
-                string += 'baz';
-                console.log(string + "第二次调用");//foobaz第二次调用
-            }, 1)
-            return string;
-        })
-        .then(function (string) {
-            console.log(string + "第三次调用");//foo第三次调用
-            return string;
-        }).then(res => {
-            console.log(res + "第四次调用");//foo第四次调用
-        });
-        //例子2
-        Promise.resolve("foo")
-          .then(function(string) {
-            return new Promise(function(resolve, reject) {
-              setTimeout(function() {
-                string += 'bar';
-                resolve(string);
-              }, 1);
-            });
-          })
-          .then(function(string) {
-            setTimeout(function() {
-              string += 'baz';
-              console.log(string);//foobaz
-            }, 1)
-          })
+//例子1
+Promise.resolve("foo")
+.then(function (string) {
+    return string;
+})
+.then(function (string) {
+    setTimeout(function () {
+        string += 'baz';
+        console.log(string + "第二次调用");//foobaz第二次调用
+    }, 1)
+    return string;
+})
+.then(function (string) {
+    console.log(string + "第三次调用");//foo第三次调用
+    return string;
+}).then(res => {
+    console.log(res + "第四次调用");//foo第四次调用
+});
+
+//例子2
+Promise.resolve("foo")
+.then(function(string) {
+    return new Promise(function(resolve, reject) {
+        setTimeout(function() {
+        string += 'bar';
+        resolve(string);
+        }, 1);
+    });
+})
+.then(function(string) {
+    setTimeout(function() {
+        string += 'baz';
+        console.log(string);//foobaz
+    }, 1)
+})
 ```
 &#8195;&#8195;3、如果函数抛出错误或返回一个rejected的Promise，则调用将返回一个rejected的Promise。
 
 ```javascript     
-        //例子1
-         Promise.resolve()
-          .then( () => {
-            // 使 .then() 返回一个 rejected promise
-            throw 'Oh no!';
-          })
-          .then( () => {
-            console.log( 'Not called.' );
-          }, reason => {
-            console.error( 'onRejected function called: ', reason );
-            //onRejected function called:  Oh no!
-        });
-        //例子2
-        Promise.reject()
-          .then( () => 99, () => 42 )
-          .then( solution => console.log( 'Resolved with ' + solution ) ); 
-        // Resolved with 42 //因为此时then方法接收的是上一个then方法reject方法中reject方法返回的值。
+//例子1
+Promise.resolve()
+.then( () => {
+    // 使 .then() 返回一个 rejected promise
+    throw 'Oh no!';
+})
+.then( () => {
+    console.log( 'Not called.' );
+}, reason => {
+    console.error( 'onRejected function called: ', reason );
+//onRejected function called:  Oh no!
+});
+//例子2
+Promise.reject()
+    .then( () => 99, () => 42 )
+    .then( solution => console.log( 'Resolved with ' + solution ) ); 
+// Resolved with 42 //因为此时then方法接收的是上一个then方法reject方法中reject方法返回的值。
 ```
 &#8195;&#8195;4、 promise 的 .then 或者 .catch 可以被调用多次，但这里 Promise 构造函数只执行一次。或者说 promise内部状态一经改变，并且有了一个值，那么后续每次调用 .then 或者 .catch 都会直接拿到该值。
      
 ```javascript        
-        const promise = new Promise((resolve, reject) => {
-          setTimeout(() => {
-            console.log('once');//once
-            resolve('success')
-          }, 1000)
-        })
-        
-        const start = Date.now()
-        promise.then((res) => {
-          console.log(res, Date.now() - start);//success 1007
-        })
-        promise.then((res) => {
-          console.log(res, Date.now() - start);//success 1007
-        })
+const promise = new Promise((resolve, reject) => {
+    setTimeout(() => {
+    console.log('once');//once
+    resolve('success')
+    }, 1000)
+})
+
+const start = Date.now()
+promise.then((res) => {
+    console.log(res, Date.now() - start);//success 1007
+})
+promise.then((res) => {
+    console.log(res, Date.now() - start);//success 1007
+})
 ```
 <h4>&#8195;2、Promise.prototype.catch(onRejected)</h4>
 &#8195;&#8195;该方法的原码如下所示：
       
 ```javascript       
-        Promise.prototype.catch = function(onRejected) {
-            return this.then(null, onRejected);
-        }
-        this.then(null, onRejected)中由于null不为函数，所以实际执行为
-        this.then(res=>{
-            return res
-        }, onRejected);
+Promise.prototype.catch = function(onRejected) {
+    return this.then(null, onRejected);
+}
+this.then(null, onRejected)中由于null不为函数，所以实际执行为
+this.then(res=>{
+    return res
+}, onRejected);
         
 ```
 &#8195;&#8195;该方法返回一个Promise，并且处理reject的的情况。onRejected表示当Promise 被rejected时,被调用的一个Function。**当这个回调函数被调用，新 promise 将以它的返回值来resolve下一个then函数继续被调用**（正常情况是调用onFulfilled方法，除非在catch中抛出错误）。
 
 ```javascript     
-        //例子1
-        var p1 = new Promise(function(resolve, reject) {
-          resolve('Success');
-        });
-        
-        p1.then(function(value) {
-          console.log(value); // "Success!"
-          throw 'oh, no!';
-        }).catch(function(e) {
-          console.log(e); // "oh, no!"
-        }).then(function(){
-          console.log('after a catch the chain is restored');//after a catch the chain is restored
-          return 3;
-        }, function () {
-          console.log('Not fired due to the catch');
-        })
+//例子1
+var p1 = new Promise(function(resolve, reject) {
+    resolve('Success');
+});
+
+p1.then(function(value) {
+    console.log(value); // "Success!"
+    throw 'oh, no!';
+}).catch(function(e) {
+    console.log(e); // "oh, no!"
+}).then(function(){
+    console.log('after a catch the chain is restored');//after a catch the chain is restored
+    return 3;
+}, function () {
+    console.log('Not fired due to the catch');
+})
 ```
 
 &#8195;&#8195;1、在异步函数中抛出的错误不会被catch捕获到   
         
 ```javascript     
-        var p2 = new Promise(function(resolve, reject) {
-          setTimeout(function() {
-            throw 'Uncaught Exception!';
-          }, 1000);
-        });
-        
-        p2.catch(function(e) {
-          console.log(e); // 不会执行
-        });
+var p2 = new Promise(function(resolve, reject) {
+    setTimeout(function() {
+    throw 'Uncaught Exception!';
+    }, 1000);
+});
+
+p2.catch(function(e) {
+    console.log(e); // 不会执行
+});
 ```
 
 &#8195;&#8195;2、在resolve()后面抛出的错误会被忽略(因为 Promise 的状态一旦改变，就永久保持该状态，不会再变了。)
 
 ```javascript     
-        var p3 = new Promise(function(resolve, reject) {
-          resolve();
-          throw 'Silenced Exception!';
-        });
-        
-        p3.catch(function(e) {
-           console.log(e); // 不会执行
-        });
+var p3 = new Promise(function(resolve, reject) {
+    resolve();
+    throw 'Silenced Exception!';
+});
+
+p3.catch(function(e) {
+    console.log(e); // 不会执行
+});
 ```
 &#8195;&#8195;3、Promise 对象的错误具有"冒泡"性质，会一直向后传递，直到被捕获(或者被then()捕获)为止。也就是说，错误总是会被下一个catch语句捕获。
       
 ```javascript       
-        Promise.reject(2).then((res) => {
-            console.log(res);
-        }).then().catch(res=>{
-            console.log(res);//2
-        });
-        
-        Promise.reject(2).then((res) => {
-            console.log(res);
-        },(error)=>{
-            console.log(error);//2
-        }).then().catch(res=>{
-            console.log(res);//不会被捕获,没有任何输出
-        })
+Promise.reject(2).then((res) => {
+    console.log(res);
+}).then().catch(res=>{
+    console.log(res);//2
+});
+
+Promise.reject(2).then((res) => {
+    console.log(res);
+},(error)=>{
+    console.log(error);//2
+}).then().catch(res=>{
+    console.log(res);//不会被捕获,没有任何输出
+})
 ```
 
 &#8195;&#8195;4、如果使用了catch语句，然后前面的then方法并没有报错,那么就相当于直接跳过该catch方法，下一个then方法接收上一个then方法中onFulfilled传过来的参数。
      
 ```javascript        
-        var p1 = new Promise(function(resolve, reject) {
-          resolve('Success');
-        });
-         p1.then(function(value) {
-          console.log(value); // "Success"
-          return value;
-        }).catch(function(e) {
-          console.log(e); // 没有任何输出
-        }).then(function(value){
-          console.log(value);//"Success" 
-          //就好像跳过了catch语句，实际上catch执行的是this.then(null,onrejected)
-          //等同于
-          //this.then((res)=>{
-          //   return res;
-          //},onrejected)
-        }, function () {
-          console.log('Not fired due to the catch');
-        })
+var p1 = new Promise(function(resolve, reject) {
+    resolve('Success');
+});
+    p1.then(function(value) {
+    console.log(value); // "Success"
+    return value;
+}).catch(function(e) {
+    console.log(e); // 没有任何输出
+}).then(function(value){
+    console.log(value);//"Success" 
+    //就好像跳过了catch语句，实际上catch执行的是this.then(null,onrejected)
+    //等同于
+    //this.then((res)=>{
+    //   return res;
+    //},onrejected)
+}, function () {
+    console.log('Not fired due to the catch');
+})
 ```
 
 &#8195;&#8195; 5、**.then 或者 .catch 中 return 一个 error 对象并不会抛出错误，所以不会被后续的 .catch 捕获。因为返回任意一个非 promise 的值都会被包裹成 promise 对象**，即 return new Error('error!!!') 等价于 return Promise.resolve(new Error('error!!!'))。
         
 ```javascript     
-        Promise.resolve()
-          .then(() => {
-            return new Error('error!!!')
-            //或者改为
-            //return Promise.reject(new Error('error!!!'))或者
-           //throw new Error('error!!!') 才会被后面的catch语句捕捉到
-          })
-          .then((res) => {
-            console.log('then: ', res);//在这里输出
-          })
-          .catch((err) => {
-            console.log('catch: ', err)
-          })  
+Promise.resolve()
+    .then(() => {
+    return new Error('error!!!')
+    //或者改为
+    //return Promise.reject(new Error('error!!!'))或者
+    //throw new Error('error!!!') 才会被后面的catch语句捕捉到
+    })
+    .then((res) => {
+    console.log('then: ', res);//在这里输出
+    })
+    .catch((err) => {
+    console.log('catch: ', err)
+    })  
 ```
 
 &#8195;&#8195;**6、.then 或者 .catch 的参数期望是函数，传入非函数则会发生值穿透。**
 
 ```javascript              
-        Promise.resolve(1)
-        .then(2)
-        .then(Promise.resolve(3))
-        .then(console.log);
-        //输出1
-        //实际执行语句为
-        new Promise((resolve, reject) => {
-            resolve(1)
-        }).then(res => {
-            return res;
-        }).then((res) => {
-            return res;
-        }).then((res) => {
-            console.log(res);
-        })
+Promise.resolve(1)
+.then(2)
+.then(Promise.resolve(3))
+.then(console.log);
+//输出1
+//实际执行语句为
+new Promise((resolve, reject) => {
+    resolve(1)
+}).then(res => {
+    return res;
+}).then((res) => {
+    return res;
+}).then((res) => {
+    console.log(res);
+})
 ```
 <h4>&#8195;3、Promise.prototype.finally(onFinally)</h4>
 &#8195;&#8195;该方法返回一个Promise，在promise执行结束时，无论结果是fulfilled或者是rejected，在执行then()和catch()后，都会执行finally指定的回调函数。源码实现如下：
 
 ```javascript          
-        Promise.prototype.finally = function (f) {
-          return this.then(function (value) {
-            return Promise.resolve(f()).then(function () {
-              return value;
-            });
-          }, function (err) {
-            return Promise.resolve(f()).then(function () {
-              throw err;
-            });
-          });
-        };
+Promise.prototype.finally = function (f) {
+    return this.then(function (value) {
+    return Promise.resolve(f()).then(function () {
+        return value;
+    });
+    }, function (err) {
+    return Promise.resolve(f()).then(function () {
+        throw err;
+    });
+    });
+};
 ```
 
 <h3>3、Promise的静态方法</h3>
@@ -319,19 +324,19 @@ Promise 对象用于表示一个异步操作的最终状态（完成或失败）
 源码实现如下：
       
 ```javascript       
-        Promise.all=function(promises){
-            return new Promise(reslove,reject){
-                let arr=[];
-                promises.forEach((promise,i)=>{
-                    promise.then(value=>{
-                        arr.push(value);
-                        if(i===promises.length){
-                            resolve(arr);
-                        }
-                    },reject)
-                })
-            }
-        }
+Promise.all=function(promises){
+    return new Promise(reslove,reject){
+        let arr=[];
+        promises.forEach((promise,i)=>{
+            promise.then(value=>{
+                arr.push(value);
+                if(i===promises.length){
+                    resolve(arr);
+                }
+            },reject)
+        })
+    }
+}
 ```
 &#8195;&#8195;**操作成功（Fulfillment）**
 
@@ -374,6 +379,7 @@ setTimeout(function(){
 });
 ```
 <h4>&#8195;2、Promise.race(iterable)</h4>
+
 &#8195;&#8195;原码实现如下：
 ```javascript        
 Promise.race = function(promises) {
@@ -396,6 +402,7 @@ console.log(p);//Promise {<pending>}
         
 ```
 <h4>&#8195;3、Promise.resolve(value)</h4>
+
 &#8195;&#8195;**该方法的作用就是将现有对象转为 Promise 实例,并且该实例的状态为resolve。**
 该方法的源码实现如下：
 

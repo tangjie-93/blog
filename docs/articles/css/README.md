@@ -6,7 +6,7 @@ tags: css
 note: css之盒模型
 ---
 
-​		共分为2种类型：W3C标准盒模型（默认） 和 IE标准盒模型（怪异盒模型）。CSS盒子模式包括如下属性：外边距（margin）、边框（border）、内边距（padding）、内容（content） 
+&#8195;&#8195;共分为2种类型：W3C标准盒模型（默认） 和 IE标准盒模型（怪异盒模型）。CSS盒子模式包括如下属性：外边距（margin）、边框（border）、内边距（padding）、内容（content） 
 **css3中有一个新属性对应着盒模型。box-sizing: content-box|border-box|inherit;**
 
 > css3属性box-sizing的content-box属性对应着W3C标准盒模型；  

@@ -101,4 +101,3 @@ function isPalinerome(i,r){
     return false;
 }
 ```
-### 使用中心扩展法

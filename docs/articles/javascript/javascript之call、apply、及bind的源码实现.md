@@ -6,7 +6,7 @@ tags: javascript
 note: 在工作中经常看到有使用call和apply这连个方法，每次看到后都会去网上搜一下用法，然而过一段时间就又不会了，归根到底是自己没有理解他的原理，这次准备彻底弄懂，并把自己的理解总结下来。
 ---
 ​		
-​		在工作中经常看到有使用call和apply这连个方法，每次看到后都会去网上搜一下用法，然而过一段时间就又不会了，归根到底是自己没有理解他的原理，这次准备彻底弄懂，并把自己的理解总结下来。
+&#8195;&#8195;在工作中经常看到有使用call和apply这连个方法，每次看到后都会去网上搜一下用法，然而过一段时间就又不会了，归根到底是自己没有理解他的原理，这次准备彻底弄懂，并把自己的理解总结下来。
 <ul>
     <li><a href="#call">fun.call(thisArg, arg1, arg2, ...)  </a></li>
     <li><a href="#apply">fun.apply(thisArg, [argsArray])     </a></li>
@@ -19,6 +19,7 @@ note: 在工作中经常看到有使用call和apply这连个方法，每次看�
 >2、提供新的 this 值给当前调用的函数/方法。 
 
 <h4><span id="call">1、fun.call(thisArg, arg1, arg2, ...) </span></h4> 
+
 | 参数      | 描述                                 |
 | --------- | ------------------------------------ |
 | thisArg   | 在fun函数运行时指定的this值。        |
@@ -57,7 +58,7 @@ p1.sayHi.call(t1, 1, 2, 3);
 
 ![](https://user-gold-cdn.xitu.io/2019/4/5/169eb9d69fc7339e?w=1920&h=506&f=png&s=109712)
 
-​		**结果分析：当给fun.call()中的thisObj赋值为空、null、undefined时，函数fun中的this值指向window。** 
+**结果分析：当给fun.call()中的thisObj赋值为空、null、undefined时，函数fun中的this值指向window。** 
 下面call()函数的源码的大概实现：
 
 ```javascript            
@@ -115,13 +116,14 @@ foo.call("123",1,2,3);
 >2、调用后会给fn.call(obj)中的obj多增加一个属性fn。
 
 <h4 id="apply">2、fun.apply(thisArg, [arguments]) </h4> 
+
 | 参数      | 描述                          |
 | --------- | ----------------------------- |
 | thisArg   | 在fun函数运行时指定的this值。 |
 | arguments | 指定的参数数组                |
 
 
-​		apply()和call()这两个方法的用途是一样的，都是在特定的作用域中调用函数，实际上就是设置函数fun内的this对象的值。call()和apply()的区别在于call()里传递的参数必须一个一个的列出来，apply里传递的参数可以是数组也可以是arguments对象。
+​&#8195;&#8195;apply()和call()这两个方法的用途是一样的，都是在特定的作用域中调用函数，实际上就是设置函数fun内的this对象的值。call()和apply()的区别在于call()里传递的参数必须一个一个的列出来，apply里传递的参数可以是数组也可以是arguments对象。
 
 区别可见如下代码：
 
@@ -183,6 +185,7 @@ Function.prototype.es6Apply = function(context, arr) {
 }
 ```
 <h4 id="examples"> 3、call()和apply的常见用法：apply常常被用于数组操作。</h4>
+
 >1、如合并两个数组，且改变原数组。  
 
 ```javascript          
@@ -202,7 +205,6 @@ var min = Math.min.apply(null, numbers);
      
 ```
 >3、实现继承
-
 ```javascript           
 function Person(name, age) {
     this.name = name;
@@ -222,7 +224,7 @@ var t1 = new Teacher("张三", 30);
 t1.showName();//"张三"
 t1.showAge();//30
 ```
-​		调用var p1=new Person("李四",25)时返回的是如下对象。Person构造函数中的this指的是Person。
+​&#8195;&#8195;调用var p1=new Person("李四",25)时返回的是如下对象。Person构造函数中的this指的是Person。
 
 ![](https://user-gold-cdn.xitu.io/2019/4/5/169ed07d16e5bf17?w=800&h=319&f=png&s=40557)
 
@@ -230,10 +232,11 @@ t1.showAge();//30
 
 ![](https://user-gold-cdn.xitu.io/2019/4/5/169ed0a1641f0be4?w=805&h=422&f=png&s=53730)
 
-​		`Person.apply(this, [age,name])`中的`this`在new Teacher()时指的是Teacher,所以Person.apply(this, [age,name])这句代码的返回的是一个`Teacher实例对象`。
+&#8195;&#8195;`Person.apply(this, [age,name])`中的`this`在new Teacher()时指的是Teacher,所以Person.apply(this, [age,name])这句代码的返回的是一个`Teacher实例对象`。
 
 <h3 id="bind">4、bind()</h3>
-​		该方法会创建一个函数的实例，其this值会绑定到传给bind()函数的值。 例子如下：
+
+&#8195;&#8195;该方法会创建一个函数的实例，其this值会绑定到传给bind()函数的值。 例子如下：
 ```javascript           
 window.color="red";
 var o={color:"blue"};
@@ -244,7 +247,7 @@ var objSayColor=sayClor.bind(o);
 objSayColor();//"blue"
 sayColor();//"red"
 ```
-​		上面的例子相当于改变了sayColor()函数中this的引用。**bind()函数的源码的实现如下：**
+​&#8195;&#8195;上面的例子相当于改变了sayColor()函数中this的引用。**bind()函数的源码的实现如下：**
 
 ```javascript         
 Function.prototype.bind = function(oThis) {

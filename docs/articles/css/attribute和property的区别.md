@@ -6,6 +6,7 @@ tags: css
 note: attribute和property的区别
 ---
 >**attribute：** 是dom元素**在文档中作为html标签**拥有的属性，如id,class,src,title,alt等，也可以自定义属性，通过dom.setAttribute('class', 'a')来设置属性，通过dom.egtAttribute('class', 'a')来获取属性；  
+
 >**property:** 就是dom元素**在js中作为对象**拥有的属性。 赋值dom.className = 'a';取值dom.className;
 
 **区别：**
