@@ -5,7 +5,7 @@ type: 技术
 tags: javascript
 note: 学习了这么久的javascript，以前一直以为this指的就是指调用该函数或方法的对象。但是这种解释在有些情况下并不合理。通过阅读相关书籍（`<<你不知道的javascript>>`）今天算是彻底弄懂了this具体指的是啥,便将此记录下来，供自己以后复习。
 ---
-&#8195;&#8195;学习了这么久的javascript，以前一直以为this指的就是指调用该函数或方法的对象。但是这种解释在有些情况下并不合理。通过阅读相关书籍（`<<你不知道的javascript>>`）今天算是彻底弄懂了this具体指的是啥,便将此记录下来，供自己以后复习。
+&#8195;&#8195;学习了这么久的javascript，以前一直以为this就是指调用该函数或方法的对象。但是这种解释在有些情况下并不合理。通过阅读相关书籍（`<<你不知道的javascript>>`）今天算是彻底弄懂了this具体指的是啥,便将此记录下来，供自己以后复习。
 
 <ul>
     <li><a href="#a1">this的定义</a></li>
@@ -23,21 +23,21 @@ note: 学习了这么久的javascript，以前一直以为this指的就是指调
 
 ```javascript          
 function baz() {
-// 当前调用栈是： baz
-// 因此，当前调用位置是全局作用域
-console.log( "baz" );
-bar(); // <-- bar 的调用位置
+    // 当前调用栈是： baz
+    // 因此，当前调用位置是全局作用域
+    console.log( "baz" );
+    bar(); // <-- bar 的调用位置
 }
 function bar() {
-// 当前调用栈是 baz -> bar
-// 因此，当前调用位置在 baz 中
-console.log( "bar" );
-foo(); // <-- foo 的调用位置
+    // 当前调用栈是 baz -> bar
+    // 因此，当前调用位置在 baz 中
+    console.log( "bar" );
+    foo(); // <-- foo 的调用位置
 }
 function foo() {
-// 当前调用栈是 baz -> bar -> foo
-// 因此，当前调用位置在 bar 中
-console.log( "foo" );
+    // 当前调用栈是 baz -> bar -> foo
+    // 因此，当前调用位置在 bar 中
+    console.log( "foo" );
 }
 baz(); // <-- baz 的调用位置
 ```
@@ -86,7 +86,7 @@ obj.foo(); // 2
 ```
 &#8195;&#8195;调用obj.foo()时，调用foo()时使用的是obj的上下文对象，所以在foo()函数中的this绑定着obj。     
 
-&#8195;&#8195;对象属性引用链中只有最顶层或者说最后一层会影响调用位置。请看下面的例子。
+&#8195;&#8195;**对象属性引用链中只有最顶层或者说最后一层会影响调用位置**。请看下面的例子。
 
 ```javascript          
 function foo() {
@@ -106,7 +106,7 @@ var obj1 = {
 };
 obj1.obj2.obj3.foo(); // 32
 ```
-&#8195;&#8195;隐式绑定容易发生隐式丢失的问题，也就是被隐式绑定的函数会丢失绑定对象。也就是说它会应用默认绑定，从而把 this 绑定到全局对象或者 undefined 上（取决于是否是严格模式）。 
+&#8195;&#8195;**隐式绑定容易发生隐式丢失的问题，也就是被隐式绑定的函数会丢失绑定对象。也就是说它会应用默认绑定，从而把 this 绑定到全局对象或者 undefined 上（取决于是否是严格模式）**。 
 
 ```javascript     
 function foo() {
@@ -140,7 +140,7 @@ var a = "oops, global"; // a 是全局对象的属性
 doFoo( obj.foo ); // "oops, global"
 ```
 
-&#8195;&#8195;参数传递其实就是一种隐式赋值，因此我们传入函数时也会被隐式赋值，所以结果和上一个例子一样。再看下面的一个例子：
+&#8195;&#8195;**参数传递其实就是一种隐式赋值**，因此我们传入函数时也会被隐式赋值，所以结果和上一个例子一样。再看下面的一个例子：
 
 ```javascript             
 function foo() {
@@ -154,9 +154,9 @@ var a = "oops, global"; // a 是全局对象的属性
 setTimeout( obj.foo, 100 ); // "oops, global"
 ```
 
-&#8195;&#8195;把函数传入语言内置的函数而不是传入你自己声明的函数，其结果跟上面的结果是一样的。
-
+&#8195;&#8195;把函数传入js语言内置的函数而不是传入你自己声明的函数，其结果跟上面的结果是一样的。
 <h4>2.3 显示绑定</h4>
+
 &#8195;&#8195;使用函数的 `call(..) `和`apply(..) `方法，来将第一个参数显示的绑定到this
 
 ```javascript        
@@ -183,7 +183,7 @@ foo.call( obj1.obj2 ); // 23
 ```
 &#8195;&#8195;**2.3.1 硬绑定**    
 
-&#8195;显示绑定也会出现绑定丢失的问题，所以这里提出了一种叫做**硬绑定**的绑定方法。这种方法其实就是在函数内部调用`call()`或者`apply()`方法。
+&#8195;显示绑定也会出现绑定丢失（**函数中的this指向发生改变**）的问题，所以这里提出了一种叫做**硬绑定**的绑定方法。这种方法其实就是在函数内部调用`call()`或者`apply()`方法。
 
 ```javascript            
 function foo() {
@@ -235,7 +235,7 @@ console.log( b ); // 5
 ```
 &#8195;&#8195;**2.3.2 原生API**    
 &#8195;&#8195;javascript还有一些原生API的一些内置函数，都提供了一
-个可选的参数，通常被称为“上下文”（context），其作用和 bind(..) 一样，确保你的回调函数使用指定的 this。 这些函数实际上就是通过 call(..) 或者 apply(..) 实现了显式绑定，
+个可选的参数，通常被称为**上下文**（context），其作用和 bind(..) 一样，确保你的回调函数使用指定的 this。 这些函数实际上就是通过 call(..) 或者 apply(..) 实现了显式绑定，
 
 ```javascript            
 function foo(el) {
@@ -249,12 +249,13 @@ var obj = {
 // 1 awesome 2 awesome 3 awesome
 ```
 <h4>2.4 new绑定</h4>
-使用 new 初始化类
-调用类中的构造函数。具体详情可以参考这片文章
+
+&#8195;&#8195;使用 new 初始化类调用类中的构造函数。具体详情可以参考这片文章
 [javascript中初始化构造函数时new所起的作用。](https://juejin.im/post/5ca72eef6fb9a05e233c937e)
 
 这四种绑定方式的优先级如下：
->1、默认绑定肯定是这四种绑定方式中优先级最低的；     
+>**1、默认绑定肯定是这四种绑定方式中优先级最低的**  
+
 >**2、显式绑定比隐式绑定优先级高** 
 
 ```javascript       
@@ -285,9 +286,10 @@ var obj1={
 var obj2={};
 obj1.foo(2);
 console.log(obj1.a);//2
-obj1.foo.call(obj3,3);//3；
+obj1.foo.call(obj2,3);
+console.log(obj2.a);//3
 
-var bar=new obj.foo(4);
+var bar=new obj1.foo(4);
 console.log(obj1.a);//2
 console.log(bar.a);//4
 ```
@@ -332,7 +334,7 @@ foo.apply(φ,[2,3]);//2,3
 var bar=foo.bind(φ,2);
 bar(3);//2,3
 ```
-  Obect.create(null)是js中创建一个空对象的对简单的方法。该方法返回一个{}对象，但是不会有__proto__属性，比var obj={}更空。
+**Obect.create(null)是js中创建一个空对象的对简单的方法。该方法返回一个{}对象，但是不会有__proto__属性，比var obj={}更空。**
 
   **2、间接引用**
 
@@ -405,7 +407,7 @@ fooObj.call(obj3);//a:3 显示绑定
 ```javascript           
 function foo(){
     setTimeOut(()=>{
-        console.log(this.a);//2
+        console.log(this.a);//1
     },1000)
 }
 var obj={
@@ -415,6 +417,7 @@ foo.call(obj);
 ```
 
 <h4>2.6 一些this指向问题的实例</h4>
+
 **实例1 在new过程中判断this 的指向**
 
 ```javascript   
@@ -451,18 +454,18 @@ console.log(my_fun2.__proto__.a);//30,原型属性
 **实例2**
 ```javascript
 var length = 1
-  function fn() {
-      console.log(this.length)
-  } 
-  
-  var obj = {
-    length: 3,
-    me:function(fn){
-      fn() // 1,fn中的this指向的是window
-      arguments[0]() // 2,fn中this指向的是arguments
-    }
-  }
-  obj.me(fn, 1)
+function fn() {
+    console.log(this.length)
+} 
+
+var obj = {
+length: 3,
+me:function(fn){
+    fn() // 1,fn中的this指向的是window
+    arguments[0]() // 2,fn中this指向的是arguments
+}
+}
+obj.me(fn, 1)
 
 ```
 

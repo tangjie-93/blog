@@ -64,7 +64,7 @@ p1.sayHi.call(t1, 1, 2, 3);
 ```javascript            
 Function.prototype.Call = function(context) {
     var context = context || window;
-    var args = Array.prototype.slice.call(arguments, 1);
+    var args = Array.from(arguments).slice(1);
     var type = typeof context;
     switch(type) {
         case "boolean":
@@ -111,9 +111,7 @@ foo.call("123",1,2,3);
 调用结果如下所示：
 
 ![](https://user-gold-cdn.xitu.io/2019/5/16/16ac139c2d91d93a?w=1203&h=466&f=png&s=102659)
-上面代码的不足之处有2点：
->1、只考虑到Boolean、String、Number、null、undefined和Object以及Array这几种数据类型的功能实现；  
->2、调用后会给fn.call(obj)中的obj多增加一个属性fn。
+上面代码的不足之处在于：只考虑到Boolean、String、Number、null、undefined和Object以及Array这几种数据类型的功能实现；  
 
 <h4 id="apply">2、fun.apply(thisArg, [arguments]) </h4> 
 
@@ -249,17 +247,25 @@ sayColor();//"red"
 ```
 ​&#8195;&#8195;上面的例子相当于改变了sayColor()函数中this的引用。**bind()函数的源码的实现如下：**
 
-```javascript         
+```javascript  
+//基础版
+Function.prototype.bind=function(OThis){
+    const fToBind=this;
+    const args=[...arguments].slice(1);
+    return function(){
+        return fToBind.apply(this,[...args,...arguments])
+    }
+}
+//完整版    
 Function.prototype.bind = function(oThis) {
     if(typeof this !== 'function') {
         // closest thing possible to the ECMAScript 5
         // internal IsCallable function
         throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');
     }
-
     var aArgs = Array.prototype.slice.call(arguments, 1),
         fToBind = this,
-        fNOP = function() {},
+        // fNOP = function() {},
         fBound = function() {
             // this instanceof fBound === true时,说明返回的fBound被当做new的构造函数调用
             return fToBind.apply(this instanceof fBound ?
@@ -270,13 +276,16 @@ Function.prototype.bind = function(oThis) {
         };
 
     // 维护原型关系
-    if(this.prototype) {
-        // Function.prototype doesn't have a prototype property
-        fNOP.prototype = this.prototype;
-    }
+    // if(this.prototype) {
+    //     // Function.prototype doesn't have a prototype property
+    //     fNOP.prototype = this.prototype;
+
+    // }
+    //继承原型
+    this.prototype&&(fBound.prototype=Object.create(this.prototype)
     // 下行的代码使fBound.prototype是fNOP的实例,因此
     // 返回的fBound若作为new的构造函数,new生成的新对象作为this传入fBound,新对象的__proto__就是fNOP的实例
-    fBound.prototype = new fNOP();   
+    // fBound.prototype = new fNOP();   
     return fBound;
 };
 ```

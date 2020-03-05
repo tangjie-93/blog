@@ -43,12 +43,11 @@ new Person("黎明",30)={
     var obj  = {};//创建一个空对象 
     obj.__proto__ = Person.prototype;   
     Person.call(obj,"黎明",30);
-    return obj；
+    return obj;
 }
 ```
 **分析：** 所以new在这个过程中的作用是,使p1继承了Person的name和age属性，使p1的原型指向了Person的原型，使得p1拥有了Person的全部实例属性和原型对象，因此p1具有了name和age属性以及say方法。`new Person("黎明",30)`返回的是如下所示的对象。
-
-![](https://user-gold-cdn.xitu.io/2019/4/5/169ed224f2de8e81?w=452&h=191&f=png&s=14037)
+<img src="https://user-gold-cdn.xitu.io/2019/4/5/169ed224f2de8e81?w=452&h=191&f=png&s=14037" alt="暂无对象">
 
 <h4><span id="noNew">3、调用构造函数不使用new关键字的情况</span></h4>
 
@@ -77,11 +76,11 @@ window.age=24;
 function Person(name,age){
 	this.name=name;
 	this.age=age;
-	return name;
-	}
-	var p1=new Person("黎明"，23)；
-	console.log(p1);//{name: "黎明",age:23}
-	function Person(name,age){
+	return name;//忽略返回值
+}
+var p1=new Person("黎明"，23)；
+console.log(p1);//{name: "黎明",age:23}
+function Person(name,age){
 	this.name=name;
 	this.age=age;
 	return {};
@@ -89,5 +88,5 @@ function Person(name,age){
 var p1=new Person("黎明"，23)；
 console.log(p1);//{}
 ```
-**原因分析：** 构造函数不需要显示的返回值。使用new来创建对象(调用构造函数)时，如果return返回的是非对象(数字、字符串、布尔类型等)会忽略返回值；如果return的是对象，则返回该对象(注：若`return null`也会忽略返回值）。
+**原因分析：** 构造函数不需要显示的返回值。使用new来创建对象(调用构造函数)时，**如果return返回的是非对象(数字、字符串、布尔类型等)会忽略返回值，返回默认值；如果return的是对象，则返回该对象**(注：若`return null`也会忽略返回值）。
 <Valine></Valine>

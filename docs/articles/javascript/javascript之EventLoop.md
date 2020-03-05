@@ -19,10 +19,10 @@ note: 我们知道js的最大特点就是单线程，就是同一时间只能做
 <h3>2、事件队列</h3>
 
 &#8195;&#8195;任务队列按照某种条件又可以细分为microtask 和 macrotask，通常我们会称之为微任务和宏任务。**代码执行的优先级为：主线程>微任务>宏任务。**
-+ 微任务主要有：ES6的Promise(then函数)，node.js中的process.nextTick()，MessageChannel(消息通道，类似worker)
-+ 宏任务主要有：setTimeout 和 setInterval、还有 MessageChannel，setImmediate, I/O
++ 微任务主要有：ES6的Promise(then函数)，node.js中的process.nextTick()，MessageChannel(消息通道，类似worker)，MutationObserver(html5新特性)
++ 宏任务主要有：setTimeout 和 setInterval、requestAnimationFrame，setImmediate, I/O
 
-**&#8195;&#8195;js中代码执行的顺序是：首先执行主线程中的代码，开始第一次循环，执行完毕后，再执行所有的微任务，然后再执行宏任务。** 详情请看如下代码
+**&#8195;&#8195;js中代码执行的顺序是：首先执行主线程中的代码，开始第一次循环，执行完毕后，从微任务队列中逐个取出微任务到主线程，等到微任务队列被清空，然后再从宏任务队列中逐个取出宏任务到主线程中，直到宏任务队列被清空。** 详情请看如下代码
 
 ```javascript     
 //宏任务
@@ -50,6 +50,7 @@ setTimeout(function(){
     console.log("我是宏任务2");
 })
 console.log("我是主线程");
+//输出顺序 promise1、promise2、我是主线程、我是微任务1、我是微任务2、我是宏任务1、我是宏任务2
 ```
 执行结果如下所示：
 
@@ -85,6 +86,23 @@ console.log("我是主线程");
 + 8、随着setTimeout2回调事件的执行，意味着第三轮事件循环的开始，它的结束就意味着第三轮事件循环的结束。
 + 9、开始第二次循环，执行第一个宏任务中的代码，并输出"我是宏任务1"，接着输出"我是宏任务2"。
 所以我的理解其实就是宏任务队列中有几个宏任务，就意味着在此次js代码执行过程中有几次事件循环。
+
+接下来再看下面的一个特殊的例子：
+```js
+setTimeout(() => {
+	console.log(2)
+}, 2)
+
+setTimeout(() => {
+	console.log(1)
+}, 1)
+
+setTimeout(() => {
+	console.log(0)
+}, 0)
+//输出结果是1、0、2
+```
+**结果分析：延迟时间1毫秒的比延迟时间0毫秒的先执行，大于1毫秒的按延迟时间大小先后顺序执行。**
 <h3>3、浏览器环境中和node环境中EventLoop的异同</h3>
 &#8195;&#8195;示例代码如下所示；
 
@@ -101,11 +119,11 @@ setTimeout(function() {
     })
 })
 new Promise(function(resolve) {
-    console.log('Promise');
+    console.log('Promise1');
     resolve();
     //微任务
 }).then(function() {
-    console.log('then')
+    console.log('then1')
 })
 //宏任务，第三次事件循环的开始
 setTimeout(function() {
@@ -123,22 +141,23 @@ setTimeout(function() {
 
 ![](https://user-gold-cdn.xitu.io/2019/6/27/16b994527d4ba908?w=1080&h=241&f=png&s=26891)
 
-所以我得出结论：**在浏览器环境下js代码的执行顺序是。主线程>微任务队列中所有的回调函数。>宏任务队列中的所有宏任务。主线程和微任务成为第一次事件循环。宏任务队列中的一个宏任务就是一个事件循环。**
+所以我得出结论：**在浏览器环境下js代码的执行顺序是。主线程>微任务队列中所有的回调函数>宏任务队列中的所有宏任务。主线程和微任务成为第一次事件循环。宏任务队列中的一个宏任务就是一个事件循环。**
 
 <h4>2、node环境中js事件循环机制</h4>
 &#8195;&#8195;个人觉得node中的js执行机制比在浏览器中的要复杂一些。盗用掘金网友的一张图很好的解释了node环境中的事件循环机制。
 
-![](https://user-gold-cdn.xitu.io/2019/6/27/16b999512586afa4?w=463&h=481&f=png&s=112070)
-&#8195;&#8195;node环境中的eventLoop是按阶段来执行的，主要有6个阶段，这个阶段里的代码执行完毕，才会去执行下一个阶段里的代码。**6个阶段中的代码都执行完毕才算是完成一个事件循环。**：
+<img src="../../images/node-eventloop.jpg" alt="暂无图片">
+
+&#8195;&#8195;node环境中的eventLoop是按阶段来执行的，主要有6个阶段，这个阶段里的代码执行完毕，才会去执行下一个阶段里的代码。**6个阶段中的代码都执行完毕才算是完成一个事件循环。**
 + Node的Event Loop分阶段，阶段有先后，依次是    
 &#8195; &#8195;1、expired timers and intervals，即到期的setTimeout/setInterval   
 &#8195; &#8195;2、I/O events，包含文件，网络等等    
 &#8195; &#8195;3、immediates，通过setImmediate注册的函数    
 &#8195; &#8195;4、close handlers，close事件的回调，比如TCP连接断开
-+ 同步任务及每个阶段之后都会清空microtask队列  
-&#8195; &#8195;1、优先清空next tick  queue，即通过process.nextTick注册的函数     
++ 同步任务及每个阶段之后都会清空microTask队列  
+&#8195; &#8195;1、优先清空nextTick  queue，即通过process.nextTick注册的函数     
 &#8195; &#8195;2、再清空other queue，常见的如Promise
-+ 而和规范的区别，在于node会清空当前所处阶段的队列，即执行所有task
++ 而和浏览器规范的区别，在于node会清空当前所处阶段的队列，即执行所有macroTask
 
 **&#8195;&#8195;而在node环境中的输出结果是这样的，两次执行结果还不一样**
 
