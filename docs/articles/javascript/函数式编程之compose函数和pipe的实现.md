@@ -12,8 +12,8 @@ note: compose和pipe函数是一种以函数作为输入参数的函数,compose�
     function compose(){
         const fns=[].slice.call(arguments);
         return function(args){
-            let res=ars;
-            for(let i=fns.length-1;i--;){
+            let res=args;
+            for(let i=fns.length;i--;){
                 res=fns[i](res);
             }
             return res;
@@ -57,7 +57,7 @@ note: compose和pipe函数是一种以函数作为输入参数的函数,compose�
     }
     let fn1=compose(add,multyply,minus);
     console.log(fn1(10));//30
-    let fn2=pip(add,multyply,minus);
-    console.log(fn2(10));//30
+    let fn2=pipe(add,multyply,minus);
+    console.log(fn2(10));//70
 
 ```

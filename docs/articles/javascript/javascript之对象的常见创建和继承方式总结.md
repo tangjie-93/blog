@@ -195,8 +195,9 @@ let instance=new SubTYype();
 console.log(instance.getSuperValue);//true
 console.log(instance);
 ```
+<img src="../../images/原型链继承.png" alt="暂无数据">
+<!-- <img src="https://user-gold-cdn.xitu.io/2019/6/21/16b7ac0533987a7c?w=406&h=222&f=png&s=21116" alt="暂无数据"> -->
 
-![](https://user-gold-cdn.xitu.io/2019/6/21/16b7ac0533987a7c?w=406&h=222&f=png&s=21116)
 &#8195;&#8195;从上面的图片可以看出，instance具有了subproperty的实例属性，getSubValue和property以及getSuperValue的原型属性(即instance的__proto__指向SuperType的原型对象，SuperType的__proto__又指向SuperType的原型对象)。并且它的constructor目前指向的是SuperType。
 注意：
 + 1、instance是SubType、SuperType和Object的实例。使用instanceof来判断都会得到true。

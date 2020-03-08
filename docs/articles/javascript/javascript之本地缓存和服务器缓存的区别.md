@@ -12,7 +12,7 @@ note: 本地缓存和服务器缓存的区别
 + 3、浏览器行为跟踪（跟踪分析用户行为）
 
 **cookie的原理：**
-+ 1、网络服务器用HTTP头想客户端发送cookies,在客户端，浏览器解析这cookies并将它们保存为一个文件。
++ 1、网络服务器用HTTP头向客户端发送cookies,在客户端，浏览器解析这cookies并将它们保存为一个文件。
 + 2、当客户端向服务器请求数据时，会自动带上cookie发送到服务器。
 
 **cookie的存活时间**
@@ -28,15 +28,19 @@ note: 本地缓存和服务器缓存的区别
 ## 4、Cookie, localStorage 与 sessionStorage的区别
 
 + 1、数据的周期生命
-&#8195;&#8195;cookie可设置失效时间，**默认是关闭浏览器后失效。**
-&#8195;&#8195;localStorage除非被手动清除，否则永久保存。
-&#8195;&#8195;sessionStorage仅在当前会话下有效，关闭页面或浏览器后被清除。
+
+&#8195;&#8195;cookie可设置失效时间，**默认是关闭浏览器后失效。**<br>
+&#8195;&#8195;localStorage除非被手动清除，否则永久保存。<br>
+&#8195;&#8195;sessionStorage仅在当前会话下有效，关闭页面或浏览器后被清除。<br>
 + 2、存放数据大小
+
 &#8195;&#8195;单个cookie一般4k左右。localStorage和sessionStorage一般5M左右。
 + 3、与服务器通信
-&#8195;&#8195;cookie每次都会携带在HTTP头中，如果使用cookie保存过多数据会带来性能问题。
+
+&#8195;&#8195;cookie每次都会携带在HTTP头中，如果使用cookie保存过多数据会带来性能问题。<br>
 &#8195;&#8195;localStorage和sessionStorage仅在客户端（即浏览器）中保存，不参与和服务器的通信
 + 4、易用性
+
 &#8195;&#8195;cookie需要程序员自己封装，源生的Cookie接口不友好。localStorage和sessionStorage都有封装好的接口。
 
 ## 5、session

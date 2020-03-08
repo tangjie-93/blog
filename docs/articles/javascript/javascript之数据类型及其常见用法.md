@@ -1,12 +1,12 @@
 ---
 title: js数据类型及其常见用法
-date: '2020-01-14'
+date: '2020-03-07'
 type: 技术
 tags: javascript
 note: js数据类型及其常见用法
 ---
-&#8195;&#8195;javascript中一种有6中数据类型，有5种简单数据类型（也称为基本数据类型）：Undefined、Null、Boolean、Number 和String，还有1种复杂数据类型——Object。
-
+&#8195;&#8195;`javascript`中一种有6中数据类型，有5种简单数据类型（也称为基本数据类型）：`Undefined、Null、Boolean、Number 和String`，还有1种复杂数据类型——`Object`。
+<img src="../../images/js数据类型.png">
 <ul>
     <li><a href="#a1">Undefined</a></li>
     <li><a href="#a2">Null</a></li>
@@ -18,20 +18,21 @@ note: js数据类型及其常见用法
 </ul>
 
 <h3><span id="a1">1、Undefined</span></h3>
-&#8195;&#8195;Undefined 类型只有一个值，即特殊的undefined。根据工作中总结，只要有这几种情况下会出现undefined。
+
+&#8195;&#8195;`Undefined` 类型只有一个值，即特殊的`undefined`。根据工作中总结，只要有这几种情况下会出现`undefined`。
 
 
 >1.定义变量，但是没有初始化时,如var a；
 
->2.调用某个函数时，实参个数小于形参个数时，未实参化的形参在函数调用过程中的值是undefined；
+>2.调用某个函数时，实参个数小于形参个数时，未实参化的形参在函数调用过程中的值是`undefined`；
 
->3.调用某个对象还没有添加的属性时，也会返回undefined； 
+>3.调用某个对象还没有添加的属性时，也会返回`undefined`； 
 
 ```js       
 var obj={}   
 console.log(obj.name);//undefined
 ```
->4.调用某个没有返回值的函数，也会返回undefined;
+>4.调用某个没有返回值的函数，也会返回`undefined`;
 ```javascript
 function Person(name,age){
     this.name=name;
@@ -48,12 +49,12 @@ var p=Person("李四",23);//此时的p=undefined；
 var message; // 这个变量声明之后默认取得了 undefined 值   
 //未初始化的变量
 alert(typeof message);     // "undefined"  
->//未申明的变量
+//未申明的变量
 alert(typeof age);         // "undefined"   
 ``` 
 <h3><span id="a2">2、Null 类型</span></h3>  
 
-&#8195;&#8195;是第二个只有一个值的数据类型，这个特殊的值是 null。从逻辑角度来看，null值表示一个空对象指针，要意在保存对象的变量还没有真正保存对象。而这也正是使用 typeof 操作符检测 null值时会返回`object`的原因。这几种情况下会出现null的情况
+&#8195;&#8195;是第二个只有一个值的数据类型，这个特殊的值是 `null`。从逻辑角度来看，` null`值表示一个空对象指针，保存对象的变量还没有真正保存对象。而这也正是使用 `typeof` 操作符检测 `null`值时会返回`object`的原因。这几种情况下会出现`null`的情况。
 
 
 >1、手动设置变量的值或者对象某一个属性值为null（在初始化对象时，手动设置对象为null。在作用域中不再需要使用某个对象时，把null赋值给那个变量解除引用，以释放内存）  
@@ -92,18 +93,16 @@ alert(Number(null))//0
 | Undefined     | 没有为true的情况      |    undefined |
 
 **注意：**  
-+ 1、js存在6种假值。分别是
++ js存在6种假值。分别是
 ""、0、null、undefined、false、和NAN。  
-+ 2、+true返回的是1。一元加号会尝试将boolean类型转换为数字类型。 true被转换为1，false被转换为0。 
-+ 3、`+"1"`返回的是NAN。
-
-
++ +true返回的是1。一元加号会尝试将boolean类型转换为数字类型。 true被转换为1，false被转换为0。 
++ `+"1"`返回的是NAN。
 <h3><span id="a4">4、Number</span></h3>
 
 >**注意点1：** Number的浮点数值在进行算术计算时精确度远远不如正数，所以不要去计算两个浮点数相加的结果是否等于另一个浮点数。
 ```js        
 if(0.1+0.2==0.3){
-alert("相等")
+    alert("相等")
 }
 ```
 &#8195;&#8195;这种情况永远都不会弹出"相等"的。因为浮点数的精度太高，0.1+0.2的值不一定精确的等于0.3。
@@ -135,7 +134,7 @@ Number(undefined);//NAN
 ```
 * 如果是String类型，需要考虑以下情况。  
     1、如果字符串中只包含数字，则直接将其转换为10进制数值,并且会忽略前导0。如"123"会变成123，"011"会变成11，"1.1"会变成1.1。  
-    2、字符串中包含有效的十六进制格式，则会将其转换为相同大小的10进制整数值。
+    2、字符串中包含有效的十六进制格式，则会将其转换为相同大小的10进制整数值。 <br>
     3、如果字符串为空的，则将其转换为0。    
     4、除上面三种情况外，都会转换为NAN。
 * 如果是Object类型，则调用对象那个的valueOf(),依照前面的规则转换返回的值。不过一般不会将对象去转换成对应的数值。一般情况下对象转换成数值都是返回NAN。
@@ -181,7 +180,7 @@ alert(String(value4));     // "undefined"
 主要有以下方法：
 >1、字符方法   
 &#8195;&#8195;charAt(index):返回给定位置的字符，index未指定时，默认为0。  
-&#8195;&#8195;charCodeAt(index):返回指定位置的字符编码，index未指定时，默认为0。  。    
+&#8195;&#8195;charCodeAt(index):返回指定位置的字符编码，index未指定时，默认为0。     
 &#8195;&#8195;fromCharCode()：接收一个或多个字符编码，然后将他们转换为字符串。从本质上看是charCodeAt()的相反操作。
 ```js       
 console.log(String.fromCharCode(104,102,103,106));//"hfgi"
@@ -255,7 +254,7 @@ var str="hello world hello hello";
 var res=str.replace(/(.ll)/g,"123($1)");
 console.log(res);//h123(ell)o world h123(ell)o h123(ell)o
 ```
-&#8195;&#8195;如果第二个参数为函数，在只有一个匹配项的情况下，会向这个函数传递3个参数：**模式的匹配项，模式匹配项在字符串中的位置和原始字符串。 function(match,pos,originalText)** 。如果是有过个捕获组的情况下，传递给函数的参数依次是模式的匹配项，第一个捕获组的匹配项，第二个捕获组的匹配项。。。，最后两个参数仍然是模式匹配项在字符串中的位置和原始字符串。
+&#8195;&#8195;如果第二个参数为函数，在只有一个匹配项的情况下，会向这个函数传递3个参数：**模式的匹配项，模式匹配项在字符串中的位置和原始字符串。 function(match,pos,originalText)** 。如果是有多个捕获组的情况下，传递给函数的参数依次是模式的匹配项，第一个捕获组的匹配项，第二个捕获组的匹配项。。。，最后两个参数仍然是模式匹配项在字符串中的位置和原始字符串。
 
 &#8195;&#8195;**split():** 基于指定的分隔符将字符串分割为多个子字符串。并返回一个数组。分隔符可以是字付串也可以是RegExp对象。还可以接受第二个参数，用于指定返回数组的大小。        
 ```js       
@@ -272,10 +271,10 @@ console.log(res3);//(5) ["", ",", ",", ",", ""]
 ```js       
 var str="bbc";
 alert(str.localeCompare("cca"));//-1
-alert(str.localeCompare("aca"));//-1
+alert(str.localeCompare("aca"));//1
 alert(str.localeCompare("bbc"));//0
 ```
->8、HTMl方法    
+>8、HTML方法    
 但是尽量不去使用这些方法，因为他们创建的标记通常无法表达语义。
 ![](https://user-gold-cdn.xitu.io/2019/4/6/169f042487817cc8?w=614&h=264&f=png&s=52206)
 
@@ -300,9 +299,9 @@ alert(str.localeCompare("bbc"));//0
 
  <h3><span id="a7">7、类型转换</span></h3>
  
- **1、类型的转换规则如下表所示**。转载自ConardLi大神的[JS 进阶】你真的掌握变量和类型了吗](https://juejin.im/post/5cec1bcff265da1b8f1aa08f)
- 
-![](https://user-gold-cdn.xitu.io/2019/6/19/16b6ffa0605c90db?w=1112&h=960&f=png&s=541427)
+**1、类型的转换规则如下表所示**。转载自ConardLi大神的[JS 进阶】你真的掌握变量和类型了吗]
+(https://juejin.im/post/5cec1bcff265da1b8f1aa08f)
+<img src="https://user-gold-cdn.xitu.io/2019/6/19/16b6ffa0605c90db?w=1112&h=960&f=png&s=541427" alt="暂无图片">
 **2、我们在对各种非Number类型运用数学运算符(- * /)时，会先将非Number类型转换为Number类型。**
 ```js        
 1 - true // 0
@@ -356,23 +355,26 @@ null == false // false
 &#8195;&#8195;4、**当原始类型和引用类型做比较时**，对象类型会依照ToPrimitive规则转换为原始类型。        
 ```js       
 '[object Object]' == {} // true 
+
+分析：{}会直接调用tostring()方法，所以左右两边相等。
 ```
- &#8195;&#8195;**分析：** {}会直接调用tostring()方法，所以左右两边相等。
 ```js
 '1,2,3' == [1, 2, 3] // true
+
+分析:[1, 2, 3]会先调用valueOf()方法，然后调用toString()方法
 ```
- &#8195;&#8195;**分析：** [1, 2, 3]会先调用valueOf()方法，然后调用toString()方法
 ```js
 [] == ![] // true
+
 //等价于 Number([].valueOf().toString())==Number(false)
 ```
- &#8195;&#8195;**分析:** 左边[]会先调用valueOf(),然后调用toString()方法,最后调用Number方法。右边![]会先转换为false,然后转换为number类型为0，所以左右两边相等。 
+ **分析:** 左边[]会先调用valueOf(),然后调用toString()方法,最后调用Number方法。右边![]会先转换为false,然后转换为number类型为0，所以左右两边相等。 
 
-&#8195;&#8195;!的优先级高于==，![]首先会被转换为false，然后根据上面第二点，false转换成Number类型0，左侧[]转换为0，两侧比较相等。
+!的优先级高于==，![]首先会被转换为false，然后根据上面第二点，false转换成Number类型0，左侧[]转换为0，两侧比较相等。
 ```js       
 [null] == false // true
 //等价于 Number([null].valueOf().toString())==Number(false);
 [undefined] == false // true
 //等价于 Number([undefined].valueOf().toString())==Number(false);
 ```
-&#8195;&#8195;**分析：** 根据数组的ToPrimitive规则，数组元素为null或undefined时，该元素被当做空字符串处理，所以[null]、[undefined]都会被转换为0。
+**分析：** 根据数组的ToPrimitive规则，数组元素为null或undefined时，该元素被当做空字符串处理，所以[null]、[undefined]都会被转换为0。
