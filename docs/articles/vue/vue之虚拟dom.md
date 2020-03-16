@@ -6,7 +6,7 @@ tags: vue
 note: vue之虚拟dom
 ---
 ### 1、什么叫虚拟dom？
-&#8195;&#8195;virtral Dom就是将真实Dom的数据抽取处理，以对象的形式模拟树形结构。虚拟DOM本质上是JavaScript对象,是对真实DOM的抽象。状态变更时，记录新树和旧树的差异，最后把差异更新到真正的dom中。
+&#8195;&#8195;virtral Dom就是将真实Dom的数据抽象处理，以**对象的形式模拟树形结构**。虚拟DOM本质上是JavaScript对象,是对真实DOM的抽象。状态变更时，记录新树和旧树的差异（`diff算法`），最后把差异更新到真正的dom中（`patch算法`）。
 ```javascript
     //真实dom
     <div>
