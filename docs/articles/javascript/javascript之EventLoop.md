@@ -18,7 +18,7 @@ note: 我们知道js的最大特点就是单线程，就是同一时间只能做
 
 <h3>2、事件队列</h3>
 
-&#8195;&#8195;任务队列按照某种条件又可以细分为microtask 和 macrotask，通常我们会称之为微任务和宏任务。**代码执行的优先级为：主线程>微任务>宏任务。**
+&#8195;&#8195;任务队列按照某种条件又可以细分为microtask 和 macrotask，通常我们会称之为微任务和宏任务。**代码执行的优先级为：宏任务>微任务。**
 + 微任务主要有：ES6的Promise(then函数)，node.js中的process.nextTick()，MessageChannel(消息通道，类似worker)，MutationObserver(html5新特性)
 + 宏任务主要有：setTimeout 和 setInterval、requestAnimationFrame，setImmediate, I/O
 
@@ -149,7 +149,7 @@ setTimeout(function() {
 <img src="../../images/node-eventloop.jpg" alt="暂无图片">
 
 &#8195;&#8195;node环境中的eventLoop是按阶段来执行的，主要有6个阶段，这个阶段里的代码执行完毕，才会去执行下一个阶段里的代码。**6个阶段中的代码都执行完毕才算是完成一个事件循环。**
-+ Node的Event Loop分阶段，阶段有先后，依次是    
++ 原生的libuv事件循环中的队列主要有4种类型：    
 &#8195; &#8195;1、expired timers and intervals，即到期的setTimeout/setInterval   
 &#8195; &#8195;2、I/O events，包含文件，网络等等    
 &#8195; &#8195;3、immediates，通过setImmediate注册的函数    
@@ -160,9 +160,8 @@ setTimeout(function() {
 + 而和浏览器规范的区别，在于node会清空当前所处阶段的队列，即执行所有macroTask
 
 **&#8195;&#8195;而在node环境中的输出结果是这样的，两次执行结果还不一样**
-
 &#8195;&#8195;上面的代码在node环境中的执行结果如下所示。
-![](https://user-gold-cdn.xitu.io/2019/6/28/16b99aad6d7ca3de?w=681&h=221&f=png&s=37643)
+<img src="../../images/node-eventloop-example.png" alt="暂无数据">
 
 结果分析：
 + 首先执行主线程中的代码，输出promise1。
