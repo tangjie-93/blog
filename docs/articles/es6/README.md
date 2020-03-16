@@ -6,85 +6,94 @@ tags: es6
 note: 我所理解的promise
 ---
 &#8195;&#8195;虽然项目中一直在用到promise，虽然以前也学习过promise，但是对于promise真的是没有很好的学以致用，有时候看到别人用promise的时候也是一脸懵逼，所以就决定花点时间再来好好研究一下promise到底是什么?应该怎么样用？
+
 <h3>1、什么是promise?</h3>
-&#8195;&#8195;Promise 是异步编程的一种解决方案，使得执行异步操作变得像同步操作一样。**它可以被看成一个容器，容器里面是我们无法干预的，里面保存着某个未来才会结束的事件的结果。**
+
+&#8195;&#8195;`Promise` 是异步编程的一种解决方案，使得执行异步操作变得像同步操作一样。**它可以被看成一个容器，容器里面是我们无法干预的，里面保存着某个未来才会结束的事件的结果。**
 Promise 对象用于表示一个异步操作的最终状态（完成或失败），以及该异步操作的结果值。
 
 基本用法如下
 
 ```javascript             
-        let p=new Promise((resolve,reject)=>{
-            resolve(123)//成功时执行resolve
-            reject("出错了")//失败时执行reject
-        })
-        p.then(res=>{
-            console.log(res);
-        },error=>{
-            console.log(error);
-        })
-        //123 因为状态变成resolve后就不会在改变了，所以reject不会被执行。
+let p=new Promise((resolve,reject)=>{
+    resolve(123)//成功时执行resolve
+    reject("出错了")//失败时执行reject
+})
+p.then(res=>{
+    console.log(res);
+},error=>{
+    console.log(error);
+})
+//123 因为状态变成resolve后就不会在改变了，所以reject不会被执行。
    
 ```
 
-&#8195;&#8195;Promise 是一个构造函数， new Promise 返回一个 promise对象，**Promise 对象是一个代理对象（代理一个值），被代理的值在Promise对象创建时可能是未知的**。构造函数接收一个excutor执行函数作为参数， excutor有两个函数形参resolve和reject，分别作为异步操作成功和失败的回调函数。但该回调函数并不是立即返回最终执行结果，而是一个能代表未来出现的结果的promise对象。resolve和reject函数在调用promise对象时才会被执行。
+&#8195;&#8195;`Promise` 是一个构造函数， `new Promise` 返回一个`promise`对象，**`Promise` 对象是一个代理对象（代理一个值），被代理的值在`Promise`对象创建时可能是未知的**。构造函数接收一个`excutor`执行函数作为参数， `excutor`有两个函数形参`resolve`和`reject`，分别作为异步操作成功和失败的回调函数。但该回调函数并不是立即返回最终执行结果，而是一个能代表未来出现的结果的`promise`对象。`resolve和reject`函数在调用`promise`对象时才会被执行。
 
 <h3>2、Promise对象的特点</h3>
 
->**1、对象的状态不受外界影响。** Promise对象有三种状态（resolve,reject,pending）。只有异步操作的结果，可以决定当前是哪一种状态，任何其他操作都无法改变这个状态。 
+>**1、对象的状态不受外界影响。** `Promise`对象有三种状态`（resolve,reject,pending）`。只有异步操作的结果，可以决定当前是哪一种状态，任何其他操作都无法改变这个状态。 
 + pending: 初始状态，既不是成功，也不是失败状态。
 + fulfilled: 意味着操作成功完成。
 + rejected: 意味着操作失败。
->**2、状态一旦发生改变，就不会再变，任何时候都可以得到这个结果。** Promise对象的状态改变，只有两种可能：从pending变为fulfilled和从pending变为rejected。
+>**2、状态一旦发生改变，就不会再变，任何时候都可以得到这个结果。** `Promise`对象的状态改变，只有两种可能：从`pending`变为`fulfilled`和从`pending`变为`rejected`。
 
+&#8195;&#8195;**优点：** **将异步操作以同步操作的流程表达出来，避免了层层嵌套的回调函数**。此外，`Promise`对象提供统一的接口，使得控制异步操作更加容易。
+
+&#8195;&#8195;**不足：**
+
+&#8195;&#8195;1、无法取消`Promise`，一旦新建它就会立即执行，无法中途取消。  
+&#8195;&#8195;2、如果不设置回调函数，`Promise`内部抛出的错误，不会反应到外部。  
+&#8195;&#8195;3、当处于`pending`状态时，无法得知目前进展到哪一个阶段（刚刚开始还是即将完成）。
 ```javascript           
-        let p = new Promise((resolve, reject) => {
-            console.log(7);
-            setTimeout(() => {
-                console.log(5);
-                resolve(6);//不会再执行了。因为在setTimeout外面已经执行过resolve了，promise的状态已经改变了。
-            }, 0)
-            resolve(1);
-        });
-        p.then((arg) => {
-            console.log(arg);
-        });
-        //所以上面的输出为7、1、5
+let p = new Promise((resolve, reject) => {
+    console.log(7);
+    setTimeout(() => {
+        console.log(5);
+        resolve(6);//不会再执行了。因为在setTimeout外面已经执行过resolve了，promise的状态已经改变了。
+    }, 0)
+    resolve(1);
+});
+p.then((arg) => {
+    console.log(arg);
+});
+//所以上面的输出为7、1、5
 ```
 <h3>3、Promise的实例方法</h3>
 
-<h4>&#8195;1、Promise.prototype.then(onFulfilled, onRejected)</h4>
+<h4>1、Promise.prototype.then(onFulfilled, onRejected)</h4>
 
-&#8195;&#8195;onFulfilled和onRejected分别是Promise实例对象 的成功和失败情况的回调函数。该方法返回一个新的 promise实例对象, **将以回调的返回值作为resolve的参数。** 并且then方法可以被同一个 promise 对象调用多次。
+&#8195;&#8195;`onFulfilled`和`onRejected`分别是`Promise`实例对象 的成功和失败情况的回调函数。该方法返回一个新的 `promise`实例对象, **将以回调的返回值作为resolve的参数。** 并且`then`方法可以被同一个 `promise` 对象调用多次。
 
 ```javascript     
-        var promise1 = new Promise(function(resolve, reject) {
-          resolve('Success!');
-        });
-        
-        promise1.then(function(value) {
-          console.log(value);//"Success!"
-        });
+var promise1 = new Promise(function(resolve, reject) {
+    resolve('Success!');
+});
+
+promise1.then(function(value) {
+    console.log(value);//"Success!"
+});
 ```
-&#8195;&#8195;**1、如果传入的 onFulfilled 参数类型不是函数，则会在内部被替换为(x) => x ，即原样返回 promise 最终结果的函数。**
+>**1、如果传入的 onFulfilled 参数类型不是函数，则会在内部被替换为(x) => x ，即原样返回 promise 最终结果的函数。**
 
 ```javascript             
-        var p = new Promise((resolve, reject) => {
-            resolve('foo')
-        })
-        
-        // 'bar' 不是函数，会在内部被替换为 (x) => x
-        p.then('bar').then((value) => {
-            console.log(value) // 'foo'
-        })
-        //等价于
-        p.then(res=>{
-            return res;
-        }).then((value) => {
-            console.log(value) // 'foo'
-        })
+var p = new Promise((resolve, reject) => {
+    resolve('foo')
+})
+
+// 'bar' 不是函数，会在内部被替换为 (x) => x
+p.then('bar').then((value) => {
+    console.log(value) // 'foo'
+})
+//等价于
+p.then(res=>{
+    return res;
+}).then((value) => {
+    console.log(value) // 'foo'
+})
 ```
 
-&#8195;&#8195;2、then方法允许链式调用。通过return将结果传递到下一个then,或者通过在then方法中新建一个promise实例，以resolve(value)或者reject(value)方法向下一个then方法传递参数
+>2、then方法允许链式调用。通过return将结果传递到下一个then,或者通过在then方法中新建一个promise实例，以resolve(value)或者reject(value)方法向下一个then方法传递参数
 
 ```javascript     
 //例子1
@@ -123,7 +132,7 @@ Promise.resolve("foo")
     }, 1)
 })
 ```
-&#8195;&#8195;3、如果函数抛出错误或返回一个rejected的Promise，则调用将返回一个rejected的Promise。
+>3、如果函数抛出错误或返回一个rejected的Promise，则调用将返回一个rejected的Promise。
 
 ```javascript     
 //例子1
@@ -144,7 +153,7 @@ Promise.reject()
     .then( solution => console.log( 'Resolved with ' + solution ) ); 
 // Resolved with 42 //因为此时then方法接收的是上一个then方法reject方法中reject方法返回的值。
 ```
-&#8195;&#8195;4、 promise 的 .then 或者 .catch 可以被调用多次，但这里 Promise 构造函数只执行一次。或者说 promise内部状态一经改变，并且有了一个值，那么后续每次调用 .then 或者 .catch 都会直接拿到该值。
+>4、 promise 的 .then 或者 .catch 可以被调用多次，但这里 Promise 构造函数只执行一次。或者说 promise内部状态一经改变，并且有了一个值，那么后续每次调用 .then 或者 .catch 都会直接拿到该值。
      
 ```javascript        
 const promise = new Promise((resolve, reject) => {
@@ -162,7 +171,7 @@ promise.then((res) => {
     console.log(res, Date.now() - start);//success 1007
 })
 ```
-<h4>&#8195;2、Promise.prototype.catch(onRejected)</h4>
+<h4>2、Promise.prototype.catch(onRejected)</h4>
 &#8195;&#8195;该方法的原码如下所示：
       
 ```javascript       
@@ -196,7 +205,7 @@ p1.then(function(value) {
 })
 ```
 
-&#8195;&#8195;1、在异步函数中抛出的错误不会被catch捕获到   
+>1、在异步函数中抛出的错误不会被catch捕获到   
         
 ```javascript     
 var p2 = new Promise(function(resolve, reject) {
@@ -210,7 +219,7 @@ p2.catch(function(e) {
 });
 ```
 
-&#8195;&#8195;2、在resolve()后面抛出的错误会被忽略(因为 Promise 的状态一旦改变，就永久保持该状态，不会再变了。)
+>2、在resolve()后面抛出的错误会被忽略(因为 Promise 的状态一旦改变，就永久保持该状态，不会再变了。)
 
 ```javascript     
 var p3 = new Promise(function(resolve, reject) {
@@ -222,7 +231,7 @@ p3.catch(function(e) {
     console.log(e); // 不会执行
 });
 ```
-&#8195;&#8195;3、Promise 对象的错误具有"冒泡"性质，会一直向后传递，直到被捕获(或者被then()捕获)为止。也就是说，错误总是会被下一个catch语句捕获。
+>3、Promise 对象的错误具有"冒泡"性质，会一直向后传递，直到被捕获(或者被then()捕获)为止。也就是说，错误总是会被下一个catch语句捕获。
       
 ```javascript       
 Promise.reject(2).then((res) => {
@@ -240,7 +249,7 @@ Promise.reject(2).then((res) => {
 })
 ```
 
-&#8195;&#8195;4、如果使用了catch语句，然后前面的then方法并没有报错,那么就相当于直接跳过该catch方法，下一个then方法接收上一个then方法中onFulfilled传过来的参数。
+>4、如果使用了catch语句，然后前面的then方法并没有报错,那么就相当于直接跳过该catch方法，下一个then方法接收上一个then方法中onFulfilled传过来的参数。
      
 ```javascript        
 var p1 = new Promise(function(resolve, reject) {
@@ -263,7 +272,7 @@ var p1 = new Promise(function(resolve, reject) {
 })
 ```
 
-&#8195;&#8195; 5、**.then 或者 .catch 中 return 一个 error 对象并不会抛出错误，所以不会被后续的 .catch 捕获。因为返回任意一个非 promise 的值都会被包裹成 promise 对象**，即 return new Error('error!!!') 等价于 return Promise.resolve(new Error('error!!!'))。
+> 5、**.then 或者 .catch 中 return 一个 error 对象并不会抛出错误，所以不会被后续的 .catch 捕获。因为返回任意一个非 promise 的值都会被包裹成 promise 对象**，即 return new Error('error!!!') 等价于 return Promise.resolve(new Error('error!!!'))。
         
 ```javascript     
 Promise.resolve()
@@ -281,7 +290,7 @@ Promise.resolve()
     })  
 ```
 
-&#8195;&#8195;**6、.then 或者 .catch 的参数期望是函数，传入非函数则会发生值穿透。**
+>**6、.then 或者 .catch 的参数期望是函数，传入非函数则会发生值穿透。**
 
 ```javascript              
 Promise.resolve(1)
