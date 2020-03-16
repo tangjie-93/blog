@@ -9,20 +9,21 @@ note: 三栏布局的实现方式
 ```HTML
 <div class="container">
     <div class="left"></div>
-    <div class="right"></div>
     <div class="center">float解决方案，DOM顺序与视觉顺序不符</div>
+    <div class="right"></div>  
 </div>
 ```
-方法1 float+margin/padding
+### 方法1 浮动布局（float+margin/padding）
+
 ```CSS
 .left {
   width: 300px;
   float: left;
-  height: 200px;
+  height: 500px;
   background: #FF79BC;
 }
 .center {
-  height: 200px;
+  height: 500px;
   font-size: 30px;
   color: #fff;
   background: #666;
@@ -30,12 +31,13 @@ note: 三栏布局的实现方式
 }
 .right {
   width: 300px;
-  height: 200px;
+  height: 500px;
   float: right;
   background: #CA8EFF;
 }
 ```
-方法2 float+calc
+### 方法2 浮动布局（float+calc）
+
 ```CSS
 .left {
   height: 500px;
@@ -57,7 +59,8 @@ note: 三栏布局的实现方式
   background: chocolate;
 }
 ```
-方法3 absolute+margin
+### 方法3 绝对定位布局（absolute+margin）
+
 ```CSS
 .container {
     height: 100%;
@@ -88,7 +91,8 @@ note: 三栏布局的实现方式
     height: 100%;
 }
 ```
-方法4 table布局
+### 方法4 table布局
+
 ```CSS
 .container {
     display: table;
@@ -101,14 +105,20 @@ note: 三栏布局的实现方式
     height: 500px;
 }
 .left{
+    width:300px;
     background: darkblue
 }
 .right{
+    width:300px;
     background: darkgreen
 }
 ```
-方法5 flex布局
+### 方法5 flex布局
+
 ```CSS
+.container {
+    display: flex;
+}
 .left {
     flex: 0 0 300px;
     background: cornflowerblue;
@@ -124,11 +134,13 @@ note: 三栏布局的实现方式
     background: cornsilk;
 }
 ```
-方法6 grid布局
+### 方法6 grid布局
+
 ```CSS
 .container {
   display: grid;
   grid-template-columns: 300px auto 300px;
+  grid-template-rows: 500px;
 }
 
 .left {
@@ -141,36 +153,48 @@ note: 三栏布局的实现方式
 
 .center {
   background: cornsilk;
-  height: 200px;
 }
 ```
-方法7 圣杯布局
+### 方法7 圣杯布局
+圣杯布局时要注意中间和左边元素的位置要换一下。
+```html
+<div class="container">
+    <div class="center">float解决方案，DOM顺序与视觉顺序不符</div>
+    <div class="left"></div>
+    <div class="right"></div>  
+</div>
+```
 ```CSS
-center {
-  width: 100%;
-  background: paleturquoise;
-  height: 200px;
-  float: left;
-  padding:0 200px;
+.container {
+    padding: 0 300px;
+    overflow: hidden;
+}
+
+.left,
+.right,
+.center {
+    position: relative;
+    float: left;
+    min-height: 100px;
+    height: 500px;
 }
 
 .left {
-  background: palevioletred;
-  width: 200px;
-  height: 200px;
-  float: left;
-  font-size: 40px;
-  color: #fff;
-  margin-left:-100%;
+    right: 300px;
+    margin-left: -100%;
+    width: 300px;
+    background: red;
+}
+
+.center {
+    width: 100%;
+    background: #bfefff;
 }
 
 .right {
-  width: 200px;
-  height: 200px;
-  background: purple;
-  font-size: 40px;
-  float: left;
-  color: #fff;
-  margin-left:-200px;
+    left: 300px;
+    margin-left: -300px;
+    width: 300px;
+    background: blue;
 }
 ```

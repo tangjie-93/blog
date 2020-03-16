@@ -5,7 +5,7 @@ type: 技术
 tags: css
 note: attribute和property的区别
 ---
->**attribute：** 是dom元素**在文档中作为html标签**拥有的属性，如id,class,src,title,alt等，也可以自定义属性，通过dom.setAttribute('class', 'a')来设置属性，通过dom.egtAttribute('class', 'a')来获取属性；  
+>**attribute：** 是dom元素**在文档中作为html标签**拥有的属性，如id,class,src,title,alt等，也可以自定义属性，通过dom.setAttribute('class', 'a')来设置属性，通过dom.getAttribute('class', 'a')来获取属性；  
 
 >**property:** 就是dom元素**在js中作为对象**拥有的属性。 赋值dom.className = 'a';取值dom.className;
 
@@ -14,9 +14,7 @@ note: attribute和property的区别
 >**相同：** 对于**html的标准属性**来说，attribute和property是同步的，是会自动更新的。    
 >**不同:** 但是对于**自定义的属性**来说，他们是不同步的。
 
-请看下面例子。
-        
-
+请看下面例子。       
 ```js
 <div id="test">测试数据</div>
 <button id="add">添加属性</button>

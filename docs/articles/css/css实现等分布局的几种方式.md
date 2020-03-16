@@ -14,7 +14,8 @@ note: css实现等分布局的几种方式
     <div class="child"></div>
 </div>
 ```
-方式1 float+box-sizing+border
+### 方式1 浮动布局(float+box-sizing+border)
+
 ```css
 .parent{
     overflow: hidden;
@@ -29,7 +30,8 @@ note: css实现等分布局的几种方式
     box-sizing: border-box;
 }
 ```
-方式2 float+margin+calc
+### 方式2 浮动布局(float+calc)
+
 ```css
 .parent {
     overflow: hidden;
@@ -43,7 +45,8 @@ note: css实现等分布局的几种方式
     border: 5px solid;
 }
 ```
-方式3 inline-block+box-sizing+border+font-size=0
+### 方式3 行内块级元素等分布局（inline-block、box-sizing=border-box、font-size=0）
+
 ```css
 .parent {
     font-size: 0;
@@ -59,7 +62,8 @@ note: css实现等分布局的几种方式
     border: 5px solid;
 }
 ```
-方式4 inline-block+calc+border+font-size=0
+### 方式4 行内块级元素等分布局（inline-block、calc、font-size=0）
+
 ```css
 .parent {
     font-size: 0;
@@ -74,7 +78,8 @@ note: css实现等分布局的几种方式
     border: 5px solid;
 }
 ```
-方式5  flex布局
+### 方式5  flex布局
+
 ```css
 .parent {
     overflow: hidden;
@@ -88,7 +93,8 @@ note: css实现等分布局的几种方式
     border: 5px solid;
 }
 ```
-方式6 table布局
+### 方式6 table布局
+
 ```css
 .parent {
     overflow: hidden;
@@ -102,7 +108,8 @@ note: css实现等分布局的几种方式
     border: 5px solid;
 }
 ```
-方式7 grid布局
+### 方式7 grid布局
+
 ```css
 .parent {
     overflow: hidden;
