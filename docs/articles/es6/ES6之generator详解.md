@@ -33,8 +33,10 @@ hw.next() // { value: undefined, done: true }
 
 &#8195;&#8195;**注意：**
 
->1、	yield表达式只能用在 Generator 函数里面，用在其他地方都会报错。  
->2、	yield表达式如果用在另一个表达式之中，必须放在圆括号里面。
+>1、yield表达式只能用在 Generator 函数里面，用在其他地方都会报错。  
+>2、yield表达式如果用在另一个表达式之中，必须放在圆括号里面。   
+>3、yield不能跨函数。   
+>4、箭头函数不能做`generator`
 ```js
 function* demo() {
     console.log('Hello' + yield); // SyntaxError

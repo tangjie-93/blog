@@ -61,7 +61,7 @@ f().then(v => console.log(v))
 ```js
 async function f() {
     await new Promise(function (resolve, reject) {
-    throw new Error('出错了');
+        throw new Error('出错了');
     });
 }
 f()
@@ -75,9 +75,9 @@ f()
 ```js
 async function myFunction() {
     try {
-    await somethingThatReturnsAPromise();
+        await somethingThatReturnsAPromise();
     } catch (err) {
-    console.log(err);
+        console.log(err);
     }
 }
 // 另一种写法
@@ -104,7 +104,7 @@ async function dbFuc(db) {
     let docs = [{}, {}, {}];
     // 报错
     docs.forEach(function (doc) {
-    await db.post(doc);
+        await db.post(doc);
     });
 }
 ```

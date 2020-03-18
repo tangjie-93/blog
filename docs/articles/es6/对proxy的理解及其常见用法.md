@@ -5,20 +5,20 @@ type: 技术
 tags: es6
 note: 对proxy的理解及其常见用法
 ---
-&#8195;&#8195;虽然以前看过proxy的相关文章，但是最近在看到某为大神用proxy实现了单例及数据双向绑定，所以决定再次好好的来了解一下proxy的用法，谨以此文来记录我对它的理解及用法。
+&#8195;&#8195;虽然以前看过`proxy`的相关文章，但是最近在看到某为大神用`proxy`实现了单例及数据双向绑定，所以决定再次好好的来了解一下`proxy`的用法，谨以此文来记录我对它的理解及用法。
 <h3>1、什么是Proxy?</h3>
 
 &#8195;&#8195;Proxy 用于修改某些操作的默认行为,可以理解成，在**目标对象之前架设一层“拦截”，外界对该对象的访问，都必须先通过这层拦截**，因此提供了一种机制，可以对外界的访问进行过滤和改写。
 
-&#8195;&#8195;换句话说就是——Proxy对象就是可以让你去对JavaScript中的一切合法对象的基本操作进行自定义，然后用你自定义的操作去覆盖其对象的基本操作。说白了就是**重写其其所属类或构造函数中的基本操作**。  
+&#8195;&#8195;换句话说就是——`Proxy`对象就是可以让你去对`JavaScript`中的一切合法对象的基本操作进行自定义，然后用你自定义的操作去覆盖其对象的基本操作。说白了就是**重写其所属类或构造函数中的基本操作**。  
 
 &#8195;&#8195;其基本语法是：
 ```js
 let proxy=new Proxy(target,handler)
 ```
-+ target——是你要对其基本操作进行自定义的对象，它可以是JavaScript中的任何合法对象。
++ target——是你要对其基本操作进行自定义的对象，它可以是`JavaScript`中的任何合法对象。
 + handler——是你要自定义操作方法的一个对象.
-+ proxy——是一个被代理后的新对象,它拥有target的一切属性和方法.只不过其行为和结果是在handler中自定义的。**在一定程度上可以看成是对target的引用。**
++ proxy——是一个被代理后的新对象,它拥有`target`的一切属性和方法.只不过其行为和结果是在handler中自定义的。**在一定程度上可以看成是对target的引用。**
 
 下面我们来看一个例子
      
@@ -39,10 +39,11 @@ console.log(obj.d);
 //输出结果如下所示：
 //{a: 1, b: 50, c: 60, d: 70}
 //Proxy {a: 1, b: 50, c: 60, d: 70}
-//35
+//34
 //70 
 ```
-**&#8195;&#8195;结果分析：** 要想使得代理起作用，必须针对Proxy实例（上面是proxy对象）进行操作，而不是针对目标对象（上例是空对象）进行操作。而且对代理对象的操作也会影响到目标对象，防止也一样。在handler空对象的情况下，对target和proxy对象的操作是一样的。
+**&#8195;&#8195;结果分析：** 要想使得代理起作用，必须针对`Proxy`实例（上面是`proxy`对象）进行操作，而不是针对目标对象进行操作。而且对代理对象的操作也会影响到目标对象，反之也一样。在`handler`为空对象的情况下，对`target`和`proxy`对象的操作是一样的。
+**注意:** `handler`不能设置为`null`，否则会报错。
 
 &#8195;&#8195;再来看下面的这个例子
 
@@ -54,7 +55,7 @@ let proxy=new Proxy(obj,{
     }
 })
 let object=Object.create(proxy);
-//等效于 let object__proto__=proxy;
+//等效于 let object.__proto__=proxy;
 object.b=30;
 console.log(obj);// {a: 1}
 console.log(proxy);//Proxy {a: 1}
@@ -62,9 +63,9 @@ console.log(object);//{b: 30}
 console.log(object.b);//30
 console.log(object.a);//35
 ```
-**&#8195;&#8195;结果分析:** 当我们访问对象的某个属性时，最先会访问对象本身，如果有该属性，则直接返回，如果没有则访问其原型，如果还是没有，再访问原型的原型，一直沿着原型链向上访问，直到访问到或者到达原型链终点（Object.prototype__proto__）为止。有则返回该属性的值，没有则返回undefined。 
+**&#8195;&#8195;结果分析:** 当我们访问对象的某个属性时，最先会访问对象本身，如果有该属性，则直接返回，如果没有则访问其原型，如果还是没有，再访问原型的原型，一直沿着原型链向上访问，直到访问到或者到达原型链终点（`Object.prototype.__proto__`）为止。有则返回该属性的值，没有则返回`undefined`。 
 
-&#8195;&#8195;上面的代码中object对象中有b属性，所以直接返回该属性的值，但是object对象中没有a属性，所以会去访问object的原型，此时object的原型是proxy对象，所以object.a实际上相当于proxy.a,所以返回的是35。
+&#8195;&#8195;上面的代码中`object`对象中有`b`属性，所以直接返回该属性的值，但是`object`对象中没有`a`属性，所以会去访问`object`的原型，此时`object`的原型是`proxy`对象，所以`object.a`实际上相当于`proxy.a`,所以返回的是35。
 
 <h3>2、Proxy 支持的拦截操作</h3>
 
@@ -72,13 +73,13 @@ console.log(object.a);//35
 
 >1、通过对某一操作进行拦截，能实现自己想要的效果，而且这种拦截属于一种不公开的操作，具备很好的安全性。      
 
->2、通过对proxy对象的操作,来达到对目标对象的操作,很好的隐藏了目标对象，降低目标对象的曝光度,实现了对目标对象的保护效果。
+>2、通过对`proxy`对象的操作,来达到对目标对象的操作,很好的隐藏了目标对象，降低目标对象的曝光度,实现了对目标对象的保护效果。
 
 >3、相比较Object.defineProperty()而言，proxy功能更强大,不仅能拦截对象的属性，还能对整个对象，如数组和函数进行拦截。而且proxy的拦截种类更多。    
 
 **proxy主要有以下拦截方法。**
 
-+ **get(target, propKey,receiver)：** 拦截某个属性的读取操作，可以接受三个参数，依次为目标对象、属性名和 proxy 实例本身（严格地说，代表原始的读操作所在的那个对象），其中最后一个参数可选，一般情况下指向的是proxy对象，**但是如果proxy作为其他对象的原型时，则指向读取该属性的对象了。**  
++ **get(target, propKey,receiver)：** 拦截某个属性的读取操作，可以接受三个参数，依次为目标对象、属性名和 `proxy` 实例本身（严格地说，代表**原始的读操作所在的那个对象**），其中最后一个参数可选，一般情况下指向的是`proxy对象`，**但是如果proxy作为其他对象的原型时，则指向读取该属性的对象了。**  
 运用：get()方法可以被继承、get()方法可以实现链式操作。
 ```javascript          
     const proxy = new Proxy({}, {
@@ -90,7 +91,7 @@ console.log(object.a);//35
     const d = Object.create(proxy);//被继承
     console.log(d.a === d) // true      
 ```
-**注意：** 如果一个属性的特性configurable和writable都为false时，对该属性设置get代理会报错。及属性值不可被删除、不可被修改、不可被读取，所有使用代理的get方法去读取属性值会报错。
+**注意：** 如果一个属性的特性`configurable`和`writable`都为`false`时，对该属性设置get代理会报错。及属性值不可被删除、不可被修改、不可被读取，所有使用代理的get方法去读取属性值会报错。
 
 ```javascript     
 const target = Object.defineProperties({}, {
@@ -109,9 +110,9 @@ const proxy = new Proxy(target, handler);
 console.log(proxy.foo);
 //'get' on proxy: property 'foo' is a read-only and non-configurable data property on the proxy target but the proxy did not return its actual value (expected '123' but got 'abc')
 ```
-+ **set(target, propKey, value,receiver)：** 用来拦截某个属性的赋值操作，可以接受四个参数，依次为目标对象、属性名、属性值和 Proxy 实例本身，其中最后一个参数可选。返回一个布尔值。   
-**运用:** 利用set方法，可以数据绑定，即每当对象发生变化时，会自动更新 DOM。结合get和set方法，就可以定义私有属性。     
-**注意:** 如果目标对象自身的某个属性，不可写且不可配置(即configurable和writable都为false)，那么set方法将不起作用。
++ **set(target, propKey, value,receiver)：** 用来拦截某个属性的赋值操作，可以接受四个参数，依次为目标对象、属性名、属性值和 `Proxy` 实例本身，其中最后一个参数可选。返回一个布尔值。   
+**运用:** 利用set方法，可以数据绑定，即每当对象发生变化时，会自动更新 `DOM`。结合get和set方法，就可以定义私有属性。     
+**注意:** 如果目标对象自身的某个属性，不可写且不可配置(即`configurable`和`writable`都为false)，那么set方法将不起作用。
 
 ```javascript             
 "use strict"
@@ -124,7 +125,7 @@ Object.defineProperty(obj,"name",{
 let proxy=new Proxy(obj,{
     set(target, propKey, value,receiver){
         target[propKey="tang";
-               }
+    }
 })
 console.log(obj.name);//james
 ```
