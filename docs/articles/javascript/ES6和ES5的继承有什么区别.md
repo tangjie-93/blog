@@ -33,4 +33,4 @@ var sub = new Sub();
 Sub.__proto__ === Function.prototype;
 ```
 ### 8、ES6和ES5子类`this`生成顺序不同。ES5的继承是先生成子类实例，再调用父类的构造函数修饰子类实例；ES6的继承是先生成父类实例，再调用子类的构造函数修饰父类实例。
-### 9、ES5的继承是通过`call`或者`apply`回调方法调用父类。
+### 9、ES5的继承是通过`call`或者`apply`回调方法调用父类。ES6是通过super()来调用父类。

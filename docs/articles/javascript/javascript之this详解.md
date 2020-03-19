@@ -336,7 +336,7 @@ bar(3);//2,3
 ```
 **Obect.create(null)是js中创建一个空对象的对简单的方法。该方法返回一个{}对象，但是不会有__proto__属性，比var obj={}更空。**
 
-  **2、间接引用**
+**2、间接引用**
 
 ```javascript            
 function foo(){
@@ -354,7 +354,7 @@ c();
 ```
   注意：对于默认绑定来说，决定this绑定对象的并不是调用位置是否处于严格模式，而是函数体是否处于严格模式。
 
-   **3、软绑定**
+**3、软绑定**
 
    &#8195;&#8195;硬绑定是把this强制绑定到指定的对象（除了new时），防止函数调用默认绑定规则。但是硬绑定会降低函数的灵活性，使用硬绑定之后就无法使用隐式绑定或者显示绑定来修改this。如下面代码所示，不管对foo函数使用隐式绑定还是显示绑定时，调用foo()都不会改变bar()中的this值。
 
@@ -369,15 +369,15 @@ function foo(){
     bar.call(obj)
 }
 ```
-​		**软绑定**：给默认绑定指定一个全局对象和undefined以外的值，同时保留隐式绑定或者显示绑定修改this的能力。
+​		**软绑定**：给默认绑定指定一个全局对象和`undefined`以外的值，同时保留隐式绑定或者显示绑定修改`this`的能力。
 
 ```javascript     
-Function.prototype.softBind=function(obj){
+Function.prototype.softBind=function(thisObj){
     let fn=this;
     //获取参数
     let args=[].slice.call(arguments,1);
     let bound = function(){
-        return fn.apply(!this||this===(window||global)?obj:this,args.concat([...arguments]));
+        return fn.apply(!this||this===(window||global)?thisObj:this,args.concat([...arguments]));
     }
     bound.prototype=Object.create(fn.prototype);
     return bound;
@@ -400,7 +400,7 @@ obj2.foo=foo.softBind(obj);
 obj2.foo();//a:2;//隐式绑定
 fooObj.call(obj3);//a:3 显示绑定
 ```
-   **4、箭头函数**
+**4、箭头函数**
 
    &#8195; &#8195;箭头函数会继承外层函数调用的this绑定。
 
