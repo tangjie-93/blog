@@ -47,7 +47,7 @@ note: typescript基本知识点总结
     console.log(c);//0
     console.log(Color);//Object {0:Red,1:Blue}
 ```
-+ 7、任意值(any
++ 7、任意值(any)
 ```typescript
     let str:any="hello";
     str=4;
@@ -163,7 +163,7 @@ note: typescript基本知识点总结
         readonly x:number;
         readonly y:number;
     }
-    let p1:Point{x:10,y:20};//此时p1是只读的。
+    let p1:Point={x:10,y:20};//此时p1是只读的。
 
     let a:number[]=[2,3,4,56,67];
     let ra:ReadonlyArray<number>=a;//此时1也只是可读的
@@ -205,7 +205,7 @@ note: typescript基本知识点总结
 &#8195;&#8195;接口除了描述带有属性的普通对象外，接口也可以描述函数类型。
 ```typescript
     interface searchFunc{
-        (source:string,subString):boolean;
+        (source:string,subString:string):boolean;
     }
     let search:searchFunc;
     //对于函数类型的类型检查来说，函数的参数名不需要跟接口里定义的名字相匹配。
@@ -393,7 +393,7 @@ dad.name = "Man with the 3-piece suit"; // 错误! name 是只读的.
 
 **3、参数属性**
 
-​		参数属性通过给构造函数参数添加一个访问限定符来声明。在构造函数里使用private name: string来**创建和初始化一个成员，把声明和赋值合并至一处
+​		参数属性通过给构造函数参数添加一个访问限定符来声明。在构造函数里使用`private name: string`来创建和初始化一个成员，把声明和赋值合并至一处
 
 ```ts
 class Animal {
@@ -505,7 +505,8 @@ function buildName(firstName: string, ...restOfName: string[]) {
 
 let employeeName = buildName("Joseph", "Samuel", "Lucas", "MacKinZie");
 ```
-**5、重载 **
+
+**5、重载**
 
 ```ts
 let suits = ["hearts", "spades", "clubs", "diamonds"];
@@ -528,7 +529,7 @@ function pickCard(x): any {
 ```
 **6、this**
 
-​		在函数式编程中，直接在函数中调用this会报错，此时需要提供一个显示的`this`参数，该参数是一个假的参数，出现在参数列表的最前面。或者使用箭头函数，来让this指向其外层作用域中的this。
+&#8195;&#8195;在函数式编程中，直接在函数中调用`this`会报错，此时需要提供一个显示的`this`参数，该参数是一个假的参数，出现在参数列表的最前面。或者使用箭头函数，来让`this`指向其外层作用域中的`this`。
 
 ```ts
 function debounce(fn:()=>void,immediate=true,time=300){
@@ -700,7 +701,7 @@ function loggingIdentity<T extends Lengthwise>(arg: T): T {
 
 ## 7、类型兼容性
 
-​		ts里的类型兼容性是基于结构子类型的。js里广泛的使用匿名对象，所以使用结构类型系统来描述这些类型比使用名义类型系统更好。**结构化类型系统的基本原则是，如果要将`=`右边的赋值给左边的，那么右边至少具有跟左边相同的属性。**`本质上上跟函数调用时的类型检查一样（实参的数据类型必须跟形参匹配）`。
+&#8195;&#8195;ts里的类型兼容性是基于结构子类型的。js里广泛的使用匿名对象，所以使用结构类型系统来描述这些类型比使用名义类型系统更好。**结构化类型系统的基本原则是，如果要将`=`右边的赋值给左边的，那么右边至少具有跟左边相同的属性。**`本质上上跟函数调用时的类型检查一样（实参的数据类型必须跟形参匹配）`。
 
 ```ts
 //例子1
@@ -723,7 +724,7 @@ let x: Named={name: 'Alice', location: 'Seattle'};
 
 **1、比较两个函数**
 
-​		函数传参时，参数少的可以赋值给参数多的。源函数的返回值类型必须是目标函数返回值类型的子类型。
+&#8195;&#8195;函数传参时，参数少的可以赋值给参数多的。源函数的返回值类型必须是目标函数返回值类型的子类型。
 
 ```typescript
 //1、比较参数列表，
@@ -881,7 +882,7 @@ pet.swim();    // errors
 
 **3、交叉类型**
 
-​		将多个类型合并为一个类型。并且该类型并且包含所有类型的特性。`Person&Animal&Log`同时是`Person和Animal和Log`，该类型的对象同时拥有了这三种类型的成员。
+&#8195;&#8195;将多个类型合并为一个类型。并且该类型并且包含所有类型的特性。`Person&Animal&Log`同时是`Person和Animal和Log`，该类型的对象同时拥有了这三种类型的成员。
 
 ```ts
 function extend<T,U>(first:T,second:U):T&U{
@@ -918,7 +919,7 @@ console.log(unionObj.getType());//dog
 
 **4、类型别名**
 
-​		类型别名会给一个类型起个新名字。起别名不会新建一个类型，只是创建了一个新名字来引用那个类型。
+&#8195;&#8195;类型别名会给一个类型起个新名字。起别名不会新建一个类型，只是创建了一个新名字来引用那个类型。
 
 ```ts
 type Name = string;
@@ -973,13 +974,13 @@ type Yikes = Array<Yikes>; // error
 
 **接口和类型别名的区别**
 
-+ 接口创建了一个新的名字，可以在任何地方使用。类型别名不会创建新名字。
++ 接口创建了一个新的类型，可以在任何地方使用。类型别名不会创建新类型。
 + 类型别名不能被`extends`和`implements`。
 + 在无法通过接口来描述一个类型并且需要使用联合类型或元组类型时，这时通常会使用类型别名。
 
 **5、字符串字面量类型**
 
-​	字符串字面量类型允许我们指定字符串的固定值。
+&#8195;&#8195;字符串字面量类型允许我们指定字符串的固定值。
 
 ```ts
 type Easing="ease-in" | "ease-out" | "ease-in-out";
@@ -999,7 +1000,7 @@ test("123","ease");//erorr easeType参数传递的必须是Easing类型
 
 **6、可辨识联合**
 
-​		合并类型来创建一个可辨识联合的高级模式，也被称为`标签联合`或`代数数据类型`。
+&#8195;&#8195;合并类型来创建一个可辨识联合的高级模式，也被称为`标签联合`或`代数数据类型`。
 
 ```ts
 //声明将要联合的接口
@@ -1063,11 +1064,11 @@ function area(s: Shape) {
 
 **7、索引类型**
 
-​		通过使用索引类型，编译器能够检查使用了动态属性名的代码。
+&#8195;&#8195;通过使用索引类型，编译器能够检查使用了动态属性名的代码。
 
 + **索引类型查询操作符**
 
-  **`	keyof T`:索引类型查询操作符。**对于任何类型`T`,**`keyof T`**的结果为`T`上已知的公共属性的联合（属性列表）。
+  **`keyof T`:索引类型查询操作符。** 对于任何类型`T`,**`keyof T`** 的结果为`T`上已知的公共属性的联合（属性列表）。
 
   ```ts
   interface Person{
@@ -1110,7 +1111,7 @@ function area(s: Shape) {
 
 **8、映射类型**
 
-​		映射类型——从旧类型里创建新类型，基于一些已存在的类型，按照一定方式转换字段。新类型以相同的形式去转换旧类型里每个属性。
+&#8195;&#8195;映射类型——从旧类型里创建新类型，基于一些已存在的类型，按照一定方式转换字段。新类型以相同的形式去转换旧类型里每个属性。
 
 ```ts
 interface Person{
@@ -1140,7 +1141,7 @@ const partial:personPartial={name:"123"};
 const readonly:personReadonly={name:"123",age:12};
 ```
 
-​		映射类型的语法和索引签名的语法类型相似，映射类型内部使用了`for...in或者keyof`。包含了三个部分。
+&#8195;&#8195;映射类型的语法和索引签名的语法类型相似，映射类型内部使用了`for...in或者keyof`。包含了三个部分。
 
 + 类型变量`p`，依次绑定到每个属性。
 + 字符串字面量联合的`keys`,表示要迭代的属性名。
@@ -1162,7 +1163,7 @@ const readonly:personReadonly={name:"123",age:12};
 
 缺点:
 
-+ 数组的键名是数字，但是for...in循环却是以字符串作为健名。
++ 数组的键名是数字，但是`for...in`循环却是以字符串作为健名。
 
 + 遍历的健名包括对象上的所有属性名，包括手动添加的和原型上的。
 
@@ -1170,8 +1171,7 @@ const readonly:personReadonly={name:"123",age:12};
 
   
 
-
-  ## 10、模块
+## 10、模块
 
 **1、`export=和import = require()`语法**
 

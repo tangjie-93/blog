@@ -12,8 +12,7 @@ note: typescript在vue中的使用
 + **代码重构。**  在全项目中更改某个变量名，会自动修改整个项目的import。
 
 &#8195;&#8195;**`TypeScript`在vue中的使用完全依靠的是`vue-property-decorator`模块。该模块中主要有这几个属性。**<br>
-+ 1、@Component (完全继承于 vue-class-component)
-
++ 1、@Component (完全继承于 `vue-class-component`)
 + 2、@Prop
 &#8195;&#8195;
 + 3、@Model
@@ -25,104 +24,104 @@ note: typescript在vue中的使用
 
 **在vue的es6环境中，组件的使用方式是这样的。**
 ```javascript
-    <script>
-        import Chart from '@/components/Charts/Keyboard'
-        import "../mixin/mixin.js"
-        export default{
-            model: {
-                prop: 'checked',
-                event: 'change'
-            },
-            data(){
-                return{
-                    valA:"hello world"
-                }
-            },
-            props：{
-                entityId:{
-                    type:String
-                },
-                msg: {
-                    default: 'default value'
-                },
-                flag: {
-                    type: [String, Boolean]
-                },
-            },
-            mixins: [myMixins]
-            components: { Chart },
-            computed:{
-                count(){
-                    return "test"
-                }
-            },
-            watch: {
-                'person': {
-                handler: 'onPersonChanged',
-                immediate: true,
-                deep: true
-                }
-            },
-            created(){},
-            mounted(){
-                this.$on('emit-todo', function(n) {
-                    console.log(n)
-                })
-                this.emitTodo('world');
-            },
-            methods:{
-                todoCount(){
-
-                },
-                emitTodo(n){
-                    console.log('hello');
-                    this.$emit('emit-todo', n);
-                }
-            }
+<script>
+import Chart from '@/components/Charts/Keyboard'
+import "../mixin/mixin.js"
+export default{
+    model: {
+        prop: 'checked',
+        event: 'change'
+    },
+    data(){
+        return{
+            valA:"hello world"
         }
-    </script>
+    },
+    props：{
+        entityId:{
+            type:String
+        },
+        msg: {
+            default: 'default value'
+        },
+        flag: {
+            type: [String, Boolean]
+        },
+    },
+    mixins: [myMixins]
+    components: { Chart },
+    computed:{
+        count(){
+            return "test"
+        }
+    },
+    watch: {
+        'person': {
+        handler: 'onPersonChanged',
+        immediate: true,
+        deep: true
+        }
+    },
+    created(){},
+    mounted(){
+        this.$on('emit-todo', function(n) {
+            console.log(n)
+        })
+        this.emitTodo('world');
+    },
+    methods:{
+        todoCount(){
+
+        },
+        emitTodo(n){
+            console.log('hello');
+            this.$emit('emit-todo', n);
+        }
+    }
+}
+</script>
 ```
 **而在vue和Ts的集成环境中，是这样的。**
 ```typescript
-    <script lang="ts">
-        import {Vue, Component,Prop,Model} from 'vue-property-decorator';
-        import Chart from '@/components/Charts/Keyboard'
-        @Component({
-            components:{
-                Chart
-            },
-            mixins: [myMixins]
-        })
-        export default class "组件名" extends Vue{
-            //props属性
-            @Prop(String) entityId!:string;
-            @Prop({default:"default value"}) msg!:string;
-            @Prop([String, Boolean]) flag:string | boolean;
-            //model属性
-            @Model ('change', {type: Boolean})  checked!: boolean;
-            //data
-            valA ：string="hello world"；
-            //计算属性
-            get count(){
-                return "test";
-            },
-            //watch
-            @Watch('person', { immediate: true, deep: true })
-            created(){},
-            mounted(){
-                this.$on('emit-todo', function(n) {
-                    console.log(n)
-                })
-                this.emitTodo('world');
-            },
-            //methods
-            todoCount(){
-                
-            },
-            @Emit() //对应着$emit
-            emitTodo(n: string){
-                console.log('hello');
-            }
+<script lang="ts">
+    import {Vue, Component,Prop,Model} from 'vue-property-decorator';
+    import Chart from '@/components/Charts/Keyboard'
+    @Component({
+        components:{
+            Chart
+        },
+        mixins: [myMixins]
+    })
+    export default class "组件名" extends Vue{
+        //props属性
+        @Prop(String) entityId!:string;
+        @Prop({default:"default value"}) msg!:string;
+        @Prop([String, Boolean]) flag:string | boolean;
+        //model属性
+        @Model ('change', {type: Boolean})  checked!: boolean;
+        //data
+        valA ：string="hello world"；
+        //计算属性
+        get count(){
+            return "test";
+        },
+        //watch
+        @Watch('person', { immediate: true, deep: true })
+        created(){},
+        mounted(){
+            this.$on('emit-todo', function(n) {
+                console.log(n)
+            })
+            this.emitTodo('world');
+        },
+        //methods
+        todoCount(){
+            
+        },
+        @Emit() //对应着$emit
+        emitTodo(n: string){
+            console.log('hello');
         }
-    </script>
+    }
+</script>
 ```
