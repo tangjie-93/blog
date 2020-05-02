@@ -334,8 +334,8 @@ Promise.prototype.finally = function (f) {
       
 ```javascript       
 Promise.all=function(promises){
-    return new Promise(reslove,reject){
-        let arr=[];
+    return new Promise((reslove,reject)=>{
+         let arr=[];
         promises.forEach((promise,i)=>{
             promise.then(value=>{
                 arr.push(value);
@@ -344,7 +344,7 @@ Promise.all=function(promises){
                 }
             },reject)
         })
-    }
+    })
 }
 ```
 &#8195;&#8195;**操作成功（Fulfillment）**
