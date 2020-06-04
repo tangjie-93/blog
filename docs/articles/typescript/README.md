@@ -7,7 +7,7 @@ note: typescript基本知识点总结
 ---
 ## 1、基本类型和扩展类型
 
-&#8195;&#8195;ts和js共享相同的基本类型，还有一些其独有的类型如`元组、枚举、和any及void`。
+&#8195;&#8195;`ts` 和 `js` 共享相同的基本类型，还有一些其独有的类型如`元组、枚举、和any及void`。
 + 1、布尔类型
 ```typescript
     let flag:boolean=false;
@@ -222,20 +222,22 @@ note: typescript基本知识点总结
 ```
 **5、可索引的类型**
 
-&#8195;&#8195;接口支持两种索引签名：字符串和数字。`可以同时使用两种类型的索引，但是数字索引的返回值必须是字符串索引返回值类型的子类型`。`字符串索引签名能很好的描述dictionary模式，并且也会保证所有属性与其返回值类型相匹配`。
+&#8195;&#8195;接口支持两种索引签名：**字符串和数字**。字符串索引签名能很好的描述 `dictionary` 模式，并且也会保证所有属性与其返回值类型相匹配。
+
+**注意：** 可以同时使用两种类型的索引，**数字索引的返回值必须是字符串索引返回值类型的子类型**
 
 + 1、字符串索引签名
 
 ```ts
 interface StringArray{
-    [index:number]:string;//表示当用number去索引StringArray时会得到string类型的返回值。
+    [index:number]:string;//表示当用number去索引StringArray类型的数据时会得到string类型的返回值。
 }
 let arr:StringArray=["test","red"];
 let str=arr[0];
 console.log(str); //test
 ```
 
-+ 2、字符串索引和数字索引同时存在名
++ 2、字符串索引和数字索引同时存在
 
 ```ts
 class Animal{
@@ -245,7 +247,7 @@ class Dog extends Animal{
     breed:string;
 }
 interface cat{
-    [x:number]:Animal;//报错，因为Animal并不是Dog的子类型
+    [x:number]:Animal;//报错，因为Animal并不是Dog的子类型，因为数字索引的返回值必须是字符串索引返回值类型的子类型
     [x:string]:Dog
 }
 ```
@@ -701,7 +703,7 @@ function loggingIdentity<T extends Lengthwise>(arg: T): T {
 
 ## 7、类型兼容性
 
-&#8195;&#8195;ts里的类型兼容性是基于结构子类型的。js里广泛的使用匿名对象，所以使用结构类型系统来描述这些类型比使用名义类型系统更好。**结构化类型系统的基本原则是，如果要将`=`右边的赋值给左边的，那么右边至少具有跟左边相同的属性。**`本质上上跟函数调用时的类型检查一样（实参的数据类型必须跟形参匹配）`。
+&#8195;&#8195;ts里的类型兼容性是基于结构子类型的。js里广泛的使用匿名对象，所以使用结构类型系统来描述这些类型比使用名义类型系统更好。**结构化类型系统的基本原则是，如果要将`=`右边的赋值给左边的，那么右边至少具有跟左边相同的属性。** 本质上上跟函数调用时的类型检查一样（实参的数据类型必须跟形参匹配）。
 
 ```ts
 //例子1
@@ -712,7 +714,7 @@ interface Named {
 class Person {
   name: string;
 }
-//person实例具有那么属性，所以可以成功赋值
+//person实例具有name属性，所以可以成功赋值
 let p: Named=new Person();
 
 //例子2
@@ -808,8 +810,6 @@ let reverse = function<U>(y: U): U {
 identity = reverse;  // OK, because (x: any) => any matches (y: any) => any
 
 ```
-
-
 
 ---
 ## 8、高级类型
@@ -946,7 +946,6 @@ type Tree<T>{
     right:Tree<T>;
 }
 ```
-
 ​		与交叉类型一起使用，可以创造出一些复杂类型。
 
 ```ts
@@ -1638,10 +1637,11 @@ console.log(timestampedActivatableUserExample.isActivated);
 ## 14、装饰器
 
 &#8195;&#8195;装饰器是一种特殊类型的声明，它能够被附加到类声明、方法、访问符，属性或参数上。使用`@expression`形式，`expression`求值后必须为一个函数，在运行时调用，被装饰的声明信息作为参数传入。
+其实就是一个语法糖，背后利用的是`Object.defineProperty(target,name,descripter)`。本质上是`AOP`
 
 **1、装饰器工厂**
 
-​		是一个简单的函数，返回一个表达式，供装饰器在运行时调用。
+是一个简单的函数，返回一个表达式，供装饰器在运行时调用。
 
 ```ts
 function clolor(value:string){
@@ -1654,7 +1654,7 @@ function clolor(value:string){
 
 **2、装饰器组合**
 
-​		表示多个装饰器同时应用到一个声明上。当多个装饰器声明在同一个声明上会进行如下操作。
+表示多个装饰器同时应用到一个声明上。当多个装饰器声明在同一个声明上会进行如下操作。
 
 + 由上至下依次对装饰器表达式求值。
 
@@ -1706,13 +1706,20 @@ function clolor(value:string){
 + 参数装饰器应用到构造函数。
 + 类装饰器应用到类。
 
-**4、类装饰器  **
+**4、类装饰器**
 
 ​		在类声明之前被调用。应用于类构造函数，可以用来监视、修改或替换类定义。该装饰器不能用在声明文件(`.d.ts`)，也不能用在任何外部上下文(`declare的类`)。
 
 ​		类装饰器表达式会在运行时被当做函数调用，**类的构造函数作为其唯一的参数。**
 
 ​		如果类装饰器返回一个值，它会使用提供的构造函数类替换类的声明。
+```ts
+function name(constructor) {  
+  return class extends constructor{
+    name="jamestang"
+  }
+}
+```
 
 > **1、修改构造函数原型属性**
 
@@ -1759,6 +1766,7 @@ class Greeter {
 
 ```ts
 function classDecorator<T extends {new(...args:any[]):{}}>(constructor:T){
+    //	如果类装饰器返回一个值，它会使用提供的构造函数类替换类的声明。
     return class extends constructor{
         newProperty="new property";
         hello="override";
@@ -1776,11 +1784,9 @@ class Greeter{
 
 **5、方法装饰器**
 
-​		方法装饰器声明在一个方法的声明之前（紧靠着方法声明）。会被应用到方法的属性描述符上，可以用来监视、修改或替换方法定义。该装饰器不能用在声明文件(`.d.ts`)，也不能用在任何外部上下文(`declare的类`)。
+&#8195;&#8195;方法装饰器声明在一个方法的声明之前（紧靠着方法声明）。会被应用到方法的属性描述符上，可以用来监视、修改或替换方法定义。该装饰器不能用在声明文件(`.d.ts`)，也不能用在任何外部上下文(`declare的类`)。
 
-​		
-
-​		方法装饰器表达式会在运行时当作函数被调用，传入下列3个参数:
+方法装饰器表达式会在运行时当作函数被调用，传入下列3个参数:
 
 ```ts
 (target: any, propertyKey: string, descriptor: PropertyDescriptor)
@@ -1813,11 +1819,11 @@ class Greeter{
 
 **6、访问器装饰器**
 
-​		访问器装饰器声明在一个访问器的声明之前（紧靠着访问器声明）。 访问器装饰器应用于访问器的属性描述符并且可以用来监视，修改或替换一个访问器的定义。访问器装饰器不能用在声明文件中（.d.ts），或者任何外部上下文（比如 `declare`的类）里。
+访问器装饰器声明在一个访问器的声明之前（紧靠着访问器声明）。 访问器装饰器应用于访问器的属性描述符并且可以用来监视，修改或替换一个访问器的定义。访问器装饰器不能用在声明文件中（.d.ts），或者任何外部上下文（比如 `declare`的类）里。
 
-​		如果访问器装饰器返回一个值，它会被用作方法的*属性描述符*。
+如果访问器装饰器返回一个值，它会被用作方法的**属性描述符**。
 
-​		**注意**  TypeScript不允许同时装饰一个成员的`get`和`set`访问器。因为，在装饰器应用于一个*属性描述符*时，它联合了`get`和`set`访问器，而不是分开声明的。
+**注意**  TypeScript不允许同时装饰一个成员的`get`和`set`访问器。因为，在装饰器应用于一个*属性描述符*时，它联合了`get`和`set`访问器，而不是分开声明的。
 
 ​		访问器装饰器表达式会在运行时当作函数被调用，传入下列3个参数，跟方法装饰器的参数一样。
 
@@ -1859,6 +1865,18 @@ class Greeter{
 + 对于静态成员来说是类的构造函数，对于实例成员是类的原型对象。
 
 + 成员的名字。
+```ts
+    function setDefaultValue(target: Object, propertyName: string) {
+      target[propertyName] = "jamestang";
+    }
+
+    class Person {
+      @setDefaultValue
+      name: string;
+    }
+
+    console.log(new Person().name); // 输出: jamestang
+```
 
 **8、参数装饰器**
 

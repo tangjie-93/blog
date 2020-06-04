@@ -336,13 +336,16 @@ Promise.prototype.finally = function (f) {
 Promise.all=function(promises){
     return new Promise((reslove,reject)=>{
          let arr=[];
+         let count=0
         promises.forEach((promise,i)=>{
             promise.then(value=>{
                 arr.push(value);
-                if(i===promises.length){
+                if(++count===promises.length){
                     resolve(arr);
                 }
-            },reject)
+            },err=>{
+               reject(err)
+            })
         })
     })
 }

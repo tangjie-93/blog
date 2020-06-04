@@ -54,8 +54,8 @@ var t1 = new Teacher("张三", 18);
 p1.sayHi.call(t1, 1, 2, 3); 
 ```
 输出结果如下：
-
-![](https://user-gold-cdn.xitu.io/2019/4/5/169eb9d69fc7339e?w=1920&h=506&f=png&s=109712)
+<img src="../../images/call1.png" alt="暂无图片">
+<!-- ![](https://user-gold-cdn.xitu.io/2019/4/5/169eb9d69fc7339e?w=1920&h=506&f=png&s=109712) -->
 
 **结果分析：当给 `fun.call()` 中的 `thisObj` 赋值为空、`null` 、`undefined`  时，函数 `fun` 中的 `this` 值指向 `window`。** 
 下面call()函数的源码的大概实现：
@@ -108,8 +108,8 @@ foo.Call("123",1,2,3)
 foo.call("123",1,2,3);
 ```
 调用结果如下所示：
-
-![](https://user-gold-cdn.xitu.io/2019/5/16/16ac139c2d91d93a?w=1203&h=466&f=png&s=102659)
+<img src="../../images/call2.png" alt="暂无图片">
+<!-- ![](https://user-gold-cdn.xitu.io/2019/5/16/16ac139c2d91d93a?w=1203&h=466&f=png&s=102659) -->
 上面代码的不足之处在于：只考虑到 `Boolean`、`String` 、`Number` 、`null`、`undefined` 和 `Object` 以及 `Array` 这几种数据类型的功能实现；  
 
 <h4 id="apply">2、fun.apply(thisArg, [arguments]) </h4> 
@@ -145,8 +145,8 @@ p1.sayHi.call(obj, [1,2,3]);
 p1.sayHi.apply(obj, [1,2,3]); 
 ```
 输出结果如下：
-
-![](https://user-gold-cdn.xitu.io/2019/4/5/169ebb33b13eab57?w=1920&h=449&f=png&s=88546)
+<img src="../../images/call3.png" alt="暂无图片">
+<!-- ![](https://user-gold-cdn.xitu.io/2019/4/5/169ebb33b13eab57?w=1920&h=449&f=png&s=88546) -->
 下面 `apply()` 函数的源码的大概实现（缺点跟 `call()` 的实现是一样的。）：
 
 ```javascript            
@@ -182,7 +182,6 @@ Function.prototype.es6Apply = function(context, arr) {
 }
 ```
 <h4 id="examples"> 3、`call()`和 `apply` 的常见用法：`apply` 常常被用于数组操作。</h4>
-
 >1、如合并两个数组，且改变原数组。  
 
 ```javascript          
@@ -222,12 +221,12 @@ t1.showName();//"张三"
 t1.showAge();//30
 ```
 ​&#8195;&#8195;调用 `var p1=new Person("李四",25)` 时返回的是如下对象。`Person` 构造函数中的 `this` 指的是 `Person`。
-
-![](https://user-gold-cdn.xitu.io/2019/4/5/169ed07d16e5bf17?w=800&h=319&f=png&s=40557)
+<img src="../../images/apply1.png" alt="暂无图片">
+<!-- ![](https://user-gold-cdn.xitu.io/2019/4/5/169ed07d16e5bf17?w=800&h=319&f=png&s=40557) -->
 
 ​		调用 `var 11=new Teacher("张三",30)` 时，因为调用了 `Person.apply(this, [age,name])`。`Person` 构造函数中的 `this` 指的是 `Teacher`。所有返回的是如下对象。
-
-![](https://user-gold-cdn.xitu.io/2019/4/5/169ed0a1641f0be4?w=805&h=422&f=png&s=53730)
+<img src="../../images/apply2.png" alt="暂无图片">
+<!-- ![](https://user-gold-cdn.xitu.io/2019/4/5/169ed0a1641f0be4?w=805&h=422&f=png&s=53730) -->
 
 &#8195;&#8195;`Person.apply(this, [age,name])`中的`this`在 `new Teacher()` 时指的是 `Teacher` ,所以 `Person.apply(this, [age,name])` 这句代码的返回的是一个`Teacher` 实例对象。
 

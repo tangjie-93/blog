@@ -32,8 +32,8 @@ var longestPalindrome1 = function(s) {
     return result;
 };
 ```
-### 扩散坐标
 ```js
+//扩散坐标
 function calPalindromeIndex(left,right,s){
     let len = s.length;
     while(left>=0&&right<len&&s[left] == s[right]){
@@ -80,7 +80,7 @@ var longestPalindrome2 = function(s) {
 					arr[i][r] = arr[i-1][r-1] + 1
 					tmpLen = arr[i][r]
 				}
-				if(tmpLen > maxLen && isPalinerome(i,r)){
+				if(tmpLen > maxLen && isPalinerome(len,i,r,tmpLen)){
                     maxStrIndex = r;
                     maxLen = tmpLen;
                     resultStr =  s.substring(i-tmpLen+1,i+1);
@@ -91,9 +91,13 @@ var longestPalindrome2 = function(s) {
 	return resultStr;
 };
 ```
-#### 判断字符串是否回文
+
 ```js
-function isPalinerome(i,r){
+/**
+ * 判断字符串是否回文
+ * @param {Number} i 
+ */
+function isPalinerome(len,i,r,tmpLen){
     if(len - i - 1 == r -tmpLen + 1){
         //console.log('tmpLen',tmpLen)
         return true
