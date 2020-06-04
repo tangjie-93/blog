@@ -1,5 +1,5 @@
 ---
-title:vue模板和渲染函数
+title: vue模板和渲染函数
 date: '2020-05-18'
 type: 技术
 tags: vue

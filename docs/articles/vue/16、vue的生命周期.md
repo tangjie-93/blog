@@ -1,5 +1,5 @@
 ---
-title:vue的生命周期
+title: vue的生命周期
 date: '2020-05-18'
 type: 技术
 tags: vue

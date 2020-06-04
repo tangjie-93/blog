@@ -1,5 +1,5 @@
 ---
-title:require.context()的用法详解
+title: require.context()的用法详解
 date: '2020-05-18'
 type: 技术
 tags: vue
@@ -39,7 +39,7 @@ requireComponents.keys().forEach(fileName => {
   // 组件实例
   const reqCom = requireComponents(fileName)
   // 截取路径作为组件名
-  const reqComName = fileName.split('/')[1]
+  const reqComName =reqCom.name|| fileName.replace(/\.\/(.*)\.vue/,'$1')
   // 组件挂载
   Vue.component(reqComName, reqCom.default || reqCom)
 })

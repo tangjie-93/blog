@@ -1,5 +1,5 @@
 ---
-title:nextTick实现原理
+title: nextTick实现原理
 date: '2020-05-18'
 type: 技术
 tags: vue
