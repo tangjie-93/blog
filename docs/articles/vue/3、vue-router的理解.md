@@ -6,12 +6,12 @@ tags: vue
 note: vue-router的理解
 ---
 
-vue-router有三种路由模式，hash、history、abstract。
+vue-router有三种路由模式，`hash、history、abstract`。
 + **hash:** 使用url hash值来作为路由。支持所有浏览器。
-+ **history：** 依赖HTML5 的History API和服务器配置。
-+ **abstract：** 支持所有JavaScript运行环境，如node服务器环境，如果发现没有浏览器的`API`,路由会自动强制进入这个模式。 
++ **history：** 依赖 `HTML5` 的 `History API` 和服务器配置。
++ **abstract：** 支持所有 `JavaScript` 运行环境，如 `node` 服务器环境，如果发现没有浏览器的`API`,路由会自动强制进入这个模式。 
 
-### 1、hash路由
+## 1、hash路由
 
 主要是通过监听`hashChange`事件来执行相应的回调的。通过改变`location.hash`来切换路由。`location.hash`的值就是`URL`中`#`后面的内容。    
 hash路由模式的实现主要是基于下面几个特性:
@@ -70,13 +70,13 @@ class hashRouters {
 
 }
 ```
-### 2、vue history路由的代码实现
+## 2、`vue history` 路由的代码实现
 
-history实际采用了HTML5中提供的API来实现，主要有history.pushState()和history.replaceState()。跟window.onpopstate 配合使用。
-+ pushState(state,title,path)：将当前`URL`和`state`加入到历史记录中，并用新的`state`和`URL`替换当前。不会造成页面刷新。`pushState`是添加历史记录的
-+ replaceState(state,title,path)：用新的`state`和`URL`替换当前。不会造成页面刷新。replaceState是不添加历史记录。  
+`history` 实际采用了 `HTML5` 中提供的 `API` 来实现，主要有 `history.pushState()` 和`history.replaceState()` 。跟 `window.onpopstate` 配合使用。
++ `pushState(state,title,path)` ：将当前`URL`和`state`加入到历史记录中，并用新的`state`和`URL`替换当前。不会造成页面刷新。`pushState`是添加历史记录的
++ `replaceState(state,title,path)` ：用新的 `state` 和 `URL` 替换当前。不会造成页面刷新。`replaceState` 是不添加历史记录。  
 
-**history 路由模式的实现主要基于存在下面几个特性：**
+**`history` 路由模式的实现主要基于存在下面几个特性：**
 + `pushState 和 repalceState` 两个 API 来操作实现 URL 的变化 ;
 + 可以使用 `popstate` 事件来监听 url 的变化，从而对页面进行跳转（渲染）;
 + `history.pushState()` 或 `history.replaceState()` 不会触发 `popstate` 事件，这时我们需要手动触发页面跳转（渲染）。

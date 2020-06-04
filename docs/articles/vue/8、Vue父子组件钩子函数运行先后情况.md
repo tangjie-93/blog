@@ -73,11 +73,11 @@ note: Vue父子组件钩子函数运行先后情况
 <img src="../../images/vue-hooks.png" alt="暂无数据">
 <!-- ![](https://user-gold-cdn.xitu.io/2019/8/15/16c9458b653a47f7?w=1914&h=376&f=png&s=49072) -->
 
-**总结：** 通过对比mounted和beforeMount钩子函数的运行前后，我们可以发现他们的区别在于组件是否被编译。即view中的数据是否被编译完成。
+**总结：** 通过对比 `mounted` 和 `beforeMount` 钩子函数的运行前后，我们可以发现他们的区别在于组件是否被编译。即view中的数据是否被编译完成。
 
 ​**通过实践发现，组件的不同引用方式，父组件的钩子函数的运行情况也是不一样的。**
 
->**第一种情况(动态引入)**：直接在components中通过import动态引入。
+#### **1、第一种情况(动态引入)**：直接在components中通过import动态引入。
 
 ```javascript     
     //hookParent.vue
@@ -194,14 +194,16 @@ export default {
 此时父子组件的钩子函数的输出结果如下所示：
 <img src="../../images/parent-child-hook2.png" alt="暂无数据">
 
-&#8195;&#8195;通过监听钩子函数运行发现，当mounted钩子函数运行后，才会在界面上显示所挂载的元素。并且**子组件的mounted钩子函数要晚于父组件的mounted钩子函数**，子组件是在父组件的``beforeUpdate和updated钩子函数之间加载的。同时也说明组件**动态引入方式子组件是在父组件挂载之后才挂载的**。
+&#8195;&#8195;通过监听钩子函数运行发现，当 `mounted` 钩子函数运行后，才会在界面上显示所挂载的元素。并且**子组件的mounted钩子函数要晚于父组件的mounted钩子函数**，子组件是在父组件的`beforeUpdate`和 `updated` 钩子函数之间加载的。同时也说明组件**动态引入方式子组件是在父组件挂载之后才挂载的**。
 
->**第二种情况(静态引入)**：import hookChild from "./hookChild。钩子函数的运行情况如下：
+#### **2、第二种情况(静态引入)**：import hookChild from "./hookChild。钩子函数的运行情况如下：
 <img src="../../images/parent-child-hook.png" alt="暂无数据">
 <!-- ![](https://user-gold-cdn.xitu.io/2019/5/27/16af9c5f6a53c12a?w=1918&h=243&f=png&s=38077) -->
 
-&#8195;&#8195;相对于组件的动态引入方式，组件的静态引入方式的父组件少调用了beforeUpdete和updated两个钩子函数。
+&#8195;&#8195;相对于组件的动态引入方式，组件的静态引入方式的父组件少调用了 `beforeUpdete` 和 `updated` 两个钩子函数。
+#### **3、占位符（slot）的功能其实和动态组件的运行情况是一样的**
+
 
 **总结：**  
 1、在销毁父组件时（不管是在子组件中销毁父组件还是直接在父组件中销毁父组件），都会先销毁子组件，然后才会销毁父子键。<br>
-2、父子组件中单独更新各自的数据相互不会受影响。就算有影响也是父组件先调用beforeUpdate()函数，然后子组件调用beforeUpdate()和updated()函数，其次才是父组件的updated()函数。
+2、父子组件中单独更新各自的数据相互不会受影响。就算有影响也是父组件先调用 `beforeUpdate()` 函数，然后子组件调用 `beforeUpdate()` 和 `updated()` 函数，其次才是父组件的 `updated()` 函数。

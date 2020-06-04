@@ -27,7 +27,7 @@ axiosInstance({url:"/api/getdata"}).then(res=>{},err=>{});//params是可选对�
 
 接下里我们将从入口文件`axios\lib\axios.js`文件开始分析。	
 
-### 1、入口文件——axios\lib\axios.js
+## 1、入口文件——axios\lib\axios.js
 
 ​		文件地址为[axios](https://github.com/axios/axios/blob/master/lib/axios.js)，大家可以自行去 [github](https://github.com/axios/axios/)上看，也可以`clone`到本地仔细研究。
 
@@ -104,7 +104,7 @@ module.exports = axios;
 module.exports.default = axios;
 ```
 
-### 2、创建`axios`实例的文件——axios\core\Axios.js
+## 2、创建`axios`实例的文件——axios\core\Axios.js
 
 ​		文件地址为[Axios](https://github.com/axios/axios/tree/master/lib/core/Axios.js)。接下来我们来看看`lib\core\Axios.js`文件里初始化`Axios`实例的过程。
 
@@ -217,7 +217,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 });
 ```
 
-### 3、拦截器文件——lib\core\InterceptorManager.js
+## 3、拦截器文件——lib\core\InterceptorManager.js
 
 ​		主要是通过在初始化`axios`时，调用以下代码来对请求和响应进行拦截处理的。文件地址为[InterceptorManager](https://github.com/axios/axios/blob/master/lib/core/InterceptorManager.js)。该拦截器在如下代码中才会起作用。
 
@@ -273,7 +273,7 @@ utils.forEach(this.handlers, function forEachHandler(h) {
 };
 ```
 
-### 4、后台请求操作文件——lib\core\dispatchRequest.js
+## 4、后台请求操作文件——lib\core\dispatchRequest.js
 
 ​		该方法主要用于向后台请求数据。
 
@@ -317,7 +317,7 @@ module.exports = function dispatchRequest(config) {
 };
 ```
 
-### 5、请求取消操作文件
+## 5、请求取消操作文件
 
 ​		取消操作的文件主要存在于`lib\cancel`文件夹。
 
