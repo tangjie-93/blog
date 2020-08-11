@@ -268,20 +268,21 @@ vue在初始化数据时，会使用`Object.defineProperty`对`data`数据进行
 
 响应式系统简述:
 
-+ 任何一个 Vue Component 都有一个与之对应的 Watcher 实例。
-+ Vue 的 data 上的属性会被添加 getter 和 setter 属性。
-+ 当 Vue Component render 函数被执行的时候, data 上会被 触碰(touch), 即被读, getter 方法会被调用, 此时 Vue 会去记录此 Vue component 所依赖的所有 data。(这一过程被称为依赖收集)
-+ data 被改动时（主要是用户操作）, 即被写, setter 方法会被调用, 此时 Vue 会去通知所有依赖于此 data 的组件去调用他们的 render 函数进行更新。
++ 任何一个 `Vue Component` 都有一个与之对应的 `Watcher` 实例。
++ `Vue` 的 `data` 上的属性会被添加 `getter` 和 `setter` 属性。
++ 当 `Vue Component render` 函数被执行的时候, `data` 上会被 触碰(touch), 即被读, `getter` 方法会被调用, 此时 `Vue` 会去记录此 `Vue component` 所依赖的所有 `data`。(这一过程被称为依赖收集)
++ `data` 被改动时（主要是用户操作）, 即被写, `setter` 方法会被调用, 此时 `Vue` 会去通知所有依赖于此 `data` 的组件去调用他们的 `render` 函数进行更新。
 
 
 ## 8、简单说一下vue3.X的响应式原理</h3>
 
-Vue3.x改用`Proxy`来替代`Object.defineProperty`,因为Proxy可以直接监听对象和数组的变化，并且有多达13种拦截方法。并且作为新标准将受到浏览器厂商重点持续的性能优化。<br>
+`Vue3.x` 改用`Proxy`来替代`Object.defineProperty`,因为Proxy可以直接监听对象和数组的变化，并且有多达13种拦截方法。并且作为新标准将受到浏览器厂商重点持续的性能优化。<br>
+
 &#8195;&#8195;**Proxy只会代理对象的第一层，那么Vue3又是怎样处理这个问题的呢？**<br>
 &#8195;&#8195;判断当前`Reflect.get`的返回值是否为`Object`，如果是则再通过`reactive`方法做代理， 这样就实现了深度观测。<br>
 
 &#8195;&#8195;**监测数组的时候可能触发多次get/set，那么如何防止触发多次呢？**<br>
-&#8195;&#8195;我们可以判断key是否为当前被代理对象target自身属性，也可以判断旧值与新值是否相等，只有满足以上两个条件之一时，才有可能执行trigger。
+&#8195;&#8195;我们可以判断 `key` 是否为当前被代理对象 `target` 自身属性，也可以判断旧值与新值是否相等，只有满足以上两个条件之一时，才有可能执行 `trigger`。
 
 ## 9、说一下vue2.x中如何监测数组变化</h3>
 
@@ -323,17 +324,18 @@ list2.push('d');  // 4
 
 ## 11、组件中的data为什么是一个函数？</h3>
 
-&#8195;&#8195;因为组件是可以复用的,JS 里对象是引用关系,如果组件 data 是一个对象,那么子组件中的 data 属性值会互相污染,产生副作用。
+&#8195;&#8195;因为组件是可以复用的,`JS` 里对象是引用关系,如果组件 `data` 是一个对象,那么子组件中的 `data` 属性值会互相污染,产生副作用。
 
-&#8195;&#8195;所以一个组件的 data 选项必须是一个函数,因此每个实例可以维护一份被返回对象的独立的拷贝。new Vue 的实例是不会被复用的,因此不存在以上问题。
+&#8195;&#8195;所以一个组件的 `data` 选项必须是一个函数,因此每个实例可以维护一份被返回对象的独立的拷贝。`new Vue` 的实例是不会被复用的,因此不存在以上问题。
+
 
 ## 12、v-model 的原理？</h3>
 
-&#8195;&#8195;v-model 本质上不过是语法糖，v-model 在内部为不同的输入元素使用不同的属性并抛出不同的事件：
+&#8195;&#8195;`v-model` 本质上不过是语法糖，`v-model` 在内部为不同的输入元素使用不同的属性并抛出不同的事件：
 
-+ text 和 textarea 元素使用 value 属性和 input 事件；
-+ checkbox 和 radio 使用 checked 属性和 change 事件；
-+ select 使用 value 和 change事件。
++ `text` 和 `textarea` 元素使用 `value` 属性和 `input` 事件；
++ `checkbox` 和 `radio` 使用 `checked` 属性和 `change` 事件；
++ `select` 使用 `value` 和 `change` 事件。
 
 ## 13、Vue中组件生命周期调用顺序？</h3>
 
@@ -368,11 +370,6 @@ list2.push('d');  // 4
 + 	获取子组件中的数据 this.$refs.box.msg
 +	调用子组件中的方法 this.$refs.box.open()  
 
-## 17、Vue 中的 key 有什么作用？</h3>
-
-&#8195;&#8195;key 是 Vue 中 vnode 的唯一标记，通过这个 key，我们的 diff 操作可以更准确、更快速。
-+ 更准确：因为带 key 就不是就地复用（`如果数据项的顺序被改变，Vue 将不会移动 DOM 元素来匹配数据项的顺序， 而是简单复用此处每个元素,会导致之前节点的状态被保留下来从而产生一些问题`）了，在比较是否是同一个节点的 sameNode 函数 a.key === b.key 对比中可以避免就地复用的情况。所以会更加准确。
-+ 更快速：利用 key 的唯一性生成 map 对象来获取对应节点，比遍历方式更快
 
 ## 18、什么是SPA,它的优缺点是什么？</h3>
 
@@ -406,13 +403,13 @@ Vue3.x借鉴了`ivi算法和 inferno算法`
 
 ## 20、在哪个生命周期内调用异步请求？</h3>
 
-在 created 钩子函数中调用异步请求有以下优点：
+在 `created` 钩子函数中调用异步请求有以下优点：
 + 能更快获取到服务端数据，减少页面`loading`时间。
 + `ssr`不支持`beforeMount 、mounted `钩子函数,所以放在 created 中有助于一致性；
 
 ## 21、父组件如何监听到子组件的生命周期</h3>
 
-&#7195;&#7195;有父组件 Parent 和子组件 Child，如果父组件监听到子组件挂载 mounted 就做一些逻辑处理，可以通过以下写法实现：
+&#7195;&#7195;有父组件 `Parent` 和子组件 `Child`，如果父组件监听到子组件挂载 `mounted` 就做一些逻辑处理，可以通过以下写法实现：
 ```js
 // Parent.vue
 <Child @mounted="doSomething"/>
@@ -445,3 +442,64 @@ mounted(){
 <Valine></Valine>
 
 
+## 22、slot的使用
+`slot`用于在组件中作为占位符存在。但是也可以作为一种通信手段。我们可以在组件中，给它的父组件传递数据。通过在子组件的 `slot` 组件上定义属性，给父组件传递数据。在父组件里通过 `slot-scope` 去接收数据。
+```js
+//child
+<template >
+    <div>
+        <span>{{userInfo.userName}}</span>
+        <button @click="change">修改</button>
+        <slot name='child1' childData="{test:'name'}"></slot>
+    </div>
+</template>
+<script>
+export default {
+    name:"child1",
+    props:{
+        user:Object
+    },
+    data(){
+        return{
+            userInfo:this.user
+        }
+    },
+    methods:{
+        change(){
+            this.userInfo.userName="userName改变了"
+        }
+    }
+}
+</script>
+//parent
+<template >
+    <div>
+        <child1 :user="userInfo">
+            <template slot="child1" slot-scope="data">
+                {{data.childData}}
+            </template>
+        </child1>
+    </div>
+</template>
+<script>
+import child1 from "./child1"
+export default {
+    name:"parent",
+    data () {
+        return {
+            userInfo:{
+                userName:'james',
+
+            }
+        }
+    },
+    components:{
+        child1
+    },
+    methods: {
+        
+    },
+}
+</script>
+
+```

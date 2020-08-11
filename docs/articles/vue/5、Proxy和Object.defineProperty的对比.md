@@ -20,4 +20,6 @@ note: Proxy和Object.defineProperty的对比
 
 **Object.defineProperty 不足在于**：
 + `Object.defineProperty` 只能劫持对象的属性,因此我们需要对每个对象的每个属性进行遍历。
-+ `Object.defineProperty`不能监听数组。
++ `Object.defineProperty`不能监听数组。是通过重写数据的那7个可以改变数据的方法来对数组进行监听的。
++ `Object.defineProperty` 也不能对 `es6` 新产生的 `Map`,`Set` 这些数据结构做出监听。
++ `Object.defineProperty`也不能监听新增和删除操作，通过 `Vue.set()`和 `Vue.delete`来实现响应式的。

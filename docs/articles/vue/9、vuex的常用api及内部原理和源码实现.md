@@ -5,22 +5,22 @@ type: 技术
 tags: vue
 note: vuex的常用api及内部原理
 ---
-**1、什么是vuex?**<br>
-&#8195;&#8195;Vuex是一个专门为Vue.js一个用程序开发的`状态管理模式`。将`不同组件的共享状态`抽取出来，以一个`全局单例管理模式`来管理，利用Vue.js的`细粒度数据响应机制`来进行高效的状态更新。<br>
+## **1、什么是vuex?**<br>
+&#8195;&#8195;Vuex是一个专门为Vue.js一个用程序开发的**状态管理模式**。将**不同组件的共享状态**抽取出来，以一个**全局单例管理模式**来管理，利用 `Vue.js`的**细粒度数据响应机制**来进行高效的状态更新。响应式的数据<br>
 &#8195;&#8195;优势：
-+ 通过定义和隔离状态管理中的各种概念并通过强制规则来维护视图和状态间的独立性，使得代码变得更结构化并且易于维护。<br>
-+ `改变 store 中的状态的唯一途径就是显式地提交 (commit) mutation`。这样使得我们可以方便地跟踪每一个状态的变化。
-+ `Vuex 的状态存储是响应式的`。当 Vue 组件从 store 中读取状态的时候，若 store 中的状态发生变化，那么相应的组件也会相应地得到高效更新。
++ 通过定义和隔离状态管理中的各种概念并通过强制规则来**维护视图和状态间的独立性**（主要是用于解决多组件状态共享的问题），使得代码变得更结构化并且易于维护。<br>
++ **变 store 中的状态的唯一途径就是显式地提交 (commit) mutation**。这样使得我们可以方便地跟踪每一个状态的变化。
++ **Vuex 的状态存储是响应式**。当 `Vue` 组件从 `store` 中读取状态的时候，若 `store` 中的状态发生变化，那么相应的组件也会相应地得到高效更新。响应式的数据也能够保证简洁的**单向数据流动**，使得代码变得更结构化并且易于维护。
+利用`Vue` 将 `state` 作为 `data` 进行响应化处理，从而使得状态发生改变时，能够导致组件重新渲染。
 
 &#8195;&#8195;用一张官网的图可以很好的描述Vuex的状态管理模式。
 <img src="../../images/vuex.png" alt="暂无图片" style="display:block;width:50%;margin:0 auto">
 
-**2、核心概念**
+## **2、核心概念**
 + **1、state<br>**
 &#8195;&#8195;驱动应用的数据源。在组件中通过`this.$store.state.list`来访问这些state。
 + **2、Getter<br>**
 &#8195;&#8195;可以认为是store的计算属性，getter额返回值会根据它的依赖被缓存起来，且只有当它的依赖值发生了变化才会被重新计算。在vue组件中，通过`this.$store.getters.doneTodos`访问这些值
-
 ```javascript
     const store=new Vuex.Store({
         state:{
@@ -118,7 +118,8 @@ export default {
 ```
 
 + **4、Action<br>**
-&#8195;**1、Action类似于mutation，他们的不同点在于：**<br>
+
+&#8195;&#8195;**1、Action类似于mutation，他们的不同点在于：**<br>
 &#8195;&#8195;`1）Action提交的是mutation，而不是直接改变状态。`<br>
 &#8195;&#8195;`2）Action可以包含任何异步操作`。
 ```javascript
@@ -258,5 +259,121 @@ actions: {
         }
     }
 ```
+## 3、Vuex的源码实现
+```js
+//index.js
+import Vue from 'vue'
+import Vuex from "./store"
+Vue.use(Vuex)
+export default new Vuex.Store({
+    state:{
+        count:0
+    },
+    mutations:{
+        add(state){
+            state.count++
+        },
+        sub(state){
+            state.count--
+        }
+    },
+    actions:{
+        add({commit}){
+            setTimeout(() => {
+                commit('add')
+            }, 1000);
+        }
+    },
+    getters:{
+        doubleCount:state=>{
+            console.log(state)
+            return state.count*2
+        }
+    }
+})
+```
+```js
+//store.js
+let Vue;//用于存放调用install函数时传入的Vue
+class Store{
+    constructor(options){
+        this.$options=options
+        this._mutations=options.mutations;
+        this._actions=options.actions;
+        this.commit=this.commit.bind(this)
+        this.dispatch=this.dispatch.bind(this);
+        let store=this;
+        //使得可以通过在组件中可以用this.$store.getters来获取属性
+        store.getters={};
+        const computed={}
+        forEachValue(options.getters,(fn,key)=>{
+            //将state转入 getters中,fn只的就是getters里面的方法，options.state就是参数state
+            computed[key]=partial(fn,options.state);
+            //使的getters响应式
+            Object.defineProperty(store.getters,key,{
+                get:()=>store._vm[key],
+                enumerable:true
+            })
 
+        })
+        //使state可响应
+        this._vm=new Vue({
+            data() {
+                return {
+                    $$state:options.state
+                }
+            },
+            //挂载到this._vm实例上，使得getters直接可以在this._vm获取
+            computed
+        })
+    }
+    get state(){
+        return this._vm._data.$$state
+    }
+    set state(value){
+        console.error('please use replaceState to reset state');
+    }
+    commit(type,payload){
+        const entry=this._mutations[type];
+        if(entry){
+            entry(this.state,payload)
+            return;
+        }
+        console.error('大兄弟，没有这个mutation');
+    }
+    dispatch(type,payload){
+        const entry=this._actions[type]
+        if(entry){
+            entry(this,payload)
+            return;
+        }
+        console.error('大兄弟，没有这个action');
+    }
+}
+//迭代函数
+function forEachValue(obj,fn){
+    Object.keys(obj).forEach(key=>fn(obj[key],key))
+}
+//闭包，偏函数
+function partial(fn,arg){
+    return ()=>fn(arg)
+}
+function install(_Vue){
+    Vue=_Vue;
+    Vue.mixin({
+        //让vuex尽早混入Vue实例,先创建Vue实例，再执行钩子函数
+        beforeCreate() {
+            //判断是否是根组件
+            if(this.$options.store){
+                Vue.prototype.$store=this.$options.store;
+            }
+        },
+    })
+}
+export default{
+    Store,
+    install
+}
+
+```
 

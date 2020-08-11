@@ -8,9 +8,9 @@ note: require.context()的用法详解
 ```javascript
 require.context(directory,useSubdirectories,regExp)
 ```
-+ directory:表示检索的目录
-+ useSubdirectories：表示是否检索子文件夹
-+ regExp:匹配文件的正则表达式,一般是文件名<br>
++ `directory`:表示检索的目录
++ `useSubdirectories`：表示是否检索子文件夹
++ `regExp`:匹配文件的正则表达式,一般是文件名<br>
 
 例如 `require.context("@/views/components",false,/\.vue$/)`
 
