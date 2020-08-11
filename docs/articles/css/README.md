@@ -3,7 +3,7 @@ title: css之盒模型
 date: '2020-01-14'
 type: 技术
 tags: css
-note: css之盒模型
+note: css有两种常见的盒模型，W3C标准盒模型和 IE怪异盒模型
 ---
 
 &#8195;&#8195;共分为2种类型：W3C标准盒模型（默认） 和 IE标准盒模型（怪异盒模型）。CSS盒子模式包括如下属性：外边距（margin）、边框（border）、内边距（padding）、内容（content） 

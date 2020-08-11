@@ -131,9 +131,13 @@ export default {
   },
   methods: {
     show() {
+      this.pages.sort((a,b)=>
+      this.formateDate(b.frontmatter.date)-this.formateDate(a.frontmatter.date))
+      console.log(this.pages)
       let startNo = this.pageSize * (this.page - 1);
       let endNo = this.pageSize * this.page;
-      this.data.items = this.pages.slice(startNo, endNo);
+      this.data.items = this.pages.slice(startNo, endNo)
+      debugger
       this.data.total = this.pages.length;
     },
     gogogo(path) {
@@ -149,6 +153,10 @@ export default {
     prevPage(thisPageNo) {
       this.pageChange(thisPageNo);
     },
+    formateDate(string){
+      const date=new Date(string);
+      return date.getTime()
+    }
   },
   watch: {
     tag(tag) {
