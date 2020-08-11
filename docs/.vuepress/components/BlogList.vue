@@ -96,8 +96,6 @@ export default {
       const pages = [];
 
       if (this.type) {
-        debugger;
-        console.log(this.$site);
         this.$site.pages.forEach(item => {
           if (item.frontmatter.type == this.type) {
             pages.push(item);
