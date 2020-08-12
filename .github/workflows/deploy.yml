@@ -1,0 +1,62 @@
+name: Build app and deploy to aliyun
+
+on:
+  push:
+    branches:
+      - dev
+      - master
+
+jobs:
+  build:
+    # runs-on 指定job任务运行所需要的虚拟机环境(必填字段)
+    runs-on: ubuntu-latest
+    steps:
+      # 获取源码
+      - name: Checkout
+        # 使用action库  actions/checkout获取源码
+        uses: actions/checkout@master
+      # 安装Node13
+      - name: use Node.js 13.2.0
+        # 使用action库  actions/setup-node安装node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 13.2.0
+      # 安装依赖
+      - name: npm install
+        run: npm install
+      # 打包
+      - name: npm build
+        run: npm run build
+      # 部署到阿里云
+      - name: Deploy to Aliyun
+        uses: easingthemes/ssh-deploy@v2.1.1
+        env:
+          # 私钥
+          SSH_PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          # scp参数
+          ARGS: "-avzr --delete"
+          # 源目录
+          SOURCE: "docs/.vuepress/dist"
+          # 服务器ip：换成你的服务器IP
+          REMOTE_HOST: "47.107.141.236"
+          # 用户
+          REMOTE_USER: "root"
+          # 目标地址
+          TARGET: "/root/web/blog"
+      # 接口代码打包
+      # - name: API build
+      #   run: cd mock && tsc -P tsconfig.json && cp swagger.yml ./dist && cp package.json ./dist
+      # # 部署到阿里云
+      # - name: Deploy to Aliyun
+      #   uses: easingthemes/ssh-deploy@v2.1.1
+      #   env:
+      #     # 私钥
+      #     SSH_PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+      #     # 源目录
+      #     SOURCE: "./mock/dist"
+      #     # 服务器ip
+      #     REMOTE_HOST: "47.107.141.236"
+      #     # 用户
+      #     REMOTE_USER: "root"
+      #     # 目标地址
+      #     TARGET: "/root/kkb-honor-admin/server"
