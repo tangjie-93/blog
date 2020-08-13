@@ -104,7 +104,7 @@ var router = new Router({
 router.get('/', ...); // 等同于"/users"
 router.get('/:id', ...); // 等同于"/users/:id"
 ```
-+ 6、路径的参数通过this.params属性获取，该属性返回一个对象，所有路径参数都是该对象的成员。
++ 6、路径的参数通过 `this.params` 属性获取，该属性返回一个对象，所有路径参数都是该对象的成员。
 
 ```javascript
     // 访问 /programming/how-to-node
