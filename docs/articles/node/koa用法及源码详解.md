@@ -159,20 +159,21 @@ router.get('/:id', ...); // 等同于"/users/:id"
 ```
 **&#8195;4、Koa提供内置的错误处理机制，任何中间件抛出的错误都会被捕捉到，引发向客户端返回一个500错误，而不会导致进程停止，因此也就不需要forever这样的模块重启进程。**
 
-        this.throw方法的两个参数，一个是错误码，另一个是报错信息。如果省略状态码，默认是500错误。
-        this.assert方法用于在中间件之中断言，用法类似于Node的assert模块。
+`this.throw`方法的两个参数，一个是错误码，另一个是报错信息。如果省略状态码，默认是500错误。
+`this.assert`方法用于在中间件之中断言，用法类似于 `Node` 的`assert` 模块。
 **&#8195;5、cookie**
 ```javascript
     this.cookies.get('view');
     this.cookies.set('view', n);
-    get和set方法都可以接受第三个参数，表示配置参数。其中的signed参数，用于指定cookie是否加密。如果指定加密的话，必须用app.keys指定加密短语。
-    this.cookie的配置对象的属性如下。
-        signed：cookie是否加密。
-        expires：cookie何时过期
-        path：cookie的路径，默认是“/”。
-        domain：cookie的域名。
-        secure：cookie是否只有https请求下才发送。
-        httpOnly：是否只有服务器可以取到cookie，默认为true。
+    
 ```
+`get`和 `set` 方法都可以接受第三个参数，表示配置参数。其中的 `signed` 参数，用于指定 `cookie` 是否加密。如果指定加密的话，必须用`app.keys`指定加密短语。
+`this.cookie`的配置对象的属性如下。
++ signed：cookie是否加密。
++ expires：cookie何时过期
++ path：cookie的路径，默认是“/”。
++ domain：cookie的域名。
++ secure：cookie是否只有https请求下才发送。
++ httpOnly：是否只有服务器可以取到cookie，默认为true。
 **&#8195;6、Request对象**     
 **&#8195;7、Response对象**
