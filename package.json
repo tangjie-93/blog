@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "core-js": "^2.6.11",
     "element-ui": "^2.13.0",
     "fs": "0.0.1-security",
     "leancloud-storage": "^4.2.0",
