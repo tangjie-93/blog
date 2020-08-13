@@ -40,9 +40,9 @@ nginx和node.js的对比。
 + 2、轻量级
     1、功能模块少
     2、代码模块化
-+ 3、CPU亲和(affinity)
-    是一种把CPU核心和Nginx工作进程绑定的方式，把每个worker进程固定在一个CPU上执行，减少切换cpu的cache miss，获得更好的性能。
-+ 4、sendfile
++ 3、`CPU`亲和(`affinity`)
+    是一种把CPU核心和Nginx工作进程绑定的方式，把每个worker进程固定在一个CPU上执行，减少切换 `cpu` 的 `cache miss`，获得更好的性能。
++ 4、`sendfile`
 
 
 
