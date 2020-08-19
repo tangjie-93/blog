@@ -17,16 +17,17 @@ note: git常用命令总结
 
 ### **2、Git仓库**
 
-> 1、 创建git仓库的方案
-
++ 1、 创建git仓库的方案
+    + 第1种方案：在现有目录下初始化仓库
 ```js
-第1种方案：在现有目录下初始化仓库
     1)创建一个文件夹
     mkdir vue
     2)在该文件夹下新建仓库
     git init  
     //此时vue目录下会出现一个.git的目录，该目录是用来跟踪管理版本的
-第2种方案：克隆现有的仓库
+```
+    + 第2种方案：克隆现有的仓库
+```js
 	git clone git@github.com:tangjie1111/vue.git
 	git clone -b dev git@github.com:tangjie1111/vue.git //clone指定分支
 ```
@@ -39,13 +40,13 @@ note: git常用命令总结
     //然后在Repository name填入vue，此时可以从这个仓库克隆出新的仓库，也可以把一个已有的本地仓库与之关		联。然后把本地仓库的内容推送到GitHub仓库，
 第2步，将GitHub上的仓库关联到本地
     git remote add origin git@github.com:tangjie1111/vue.git 
-    //git@github.com:tangjie-93/vue.git是仓库地址，tangjie1111是该用户吧账号名。 origin表示仓库的	 名称
+    //git@github.com:tangjie-93/vue.git是仓库地址，tangjie1111是该用户吧账号名。 origin表示仓库的名称
 
     //关联多个远程仓库
     git remote add github git@github.com:tangjie-93/learngit.git 
     //关联github账户为tangjie-93，名为github的远程仓库
     git remote add gitee git@github.com:james/learngit.git
-    //关联github账户为james，名为github的远程仓库
+    //关联github账户为james，名为gitee的远程仓库
 ```
 
 > 3、将远程仓库的内容拉取到本地且和本地分支合并
