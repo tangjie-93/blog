@@ -7,7 +7,7 @@ note: 我所理解的promise
 ---
 &#8195;&#8195;虽然项目中一直在用到promise，虽然以前也学习过promise，但是对于promise真的是没有很好的学以致用，有时候看到别人用promise的时候也是一脸懵逼，所以就决定花点时间再来好好研究一下promise到底是什么?应该怎么样用？
 
-<h3>1、什么是promise?</h3>
+## 1、什么是promise?
 
 &#8195;&#8195;`Promise` 是异步编程的一种解决方案，使得执行异步操作变得像同步操作一样。**它可以被看成一个容器，容器里面是我们无法干预的，里面保存着某个未来才会结束的事件的结果。**
 Promise 对象用于表示一个异步操作的最终状态（完成或失败），以及该异步操作的结果值。
@@ -30,7 +30,7 @@ p.then(res=>{
 
 &#8195;&#8195;`Promise` 是一个构造函数， `new Promise` 返回一个`promise`对象，**`Promise` 对象是一个代理对象（代理一个值），被代理的值在`Promise`对象创建时可能是未知的**。构造函数接收一个`excutor`执行函数作为参数， `excutor`有两个函数形参`resolve`和`reject`，分别作为异步操作成功和失败的回调函数。但该回调函数并不是立即返回最终执行结果，而是一个能代表未来出现的结果的`promise`对象。`resolve和reject`函数在调用`promise`对象时才会被执行。
 
-<h3>2、Promise对象的特点</h3>
+## 2、Promise对象的特点
 
 >**1、对象的状态不受外界影响。** `Promise`对象有三种状态`（resolve,reject,pending）`。只有异步操作的结果，可以决定当前是哪一种状态，任何其他操作都无法改变这个状态。 
 + pending: 初始状态，既不是成功，也不是失败状态。
@@ -59,9 +59,9 @@ p.then((arg) => {
 });
 //所以上面的输出为7、1、5
 ```
-<h3>3、Promise的实例方法</h3>
+## 3、Promise的实例方法
 
-<h4>1、Promise.prototype.then(onFulfilled, onRejected)</h4>
+#### 1、Promise.prototype.then(onFulfilled, onRejected)
 
 &#8195;&#8195;`onFulfilled`和`onRejected`分别是`Promise`实例对象 的成功和失败情况的回调函数。该方法返回一个新的 `promise`实例对象, **将以回调的返回值作为resolve的参数。** 并且`then`方法可以被同一个 `promise` 对象调用多次。
 
@@ -171,7 +171,7 @@ promise.then((res) => {
     console.log(res, Date.now() - start);//success 1007
 })
 ```
-<h4>2、Promise.prototype.catch(onRejected)</h4>
+#### 2、Promise.prototype.catch(onRejected)
 &#8195;&#8195;该方法的原码如下所示：
       
 ```javascript       
@@ -309,7 +309,7 @@ new Promise((resolve, reject) => {
     console.log(res);
 })
 ```
-<h4>&#8195;3、Promise.prototype.finally(onFinally)</h4>
+#### 3、Promise.prototype.finally(onFinally)
 &#8195;&#8195;该方法返回一个Promise，在promise执行结束时，无论结果是fulfilled或者是rejected，在执行then()和catch()后，都会执行finally指定的回调函数。源码实现如下：
 
 ```javascript          
@@ -326,8 +326,8 @@ Promise.prototype.finally = function (f) {
 };
 ```
 
-<h3>3、Promise的静态方法</h3>
-<h4>&#8195;1、Promise.all(iterable)</h4>
+## 3、Promise的静态方法
+#### 1、Promise.all(iterable)
 &#8195;&#8195;该方法返回一个新的promise对象，该promise对象在iterable参数对象里所有的promise对象都成功的时候才会触发成功，一旦有任何一个iterable里面的promise对象失败则立即触发该promise对象的失败。        
 
 源码实现如下：
@@ -413,7 +413,7 @@ let p=Promise.race([]);
 console.log(p);//Promise {<pending>}
         
 ```
-<h4>&#8195;3、Promise.resolve(value)</h4>
+#### 3、Promise.resolve(value)
 
 &#8195;&#8195;**该方法的作用就是将现有对象转为 Promise 实例,并且该实例的状态为resolve。**
 该方法的源码实现如下：
@@ -506,8 +506,8 @@ p.then(null, function (s) {
 });
 ```
 
-<h3>4、Promise代码实现</h3>
-1、初始版
+## 4、Promise代码实现
+>1、初始版
 
 ```javascript  
 function Promise1(executor) {
@@ -553,7 +553,7 @@ p.then(res => {
     console.log(res);
 })
 ```
-2、进阶版——异步处理
+>2、进阶版——异步处理
 
 ```js
 function Promise2(executor) {
@@ -615,7 +615,7 @@ p.then(res => {
     console.log(res);
 })
 ```
-3、 进阶版——链式调用
+>3、 进阶版——链式调用
 
 ```js
 function Promise3(executor) {

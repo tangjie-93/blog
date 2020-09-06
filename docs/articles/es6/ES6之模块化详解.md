@@ -357,7 +357,7 @@ import express from 'express';
 const app = express();
 ```       
 <h4>12、	CommonJS加载ES6模块（import()函数）</h4>
-&#8195;&#8195;CommonJS 模块加载 ES6 模块，**不能使用require命令，而要使用import()函数。ES6 模块的所有输出接口，会成为输入对象的属性。
+&#8195;&#8195;CommonJS 模块加载 ES6 模块，不能使用require命令，而要使用import()函数。ES6 模块的所有输出接口，会成为输入对象的属性。
 <h4>13、	CommonJS 模块的加载原理。</h4>
 
 &#8195;&#8195;require命令第一次加载该脚本，就会执行整个脚本，然后在内存生成一个对象。
