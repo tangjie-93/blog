@@ -5,11 +5,12 @@ type: 技术
 tags: node
 note: koa用法及源码详解。
 ---
-### koa
+## 1、koa是什么
 
 &#8195;&#8195;`Koa`是一个类似于`Express`的`Web`开发框架，创始人也是同一个人。它的主要特点是，使用了`ES6`的`Generator`函数，进行了架构的重新设计。也就是说，`Koa`的原理和内部结构很像`Express`，但是语法和内部结构进行了升级。
 
-**&#8195;1、一个Koa应用就是一个对象，包含了一个middleware数组，这个数组由一组Generator函数组成**。这些函数负责对HTTP请求进行各种加工，比如生成缓存、指定代理、请求重定向等等。
+
+**&#8195;一个Koa应用就是一个对象，包含了一个middleware数组，这个数组由一组Generator函数组成**。这些函数负责对HTTP请求进行各种加工，比如生成缓存、指定代理、请求重定向等等。
 ```javascript
 var koa = require('koa');
 var app = koa();
@@ -20,21 +21,21 @@ app.listen(3000);
 //app.use方法用于向middleware数组添加Generator函数。
 //listen方法指定监听端口，并启动当前应用。
 ```
-**&#8195;2、中间件**
+## 2、中间件
 
-&#8195;&#8195;是对 `HTTP` 请求进行处理的函数，但是必须是一个 `Generator` 函数。而且，Koa的中间件是一个级联式（Cascading）的结构，也就是说，属于是层层调用，第一个中间件调用第二个中间件，第二个调用第三个，以此类推。上游的中间件必须等到下游的中间件返回结果，才会继续执行，这点很像递归。中间件通过当前应用的use方法注册。
+&#8195;&#8195;是对 `HTTP` 请求进行处理的函数，但是必须是一个 `async` 函数。而且，`Koa` 的中间件是一个级联式（`Cascading`）的结构，也就是说，属于是层层调用，第一个中间件调用第二个中间件，第二个调用第三个，以此类推。上游的中间件必须等到下游的中间件返回结果，才会继续执行，这点很像递归。中间件通过当前应用的use方法注册。
 
 **多个中间件的合并:**
 ```javascript
-function *random(next) {
+const random= async (next)=> {
     if ('/random' == this.path) {
         this.body = Math.floor(Math.random()*10);
     } else {
-        yield next;
+        await next;
     }
 };
 
-function *backwards(next) {
+const backwards=async (next)=> {
     if ('/backwards' == this.path) {
         this.body = 'sdrawkcab';
     } else {
@@ -42,21 +43,21 @@ function *backwards(next) {
     }
 }
 
-function *pi(next) {
+const pi=async (next)=> {
     if ('/pi' == this.path) {
         this.body = String(Math.PI);
     } else {
-        yield next;
+        await next;
     }
 }
 
-function *all(next) {
-    yield random.call(this, backwards.call(this, pi.call(this, next)));
+const all=async (next)=> {
+    await random.call(this, backwards.call(this, pi.call(this, next)));
 }
 
 app.use(all);
 ```
-**&#8195;3、路由**
+## 3、路由
 
 + 1、可以通过 `this.path` 属性，判断用户请求的路径，从而起到路由作用。
 ```javascript
@@ -135,33 +136,33 @@ router.get('/:id', ...); // 等同于"/users/:id"
 ```
 + **9、context对象**
 
-&#8195;&#8195;`中间件当中的this表示上下文对象context，代表一次HTTP请求和回应，即一次访问/回应的所有信息，都可以从上下文对象获得。context对象封装了request和response对象，并且提供了一些辅助方法。每次HTTP请求，就会创建一个新的context对象。`
-```javascript
-    context对象的全局属性。
-        request：指向Request对象
-        
-        response：指向Response对象
-            1、response.set(key,val);//设置响应头
-            2、response.status=200;//设置状态码
-            3、response.body="cee";//响应体
-            //context也可以直接使用respanse以及request的api
-            1、ctx.set(key,value);
-            2、ctx.status=200;
-            3、ctx.body="cee"
+&#8195;&#8195;中间件当中的 `this` 表示上下文对象 `context`，代表一次 `HTTP` 请求和回应，即一次访问/回应的所有信息，都可以从上下文对象获得。`context` 对象封装了 `request` 和 `response` 对象，并且提供了一些辅助方法。每次 `HTTP` 请求，就会创建一个新的`context` 对象。
+`context` 对象的全局属性。
++  request：指向Request对象
++  response：指向Response对象
+    + response.set(key,val);//设置响应头
+    + response.status=200;//设置状态码
+    + response.body="cee";//响应体
 
-        req：指向Node的request对象
-        res：指向Node的response对象
-        app：指向App对象
-        state：用于在中间件传递信息。
-    context对象的全局方法。
-        throw()：抛出错误，直接决定了HTTP回应的状态码。
-        assert()：如果一个表达式为false，则抛出一个错误。
-```
-**&#8195;4、Koa提供内置的错误处理机制，任何中间件抛出的错误都会被捕捉到，引发向客户端返回一个500错误，而不会导致进程停止，因此也就不需要forever这样的模块重启进程。**
+`context` 也可以直接使用respanse以及request的api
++ ctx.set(key,value);
++ ctx.status=200;
++ ctx.body="cee"    
++ req：指向Node的request对象
++ res：指向Node的response对象
++ app：指向App对象
++ state：用于在中间件传递信息。
+
+`context` 对象的全局方法。
++ throw()：抛出错误，直接决定了HTTP回应的状态码。
++ assert()：如果一个表达式为false，则抛出一个错误。
+
+## 4、Koa提供内置的错误处理机制
+&#8195;&#8195;任何中间件抛出的错误都会被捕捉到，引发向客户端返回一个500错误，而不会导致进程停止，因此也就不需要`forever` 这样的模块重启进程。
 
 `this.throw`方法的两个参数，一个是错误码，另一个是报错信息。如果省略状态码，默认是500错误。
 `this.assert`方法用于在中间件之中断言，用法类似于 `Node` 的`assert` 模块。
-**&#8195;5、cookie**
+## 5、cookie
 ```javascript
     this.cookies.get('view');
     this.cookies.set('view', n);
@@ -175,5 +176,5 @@ router.get('/:id', ...); // 等同于"/users/:id"
 + domain：cookie的域名。
 + secure：cookie是否只有https请求下才发送。
 + httpOnly：是否只有服务器可以取到cookie，默认为true。
-**&#8195;6、Request对象**     
-**&#8195;7、Response对象**
+
+## 6、koa源码实现

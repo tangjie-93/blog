@@ -6,7 +6,6 @@ tags: vue
 note: vue中key的作用以及工作原理
 ---
 
-
 工作原理可以在源码中找到。源码地址为[src\core\vdom\patch.js](https://github.com/vuejs/vue/blob/dev/src/core/vdom/patch.js) 中的 `updateChildren()` 方法和 `sameNode()`方法。
 ```js
 //updateChildren源码如下

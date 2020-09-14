@@ -16,7 +16,7 @@ note: javascript之设计模式
 **优点：**
 
 单例模式的代码实现如下：
-
++ 类的单例设计模式
 ```js
 class Singleton{
     constructor(name){
@@ -35,12 +35,22 @@ let a=Singleton.getInstance("test");
 let b=Singleton.getInstance("test");
 console.log(a===b);//true
 ```
-
++ 对象的单例设计模式
+```js
+let utils=(function(){
+    function css(){}
+    function query(){}
+    return {
+        query,
+        css
+    }
+})()
+```
 **惰性单例模式：** 将创建对象和管理单例的逻辑分开。
 
 ```js
 //将管理单例的逻辑封装成一个方法
-const getSingle=function(){
+const getSingle=function(fn){
     let instance=null;
     return function(){
         return instance ||(instance=fn.apply(this,arguments))

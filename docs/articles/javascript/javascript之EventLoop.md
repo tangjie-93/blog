@@ -5,27 +5,68 @@ type: 技术
 tags: javascript
 note: 我们知道js的最大特点就是单线程，就是同一时间只能做一件事。即便HTML5提出Web Worker允许JavaScript脚本创建多个线程，但是子线程完全受主线程控制，且不得操作DOM。所以，这个新标准并没有改变JavaScript单线程的本质。
 ---
+**到底是将异步任务直接放到任务队列，还是将异步任务的回调放到任务队列?**
 ​		
 ​&#8195;&#8195;我们知道 `js` 的最大特点就是单线程，就是同一时间只能做一件事。即便`HTML5` 提出 `Web Worker` 允许 `JavaScript` 脚本创建多个线程，但是子线程完全受主线程控制，且不得操作 `DOM`。所以，这个新标准并没有改变`JavaScript`单线程的本质。
 `js` 单线程跟它的用途有关。作为浏览器脚本语言，`javascript` 的主要用途是与用户互动，以及操作 `dom`。这决定了它只能是单线程。比如：`javascript`同时有两个线程，一个线程在 `dom` 上触发事件，另一个线程删除了这个  `dom` 元素，这时候会引发混乱。
 
-<h3>1、任务队列</h3>
+js中常见的异步操作有以下：
++ setTimeout/setInterval
++ 事件绑定/事件监听
++ ajax/fetch请求数据
++ Promise的异步操作
++ async/await的异步操作
++ nodejs中的异步操作()
++ ....
+
+<h3>1、任务队列(EventQueue)</h3>
 
 &#8195;&#8195;因为 `js` 的单线程的特性，所有运行在js线程中的代码需要根据某种规则来按队列执行。因为 `js` 中既有同步事件，又有异步事件，所以有时候我们在工作中写 `js` 代码时总会一脸懵逼，特别是在浏览器环境中进行断点调试时，所以弄懂js代码的执行顺序非常重要。                
 
-&#8195;&#8195; 按照 `js` 回调事件的特性，将任务分为同步任务和异步任务。
-+ 1、所有同步任务都在**主线程**中执行，并形成一个执行栈，异步任务在有了运行结果之后才会将回调函数添加到**任务队列**中。
-+ 2、代码运行时会先去执行主线程中的代码，等到主线程中的代码执行完毕后，才会去读取任务队列中的回调函数并放置到执行栈上来执行，先添加到任务队列中的会被先执行。等到任务队列中的回调函数执行完毕后，又会回到主线程上来。
+&#8195;&#8195; 按照 `js` 回调事件的特性，将任务分为**同步任务**和**异步任务**。在js代码执行时，浏览器回分配一个任务队列 `EventQueue`,包括宏任务队列和微任务队列。,
++ 1、所有同步任务都在**主线程**中执行，并形成一个执行栈，异步任务在有了运行结果之后才会将**回调函数**添加到**任务队列**中。
++ 2、代码运行时会先去执行主线程中的代码，等到主线程中的代码执行完毕后，才会去读取任务队列中的回调函数并放置到执行栈上来执行。
 + 3、主线程中会不断重复执行第二步，从**任务队列**中读取事件，这个过程是循环不断的，所以整个的这个运行机制又被称为 `EventLoop`。
 
-<h3>2、事件队列</h3>
+<h3>2、任务队列的分类</h3>
 
-&#8195;&#8195;任务队列按照某种条件又可以细分为microtask 和 macrotask，通常我们会称之为微任务和宏任务。**代码执行的优先级为：宏任务>微任务。**
-+ 微任务主要有：ES6的Promise(then函数)，node.js中的process.nextTick()，MessageChannel(消息通道，类似worker)，MutationObserver(html5新特性)
-+ 宏任务主要有：setTimeout 和 setInterval、requestAnimationFrame，setImmediate, I/O
+&#8195;&#8195;任务队列按照某种条件又可以细分为 `microtask` 和 `macrotask`，通常我们会称之为微任务和宏任务。**代码执行的优先级为：微任务>宏任务。**
++ 微任务主要有：`ES6` 的`Promise`(then函数)，`node.js`中的 `process.nextTick()`，`MessageChannel`(消息通道，类似`worker`)，`MutationObserver` (html5新特性)
++ 宏任务主要有：`setTimeout` 和 `setInterval`、`requestAnimationFrame`，`setImmediate`, `I/O`
 
-**&#8195;&#8195;js中代码执行的顺序是：首先执行主线程中的代码，开始第一次循环，执行完毕后，从微任务队列中逐个取出微任务到主线程，等到微任务队列被清空，然后再从宏任务队列中逐个取出宏任务到主线程中，直到宏任务队列被清空。** 详情请看如下代码
+**&#8195;&#8195;js中代码执行的顺序是：首先执行主线程中的代码，等到主线程的同步代码执行完毕后，从微任务队列中逐个取出微任务到主线程执行，等到微任务队列被清空，然后再从宏任务队列中逐个取出宏任务到主线程中执行过，直到宏任务队列被清空。**
 
+ 详情请看如下代码
+> 例子1 
+```js
+//20秒后放到任务队列
+setTimeout(() => {
+    console.log(1);
+}, 20)
+//10秒后放到任务队列
+setTimeout(() => {
+    console.log(2);
+    setTimeout(() => {
+        console.log(3);
+    }, 50);
+}, 10)
+console.time();
+for (let index = 0; index < 100000000; index++) {
+
+}
+//两秒后放到任务队列
+setTimeout(() => {
+    console.log(4);
+}, 2)
+console.timeEnd();
+console.log(5)
+//50秒后放到任务队列
+setTimeout(() => {
+    console.log(6)
+}, 50);
+```
+上面代码的执行过结果是：5 2 1 4 6 3。根据被放到宏任务队列的先后时间去执行异步任务。
+> 例子2
 ```javascript     
 //宏任务
 setTimeout(function(){
@@ -59,10 +100,10 @@ console.log("我是主线程");
 ![](https://user-gold-cdn.xitu.io/2019/6/26/16b948067bc23463?w=1076&h=224&f=png&s=29667)
 
 &#8195;&#8195;代码解析：
-+ 1、js代码开始执行后，遇到setTimeout，将其回调函数添加到宏任务队列中，记为setTimeout1；
-+ 2、遇到Promise，Promise构造函数中的代码是同步任务，所以最先输出promise1,同时将then函数添加到微任务队列中，记为then1；
-+ 3、接着再次遇到Promise，然后输出promise2，并将其then函数添加在微任务队列中，记为then2。
-+ 4、执行到setTimeout，将其回调函数添加到宏任务队列中，记为setTimeout2。
++ 1、js代码开始执行后，遇到 `setTimeout`，将其回调函数添加到宏任务队列中，记为setTimeout1；
++ 2、遇到 `Promise`，`Promise` 构造函数中的代码是同步任务，所以最先输出 `promise1`,同时将 `then` 函数添加到微任务队列中，记为 `then1`；
++ 3、接着再次遇到 `Promise`，然后输出 `promise2`，并将其 `then` 函数添加在微任务队列中，记为 `then2`。
++ 4、执行到 `setTimeout` ，将其回调函数添加到宏任务队列中，记为 `setTimeout2`。
 + 5、最后输出"我是主线程"。此时主线程中的代码执行完毕。此时任务队列中的情况如下。
 <table style="width:100%;text-align:center">
     <thead style="width:100%;text-align:center">
@@ -166,12 +207,12 @@ setTimeout(function() {
 <img src="../../images/node-eventloop-example.png" alt="暂无数据">
 
 结果分析：
-+ 首先执行主线程中的代码，输出promise1。
-+ 接着清空微队列中的任务，即执行外层then函数中的代码，输出then1（**微任务不在任何一个阶段执行，在各个阶段切换的中间执行**）。
-+ 接着开始执行timer阶段中的所有任务，所以此时输出setTimeOut1——>setTimeOut1-Promise——>setTimeOut2——>setTimeOut2-Promise。
-+ timer阶段中的任务执行完毕后，又开始执行微任务队列中的所有任务。所以此时输出setTimeOut1-then、setTimeOut1-then2。
++ 首先执行主线程中的同步代码，输出 `promise1`。
++ 接着清空微队列中的任务，即执行外层 `then` 函数中的代码，输出 `then1` （**微任务不在任何一个阶段执行，在各个阶段切换的中间执行**）。
++ 接着开始执行 `timer` 阶段中的所有任务，所以此时输出`setTimeOut1——>setTimeOut1-Promise——>setTimeOut2——>setTimeOut2-Promise`。
++ `timer` 阶段中的任务执行完毕后，又开始执行微任务队列中的所有任务。所以此时输出`setTimeOut1-then、setTimeOut1-then2`。
 
-**最后：** node中的eventLoop运行机制比较复杂，所以还需要花费更多的时间去多多研究。
+**最后：** `node`中的 `eventLoop`运行机制比较复杂，所以还需要花费更多的时间去多多研究。
 
 参考文档    
 [1、这一次，彻底弄懂 JavaScript 执行机制](https://juejin.im/post/59e85eebf265da430d571f89)  

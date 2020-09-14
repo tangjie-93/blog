@@ -21,7 +21,7 @@ Vue.use = function (plugin) {
     if (typeof plugin.install === 'function') {
         plugin.install.apply(plugin, args);
     } else if (typeof plugin === 'function') {
-        plugin.apply(null, args);//将Vue作为
+        plugin.apply(null, args);
     }
     //将此插件添加到插件列表中
     installedPlugins.push(plugin);

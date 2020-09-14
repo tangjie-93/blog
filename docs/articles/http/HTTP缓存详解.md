@@ -51,7 +51,7 @@ res.setHeader('Cache-Control', 'max-age=20')
 &#8195;&#8195;又称对比缓存，客户端会先从本地缓存中获取到一个缓存数据的标识(`ETag`)， 然胡服务器检查该`ETag` 证是否失效，如果没有失效服务端会返回 `304`(只有响应头，没有响应体)，此时客户端直接从缓存中获取所请求的数据，如果标识失效，服务端会返回更新后的数据。  
 协商缓存又分两种情况。 
 
-##### 情况1：根据Last-Modified来进行协商缓存
+##### 情况1：根据Last-Modified来进行协商缓存（hTTP 1.0）
 
 &#8195;&#8195;**Last-Modified：** 服务器在响应请求时，会告诉浏览器资源的**最后修改时间**。 
 
@@ -111,7 +111,7 @@ http.createServer((req, res) => {
 <img src="../../images/http-last-modified.png" alt="暂无图片">
 <img src="../../images/http-if-modified-since.png" alt="暂无图片">
 
-##### 情况2：根据ETag来进行协商缓存
+##### 情况2：根据ETag来进行协商缓存（HTTP 1.1）
 
 &#8195;&#8195;**Etag：** `Etag` 是`URL`的 `Entity Tag`，用于标示 `URL` 对象是否改变，区分不同语言和Session等等。具体内部含义是使服务器控制的，就像Cookie那样。Etag由服务器端生成，然后服务器通过客户端发送过来的 **（If-Match/If-None-Match）** 这个条件判断请求来验证资源是否修改。    
 &#8195;&#8195;**第一次请求**    

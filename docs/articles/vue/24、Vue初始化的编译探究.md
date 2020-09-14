@@ -10,7 +10,7 @@ note: Vue初始化的编译探究
 <img src="../../images/Vue编译原理.png" alt="暂无图片">
 编译的整个流程如下所示：
 + 获取 `template`
-    + template属性存在——idToTemplate(template)
+    + template属性存在——`idToTemplate(template)`
     ```js
     const idToTemplate = cached(id => {
         const el = query(id)
@@ -33,10 +33,12 @@ note: Vue初始化的编译探究
 + 根据 `template` 生成 抽象语法树 `ast`。
 + 对 `ast` 做静态标记。
 + 将 `ast` 生成代码。包括（render和staticRenderFns属性，两者都是字符串）。
-    ```js
-    //render
-    "with(this){return _c('div',{attrs:{"id":"demo"}},[_m(0),_v(" "),(foo)?_c('p',[_v(_s(foo))]):_e(),_v(" "),_c('comp')],1)}"
-    ```
+```js
+//render
+"with(this){
+    return _c('div',{attrs:{"id":"demo"}},[_m(0),_v(" "),(foo)?_c('p',[_v(_s(foo))]):_e(),_v(" "),_c('comp')],1)
+}"
+```
 + 将 `render`和 `staticRenderFns` 转换为函数。`new Function(render)`;
 + 将 `render`和 `staticRenderFns` 添加到 `vm.options` 上。
 + `mount.call(this, el, hydrating)` 开始编译
@@ -49,6 +51,8 @@ note: Vue初始化的编译探究
 建议可以自己跑一遍源码。能更好的理解编译过程。
 整体大概的流程可以用如下代码展示：
 ```js
-new Vue() => $mount() => vm._render() => createElement() => createComponent()
-=> vm._update() => patch() => createElm => createComponent()
+new Vue() => $mount() => vm._render()
+=> createElement() => createComponent()
+=> vm._update() => patch() => createElm()
+=> createComponent()
 ```

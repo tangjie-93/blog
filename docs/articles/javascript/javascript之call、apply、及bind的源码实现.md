@@ -6,19 +6,13 @@ tags: javascript
 note: 这3个方法，每次看到后都会去网上搜一下用法，然而过一段时间就又不会了，归根到底是自己没有理解他的原理，这次准备彻底弄懂，并把自己的理解总结下来。
 ---
 ​		
-&#8195;&#8195;在工作中经常看到有使用 `call` 和 `apply` 这两个方法，每次看到后都会去网上搜一下用法，然而过一段时间就又不会了，归根到底是自己没有理解他的原理，这次准备彻底弄懂，并把自己的理解总结下来。
-<ul>
-    <li><a href="#call">fun.call(thisArg, arg1, arg2, ...)  </a></li>
-    <li><a href="#apply">fun.apply(thisArg, [argsArray])     </a></li>
-    <li><a href="#examples">call()和apply的常见用法</a></li>
-    <li><a href="#bind">bind()</a></li>
-</ul>
+&#8195;&#8195;在工作中经常看到有使用 `call` 和 `apply`,`ibnd` 这3个方法，每次看到后都会去网上搜一下用法，然而过一段时间就又不会了，归根到底是自己没有理解他的原理，这次准备彻底弄懂，并把自己的理解总结下来。
 
 作用主要有两点：
->1、允许为不同的对象分配和调用属于另一个对象的函数/方法，也就是改变（或者说是扩大）函数运行的作用域，优点：对象不需要跟方法有任何耦合关系；  
->2、提供新的 `this` 值给当前调用的函数/方法。 
++ 1、允许为不同的对象分配和调用属于另一个对象的函数/方法，也就是改变（或者说是扩大）函数运行的作用域，优点：对象不需要跟方法有任何耦合关系；  
++ 2、提供新的 `this` 值给当前调用的函数/方法。 
 
-<h4><span id="call">1、fun.call(thisArg, arg1, arg2, ...) </span></h4> 
+## 1、fun.call(thisArg, arg1, arg2, ...)
 
 | 参数      | 描述                                 |
 | --------- | ------------------------------------ |
@@ -113,7 +107,7 @@ foo.call("123",1,2,3);
 <!-- ![](https://user-gold-cdn.xitu.io/2019/5/16/16ac139c2d91d93a?w=1203&h=466&f=png&s=102659) -->
 上面代码的不足之处在于：只考虑到 `Boolean`、`String` 、`Number` 、`null`、`undefined` 和 `Object` 以及 `Array` 这几种数据类型的功能实现；  
 
-<h4 id="apply">2、fun.apply(thisArg, [arguments]) </h4> 
+## 2、fun.apply(thisArg, [arguments]) 
 
 | 参数      | 描述                          |
 | --------- | ----------------------------- |
@@ -182,7 +176,8 @@ Function.prototype.es6Apply = function(context, arr) {
     return result
 }
 ```
-<h4 id="examples"> 3、`call()`和 `apply` 的常见用法：`apply` 常常被用于数组操作。</h4>
+##  3、`call()`和 `apply` 的常见用法
+`apply` 常常被用于数组操作。
 >1、如合并两个数组，且改变原数组。  
 
 ```javascript          
@@ -231,9 +226,9 @@ t1.showAge();//30
 
 &#8195;&#8195;`Person.apply(this, [age,name])`中的`this`在 `new Teacher()` 时指的是 `Teacher` ,所以 `Person.apply(this, [age,name])` 这句代码的返回的是一个`Teacher` 实例对象。
 
-<h3 id="bind">4、bind()</h3>
+## 4、bind()
 
-&#8195;&#8195;该方法会创建一个函数的实例，其this值会绑定到传给bind()函数的值。 例子如下：
+&#8195;&#8195;该方法会创建一个函数的实例，其 `this` 值会绑定到传给 `bind()` 函数的值。 例子如下：
 ```javascript           
 window.color="red";
 var o={color:"blue"};

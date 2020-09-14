@@ -561,7 +561,9 @@ function Promise2(executor) {
     self.status = "pending";
     self.value = undefined;
     self.reason = undefined;
+    //存放成功处理
     self.onFullfilledArray = [];
+    //存放失败处理
     self.onRejectedArray = [];
     function resolve(value) {
         if (self.status === "pending") {
@@ -591,6 +593,7 @@ Promise2.prototype.then = function (onFullfilled, onRejected) {
     let status = this.status;
     switch (status) {
         case "pending":
+            //处理异步情况
             this.onFullfilledArray.push(() => {
                 onFullfilled(this.value);
             })
