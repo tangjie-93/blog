@@ -8,15 +8,15 @@ note: 自己在使用vue的过程中经常会用到听到`数据双向绑定`这
 &#8195;&#8195;自己在使用vue的过程中经常会用到听到`数据双向绑定`这个词，而且我们还可以直接通过调用`this.msg`(this表示vue实例),来获取data上的数据，以前一直不太明白为什么可以这样获取，直到有一天我在论坛里看到了`寻找海蓝96`这位大佬写的文章,才明白其原理，所以在此记录一下。
 
 <h3 id="a1">1、Object.defineProperty(obj,key,descriptor) </h3>
-&#8195;&#8195;Object.defineProperty主要是通过Get和Set这两个访问器属性来实现数据双向绑定的。说到这里必须先介绍以下js对象的两种特性。
-ECMAScript中有两种属性:数据属性和访问器属性。这是js中任何对象都拥有的特性。      
+&#8195;&#8195;`Object.defineProperty`主要是通过Get和Set这两个访问器属性来实现数据双向绑定的。说到这里必须先介绍以下js对象的两种特性。
+`ECMAScript`中有两种属性:数据属性和访问器属性。这是js中任何对象都拥有的特性。      
 
 **数据属性** 主要是用于对数据的描述。数据属性主要有以下4个特性。    
->1、Configurable:（字面意思是可配置的，我理解为可操作（删除、修改））表示能否通过delete操作来删除属性，以及能否修改属性，或者能否将属性修改为访问器属性。直接定义在对象上的属性，该特性值默认为true。
+>1、Configurable:（字面意思是可配置的，我理解为可操作（删除、修改））表示能否通过`delete`操作来删除属性，以及能否修改属性，或者能否将属性修改为访问器属性。直接定义在对象上的属性，该特性值默认为`true`。
 
->2、Enumerable：字面意思是可枚举的，表示能否通过for-in循环来遍历属性。直接在对象上定义的属性，该特性值默认为true。
+>2、Enumerable：字面意思是可枚举的，表示能否通过`for-in`循环来遍历属性。直接在对象上定义的属性，该特性值默认为`true`。
 
->3、Writable:表示能否修改属性的值。直接定义在对象上的该特性值默认也为true。  
+>3、Writable:表示能否修改属性的值。直接定义在对象上的该特性值默认也为`true`。  
 
 >4、Value:这个特性包含着属性的数据值。对对象属性的读写操作都是在这个特性上。该特性的默认值为undefined。   
 
@@ -24,7 +24,7 @@ ECMAScript中有两种属性:数据属性和访问器属性。这是js中任何�
 
 **注意：**
 
-> 1、多次调用Object.defineProperty()方法修改同一个属性，只要把configurable特性设置为false后，就不能再把它变成可配置的了(再次调用Object.defineProperty()将configurable特性设置为true会报错)，即这个过程是不可逆的，**不能再对对象属性进行delete操作，但是还可以对对象属性进行修改操作。**    
+> 1、多次调用`Object.defineProperty()`方法修改同一个属性，只要把`configurable`特性设置为`false`后，就不能再把它变成可配置的了(再次调用`Object.defineProperty()`将`configurable`特性设置为`true`会报错)，即这个过程是不可逆的，**不能再对对象属性进行delete操作，但是还可以对对象属性进行修改操作。**    
 
 ```javascript           
 Object.defineProperty(obj,"name",{
@@ -38,7 +38,7 @@ console.log(obj);//{name: "james"}，可见不能对obj进行删除操作了。
 obj.name="test";
 console.log(obj.name);//test 还是可以对属性进行修改
 ```
-> 2、调用Object.defineProperty()方法时，如果不指定Configurable、Enumerable和writable等特性的值，默认为false。
+> 2、调用 `Object.defineProperty()`方法时，如果不指定`Configurable、Enumerable`和 `writable`等特性的值，默认为`false`。
 
 **访问器属性** 也有4个。但是不包含数据值  
 >1、Configurable:（字面意思是可配置的，我理解为可操作（删除、修改））表示能否通过delete操作来删除属性，以及能否修改属性，或者能否将属性修改为访问器属性。直接定义在对象上的属性，该特性值默认为true。
@@ -47,7 +47,7 @@ console.log(obj.name);//test 还是可以对属性进行修改
 
 >3、Get:在读取属性时调用的函数。 默认值为undefined。   
 
->4、Set:在写入属性时调用的函数。的默认值为undefined。   
+>4、Set:在写入属性时调用的函数。的默认值为`undefined`。   
 
 注意：**不能使用Object.defineProperty()方法同时修改默认数据属性和访问器属性。即set和get访问器属性不能与writable以及value特性共存。**
 
@@ -66,7 +66,7 @@ Object.defineProperty(obj,"name",{
 });
 //Uncaught TypeError: Invalid property descriptor. Cannot both specify accessors and a value or writable attribute, #<Object>
 ```
-&#8195;&#8195;个人觉得数据属性和访问器属性的Configurable和Enumerable没什么区别。访问器属性主要用的是Get和Set这两个。
+&#8195;&#8195;个人觉得数据属性和访问器属性的`Configurable`和 `Enumerable`没什么区别。访问器属性主要用的是 `Get` 和 `Set` 这两个。
 
 **可以通过Object.defineProperty（）实现简单的数据双向绑定**。实现代码如下：
 
@@ -93,9 +93,9 @@ Object.defineProperty(obj,"name",{
     })
 </script>
 ```
-通过操作可以发现，在test1中输入会改变test2中的值，在test2中输入也能改变test1中的值。
+通过操作可以发现，在 `test1` 中输入会改变 `test2` 中的值，在 `test2` 中输入也能改变 `test1` 中的值。
 
-vue中为什么可以直接通过this.msg获取到data中的msg，原理代码如下：
+`vue` 中为什么可以直接通过 `this.msg` 获取到`data` 中的`msg`，原理代码如下：
 
 ```javascript           
 class Vue{

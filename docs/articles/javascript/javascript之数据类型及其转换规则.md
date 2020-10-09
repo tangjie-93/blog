@@ -5,7 +5,7 @@ type: 技术
 tags: javascript
 note: js数据类型及其常见用法
 ---
-&#8195;&#8195;`javascript`中一种有9中数据类型，有7种简单数据类型（也称为基本数据类型）：`undefined、null、boolean、number 和string，symbol，bigint`，还有2种复杂数据类型——`Object`和 `function`。
+&#8195;&#8195;`javascript`中一种有9中数据类型，有7种简单数据类型（也称为基本数据类型）：`undefined、null、boolean、number 和string、symbol、bigint`，还有2种复杂数据类型——`Object`和 `function`。
 <img src="../../images/js数据类型.png">
 
 ## 1、undefined
@@ -98,7 +98,7 @@ if(0.1+0.2==0.3){
 
 **注意点2：** NaN,即非数值（Not a Number）是一个特殊的数值，这个数值用于表示一个本来要返回数值的操作数未返回数值的情况（这样就不会抛出错误了）。
 
-&#8195;&#8195;**NaN 本身有两个非同寻常的特点。**
+**NaN 本身有两个非同寻常的特点。**
 + 1、任何涉及 NaN 的操作（例如 NaN/10）都会返回 NaN，这个特点在多步计算中有可能导致问题。
 
 + 2、`NaN` 与任何值都不相等，包括 `NaN` 本身。
@@ -115,21 +115,20 @@ isNAN("12px") //true 先Number(null)在判断
 #### 4.1 Number()函数的转换规则如下所示
 
 * 如果是 `Boolean` 类型，`true` 和 `false` 分别转换为1和0.
-```js        
-Number(true);//1
-Number(false);//0
-```
-* 如果是`null` 值，返回0。
-
+    ```js        
+    Number(true);//1
+    Number(false);//0
+    ```
+* 如果是`null` 值，返回`0`。
 * 如果是 `undefined`，返回 `NAN`
-```js        
-Number(null);//0
-Number(undefined);//NAN
-```
+    ```js        
+    Number(null);//0
+    Number(undefined);//NAN
+    ```
 * 如果是 `String` 类型，需要考虑以下情况。  
     + 1、如果字符串中只包含数字，则直接将其转换为10进制数值,并且会忽略前导0。如"123"会变成123，"011"会变成11，"1.1"会变成1.1。  
     ```js
-    Number("0123")
+    Number("0123") //123
     Number("11.2")// 11
     ```
     + 2、字符串中包含有效的十六进制格式，则会将其转换为相同大小的10进制整数值。
@@ -142,32 +141,33 @@ Number(undefined);//NAN
     ```   
     + 4、除上面三种情况外，都会转换为NAN。
     ```js
-        Number('10px')//NAN
-        
+    Number('10px')//NAN
     ```
 * 如果是`Object`类型，则调用对象那个的 `valueOf()`,依照前面的规则转换返回的值。不过一般不会将对象去转换成对应的数值。一般情况下对象转换成数值都是返回 `NAN`。
-```js            
-Number({a:123});//NAN
-```
+    ```js            
+    Number({a:123});//NAN
+    ```
 #### 4.2  parseInt(value,radix)的转换规则
 + `radix`是一个进制，不写或者写0都是按10处理。(特殊情况:如果 `value`是以`0x` 开头，则进制为16)。
 + 进制有一个取值的范围:2~36 之间，不在这个区间的结果是`NAN`。
-```js
-parseInt(18,18)// 18+8=>26
-```
+    ```js
+    parseInt(18,18)// 18+8=>26
+    ```
 &#8195;&#8195;会先把`value`转换成字符串。在转换字符串时更多的是看其是否符合数值格式，它会自动忽略字符串前面的空格，直到找到第一个非空字符串，如果是非数值字符串就直接返回 `NAN`，如果是数值字符串则会一直匹配到非数值字符串处结束。**并且转换空字符转时会返回NAN。**  
 
 &#8195;&#8195;`parseInt`也能够识别出各种正数格式（八进制、十六进制）。做这种转换时需要传递第二个参数,不然分辨不出八进制格式的数据。
-```js       
+```js 
+parseInt("");//NAN      
 parseInt(null) //NAN
+parseInt(undefined);//NAN
 parseInt("  s");//NAN
 parseInt("s");//NAN
 parseInt("   2s");//2
-parseInt("");//NAN
 parseInt("0xA",16);//10(十六进制)
 parseInt("070");//70
 parseInt("070",8);//56
 ```
+    
 下面是一道关于`parseInt()`的经典面试题目。
 ```js
 let arr=[10.18,0,"0013",10,25,23,77];
@@ -175,13 +175,23 @@ arr.arr.map(parseInt);
 console.log(arr); //[10,NAN,2,2,11]
 
 parseInt("10.18",0) // 10
-parseInt("0",1) // NAN
+parseInt("0",1) // NaN
 parseInt("0013",2)//=>将"001"看做2进制最后转换为10进制=>1
 parseInt("10",3) // 3
 parseInt("25",4) //=> 将"25"看做4进制最后转换为10进制=>2
 parseInt("23",5) // 13
 parseInt(77,6) //NaN
 ```
+**`Number`和`parseInt`转换对比。**
+| 特殊情况 | Number | parseInt |
+| :-----:| :----: | :----: |
+| 空字符串 | `Number("")=>0` | `parseInt("")=>NaN` |
+| 不包含数字的字符串 | `Number("dddd")=>NaN` | `parseInt("gsdg")=>NaN` |
+| 只包含数字的字符串 | `Number("012")=>12`、`Number("012.2")=>12` | `parseInt("012")=>12`,`parseInt("012.2")=>12` |
+| 包含数字的字符串 | `Number("012x")=>NAN` | `parseInt("012x")=>12` |
+| 字符串中包含有效的十六进制格式 | `Number("0xA")=>10` | `parseInt("0xA")=>10` |
+| `null` | `Number(null)=>0` | `parseInt(null)=>NaN` |
+| `undefined` | `Number(undefined)=>NaN` | `parseInt(undefined)=>NaN` |
 
 #### 4.3  parseFloat转换规则
 
@@ -192,9 +202,9 @@ parseInt(77,6) //NaN
 
 + 1、如果值有 `toString()`方法，则调用该方法（没有参数）并返回相应的结果；    
 
-+ 2、如果值是 null，则返回"null"；
++ 2、如果值是 `null`,则返回 "null"；
 
-+ 3、如果值是 undefined，则返回"undefined"。   
++ 3、如果值是 `undefined`，则返回 `"undefined"`。   
 ```js       
 var value1 = 10;
 var value2 = true; 
@@ -207,20 +217,20 @@ alert(String(value4));     // "undefined"
 ```
 主要有以下方法：
 + 1、字符方法   
-&#8195;&#8195;charAt(index):返回给定位置的字符，index未指定时，默认为0。  
-&#8195;&#8195;charCodeAt(index):返回指定位置的字符编码，index未指定时，默认为0。     
-&#8195;&#8195;fromCharCode()：接收一个或多个字符编码，然后将他们转换为字符串。从本质上看是charCodeAt()的相反操作。
-```js       
-console.log(String.fromCharCode(104,102,103,106));//"hfgi"
-var str="hijhj"
-console.log(str.charAt());//"s",index未指定时，默认为0
-console.log(str.charAt(1));//"i"
-console.log(str.charCodeAt());//104
-console.log(str.charCodeAt(1));//105
-```
+    + charAt(index):返回给定位置的字符，index未指定时，默认为0。  
+    + charCodeAt(index):返回指定位置的字符编码，index未指定时，默认为0。     
+    + fromCharCode()：接收一个或多个字符编码，然后将他们转换为字符串。从本质上看是charCodeAt()的相反操作。
+    ```js       
+    console.log(String.fromCharCode(104,102,103,106));//"hfgi"
+    var str="hijhj"
+    console.log(str.charAt());//"s",index未指定时，默认为0
+    console.log(str.charAt(1));//"i"
+    console.log(str.charCodeAt());//104
+    console.log(str.charCodeAt(1));//105
+    ```
 + 2、字符串操作方法    
-&#8195;&#8195;字符串拼接:concat()，不会改变字符串本身，会返回一个新的字符串。        
-&#8195;&#8195;字符串分割:slice()、substr()、substring()。不会改变字符串本身，会返回一个新的字符串。他们之间的区别如下。 
+    + 字符串拼接:concat()，不会改变字符串本身，会返回一个新的字符串。        
+    + 字符串分割:slice()、substr()、substring()。不会改变字符串本身，会返回一个新的字符串。他们之间的区别如下。 
 
 | 方法 | 第一个参数 | 第二个参数 |
 | :--: | :--: | :--:|
@@ -270,7 +280,7 @@ var pattern2="lloe"
 var index1=str.match(pattern1);//2
 var index2=str.match(pattern2);//-1
 ```
-&#8195;&#8195;**replace():** 接收两个参数，第一个参数可以是RegExp对象或者字符串，第二个参数是一个字符串或者一个函数。第一个参数是字符串时，name只会替换第一个子字符串。**要想替换所有的子字符串，必须提供正则表达式，而且要指定全局（g）标志。**
+**replace():** 接收两个参数，第一个参数可以是RegExp对象或者字符串，第二个参数是一个字符串或者一个函数。第一个参数是字符串时，name只会替换第一个子字符串。**要想替换所有的子字符串，必须提供正则表达式，而且要指定全局（g）标志。**
 ```js       
 var str = "hello world";
 var res1 = str.replace("l", "ww");
@@ -307,7 +317,7 @@ alert(str.localeCompare("cca"));//-1
 alert(str.localeCompare("aca"));//1
 alert(str.localeCompare("bbc"));//0
 ```
->8、HTML方法    
++ 8、HTML方法    
 但是尽量不去使用这些方法，因为他们创建的标记通常无法表达语义。
 ![](https://user-gold-cdn.xitu.io/2019/4/6/169f042487817cc8?w=614&h=264&f=png&s=52206)
 
@@ -404,15 +414,15 @@ typeof function(){} //function
 ```
 #### **3、== 运算符**
 
-&#8195;&#8195;**toPrimitive原则**：目的是把参数input转化为非对象数据类型，也就是原始数据类型。
+&#8195;&#8195;**toPrimitive原则**：目的是把参数 `input` 转化为非对象数据类型，也就是原始数据类型。
 ```js
 toPrimitive(input,preferedType?)
 ```
-+ 1、引用类型转换为Number类型，先调用valueOf()，再调用toString()
-+ 2、引用类型转换为String类型，直接调用toString()。
++ 引用类型转换为 `Number` 类型，先调用`valueOf()`，再调用`toString()`
++ 引用类型转换为`String` 类型，直接调用`toString()`。
 
 **注意：**  
-&#8195;&#8195;1、**Boolean和其他任何类型比较，Boolean首先被转换为Number类型**。
++ 1、`Boolean` 和其他任何类型比较，`Boolean` 首先被转换为`Number`类型。
 ```js        
 true == 1  // true 
 true == '2'  // false  //实际上是Number(true)!==Number("2")
@@ -422,26 +432,26 @@ true == ['2']  // false
 undefined == false // false  false会首先转换为0所以不相等
 null == false // false
 ```
-&#8195;&#8195;2、**String和Number比较，先将String转换为Number类型**。
++ 2、`String` 和 `Number` 比较，先将 `String` 转换为`Number` 类型。
 ```js        
 123 == '123' // true 
 '' == 0 // true      
 ```
-&#8195;&#8195;3、**null == undefined比较结果是true，除此之外，null、undefined和其他任何结果的比较值都为false。**
++ 3、`null == undefined` 比较结果是 `true`，除此之外，`null、undefined` 和其他任何结果的比较值都为 `false`。
 ```js       
 undefined == false // false  false会首先转换为0所以不相等
 null == false // false
 ```
-&#8195;&#8195;4、**当原始类型和引用类型做比较时**，对象类型会依照ToPrimitive规则转换为原始类型。        
++ 4、**当原始类型和引用类型做比较时**，对象类型会依照`ToPrimitive`规则转换为原始类型。        
 ```js       
 '[object Object]' == {} // true 
 
-分析：{}会直接调用tostring()方法，所以左右两边相等。
+//分析：{}会直接调用tostring()方法，所以左右两边相等。
 ```
 ```js
 '1,2,3' == [1, 2, 3] // true
 
-分析:[1, 2, 3]会先调用valueOf()方法，然后调用toString()方法
+//分析:[1, 2, 3]会先调用valueOf()方法，然后调用toString()方法
 ```
 ```js
 [] == ![] // true
@@ -453,29 +463,10 @@ null == false // false
 !的优先级高于==，![]首先会被转换为 `false`，然后根据上面第二点，`false` 转换成 `Number` 类型0，左侧[]转换为0，两侧比较相等。
 ```js       
 [null] == false // true
+//[null].valueOf().toString()=>""
 //等价于 Number([null].valueOf().toString())==Number(false);
 [undefined] == false // true
+//[undefined].valueOf().toString()=>""
 //等价于 Number([undefined].valueOf().toString())==Number(false);
 ```
 **分析：** 根据数组的 `ToPrimitive` 规则，数组元素为`null` 或 `undefined` 时，该元素被当做空字符串处理，所以`[null]`、`[undefined]` 都会被转换为0。
-
-
-## 12、执行环境栈
-浏览器会提供一个供代码运行的环境 **栈内存 ECStack(Execution Context Stack)**,是计算机在计算机中分配出来的一块内存。js代码在执行过程中会按照以下顺序执行。
-+ 执行环境栈 `ECStack`
-+ 全局执行上下文`ECG` 
-+ 全局变量对象 `VOG`
-+ 变量对象 `VO`(`variable object`)
-+  
-
-基本数据类型赋值的详细过程 `var a=12`
-+ **创建**一个值12，把它存储起来(基本类型值存在栈内存中)
-+ **声明**一个变量(`var a`)，把它存储在当前上下文所属的变量对象中。
-+ 最后进行等号**赋值**(定义)。本质是一个指针指向的过程。
-
-引用数据类型赋值的详细过程。`var a={}`
-+ 在计算机中开辟一个堆内存，用来存储自己的键值对，每一个堆内存都有一个16进制的地址。
-+ 在堆内存中分别存储键值对。
-+ 将16进制的地址放到栈中，供变量调用。
-
-

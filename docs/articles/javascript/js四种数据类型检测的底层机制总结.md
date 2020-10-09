@@ -10,11 +10,10 @@ note: js中的四种检测数据类型的方式分别是typeof、instanceof、co
 + 返回结果是一个字符串，字符串包含了对应的数据类型 `number/string/boolean/undefined/symbol/bigint/object/function`
 + `typeof null` 为 `object`。 
 + 所有对象都是以 `000`开始的，所以基于 `typeof` 检测的结果都是`object`。
-```js
-```
+
 ## 2、instanceof
 &#8195;&#8195;并不是用于检测数据类型的，是用来检测当前实例是否属于这个类。一般用来检测"普通对象、数组对象、正则对象、日期对象等"。无法应用到原始值类型数值的检测上。
-+ 一旦**类的`prototype`**发生了改变，那么这个检测就不准了。
++ 一旦 **类的`prototype`** 发生了改变，那么这个检测就不准了。
 + 基于 "实例 `instanceof` 类" 检测的时候，浏览器地层是这样处理的 "类[`Symbol.hasinstance`]()"
 + `Function.prototype[Symbol.hasinstance]=function [Symbol.hasinstance](){ [native code ]}`
 + `Symbol.hasInstance` 方法执行的原理,是判断 **类的prototype是否在实例的原型链上。**
@@ -65,4 +64,18 @@ const p1=new Person();
 const toString={}.toString();
 console.log(toString.call(p1));// [object Person]
 ```
-
+检测类型的函数封装
+```js
+function isType (typing) {
+    return (val) => {
+        return Object.prototype.toString.call(val) == `[object ${typing}]`;
+    }
+}
+let utils = {};
+['String', "Number", "Boolean", 'Object', "Date", "Function"].forEach(method => {
+    utils['is' + method] = isType(method);
+})
+//测试
+console.log(utils.isString('123'));//true
+console.log(utils.isNumber(123));//true
+```

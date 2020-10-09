@@ -420,7 +420,42 @@ class EventBus{
     }
 }
 ```
+**观察者模式**
+```js
+//被观察者
+class Subject {
+    constructor (name) {
+        this.name = name;
+        this.Observer = [];
+        this.state = undefined
+    }
+    attach (o) {
+        if (!this.Observer.includes(o)) {
+            this.Observer.push(o)
+        }
+    }
+    setState (newState) {
+        this.state = newState;
+        this.Observer.forEach(observer => observer.update(this));
+    }
+}
+//观察者
+class Observer {
+    constructor (name) {
+        this.name = name;
 
+    }
+    update (sub) {
+        console.log(`${sub.name}的状态改成了${sub.state}`)
+    }
+}
+const o1 = new Observer('观察者1');
+const o2 = new Observer('观察者2');
+const sub = new Subject("发布者1");
+sub.attach(o1);
+sub.attach(o2);
+sub.setState("开心");
+```
 ---
 
 ### 6、命令模式

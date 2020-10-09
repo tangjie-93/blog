@@ -7,7 +7,7 @@ note: javascript之异步解决方案总结
 ---
 
 ### 1、回调函数（callback）
-
+&#8195;&#8195;回调函数是把函数作为值，传递给另外一个函数，在另外一个函数执行的时候，再把传递进来的函数进行处理。
 **缺点：** 
 + 回调地狱。
 + 缺乏顺序性，导致调试困难。
@@ -22,9 +22,20 @@ function test(a,callback){
 ### 2、生成器（generator）
 **特点：** 可以控制函数的执行。
 ```js
+function *fun(){
+    yield 5;
+    yield 6;
+    return 7;
+}
 ```
-### 3、promise
-**缺点：** 无法取消`Promise`,错误需要通过回调函数来捕获。
+### 3、Promise
+**Promise的优点：**
++ 将异步操作以同步操作的流程表达出来，避免了层层嵌套的回调函数。此外，`Promise`对象提供统一的接口，使得控制异步操作更加容易。
+
+**Promise的不足：**
++ 1、无法取消`Promise`，一旦新建它就会立即执行，无法中途取消。  
++ 2、如果不设置回调函数，`Promise`内部抛出的错误，不会反应到外部。  
++ 3、当处于`pending`状态时，无法得知目前进展到哪一个阶段（刚刚开始还是即将完成）。
 ```js
 const promise=new Promise((resolve,reject)=>{
     resolve(10);
