@@ -177,6 +177,7 @@ Function.prototype.es6Apply = function(context, arr) {
 }
 ```
 ##  3、`call()`和 `apply` 的常见用法
+
 `apply` 常常被用于数组操作。
 >1、如合并两个数组，且改变原数组。  
 
@@ -243,11 +244,11 @@ sayColor();//"red"
 
 ```javascript  
 //基础版
-Function.prototype.bind=function(OThis){
+Function.prototype.bind=function(oThis){
     const fToBind=this;
     const args=[...arguments].slice(1);
     return function(){
-        return fToBind.apply(this,[...args,...arguments])
+        return fToBind.apply(oThis,[...args,...arguments])
     }
 }
 //完整版    

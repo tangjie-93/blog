@@ -38,13 +38,20 @@ p1.say();//姓名：黎明，年龄：30
 
 `var p1=new Person("黎明",30)`这句代码的内部代码执行如下： 
 
-```javascript
-new Person("黎明",30)={
-    var obj  = {};//创建一个空对象 
-    obj.__proto__ = Person.prototype;   
-    Person.call(obj,"黎明",30);
+```js
+//new的实际执行过程如下
+function _New(Ctor,...args){
+    // 方法 1
+    // var obj  = {};//创建一个空对象 
+    // obj.__proto__ = Ctor.prototype;   
+    //方法2 
+    var obj=Object.create(Ctor.prototype);
+    var res=Ctor.call(obj,...args);
+    if(/^(object|function)$/.test(typeof res)) return res;
     return obj;
 }
+new Person("黎明",30)=>_New(Person,"黎明",30)
+
 ```
 **分析：** 所以new在这个过程中的作用是,使p1继承了Person的name和age属性，使p1的原型指向了Person的原型，使得p1拥有了Person的全部实例属性和原型对象，因此p1具有了name和age属性以及say方法。`new Person("黎明",30)`返回的是如下所示的对象。
 <img src="https://user-gold-cdn.xitu.io/2019/4/5/169ed224f2de8e81?w=452&h=191&f=png&s=14037" alt="暂无对象">
