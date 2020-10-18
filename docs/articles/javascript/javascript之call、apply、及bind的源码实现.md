@@ -56,26 +56,19 @@ p1.sayHi.call(t1, 1, 2, 3);
 下面call()函数的源码的大概实现：
 
 ```javascript            
-Function.prototype.Call = function(context) {
+Function.prototype.Call = function(context,...args) {
+    //注意 1 context不传或者为null时，context为window
     var context = context || window;
-    var args = Array.from(arguments).slice(1);
-    var type = typeof context;
-    switch(type) {
-        case "boolean":
-            context = new Boolean(context);
-            break;
-        case "number":
-            context = new Number(context);
-            break;
-        case "string":
-            context = new String(context);
-            break;
-        default:
-            break;
-    }
-    context.fn = this;
-    const result = context.fn(...args);
-    delete context.fn;
+    //注意2 要保证context是引用数据类型的值
+    !/^(object|function)$/.test(typeof context) ? context = Object(context) : null
+    //注意3 创建唯一值，避免跟原对象的属性值相同
+    let key=Symbol("key"),result;
+     //改变this的指向，使得在调用fn时,fn中的this指向context
+    context[key] = this;
+   
+    result = context[key](...args);
+    //用完删除，不改变原始的数据结构
+    delete context[key];
     return result;
 }
 var obj={c:4};
@@ -105,8 +98,26 @@ foo.call("123",1,2,3);
 调用结果如下所示：
 <img src="../../images/call2.png" alt="暂无图片">
 <!-- ![](https://user-gold-cdn.xitu.io/2019/5/16/16ac139c2d91d93a?w=1203&h=466&f=png&s=102659) -->
-上面代码的不足之处在于：只考虑到 `Boolean`、`String` 、`Number` 、`null`、`undefined` 和 `Object` 以及 `Array` 这几种数据类型的功能实现；  
+上面代码的不足之处在于：只考虑到 `Boolean`、`String` 、`Number` 、`null`、`undefined` 和 `Object` 以及 `Array` 这几种数据类型的功能实现； 
 
+**下面是一道经典的`call`的面试题**
+```js
+var name = '珠峰培训';
+function A (x, y) {
+    var res = x + y;
+    console.log(res, this.name);
+}
+function B (x, y) {
+    var res = x - y;
+    console.log(res, this.name);
+}
+B.call(A, 40, 30);//10,A
+//B.call.call=>call
+B.call.call.call(A, 20, 10);//NAN undefined
+Function.prototype.call(A, 60, 50);// 没有输出 
+//Function.prototype.call.call=>call
+Function.prototype.call.call.call(A, 80, 70);// NAN undefined
+```
 ## 2、fun.apply(thisArg, [arguments]) 
 
 | 参数      | 描述                          |
@@ -146,33 +157,25 @@ p1.sayHi.apply(obj, [1,2,3]);
 
 ```javascript            
 Function.prototype.es6Apply = function(context, arr) {
+    /**
+     * this=>fn 要执行的函数
+     * context=>obj 最后要改变的this
+     * args=>最后要传递的参数
+     */
     var context = context || window;
-    var type = typeof context;
-    switch(type) {
-        case "boolean":
-            context = new Boolean(context);
-            break;
-        case "number":
-            context = new Number(context);
-            break;
-        case "string":
-            context = new String(context);
-            break;
-        default:
-
-            break;
-    }
-    context.fn = this;
-    let result;
+    !/^(object|function)$/.test(typeOf context)?context=Object(context):null
+    let key=Symbol("key"),result;
+    context[key] = this;
+    //判断是否传参
     if(!arr) {
-        result = context.fn();
+        result = context[key]();
     } else {
         if(!(Object.prototype.toString.call(arr) == "[object Array]")) {
             throw new Error('CreateListFromArrayLike called on non-object');
         }
-        result = context.fn(...arr);
+        result = context[key](...arr);
     }
-    delete context.fn;
+    delete context[key];
     return result
 }
 ```
@@ -244,30 +247,27 @@ sayColor();//"red"
 
 ```javascript  
 //基础版
-Function.prototype.bind=function(oThis){
+Function.prototype.bind=function(oThis,...args){
     const fToBind=this;
-    const args=[...arguments].slice(1);
     return function(){
         return fToBind.apply(oThis,[...args,...arguments])
     }
 }
 //完整版    
-Function.prototype.bind = function(oThis) {
+Function.prototype.bind = function(oThis,...args) {
     if(typeof this !== 'function') {
         // closest thing possible to the ECMAScript 5
         // internal IsCallable function
         throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');
     }
-    var aArgs = Array.prototype.slice.call(arguments, 1),
-        fToBind = this,
+    var  fToBind = this,
         // fNOP = function() {},
         fBound = function() {
             // this instanceof fBound === true时,说明返回的fBound被当做new的构造函数调用
             return fToBind.apply(this instanceof fBound ?
-                                 this :
-                                 oThis,
+                                this :oThis,
                                  // 获取调用时(fBound)的传参.bind 返回的函数入参往往是这么传递的
-                                 aArgs.concat(Array.prototype.slice.call(arguments)));
+                                [...args,...arguments]);
         };
 
     // 维护原型关系

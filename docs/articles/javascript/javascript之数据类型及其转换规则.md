@@ -426,12 +426,10 @@ typeof function(){} //function
 ```
 #### **3、== 运算符**
 
-&#8195;&#8195;**toPrimitive原则**：目的是把参数 `input` 转化为非对象数据类型，也就是原始数据类型。
-```js
-toPrimitive(input,preferedType?)
-```
-+ 引用类型转换为 `Number` 类型，先调用`valueOf()`，再调用`toString()`
-+ 引用类型转换为`String` 类型，直接调用`toString()`。
+引用类型转换为原始数据类型时，会按照以下优先级来进行转换。
++ `Symbol.toPrimitive(input,preferedType?)`
++ `valueOf()`
++ `toString()`
 
 **注意：**  
 + 1、`Boolean` 和其他任何类型比较，`Boolean` 首先被转换为`Number`类型。

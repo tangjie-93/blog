@@ -386,8 +386,8 @@ Promise.prototype.finally = function (f) {
 ```javascript       
 Promise.all=function(promises){
     return new Promise((reslove,reject)=>{
-         let arr=[];
-         let count=0
+        let arr=[];
+        let count=0;
         promises.forEach((promise,i)=>{
             promise.then(value=>{
                 arr.push(value);
@@ -453,7 +453,7 @@ Promise.race = function(promises) {
     });
 }
 ```
-&#8195;&#8195;该方法返回一个 promise，一旦迭代器中的某个子promise执行了成功或失败操作，父promise对象也会用子promise的成功返回值或失败详情作为参数调用父promise绑定的相应句柄，并返回该promise对象。如果传的迭代(iterable)是空的，则返回的 promise 将永远等待。
+&#8195;&#8195;该方法返回一个 `promise`，一旦迭代器中的某个子`promise`执行了成功或失败操作，父`promise`对象也会用子`promise`的成功返回值或失败详情作为参数调用父`promise`绑定的相应句柄，并返回该`promise`对象。如果传的迭代`(iterable)`是空的，则返回的 `promise` 将永远等待。
 
 ```javascript            
 let p=Promise.race([1,2]).then(value=>{

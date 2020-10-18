@@ -140,7 +140,7 @@ var filterRestaurants = function(restaurants, veganFriendly, maxPrice, maxDistan
     .map(restaurant=>restaurant[0])
 };
 ```
-## 4、. 重新排列句子中的单词[1451题](https://leetcode-cn.com/problems/rearrange-words-in-a-sentence/)
+## 4、重新排列句子中的单词[1451题](https://leetcode-cn.com/problems/rearrange-words-in-a-sentence/)
 「句子」是一个用空格分隔单词的字符串。给你一个满足下述格式的句子 `text` :句子的首字母大写`text` 中的每个单词都用单个空格分隔。请你重新排列 `text` 中的单词，使所有单词按其长度的升序排列。如果两个单词的长度相同，则保留其在原句子中的相对顺序。请同样按上述格式返回新的句子。
 **示例**
 ```js
@@ -197,7 +197,7 @@ var sortArrayByParityII=function(A){
     return A;
 }
 ```
-## 6、上升下降字符串(1370题)[https://leetcode-cn.com/problems/increasing-decreasing-string/]
+## 6、上升下降字符串[1370题](https://leetcode-cn.com/problems/increasing-decreasing-string/)
 给你一个字符串 s ，请你根据下面的算法重新构造字符串：
 
 从 s 中选出 最小 的字符，将它 接在 结果字符串的后面。
@@ -260,7 +260,7 @@ function  haveChar(h) {
     return false;
 }
 ```
-## 7、将矩阵按对角线排序(1329题)[https://leetcode-cn.com/problems/sort-the-matrix-diagonally/]
+## 7、将矩阵按对角线排序[1329题](https://leetcode-cn.com/problems/sort-the-matrix-diagonally/)
 给你一个 m * n 的整数矩阵 mat ，请你将同一条对角线上的元素（从左上到右下）按升序排序后，返回排好序的矩阵。
 **题解**
 ```js

@@ -7,7 +7,17 @@ note: 变量提升是将变量声明提升到它所在作用域的最开始的�
 ---
 ## 什么叫变量提升?
 把当前上下文中带有`var`(提升声明)/`function`(提升声明+定义)进行提升的声明或者定义。变量提升是将变量声明提升到它所在作用域的最开始的部分。
-    + 全局上下文中:基于`var/function`声明的变量，也相当于给`window`设置了对应的属性。
+    + 全局上下文中:基于`var/function`声明的变量，也相当于给`window`设置了对应的属性。能够穿透脚本、模块、函数体。
+    + `function` 声明的行为原本跟 `var` 非常相似,不同之处在于，`function`声明提升的同时还会赋值。
+    + `function`在`if`等语句的情况有点复杂，在变量提升阶段，它不再被提前赋值。
+
+    ```js
+    console.log(foo);//undefined
+    if(true) { 
+        function foo(){ }
+    }
+    ```
+   
 &#8195;&#8195;
 #### 实例 1
 ```js
@@ -45,7 +55,7 @@ function a(){
 a();
 ```
 
-function声明会比var声明优先级更高一点。
+`function`声明会比`var`声明优先级更高一点。
 
 ```js
 //代码4
@@ -390,4 +400,34 @@ function fn (a) {
     console.log(a);//2    
 }
 fn(a);
+```
+#### 实例 11
+```js
+//形式1
+var a = 1;
+function foo() {
+    //在变量提升阶段，var 的作用能够穿透一切语句结构
+    console.log(a);//undefined
+    if(false) {
+        var a = 2;
+    }
+}
+foo();
+//形式2
+var a = 1;
+function foo () {
+    /**
+     * 在变量提升阶段
+     *  在foo的作用域内创建了a这个变量，但是没有赋值
+     * 在函数执行阶段
+     *  执行到 var a=2时，作用域变成了with语句内，这个时候的a被认为是访问到了对象o的属性，即o.a=2;
+     */
+    var o = { a: 3 }
+    with (o) {
+        var a = 2;
+    }
+    console.log(o.a);//2
+    console.log(a);//undefined
+}
+foo();
 ```
