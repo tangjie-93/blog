@@ -1,5 +1,5 @@
 ---
-title: 执行环境、作用域和作用域链
+title: javascript之函数的执行机制详解
 date: '2020-01-14'
 type: 技术
 tags: javascript
