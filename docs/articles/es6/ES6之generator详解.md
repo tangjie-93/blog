@@ -5,12 +5,16 @@ type: 技术
 tags: es6
 note: ES6之generator详解
 ---
-
-&#8195;&#8195;是 ES6 提供的**一种异步编程解决方案。** 语法上是一个**状态机，封装了多个内部状态** 。执行 Generator 函数会**返回一个遍历器对象**。这一点跟promise很像，promise是一个容器，里面保存着某个未来才会结束的事件（通常是一个异步操作）的结果。  
-&#8195;&#8195;Generator 函数是一个普通函数，但是有两个特征。
+&#8195;&#8195;是 ES6 提供的**一种异步编程解决方案。** 语法上是一个**状态机，封装了多个内部状态** 。执行 `Generator` 函数会**返回一个遍历器对象**。这一点跟`promise`很像，`promise`是一个容器，里面保存着某个未来才会结束的事件（通常是一个异步操作）的结果。  
+&#8195;&#8195;`Generator` 函数是一个普通函数，但是有两个特征。
 >1、function关键字与函数名之间有一个星号（位置不固定）；    
-
->2、函数体内部使用yield表达式，定义不同的内部状态（yield在英语里的意思就是“产出”）。
+```js
+function *fun(){}
+let iterator=fun();
+console.log(iterator instanceof fun);//true
+new fun();//fun is not a constructor
+```
+>2、函数体内部使用`yield`表达式，定义不同的内部状态（`yield` 在英语里的意思就是“产出”）。
 ```js
 function* helloWorldGenerator() {
     yield 'hello';
@@ -23,9 +27,9 @@ hw.next()// { value: 'world', done: false }
 hw.next()// { value: 'ending', done: true }
 hw.next() // { value: undefined, done: true }
 ```        
-&#8195;&#8195;该函数有三个状态：hello，world 和 return 语句（结束执行）。调用 Generator 函数后，该函数并不执行，返回的也不是函数运行结果，而是一个**指向内部状态的指针对象**，也就是上一章介绍的遍历器对象（Iterator Object）。下一步，必须调用遍历器对象的next方法，使得指针移向下一个状态（**执行yield后面的语句，直到遇到yield或者return语句**）。
+&#8195;&#8195;该函数有三个状态：`hello`，`world` 和 `return` 语句（结束执行）。调用 `Generator` 函数后，该函数并不执行，返回的也不是函数运行结果，而是一个**指向内部状态的指针对象**，也就是上一章介绍的遍历器对象（`Iterator Object`）。下一步，必须调用遍历器对象的`next`方法，使得指针移向下一个状态（**执行yield后面的语句，直到遇到yield或者return语句**）。
 
-<h4>1、	yield表达式</h4>
+#### 1、yield表达式
 
 &#8195;&#8195;`yield`表达式就是暂停标志。**并将紧跟在`yield`后面的那个表达式的值，作为返回的对象的`value`属性值。**`yield`表达式后面的表达式，只有当调用`next`方法、内部指针指向该语句时才会执行。
 
@@ -33,9 +37,9 @@ hw.next() // { value: undefined, done: true }
 
 &#8195;&#8195;**注意：**
 
->1、yield表达式只能用在 Generator 函数里面，用在其他地方都会报错。  
->2、yield表达式如果用在另一个表达式之中，必须放在圆括号里面。   
->3、yield不能跨函数。   
+>1、`yield`表达式只能用在 `Generator` 函数里面，用在其他地方都会报错。  
+>2、`yield`表达式如果用在另一个表达式之中，必须放在圆括号里面。   
+>3、`yield`不能跨函数。   
 >4、箭头函数不能做`generator`
 ```js
 function* demo() {
@@ -45,15 +49,15 @@ function* demo() {
     console.log('Hello' + (yield 123)); // OK
 }
 ```       
->3、	yield表达式用作函数参数或放在赋值表达式的右边，可以不加括号。
+>3、`yield`表达式用作函数参数或放在赋值表达式的右边，可以不加括号。
 ```js
 function* demo() {
     foo(yield 'a', yield 'b'); // OK
     let input = yield; // OK
 }
 ```       
-&#8195;&#8195;任意一个对象的Symbol.iterator方法，等于该对象的遍历器生成函数，调用该函数会返回该对象的一个遍历器对象。    
-&#8195;&#8195;Generator 函数就是遍历器生成函数，因此可以把 Generator 赋值给对象的Symbol.iterator属性，从而使得该对象具有 Iterator 接口。
+&#8195;&#8195;任意一个对象的`Symbol.iterator`方法，等于该对象的遍历器生成函数，调用该函数会返回该对象的一个遍历器对象。    
+&#8195;&#8195;`Generator` 函数就是遍历器生成函数，因此可以把 `Generator` 赋值给对象的`Symbol.iterator`属性，从而使得该对象具有 `Iterator` 接口。
 ```js       
 var myIterable = {};
 myIterable[Symbol.iterator] = function* () {
@@ -63,7 +67,7 @@ myIterable[Symbol.iterator] = function* () {
 };
 [...myIterable] // [1, 2, 3]
 ```       
-&#8195;&#8195;Generator 函数执行后，返回一个遍历器对象。该对象本身也具有Symbol.iterator属性，执行后返回自身。
+&#8195;&#8195;`Generator` 函数执行后，返回一个遍历器对象。该对象本身也具有`Symbol.iterator`属性，执行后返回自身。
 ```js
 function* gen(){
     // some code
@@ -71,7 +75,7 @@ function* gen(){
 var g = gen();
 g[Symbol.iterator]() === g   // true
 ```       
-<h4>2、	next方法的参数</h4>
+#### 2、next方法的参数
 
 &#8195;&#8195;**`yield`表达式本身没有返回值，或者说总是返回`undefined`。`next`方法可以带一个参数，该参数就会被当作上一个`yield`表达式的返回值。** 从语义上讲，第一个`next`方法用来启动遍历器对象，所以不用带有参数。
 ```js
@@ -83,8 +87,8 @@ function* f() {
 }
 var g = f();
 console.log(g.next()) // { value: 0, done: false }
-console.log (g.next()) // { value: 1, done: false }
-console.log (g.next(true) )// { value: 0, done: false } 执行i=-1，然后i++变成了0
+console.log(g.next()) // { value: 1, done: false }
+console.log(g.next(true) )// { value: 0, done: false } 执行i=-1，然后i++变成了0
 ```        
 &#8195;&#8195;再看下面的一个例子
 ```js
@@ -138,11 +142,11 @@ console.log( genObj.next('b'));
 &#8195;&#8195;输出结果如下：四次输出结果如红线框中所示
 
 ![](https://user-gold-cdn.xitu.io/2019/4/14/16a1bd728468770c?w=1918&h=196&f=png&s=44019)
-&#8195;&#8195;结果分析：第一次调用next(),执行到yield 1结束；第二次调用next()执行到yield结束；第三次调用next("a")执行 var a=yield中的yield；第四次调用next("b")方法调用var a=yield语句和var b=yield中的yield；
+&#8195;&#8195;结果分析：第一次调用 `next()`,执行到 `yield 1`结束；第二次调用`next()`执行到`yield`结束；第三次调用`next("a")`执行 `var a=yield`中的 `yield`；第四次调用`next("b")`方法调用`var a=yield`语句和`var b=yield`中的`yield`；
 
-<h4>3、	for…of</h4>
+#### 3、for…of
 
-&#8195;&#8195;`for...of`循环可以自动遍历 Generator 函数运行时生成的Iterator对象，且此时不再需要调用next方法。
+&#8195;&#8195;`for...of`循环可以自动遍历 `Generator` 函数运行时生成的 `Iterator` 对象，且此时不再需要调用 `next` 方法。
 ```js
 function* foo() {
     yield 1;
@@ -157,7 +161,7 @@ for (let v of foo()) {
 }
 // 1 2 3 4 5
 ```       
-&#8195;&#8195;**一旦next方法的返回对象的`done`属性为`true`，`for...of`循环就会中止，且不包含该返回对象**，所以上面代码的return语句返回的6，不包括在`for...of`循环之中。    
+&#8195;&#8195;**一旦next方法的返回对象的`done`属性为`true`，`for...of`循环就会中止，且不包含该返回对象**，所以上面代码的`return`语句返回的6，不包括在`for...of`循环之中。    
 &#8195;&#8195;除了`for...of`循环以外，扩展运算符（...）、解构赋值和`Array.from`方法内部调用的，都是遍历器接口。这意味着，它们都可以将 `Generator` 函数返回的 `Iterator` 对象，作为参数，并且遇到`Generator` 函数中的`return`语句结束。
 ```js
 function* numbers () {
@@ -180,7 +184,7 @@ for (let n of numbers()) {
 }
 // 1,2
 ```       
-<h4>4、	Generator.prototype.throw()</h4>
+#### 4、Generator.prototype.throw()
 
 &#8195;&#8195;在函数体外抛出错误，然后在 Generator 函数体内捕获。**如果是全局throw()命令，只能被函数体外的catch语句捕获。**
 ```js
@@ -310,9 +314,9 @@ log(g());
 // 第三次运行next方法 { value: undefined, done: true }
 // caller done
 ```       
-<h4>5、	Generator.prototype.return()</h4>
+#### 5、Generator.prototype.return()
 
-&#8195;&#8195;返回给定的值，并且终结遍历 Generator 函数。
+&#8195;&#8195;返回给定的值，并且终结遍历 `Generator` 函数。
 ```js
 function* gen() {
     yield 1;
@@ -324,7 +328,7 @@ g.next()        // { value: 1, done: false }
 g.return('foo') // { value: "foo", done: true } //
 g.next()        // { value: undefined, done: true }
 ```       
-&#8195;&#8195;如果 Generator 函数内部有try...finally代码块，且正在执行try代码块，那么return方法会推迟到finally代码块执行完再执行。
+&#8195;&#8195;如果 `Generator` 函数内部有`try...finally`代码块，且正在执行try代码块，那么`return`方法会推迟到 `finally` 代码块执行完再执行。
 ```js
 function* numbers () {
     yield 1;
@@ -345,16 +349,15 @@ g.next() // { value: 5, done: false }
 g.next() // { value: 7, done: true }
 g.next() // { value: undefined, done: true }
 ```       
-<h4>6、	next()、throw()、return()的共同点及区别</h4>
+#### 6、next()、throw()、return()的共同点及区别
 
-&#8195;&#8195;它们的作用都是让 Generator 函数恢复执行，并且使用不同的语句替换yield表达式。
+&#8195;&#8195;它们的作用都是让 `Generator` 函数恢复执行，并且使用不同的语句替换`yield`表达式。
 
->next()是将yield表达式替换成一个值。    
->throw()是将yield表达式替换成一个throw语句。    
->return()是将yield表达式替换成一个return语句。 
+>`next()`是将`yield`表达式替换成一个值。    
+>`throw()`是将`yield`表达式替换成一个`throw`语句。    
+>`return()`是将`yield`表达式替换成一个`return`语句。 
 
-<h4>17.7、	yield* 表达式</h4>
-
+#### 7、yield* 表达式
 &#8195;&#8195;用到yield*表达式，用来在一个 Generator 函数里面执行另一个 Generator 函数。
 ```js       
 function* foo() {
@@ -467,7 +470,7 @@ for(let x of iterTree(tree)) {
 }
 // a  // b   // c   // d   // e
 ```       
-<h4>&#8195;17.8、	作为对象的属性的Generator函数</h4>
+#### 8、作为对象的属性的Generator函数
 ```js
 let obj = {
     * myGeneratorMethod() {
@@ -475,7 +478,7 @@ let obj = {
     }
 };
 ```        
-<h4>&#8195;17.9、	Generator函数的this</h4>
+#### 9、Generator函数的this
 
 &#8195;&#8195;**Generator 函数总是返回一个遍历器，ES6 规定这个遍历器是 Generator 函数的实例，也继承了 Generator 函数的prototype对象上的方法**。
 ```js
@@ -523,9 +526,9 @@ f.c // 3
 ```       
 &#8195;&#8195;多个线程（单线程情况下，即多个函数）可以并行执行，但是只有一个线程（或函数）处于正在运行的状态，其他线程（或函数）都处于暂停态（suspended），线程（或函数）之间可以交换执行权。并行执行、交换执行权的线程（或函数），就称为协程。
 
-<h4>&#8195;17.10、	应用</h4>
+#### 10、应用
 
-&#8195;&#8195;1、	异步操作的同步表达。
+&#8195;&#8195;1、异步操作的同步表达。
 通过 Generator 函数部署 Ajax 操作，可以用同步的方式表达。
 ```js        
 function makeAjaxCall(url,callBack){
@@ -663,7 +666,7 @@ function* doStuff() {
 for (task of doStuff()) {}
     // task是一个函数，可以像回调函数那样使用它
 ```         
-<h4>17.11、	Generator函数的异步调用（**需要好好理解弄懂**）</h4>
+#### 11、Generator函数的异步调用（**需要好好理解弄懂**）
 &#8195;&#8195;异步编程的方法主要有这几种：
 
 >1、回调函数(耦合性太强)    
@@ -671,7 +674,7 @@ for (task of doStuff()) {}
 >3、发布/订阅   
 >4、Promise 对象    
 >5、generator   
-&#8195;&#8195;1.	使用Generator来封装异步函数
+&#8195;&#8195;1.使用Generator来封装异步函数
 ```js
 var fetch = require('node-fetch');
 function* gen(){
@@ -688,7 +691,7 @@ result.value.then(function(data){
 });
 ```       
 &#8195;&#8195;首先执行 Generator 函数，获取遍历器对象，然后使用next方法（第二行），执行异步任务的第一阶段。由于Fetch模块返回的是一个 Promise 对象，因此要用then方法调用下一个next方法。
-&#8195;&#8195;2.	Thunk函数   
+&#8195;&#8195;2.Thunk函数   
 &#8195;&#8195;编译器的“传名调用”实现，往往是将参数放到一个临时函数之中，再将这个临时函数传入函数体。这个临时函数就叫做 Thunk 函数。
 ```js
 function f(m) {
@@ -708,13 +711,13 @@ fs.readFile(fileName, callback);
 // Thunk版本的readFile（单参数版本）
 var Thunk = function (fileName) {
     return function (callback) {
-    return fs.readFile(fileName, callback);
+        return fs.readFile(fileName, callback);
     };
 };
 var readFileThunk = Thunk(fileName);
 readFileThunk(callback);
 ```       
-&#8195;&#8195;3.	基于 Promise 对象的自动执行
+&#8195;&#8195;3.基于 `Promise` 对象的自动执行
 ```js
 var fs = require('fs');
 var readFile = function (fileName){
@@ -732,12 +735,12 @@ var gen = function* (){
     console.log(f2.toString());
 };
 ```        
-&#8195;&#8195;然后，手动执行上面的 Generator 函数。
+&#8195;&#8195;然后，手动执行上面的 `Generator` 函数。
 ```js
 var g = gen();
 g.next().value.then(function(data){
     g.next(data).value.then(function(data){
-    g.next(data);
+        g.next(data);
     });
 });
 ```       
@@ -746,11 +749,11 @@ g.next().value.then(function(data){
 function run(gen){
     var g = gen();
     function next(data){
-    var result = g.next(data);
-    if (result.done) return result.value;
-    result.value.then(function(data){
-        next(data);
-    });
+        var result = g.next(data);
+        if (result.done) return result.value;
+        result.value.then(function(data){
+            next(data);
+        });
     }
     next();
 }

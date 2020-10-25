@@ -10,7 +10,6 @@ note: co函数的理解
 function co(gen) {
   var ctx = this;
   var args = slice.call(arguments, 1)
-
   // we wrap everything in a promise to avoid promise chaining,
   // which leads to memory leak errors.
   // see https://github.com/tj/co/issues/180
@@ -21,13 +20,10 @@ function co(gen) {
     if (!gen || typeof gen.next !== 'function') return resolve(gen);
 
     onFulfilled();
-
     /**
      * @param {Mixed} res
      * @return {Promise}
-     * @api private
      */
-
     function onFulfilled(res) {
       var ret;
       try {
@@ -37,13 +33,10 @@ function co(gen) {
       }
       next(ret);
     }
-
     /**
      * @param {Error} err
      * @return {Promise}
-     * @api private
      */
-
     function onRejected(err) {
       var ret;
       try {
@@ -55,14 +48,9 @@ function co(gen) {
     }
 
     /**
-     * Get the next value in the generator,
-     * return a promise.
-     *
      * @param {Object} ret
      * @return {Promise}
-     * @api private
      */
-
     // 反复执行调用自己
     function next(ret) {
       // 检查当前是否为 Generator 函数的最后一步，如果是就返回
