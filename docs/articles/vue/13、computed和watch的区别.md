@@ -18,7 +18,7 @@ note: 从源码上解释Computed和watch的区别
 **`computed` 的源码解析如下：**
 + 1、在 `computed` 初始化的过程中会创建一个 `watcher` 并设置`lazy=true`,所以在初始化时会求值，在页面中调用 `computed` 时，开始求值，调用 `watcher.evaluate()`方法,并将 `dirty=false`。
 + 2、当 `computed`依赖的属性发生改变时，会调用  `watcher.update()` 方法，将`dirty=true`。
-+ 3、当在页面中再次获取该属性时，会再次调用 如果`dirty`为 `true` `watcher.evaluate()` 方法，否则返回原来计算的值。这就是`computed` 为什么具有缓存效果的原因。
++ 3、当在页面中再次获取该属性时，如果`dirty`为 `true`,调用 `watcher.evaluate()` 方法，否则返回原来计算的值。这就是`computed` 为什么具有缓存效果的原因。
 
 ## 2、watch
 

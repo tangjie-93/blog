@@ -1430,7 +1430,7 @@ class Light{
         }
     };
     setState(newState){
-        this.currState = newState; 
+        this.currentState = newState; 
     }
 }
 var light = new Light(); 
