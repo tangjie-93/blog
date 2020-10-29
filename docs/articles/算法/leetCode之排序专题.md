@@ -261,7 +261,7 @@ function  haveChar(h) {
 }
 ```
 ## 7、将矩阵按对角线排序[1329题](https://leetcode-cn.com/problems/sort-the-matrix-diagonally/)
-给你一个 m * n 的整数矩阵 mat ，请你将同一条对角线上的元素（从左上到右下）按升序排序后，返回排好序的矩阵。
+给你一个 `m * n` 的整数矩阵 mat ，请你将同一条对角线上的元素（从左上到右下）按升序排序后，返回排好序的矩阵。
 **题解**
 ```js
 /**

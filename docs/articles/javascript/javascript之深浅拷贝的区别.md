@@ -100,7 +100,10 @@ function deepCopy(objData,cache=new Set()){
     const keys=getOwnProperty(objData);
     const clone=Array.isArray(objData)?[]:{};
     let obj=keys.reduce((cur,key)=>{
-        cur[key]=deepCopy(obj[key],cache);
+        // if(objData===objData[key]) {
+        //     cur[key]=shallowCopy(objData);
+        // };
+        cur[key]=deepCopy(objData[key],cache);
         return cur
     },clone);
     return obj;

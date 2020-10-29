@@ -31,8 +31,8 @@ js中常见的异步操作有以下：
 <h3>2、任务队列的分类</h3>
 
 &#8195;&#8195;任务队列按照某种条件又可以细分为 `microtask` 和 `macrotask`，通常我们会称之为微任务和宏任务。**代码执行的优先级为：微任务>宏任务。**
-+ 微任务主要有：`ES6` 的`Promise`(then函数)，`node.js`中的 `process.nextTick()`，`MessageChannel`(消息通道，类似`worker`)，`MutationObserver` (html5新特性)
-+ 宏任务主要有：`setTimeout` 和 `setInterval`、`requestAnimationFrame`，`setImmediate`, `I/O`
++ 微任务主要有：`ES6` 的`Promise`(then函数),`async/await`，`node.js`中的 `process.nextTick()`，`MessageChannel`(消息通道，类似`worker`)，`MutationObserver` (html5新特性)
++ 宏任务主要有：`setTimeout` 和 `setInterval`、`requestAnimationFrame`，`setImmediate`, `I/O`,事件绑定，`http`请求。
 
 **&#8195;&#8195;js中代码执行的顺序是：首先执行主线程中的代码，等到主线程的同步代码执行完毕后，从微任务队列中逐个取出微任务到主线程执行，等到微任务队列被清空，然后再从宏任务队列中逐个取出宏任务到主线程中执行过，直到宏任务队列被清空。**
 
@@ -146,6 +146,28 @@ setTimeout(() => {
 //输出结果是1、0、2
 ```
 **结果分析：延迟时间1毫秒的比延迟时间0毫秒的先执行，大于1毫秒的按延迟时间大小先后顺序执行。**
+
+例子
+```js
+let document=document.body;
+//宏任务1
+body.addEventListener("click",()=>{
+    Promise.resolve().then(()=>{
+        console.log(1)
+    })
+    console.log(2)
+})
+//宏任务2
+body.addEventListener("click",()=>{
+    Promise.resolve().then(()=>{
+        console.log(3)
+    })
+    console.log(4)
+})
+//输出顺序 2 1 4 3
+```
+
+
 <h3>3、浏览器环境中和node环境中EventLoop的异同</h3>
 &#8195;&#8195;示例代码如下所示；
 
