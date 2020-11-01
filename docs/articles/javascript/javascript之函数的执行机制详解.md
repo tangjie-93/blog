@@ -111,6 +111,4 @@ console.log(a);//undefined
 //如果c=b(1,2),此时函数b中的arguments为{0:1,1:2,length:2}
 ```
 
-[1、JavaScript深入之变量对象](https://github.com/mqyqingfeng/Blog/issues/5)
-
 <Valine></Valine>

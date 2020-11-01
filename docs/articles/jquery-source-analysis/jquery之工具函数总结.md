@@ -306,4 +306,80 @@ function DOMEval (code, node, doc) {
 		doc.head.appendChild(script).parentNode.removeChild(script);
 	}
 ```
-#### 8
+#### 8、正则表达式方式的字符串分割
+该正则表达式可以用来分割字符串，比`split`的功能更强大。可以同时按照不同分隔符来分割字符串。
+```js
+//在中括号中的^表示非的意思,\X20表示空格,/g表示全局搜索,使用match方法时将返回匹配数组
+const rnothtmlwhite=/[^\x20\r\n\t\f]+/
+//测试
+"test".match(rnothtmlwhite);//=>["test"]
+"test\rceshi".match(rnothtmlwhite);//["test","ceshi"]
+"once memory\r334".match(/[^\x20\t\n\f\r]+/g);//=>["once","memory","334"]
+```
+下面是该正则表达式在源码中的使用。
+```js
+/*1、先将字符串转换成数组,
+* 2、然后再将数组转换成key数组元素，value为true的对象
+*/
+function createOptions(options){
+    const option={};
+    //options.match(rnothtmlwhite)//将字符串转换成数组
+    jQuery.each(options.match(rnothtmlwhite)||[],function(_,flag){
+        option[flag]=true;
+    });
+    return option;
+}
+createOptions("once\tmemory");//{ "once":true,"memory":true }
+createOptions("once memory");//{"once":true,"memory":true}
+```
+#### 9、唯一值的设置
+```js
+let expando = "sizzle" + 1 * new Date(),
+```
+#### 10、使用正则表达式快速改变大小写
+```js
+const rmsPrefix = /^-ms-/,
+		rdashAlpha = /-([a-z])/g;
+//首字母大写
+function camelCase (string) {
+	return string.replace(rmsPrefix, "ms-").replace(rdashAlpha, fcamelCase);
+}
+//将字符串中符合条件的都转换成大写
+function fcamelCase (_all, letter) {
+    return letter.toUpperCase();
+}
+//测试
+console.log(camelCase("-asx123"));//=>msAsx123
+```
+#### 11、如何在不改变字符串的情况下将字符串改变成数字
+```js
+function getData (data) {
+    if (data === "true") {
+        return true;
+    }
+    if (data === "false") {
+        return false;
+    }
+
+    if (data === "null") {
+        return null;
+    }
+    // Only convert to a number if it doesn't change the string
+    if (data === +data + "") {
+        return +data;
+    }
+
+    if (rbrace.test(data)) {
+        return JSON.parse(data);
+    }
+    return data;
+}
+```
+#### 12、`ownerDocument`和 `documentElement`的区别
++ `ownerDocument`是`Node`对象的一个属性，返回的是某个元素的**根节点文档对象**：即`document`对象
++ `documentElement`是 `Document`对象的属性，返回的是**文档根节点**。
++ 对于`HTML`文档来说，`documentElement`是`<html>`标签对应的`Element`对象，`ownerDocument`是`document`对象。
+```js
+document.getElementsByTagName("body")[0].ownerDocument===document;//true
+document.documentElement;//=><html>...</html>
+```

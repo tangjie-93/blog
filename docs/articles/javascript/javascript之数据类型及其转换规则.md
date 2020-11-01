@@ -229,9 +229,9 @@ alert(String(value4));     // "undefined"
 ```
 主要有以下方法：
 + 1、字符方法   
-    + charAt(index):返回给定位置的字符，index未指定时，默认为0。  
-    + charCodeAt(index):返回指定位置的字符编码，index未指定时，默认为0。     
-    + fromCharCode()：接收一个或多个字符编码，然后将他们转换为字符串。从本质上看是charCodeAt()的相反操作。
+    + `charAt(index)`:返回给定位置的字符，index未指定时，默认为0。  
+    + `charCodeAt(index)`:返回指定位置的字符编码，index未指定时，默认为0。     
+    + `fromCharCode()`：接收一个或多个字符编码，然后将他们转换为字符串。从本质上看是charCodeAt()的相反操作。
     ```js       
     console.log(String.fromCharCode(104,102,103,106));//"hfgi"
     var str="hijhj"
@@ -241,8 +241,8 @@ alert(String(value4));     // "undefined"
     console.log(str.charCodeAt(1));//105
     ```
 + 2、字符串操作方法    
-    + 字符串拼接:concat()，不会改变字符串本身，会返回一个新的字符串。        
-    + 字符串分割:slice()、substr()、substring()。不会改变字符串本身，会返回一个新的字符串。他们之间的区别如下。 
+    + 字符串拼接:`concat()`，不会改变字符串本身，会返回一个新的字符串。        
+    + 字符串分割:`slice()`、`substr()`、`substring()`。不会改变字符串本身，会返回一个新的字符串。他们之间的区别如下。 
 
 | 方法 | 第一个参数 | 第二个参数 |
 | :--: | :--: | :--:|
@@ -270,12 +270,15 @@ console.log(str.substr(-1,-3))//""
 &#8195;&#8195;用于删除字符串前置和后缀的所有空格。 
 
 + 5、字符串大小写转换方法  
-
-&#8195;&#8195; **toLowerCase()** 将字符串全部转换为小写; **toUpperCase()** 将字符串全部转换为大写。还有针对特定地区的方法如:**toLocaleLowerCase()** 将字符串全部转换为小写;**toLocaleUpperCase()**  将字符串全部转换为大写。建议一般情况下使用针对地区的方法。  
+    + **toLowerCase()** 将字符串全部转换为小写;
+    + **toUpperCase()** 将字符串全部转换为大写。还有针对特定地区的方法如
+    + **toLocaleLowerCase()** 将字符串全部转换为小写;
+    + **toLocaleUpperCase()**  将字符串全部转换为大写。建议一般情况下使用针对地区的方法。  
 
 + 6、字符串的模式匹配方法  
 
 &#8195;&#8195; **match():** 只接受一个参数，要么是正则表达式，要么是RegExp对象，**返回一个数组。本质上于RegExp的exec()方法相同。**
+
 ```js        
 var str="hello world";
 var pattern=/llo/;
@@ -292,7 +295,7 @@ var pattern2="lloe"
 var index1=str.match(pattern1);//2
 var index2=str.match(pattern2);//-1
 ```
-**replace():** 接收两个参数，第一个参数可以是RegExp对象或者字符串，第二个参数是一个字符串或者一个函数。第一个参数是字符串时，name只会替换第一个子字符串。**要想替换所有的子字符串，必须提供正则表达式，而且要指定全局（g）标志。**
+&#8195;&#8195;**replace():** 接收两个参数，第一个参数可以是RegExp对象或者字符串，第二个参数是一个字符串或者一个函数。第一个参数是字符串时，name只会替换第一个子字符串。**要想替换所有的子字符串，必须提供正则表达式，而且要指定全局（g）标志。**
 ```js       
 var str = "hello world";
 var res1 = str.replace("l", "ww");
