@@ -43,7 +43,15 @@ rquickExpr = /^(?:\s*(<[\w\W]+>)[^>]*|#([\w-]*))$/;
 ```
 2. `^(?:\s*(<[\w\W]+>)[^>]*`
 
-+ `(?:pattern)` : 匹配 `pattern` 但不获取匹配结果，也就是说这是一个非获取匹配，不进行存储供以后使用
++ `(?:pattern)` : 匹配 `pattern` 但不获取匹配结果，也就是说这是一个**非获取匹配**，不进行存储供以后使用。
+```js
+const a = "123abc456ww";
+let pattern = "([0-9]*)([a-z]*)([0-9]*)";
+console.log(a.match(pattern));//["123abc456", "123", "abc", "456", index: 0, input: "123abc456ww", groups: undefined]
+pattern = "(?:[0-9]*)([a-z]*)([0-9]*)";
+console.log(a.match(pattern));//["123abc456", "abc", "456", index: 0, input: "123abc456ww", groups: undefined] 123没有被捕获
+
+```
 + `\s*` : 匹配任何空白字符，包括空格、制表符、换页符等等 零次或多次 等价于{0,}
 + `(pattern)` : 匹配`pattern` 并获取这一匹配。所获取的匹配可以从产生的 `Matches` 集合得到，使用 `$0…$9` 属性
 + [\w\W]+ : 匹配于`[A-Za-z0-9_]`或 `[^A-Za-z0-9_]` 一次或多次， 等价{1,}
@@ -52,3 +60,18 @@ rquickExpr = /^(?:\s*(<[\w\W]+>)[^>]*|#([\w-]*))$/;
 
 3. `#([\w-]*))$`
 匹配结尾带上#号的任意字符，包括下划线与-
+#### 3、匹配一个独立的标签
+```js
+const rsingleTag = /^<(\w+)\s*\/?>(?:<\/\1>|)$/;
+rsingleTag.test("<div>");//true
+rsingleTag.test("<div/>");//true
+const res=rsingleTag.exec("<div/>");
+res[1];//=>div
+rsingleTag.test("</div>");//false
+rsingleTag.test("<div></div>");//true
+
+rsingleTag.test("<div><div>");//false
+const parsed=rsingleTag.exec("<div></div>");//parsed[1]=>div
+```
++ `^<(\w+)\s*\/?>`  : 以<开头，至少跟着一个字符和任意个空白字符，之后出现0或1次/>
++ `(?:<\/\1>|)$`      : 可以匹配<、一个/或者空白并以之为结尾

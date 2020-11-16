@@ -383,3 +383,9 @@ function getData (data) {
 document.getElementsByTagName("body")[0].ownerDocument===document;//true
 document.documentElement;//=><html>...</html>
 ```
+#### 13、使用正则表达式去除前后空格
+```js
+//表示以空格开头或者空格结尾的正则表达式
+const rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
+
+```

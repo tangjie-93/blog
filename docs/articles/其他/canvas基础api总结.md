@@ -40,13 +40,12 @@ miterLimit | 设置或返回最大的斜接长度。斜接长度值的是两条�
 ```javascript
     const canvas=document.querySelector("#demo");
     const ctx=canvas.getctx("2d");  
-    ctx.beginPath();
+    ctx.beginPath();//起始一条路径，或重置当前路径
     ctx.lineWidth=10;
     ctx.lineJoin="round";
-    ctx.moveTo(20,20);
+    ctx.moveTo(20,20);//将笔尖放置到指定点
     ctx.lineTo(100,100);
-    ctx.closePath();
-
+    ctx.closePath(); //或者ctx.stroke()
 ```
 ### **3、常与设置样式配合使用的方法**
 
@@ -63,11 +62,11 @@ addColorStop(0-1，color) | 规定渐变对象中的颜色和停止位置，第�
 方法 | 描述
 -- | --
 fill() | 填充当前绘图（对应着面）
-stroke() | 绘制已定义的路径。（对应着线）
+stroke() | 绘制已定义的路径。（**对应着线**）
 beginPath() | 起始一条路径或者是重置当前路径。（对应着线）
 moveTo(x,y) | 把路径移动到动画中的指定点，`不创建线条`。x、y对应着路径的目标位置的x、y坐标。
 lineTo() | 添加一个新点，然后在画布中创建从上一个点（lineTo或moveTo中的坐标点）到该点的线条。
-closePath() | 创建当前点到开始点的路径。一般用于闭合多边形。
+closePath() | 创建当前点到开始点的路径。一般用于**闭合多边形**。
 clip() | 从原始画布剪切任意形状和尺寸的区域。
 rect() | 创建矩形
 fillrect() | 绘制被填充的矩形
@@ -142,7 +141,7 @@ ctx.moveTo(20,20);           // 创建开始点
 ctx.lineTo(100,20);          // 创建水平线
 ctx.arcTo(150,20,150,70,50); // 创建弧
 ctx.lineTo(150,120);         // 创建垂直线
-ctx.stroke(); 
+ctx.stroke();
  ```
 ### **5、转换设置**
 方法 | 描述

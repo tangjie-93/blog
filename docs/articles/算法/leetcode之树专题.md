@@ -99,8 +99,9 @@ n0=n2+1
 规定赫夫曼树的左分支代表`0`，右分支代表`1`，则从根结点到叶子结点所经过的路径分支组成的`0`和`1`的序列便为该结点对应字符的编码，这就是**赫夫曼编码**。
 
 ## 2`leetcode`树相关算法题总结。
-#### 1、输的层序遍历——面试题32 - [II. 从上到下打印二叉树 II](https://leetcode-cn.com/problems/cong-shang-dao-xia-da-yin-er-cha-shu-ii-lcof/)
+#### 1、输的层序遍历1——[从上到下打印二叉树 II](https://leetcode-cn.com/problems/cong-shang-dao-xia-da-yin-er-cha-shu-ii-lcof/)
 从上到下打印出二叉树的每个节点，同一层的节点按照从左到右的顺序打印。
+**解题思路:**利用栈来存储结点。每次遍历时，将当前结点的左右结点入栈，循环时依次出栈。
 ```js
 /**
  * @param {TreeNode} root
@@ -121,7 +122,7 @@ function levelOrder(root){
 }
 ```
 
-#### 2、树的层序遍历——剑指 Offer 32 - [II. 从上到下打印二叉树 II](https://leetcode-cn.com/problems/cong-shang-dao-xia-da-yin-er-cha-shu-ii-lcof/)
+#### 2、树的层序遍历2——[II. 从上到下打印二叉树 II](https://leetcode-cn.com/problems/cong-shang-dao-xia-da-yin-er-cha-shu-ii-lcof/)
 从上到下按层打印二叉树，同一层的节点按从左到右的顺序打印，每一层打印到一行。
 ```js
 /**
@@ -148,8 +149,9 @@ function levelOrder(root){
     return res;
 }
 ```
-#### 3、[二叉树的深度](https://leetcode-cn.com/problems/er-cha-shu-de-shen-du-lcof/submissions/)
+#### 3、前序遍历[二叉树的深度](https://leetcode-cn.com/problems/er-cha-shu-de-shen-du-lcof/submissions/)
 输入一棵二叉树的根节点，求该树的深度。从根节点到叶节点依次经过的节点（含根、叶节点）形成树的一条路径，最长路径的长度为树的深度。
+**解题思路：** 递归比较左右支树的深度，每次递归时深度加1.
 ```js
 /**
  * @param {TreeNode} root
@@ -161,8 +163,9 @@ var maxDepth = function(root) {
     return Math.max(maxDepth(root.left),maxDepth(root.right))+1;
 };
 ```
-#### 4、剑指 Offer [27. 二叉树的镜像](https://leetcode-cn.com/problems/er-cha-shu-de-jing-xiang-lcof/)
+#### 4、前序遍历[ 二叉树的镜像](https://leetcode-cn.com/problems/er-cha-shu-de-jing-xiang-lcof/)
 请完成一个函数，输入一个二叉树，该函数输出它的镜像。
+**解题思路：** 递归遍历整棵树,在递归时交换左右结点的位置。本质上是前序遍历。
 ```js
 /**
  * @param {TreeNode} root
@@ -171,6 +174,7 @@ var maxDepth = function(root) {
 function mirrorTree(root){
     function levelOrder(node){
         if(!node) return;
+        //前序遍历 跟左右
         //交换左右节点的位置
         const tempNode=node.left;
         node.left=node.right;
@@ -184,7 +188,7 @@ function mirrorTree(root){
 }
 ```
 
-#### 5、129. [求根到叶子节点数字之和](https://leetcode-cn.com/problems/sum-root-to-leaf-numbers/)
+#### 5、前序遍历[求根到叶子节点数字之和](https://leetcode-cn.com/problems/sum-root-to-leaf-numbers/)
 给定一个二叉树，它的每个结点都存放一个 0-9 的数字，每条从根到叶子节点的路径都代表一个数字。
 例如，从根到叶子节点路径 1->2->3 代表数字 123。
 计算从根到叶子节点生成的所有数字之和。
@@ -210,7 +214,7 @@ function sumNumbers(root){
     return dfs(root,0);
 }
 ```
-#### 6、剑指 Offer 28. [对称的二叉树](https://leetcode-cn.com/problems/dui-cheng-de-er-cha-shu-lcof/)
+#### 6、前序遍历[对称的二叉树](https://leetcode-cn.com/problems/dui-cheng-de-er-cha-shu-lcof/)
 请实现一个函数，用来判断一棵二叉树是不是对称的。如果一棵二叉树和它的镜像一样，那么它是对称的。
 例如，二叉树 [1,2,2,3,4,4,3] 是对称的。
     1
@@ -235,7 +239,7 @@ function symmetricTree(root){
     }
 }
 ```
-#### 7、[平衡二叉树](https://leetcode-cn.com/problems/ping-heng-er-cha-shu-lcof/)
+#### 7、前序遍历[平衡二叉树](https://leetcode-cn.com/problems/ping-heng-er-cha-shu-lcof/)
 输入一棵二叉树的根节点，判断该树是不是平衡二叉树。如果某二叉树中任意节点的左右子树的深度相差不超过1，那么它就是一棵平衡二叉树。
 **示例 1:**
 给定二叉树 [3,9,20,null,null,15,7]

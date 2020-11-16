@@ -53,7 +53,7 @@ function shallowCopy (objData) {
     //类型判断
     const type = toType(objData);
     if (/^(string|number|boolean|null|undefined|symbol|bigint)$/.test(type)) return objData;
-    if (/^function$/.test(type)) return () => objData();
+    if (/^function$/.test(type)) return () => objData.call(this,...arguments);
     if (/^(date|regexp)$/.test(type)) return new objData.constructor(objData);
     if (/^error$/.test(type)) return new objData.constructor(objData.message);
     //只处理数组对象

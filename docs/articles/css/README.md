@@ -7,11 +7,11 @@ note: css有两种常见的盒模型，W3C标准盒模型和 IE怪异盒模型
 ---
 ```html
 ```
-&#8195;&#8195;共分为2种类型：W3C标准盒模型（默认） 和 IE标准盒模型（怪异盒模型）。CSS盒子模式包括如下属性：外边距（margin）、边框（border）、内边距（padding）、内容（content） 
+&#8195;&#8195;共分为2种类型：W3C标准盒模型（默认） 和 IE标准盒模型（怪异盒模型）。`CSS`盒子模式包括如下属性：外边距（`margin`）、边框（`border`）、内边距（`padding`）、内容（`content`） 
 **css3中有一个新属性对应着盒模型。box-sizing: content-box|border-box|inherit;**
 
-> css3属性box-sizing的content-box属性对应着W3C标准盒模型；  
-> css3属性box-sizing的border-box(宽、高包括border)属性对应着IE标准盒模型；
+> `css3`属性`box-sizing`的`content-box`属性对应着`W3C`标准盒模型；  
+> `css3`属性`box-sizing`的`border-box`(宽、高包括`border`)属性对应着IE标准盒模型；
 
 > **1、W3C标准盒模型-content-box:** （默认）
 在W3C标准下,我们定义的元素的`width`值即为盒模型中的`content`的宽度值，`style`中定义的`height`即为盒模型中的`content`的高度值。
