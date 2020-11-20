@@ -43,7 +43,7 @@ function toType (obj) {
 }
 //获取属性
 function getOwnProperty (obj) {
-    if (obj === null) return [];
+    if (obj == null) return [];
     return [
         ...Object.keys(obj), ...Object.getOwnPropertySymbols(obj)
     ]
@@ -56,7 +56,7 @@ function shallowCopy (objData) {
     if (/^function$/.test(type)) return () => objData.call(this,...arguments);
     if (/^(date|regexp)$/.test(type)) return new objData.constructor(objData);
     if (/^error$/.test(type)) return new objData.constructor(objData.message);
-    //只处理数组对象
+    //只处理数组、对象
     const keys = getOwnProperty(objData);
     const clone = Array.isArray(objData) ? [] : {};
     let obj = keys.reduce((cur, key) => {
