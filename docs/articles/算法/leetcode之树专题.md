@@ -438,7 +438,76 @@ function lowestCommonAncestor(root, p, q) {
     if(p.val<val){
        return lowestCommonAncestor(root.left,p,q);
     }else{
-      return lowestCommonAncestor(root.right,p,q);
+       return lowestCommonAncestor(root.right,p,q);
     }
+};
+```
+#### 11、中序遍历[ 二叉搜索树的最小绝对差](https://leetcode-cn.com/problems/minimum-absolute-difference-in-bst/)
+给你一棵所有节点为非负值的二叉搜索树，请你计算树中任意两节点的差的绝对值的最小值。
+```js
+var getMinimumDifference = function(root) {
+    //因为是二叉搜索树，所以任意两节点的差的最小值。肯定是两个相邻节点差的最小值。
+    //中序遍历来遍历二叉搜索树，前一个值总是大于后面一个值
+    let prevValue=-1,res=Math.pow(2,31)-1;
+    const recursive=(node)=>{
+        if(!node) return;
+        //中序遍历 左根右
+        recursive(node.left);
+        if(prevValue!==-1){
+            //比较当前值与前一个值根的差与上一个最小差的大小
+            res=Math.min(res,node.val-prevValue);
+        }
+        prevValue=node.val;
+        recursive(node.right);
+    }
+    recursive(root);
+    return res;
+};
+```
+#### 12、前序遍历[左叶子之和](https://leetcode-cn.com/problems/sum-of-left-leaves/)
+```js
+/**
+ * @param {TreeNode} root
+ * @return {number}
+ */
+var sumOfLeftLeaves = function(root) {
+    let res=0;
+    /**
+     * @param {TreeNode} node
+     * @return {boolean} flag 用于标识是否是左子节点
+     */
+    const recursive=(node,flag)=>{
+        if(!node) return;
+        //前序遍历
+        //判断是否是左子节点
+        if(flag&&!node.left&&!node.right) res+=node.val;
+        recursive(node.left,true);
+        recursive(node.right);
+    }
+    recursive(root);
+    return res;
+};
+```
+#### 13、前序遍历[单值二叉树](https://leetcode-cn.com/problems/univalued-binary-tree/)
+如果二叉树每个节点都具有相同的值，那么该二叉树就是单值二叉树。
+只有给定的树是单值二叉树时，才返回 `true`；否则返回 `false`。
+```js
+/**
+ * @param {TreeNode} root
+ * @return {boolean}
+ */
+var isUnivalTree = function(root) {
+    let prevValue=-1;
+    const recursive=node=>{
+        if(!node) return true;
+        if(prevValue!==-1){
+            //判断当前节点的值根上一个节点的值是否相等
+            if(prevValue!==node.val) return false;
+        }
+        prevValue=node.val;
+        //前序遍历(根左右) 先遍历左子树，后遍历右子树
+        return recursive(node.left)&& recursive(node.right);
+    }
+   return recursive(root);
 };
 ```
