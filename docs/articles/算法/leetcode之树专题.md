@@ -277,4 +277,168 @@ function isBalanced(root){
     }
 }
 ```
+#### 8、[二叉搜索树的最近公共祖先](https://leetcode-cn.com/problems/er-cha-sou-suo-shu-de-zui-jin-gong-gong-zu-xian-lcof/)
+**二叉搜索树具有以下性质**:若它的左子树不为空，则左树上所有结点的值均小于它的根节点的值;若它右子树不为空，则右子树上所有结点的值均大于它的根节点的值；它的左、右子树也分别为二叉搜索树。
+给定一个二叉搜索树, 找到该树中两个指定节点的最近公共祖先。
 
+百度百科中最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q，最近公共祖先表示为一个结点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。”
+
+例如，给定如下二叉搜索树:  root = [6,2,8,0,4,7,9,null,null,3,5]
+<img src="../../images/binarysearchtree_improved.png">
+示例 1:
+
+输入: root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 8
+输出: 6 
+解释: 节点 2 和节点 8 的最近公共祖先是 6。
+示例 2:
+
+输入: root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 4
+输出: 2
+解释: 节点 2 和节点 4 的最近公共祖先是 2, 因为根据定义最近公共祖先节点可以为节点本身。
+
+```js
+function lowestCommonAncestor(root, p,q) {
+    if(!root) return root;
+    if(p===q) return new TreeNode(p);
+    //根据题目条件 要么p,q在同侧，要么再异侧。在同侧则则p或q的值对应的结点是祖先结点，在异侧则根节点是它们的最近公共祖先。
+    while(root){
+        //根值大于给定值，则它的根植只可能在右边
+        if (root.val < q && root.val < p) {
+            root = root.right
+        }
+        //根值大于给定值，则它的根植只可能在左边
+        if (root.val > q && root.val > p) {
+            root = root.left
+        }
+        else {
+            return root
+        }
+    }
+}
+```
+#### 9、[路径总和](https://leetcode-cn.com/problems/path-sum/)
+
+给定一个二叉树和一个目标和，判断该树中是否存在根节点到叶子节点的路径，这条路径上所有节点值相加等于目标和。
+说明: 叶子节点是指没有子节点的节点。
+示例: 
+给定如下二叉树，以及目标和 sum = 22，
+              5
+             / \
+            4   8
+           /   / \
+          11  13  4
+         /  \      \
+        7    2      1
+返回 true, 因为存在目标和为 22 的根节点到叶子节点的路径 5->4->11->2。
+```js
+//树构造函数
+function TreeNode (val) {
+    this.val = val;
+    this.left = this.right = null;
+}
+//构造树的函数
+function createTree (arr) {
+    let level = 0;
+    const root = new TreeNode(arr.shift());
+    let tempNode = root;
+    let res = [];
+    while (arr.length) {
+        if (tempNode.val) {
+            tempNode.left = new TreeNode(arr.shift());
+            res.push(tempNode.left);
+            tempNode.right = new TreeNode(arr.shift());
+            res.push(tempNode.right);
+        }
+        tempNode = res.shift();
+
+    }
+    return root;
+}
+//[5, 4, 8, 11, null, 13, 4, 7, 2, null, null, null, 1]是层序遍历的结果
+createTree([5, 4, 8, 11, null, 13, 4, 7, 2, null, null, null, 1])
+```
+```js
+//方法 1 广度优先遍历
+function hasPathSum(root,sum){
+    if(!root) return false;
+    const queueNode=[root];//存结点
+    const queueVal=[root.val];//存结点和
+    let tempNode,tempVal;
+    while(queueVal.length){
+        tempNode=queueNode.shift();//当前结点
+        tempVal=queueVal.shift();//当前结点对应的根节点到当前结点的路径和
+        if(!tempNode.left&&!tempNode.right){
+            if(tempVal===sum) return true;
+        }
+        if(tempNode.left){
+            queueNode.push(tempNode.left);
+            queueVal.push(tempVal+tempNode.left.val);
+        }
+        if(tempNode.right){
+            queueNode.push(tempNode.right);
+            queueVal.push(tempVal+ tempNode.right.val);
+        }
+    }
+    return false;
+}
+//方法 2 深度优先遍历
+function hasPathSum(root,sum){
+    //表示该结点是空节点 此时sum的值肯定不等于它父节点的值，所以返回false
+    if(!root) return false;
+    //表示当前结点是叶子结点
+    if(!root.left&&!root.right){
+        return root.val===sum;
+    }
+    //先深度递归左子树
+    return hasPathSum(root.left,sum-root.val)||hasPathSum(root.right,sum-root.val);
+}
+```
+#### 10、[二叉搜索树的最近公共祖先](https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-search-tree)
+给定一个二叉搜索树, 找到该树中两个指定节点的最近公共祖先。
+百度百科中最近公共祖先的定义为："对于有根树 T 的两个结点 p、q，最近公共祖先表示为一个结点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。"
+例如，给定如下二叉搜索树:  root = [6,2,8,0,4,7,9,null,null,3,5]
+<img src="../../images/binarysearchtree_improved.png" />
+
+```js
+示例 1:
+输入: root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 8
+输出: 6 
+解释: 节点 2 和节点 8 的最近公共祖先是 6。
+示例 2:
+输入: root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 4
+输出: 2
+解释: 节点 2 和节点 4 的最近公共祖先是 2, 因为根据定义最近公共祖先节点可以为节点本身。
+```
+
+```js
+/**
+ * @param {TreeNode} root
+ * @param {TreeNode} p
+ * @param {TreeNode} q
+ * @return {TreeNode}
+ */
+//迭代法
+function lowestCommonAncestor(root, p, q) {
+    let node=root;
+    while(true){
+        if(node.val>p.val&&node.val>q.val){
+            node=node.left;
+        }else if(p.val>node.val&&q.val>node.val){
+            node=node.right;
+        }else{
+            break;
+        }
+    }
+    return node;
+};
+// 递归 
+function lowestCommonAncestor(root, p, q) {
+    const val=root.val;
+    if((p.val-val)*(q.val-val)<=0) return root;
+    if(p.val<val){
+       return lowestCommonAncestor(root.left,p,q);
+    }else{
+      return lowestCommonAncestor(root.right,p,q);
+    }
+};
+```
