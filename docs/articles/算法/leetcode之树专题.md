@@ -98,6 +98,34 @@ n0=n2+1
 
 规定赫夫曼树的左分支代表`0`，右分支代表`1`，则从根结点到叶子结点所经过的路径分支组成的`0`和`1`的序列便为该结点对应字符的编码，这就是**赫夫曼编码**。
 
+**下面是javascript创建树的方法**
+```js
+//树构造函数
+function TreeNode (val) {
+    this.val = val;
+    this.left = this.right = null;
+}
+//构造树的函数
+function createTree (arr) {
+    let level = 0;
+    const root = new TreeNode(arr.shift());
+    let tempNode = root;
+    let res = [];
+    while (arr.length) {
+        if (tempNode.val) {
+            tempNode.left = new TreeNode(arr.shift());
+            res.push(tempNode.left);
+            tempNode.right = new TreeNode(arr.shift());
+            res.push(tempNode.right);
+        }
+        tempNode = res.shift();
+
+    }
+    return root;
+}
+//[5, 4, 8, 11, null, 13, 4, 7, 2, null, null, null, 1]是层序遍历的结果
+createTree([5, 4, 8, 11, null, 13, 4, 7, 2, null, null, null, 1])
+```
 ## 2`leetcode`树相关算法题总结。
 #### 1、输的层序遍历1——[从上到下打印二叉树 II](https://leetcode-cn.com/problems/cong-shang-dao-xia-da-yin-er-cha-shu-ii-lcof/)
 从上到下打印出二叉树的每个节点，同一层的节点按照从左到右的顺序打印。
@@ -330,33 +358,7 @@ function lowestCommonAncestor(root, p,q) {
          /  \      \
         7    2      1
 返回 true, 因为存在目标和为 22 的根节点到叶子节点的路径 5->4->11->2。
-```js
-//树构造函数
-function TreeNode (val) {
-    this.val = val;
-    this.left = this.right = null;
-}
-//构造树的函数
-function createTree (arr) {
-    let level = 0;
-    const root = new TreeNode(arr.shift());
-    let tempNode = root;
-    let res = [];
-    while (arr.length) {
-        if (tempNode.val) {
-            tempNode.left = new TreeNode(arr.shift());
-            res.push(tempNode.left);
-            tempNode.right = new TreeNode(arr.shift());
-            res.push(tempNode.right);
-        }
-        tempNode = res.shift();
 
-    }
-    return root;
-}
-//[5, 4, 8, 11, null, 13, 4, 7, 2, null, null, null, 1]是层序遍历的结果
-createTree([5, 4, 8, 11, null, 13, 4, 7, 2, null, null, null, 1])
-```
 ```js
 //方法 1 广度优先遍历
 function hasPathSum(root,sum){
@@ -509,5 +511,229 @@ var isUnivalTree = function(root) {
         return recursive(node.left)&& recursive(node.right);
     }
    return recursive(root);
+};
+```
+
+#### 14、层序遍历(广度优先遍历)[ 二叉树的层平均值](https://leetcode-cn.com/problems/average-of-levels-in-binary-tree/)
+```js
+/**
+ * @param {TreeNode} root
+ * @return {number[]}
+ */
+var averageOfLevels = function(root) {
+    if(!root) return []
+    const res=[];
+    let queueNode=[root];
+    let sum,levelNum;
+    while(queueNode.length){
+        levelNum=queueNode.length;
+        sum=0;
+        res.push(levelNum);
+        while(levelNum--){
+            const tempNode=queueNode.shift();
+            sum+=tempNode.val;
+            tempNode.left&&queueNode.push(tempNode.left);
+            tempNode.right&&queueNode.push(tempNode.right);
+        }
+        res.push(sum/res.pop());
+    }
+    return res;
+};
+```
+#### 15、层序遍历(广度优先遍历)[N叉树的最大深度](https://leetcode-cn.com/problems/maximum-depth-of-n-ary-tree/)
+给定一个 N 叉树，找到其最大深度。
+最大深度是指从根节点到最远叶子节点的最长路径上的节点总数。
+例如，给定一个 3叉树 :
+<img src="../../images/narytreeexample.png" />
+我们应返回其最大深度，3。
+
+```js
+var maxDepth = function(root) {
+    if(!root) return 0;
+    const recursive=(node,depth)=>{
+        if(!node) return depth;
+        if(node.children&&node.children.length){          
+            return  Math.max(...node.children.map(children=>{
+                return recursive(children,depth+1);
+            }))
+        }
+        return depth+1;
+       
+    }
+    return recursive(root,0);
+};
+```
+#### 16、前序遍历(深度优先遍历)[ 二叉树的直径](给定一棵二叉树，你需要计算它的直径长度。一棵二叉树的直径长度是任意两个结点路径长度中的最大值。这条路径可能穿过也可能不穿过根结点。)
+示例 :
+给定二叉树
+          1
+         / \
+        2   3
+       / \     
+      4   5    
+返回 3, 它的长度是路径 [4,2,1,3] 或者 [5,2,1,3]。
+**注意：两结点之间的路径长度是以它们之间边的数目表示。**
+```js
+/**
+ * @param {TreeNode} root
+ * @return {number}
+ */
+//这道题其实是一道求树中最长路径的问题
+//而任意一条路径均可以被看作由某个节点为起点，从其左儿子和右儿子向下遍历的路径拼接得到。
+var diameterOfBinaryTree = function(root) {
+    let res=0;
+    const recursive=node=>{
+        //该结点不存在,返回0
+        if(!node) return 0;
+        const Ldepth=recursive(node.left);
+        const Rdepth=recursive(node.right);
+        //获取路径最大值
+        res=Math.max(res,Ldepth+Rdepth);
+        //每递归一次，深度+1;
+        return Math.max(Ldepth,Rdepth)+1;
+    }
+    recursive(root);
+    return res;
+};
+```
+#### 17、前序遍历[二叉树中第二小的节点](https://leetcode-cn.com/problems/second-minimum-node-in-a-binary-tree/)
+给定一个非空特殊的二叉树，每个节点都是正数，并且每个节点的子节点数量只能为 2 或 0。如果一个节点有两个子节点的话，那么该节点的值等于两个子节点中较小的一个。
+更正式地说，`root.val = min(root.left.val, root.right.val)` 总成立。
+给出这样的一个二叉树，你需要输出所有节点中的第二小的值。如果第二小的值不存在的话，输出 -1 。
+示例 1：
+
+<img src="../../images/smbt1.jpg" />
+输入：root = [2,2,5,null,null,5,7]
+输出：5
+解释：最小的值是 2 ，第二小的值是 5 。
+
+```js
+/**
+ * @param {TreeNode} root
+ * @return {number}
+ */
+//暴力法
+var findSecondMinimumValue = function(root) {
+    const res=new Set();
+    const recursive=node=>{
+        if(!node) return;
+        res.add(node.val);
+        recursive(node.left);
+        recursive(node.right);
+    }
+    recursive(root);
+    return [...res].sort((a,b)=>a-b)[1]||-1;
+};
+//方法 2 找规律
+var findSecondMinimumValue = function(root) {
+    if(!root) return -1;
+    const recursive=(node,min)=>{
+        if(!node) return -1;
+        //根左右 判断当前结点跟最小值的关系
+        if(node.val>min) return node.val;
+        //遍历左子树 判断左子节点跟最小值的关系
+        const left=recursive(node.left,min);
+        //遍历右子树 判断左子节点跟最小值的关系
+        const right=recursive(node.right,min);
+        //没有左子树
+        if(left===-1) return right;
+        //没有右子树
+        if(right===-1) return left;
+        return Math.min(left,right);
+    }
+    return recursive(root,root.val);
+};
+```
+#### 18 、前序遍历[ 二叉树的堂兄弟节点](https://leetcode-cn.com/problems/cousins-in-binary-tree/)
+在二叉树中，根节点位于深度 0 处，每个深度为` k `的节点的子节点位于深度` k+1 `处。如果二叉树的两个节点深度相同，但父节点不同，则它们是一对堂兄弟节点。我们给出了具有唯一值的二叉树的根节点 `root`，以及树中两个不同节点的值 `x` 和` y`。只有与值 `x` 和 `y `对应的节点是堂兄弟节点时，才返回 `true`。否则，返回 `false`。
+示例 2：
+<img src="../../images/cousins.png" />
+
+输入：root = [1,2,3,null,4,null,5], x = 5, y = 4
+输出：true
+```js
+var isCousins = function(root, x, y) {
+    /**
+     * 1、他们父节点不同
+     * 2、他们的深度一样
+    */
+    //两个对象来存储当前结点的深度和父节点
+    const depthObj=Object.create(null),parentObj=Object.create(null);
+    const recursive=(node,parent)=>{
+        if(!node) return;
+        depthObj[node.val]=parent?depthObj[parent.val]+1:0;
+        parentObj[node.val]=parent;
+        recursive(node.left,node);
+        recursive(node.right,node);
+    }
+    recursive(root,null);
+    return depthObj[x]===depthObj[y]&&(parentObj[x]!==parentObj[y]);
+};
+```
+#### 19、前序遍历(dfs)[求和路径](https://leetcode-cn.com/problems/paths-with-sum-lcci/)
+&#8195;&#8195;给定一棵二叉树，其中每个节点都含有一个整数数值(该值或正或负)。设计一个算法，打印节点数值总和等于某个给定值的所有路径的数量。注意，路径不一定非得从二叉树的根节点或叶节点开始或结束，但是其方向必须向下(只能从父节点指向子节点方向)。
+示例:
+给定如下二叉树，以及目标和 sum = 22，
+
+              5
+             / \
+            4   8
+           /   / \
+          11  13  4
+         /  \    / \
+        7    2  5   1
+返回:3
+解释：和为 22 的路径有：[5,4,11,2], [5,8,4,5], [4,11,7]
+```js
+const pathSum=function(root,sum){
+    if(!root) return 0;
+    const resolve=(node,target)=>{
+        if(!node) return 0;
+        let res=0;
+        if(node.val===target) return res++;
+        res+=resolve(node.left,target-node.val);
+        res+=resolve(node.right,target-node.val);
+        return res;
+    }
+    const dfs=(node,target)=>{
+        let res=0;
+        if(!node) return 0;
+        //深度递归当前结点
+        res+=resolve(node,target);
+        //深度递归左结点
+        res+=dfs(node.left,target);
+        //深度递归右结点
+        res+=dfs(node.right,target);
+        return res;
+    }
+    return dfs(root,sum);
+}
+```
+#### 20、[修剪二叉搜索树](https://leetcode-cn.com/problems/trim-a-binary-search-tree/)
+&#8195;&#8195;给你二叉搜索树的根节点 `root` ，同时给定最小边界`low `和最大边界 `high`。通过修剪二叉搜索树，使得所有节点的值在`[low, high]`中。修剪树不应该改变保留在树中的元素的相对结构（即，如果没有被移除，原有的父代子代关系都应当保留）。 可以证明，存在唯一的答案。所以结果应当返回修剪好的二叉搜索树的新的根节点。注意，根节点可能会根据给定的边界发生改变。
+<img src="../../images/trim2.jpg" />
+示例 2：
+输入：root = [3,0,4,null,2,null,null,1], low = 1, high = 3
+输出：[3,2,null,1]
+
+```js
+/**
+ * @param {TreeNode} root
+ * @param {number} low
+ * @param {number} high
+ * @return {TreeNode}
+ */
+var trimBST = function(root, low, high) {
+    //返回当前结点
+    if(!root) return root;
+    //当前结点的值大于最大值，那么它右子树上的所有值都会大于当前值，就不用再考虑
+    if(root.val>high) return trimBST(root.left,low,high);
+    // //当前结点的值小于最小值，那么它左子树上的所有值都会大于当前值，就不用再考虑
+    if(root.val<low) return trimBST(root.right,low,high);
+    //递归当前结点的左子树之后的结果赋值给当前结点的左子树
+    root.left=trimBST(root.left,low,high);
+     //递归当前结点的左子树之后的结果赋值给当前结点的左子树
+    root.right=trimBST(root.right,low,high);
+    return root;
 };
 ```

@@ -754,8 +754,229 @@ Promise3.prototype.then = function (onFullfilled, onRejected) {
     return promise;
 }
 ```
-后面再复杂的情况暂时就不考虑了。
 
+> 4、最终版
+```js
+const { reject } = require('./Promise');
+
+const FULLFILLED = 'fullfiled', REJECTED = "rejected", PENDING = "pending";
+let id = 1;
+function Promise (executor) {
+    this.id = id++;
+    this.status = PENDING;
+    this.value = undefined;
+    this.onFullfiledArray = [];
+    this.onRejectedArray = [];
+    const that = this;
+    function resolve (value) {
+        if (that.status === PENDING) {
+            that.status = FULLFILLED;
+            that.value = value;
+            that.onFullfiledArray.forEach(fn => fn(value));
+        }
+    }
+    function reject (reason) {
+        if (that.status === PENDING) {
+            that.status = REJECTED;
+            that.value = reason;
+            that.onRejectedArray.forEach(fn => fn(reason));
+        }
+    }
+    try {
+        executor(resolve, reject);
+    } catch (e) {
+        reject(e);
+    }
+
+}
+
+Promise.resolve = function (value) {
+    return new Promise((resolve, _) => {
+        resolve(value)
+    })
+}
+Promise.reject = function (reason) {
+    return new Promise((_, reject) => {
+        reject(reason);
+    })
+}
+Promise.all = function (promises) {
+    return new Promise((resolve, reject) => {
+
+        promises.forEach((item, index) => {
+            if ((x !== null && typeof x === 'object') || typeof x === 'function') {
+                const then = item.then;
+                if (typeof then === 'function') {
+                    then.call(item, y => {
+                        resolveValue(y, index)
+                    }, r => {
+                        reject(r);
+                    })
+                }
+            } else {
+                resolveValue(item, index)
+            }
+        });
+        let res = [], count = 0;;
+        function resolveValue (value, index) {
+            ++count;
+            res[index] = value;
+            if (count === promises.length) {
+                resolve(res);
+            }
+        }
+    })
+
+
+}
+Promise.race = function (promises) {
+    return new Promise((resolve, reject) => {
+
+        promises.forEach((item, index) => {
+            if ((x !== null && typeof x === 'object') || typeof x === 'function') {
+                const then = item.then;
+                if (typeof then === 'function') {
+                    then.call(item, y => {
+                        resolve(y);
+                    }, r => {
+                        reject(r);
+                    })
+                }
+            } else {
+                resolve(item);
+            }
+        });
+    })
+
+
+}
+function resolvePromise (promise, x, resolve, reject) {
+    if (x === promise) {
+        return reject(new TypeError("循环引用"))
+    }
+    if ((x !== null && typeof x === 'object') || typeof x === 'function') {
+        let called = false;//用于避免重复调用
+        try {
+            const then = x.then;
+            if (typeof then === 'function') {
+                then.call(x, y => {
+                    if (called) return;
+                    called = true;
+                    resolvePromise(promise, y, resolve, reject);
+                }, r => {
+                    if (called) return;
+                    called = true;
+                    reject(r);
+                })
+            } else {
+                resolve(x);
+            }
+        } catch (e) {
+            if (called) return;
+            called = true;
+            reject(e);
+        }
+    } else {
+        resolve(x);
+    }
+}
+Promise.prototype = {
+    constructor: Promise,
+    then (onFulfilled, onRejected) {
+        let promise;
+        onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : x => x;
+        onRejected = typeof onRejected === 'function' ? onRejected : err => { throw err };
+        switch (this.status) {
+            case FULLFILLED:
+                return promise = new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        try {
+                            let x = onFulfilled(this.value);
+                            resolvePromise(promise, x, resolve, reject);
+                        } catch (err) {
+                            reject(err);
+                        }
+                    })
+
+                });
+            case REJECTED:
+                return promise = new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        try {
+                            let x = onRejected(this.value);
+                            resolvePromise(promise, x, resolve, reject);
+                        } catch (err) {
+                            reject(err);
+                        }
+                    })
+                });
+            case PENDING:
+                return promise = new Promise((resolve, reject) => {
+                    this.onFullfiledArray.push(() => {
+                        setTimeout(() => {
+                            try {
+                                let x = onFulfilled(this.value);
+                                resolvePromise(promise, x, resolve, reject);
+                            } catch (err) {
+                                reject(err);
+                            }
+                        })
+                    });
+                    this.onRejectedArray.push(() => {
+                        setTimeout(() => {
+                            try {
+                                let x = onRejected(this.value);
+                                resolvePromise(promise, x, resolve, reject);
+                            } catch (err) {
+                                reject(err);
+                            }
+                        })
+                    })
+                });
+        }
+    },
+    catch (onRejected) {
+        return this.then(null, onRejected);
+    }
+}
+/**
+ * Promise/A+规范测试
+ * npm i -g promises-aplus-tests
+ * promises-aplus-tests Promise.js
+ */
+Promise.deferred = function () {
+    const defer = {};
+    defer.promise = new Promise((resolve, reject) => {
+        defer.resolve = resolve;
+        defer.reject = reject;
+    });
+    return defer;
+}
+module.exports = Promise;
+```
+```js
+//测试
+const p1 = new Promise((resolve, reject) => {
+    resolve(100)
+})
+const p2 = p1.then((value) => { // 此时p1.status 由pending状态 => fulfilled状态
+    return p2;
+}, err => {
+    console.log("failed", err);
+}).then(value => {
+    //没有输出
+    return value + 100;
+}, err => {
+    console.log(err);
+})
+p2.then(data => {
+    console.log(data);
+}, err => {
+    console.log('err', err);
+})
+console.log('全局执行栈中同步代码');
+//上面的代码除了输出 '全局执行栈中同步代码'之外，不会有其他的任何输出 ，因为return p2后 p2的状态一直是pending
+```
 参考链接    
 [1、ECMAScript入门](http://es6.ruanyifeng.com/#docs/promise)    
 [2、Promise——MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise)   
