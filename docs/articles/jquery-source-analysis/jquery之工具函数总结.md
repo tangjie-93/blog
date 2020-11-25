@@ -2,7 +2,7 @@
 title: jquery之工具函数总结
 date: '2020-10-22'
 type: 技术
-tags: javascript
+tags: jquery
 note: jquery之工具函数总结
 ---
 在看`jquery`源码时，发现有一些写的好的方法就忍不住记录下来，供自己以后在封装工具函数时参考。
@@ -387,5 +387,10 @@ document.documentElement;//=><html>...</html>
 ```js
 //表示以空格开头或者空格结尾的正则表达式
 const rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
-
+```
+#### 14、使用正则表达式将特定位置字符转换为大写
+```js
+'background-image'.replace(/-([\da-z])/gi, fcamelCase = function( all, letter ) {
+       return letter.toUpperCase();
+})
 ```

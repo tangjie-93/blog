@@ -2,7 +2,7 @@
 title: jquery之数组循环方法总结
 date: '2020-10-18'
 type: 技术
-tags: javascript
+tags: jquery
 note: jquery之数组循环方法总结
 ---
 #### 1、`toType` 数据类型检测
@@ -89,7 +89,7 @@ function each (obj, callback) {
         ];
         for(let i=0,len=keys.length;i<len;i++){
             //回调执行返回false这终止循环
-            if (callback.call(obj[i], i, obj[key]) === false) {
+            if (callback.call(obj[keys[i]], keys[i], obj[keys[i]]) === false) {
                 //循环终止
                 break;
             }

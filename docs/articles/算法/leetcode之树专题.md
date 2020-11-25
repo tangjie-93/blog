@@ -650,3 +650,21 @@ var countPairs=function(root,distance){
     return res;
 }
 ```
+## 22、[树的子结构](https://leetcode-cn.com/problems/shu-de-zi-jie-gou-lcof/)
+输入两棵二叉树A和B，判断B是不是A的子结构。(约定空树不是任意一个树的子结构)
+B是A的子结构， 即 A中有出现和B相同的结构和节点值。
+```js
+var isSubStructure = function(A, B) {
+    //前序遍历
+    const recur=(A,B)=>{
+        //递归终止条件
+        //1、遍历到B的叶子结点了，此时B肯定是A的子树
+        if(!B) return true;
+        //2、递归A的叶子结点了，但是还没递归到B的叶子结点，或者A,B结点此时都不是叶子结点，但是A的结点的值不等于B的结点的值,那么B不是A的子树
+        if(!A||A.val!==B.val) return false;
+        //3、如果A的结点的值不等于B的结点的值，则继续递归遍历
+        return recur(A.left,B.left)&&recur(A.right,B.right);
+    }
+    return Boolean(A&&B)&&(recur(A,B)||isSubStructure(A.left,B)||isSubStructure(A.right,B));
+};
+```
