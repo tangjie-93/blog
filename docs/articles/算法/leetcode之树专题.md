@@ -130,7 +130,7 @@ function sumNumbers(root){
 3  4 4  3
 ```js
 function symmetricTree(root){
-    return root===null?true:dfs(root,left,root.right);
+    return root===null?true:dfs(root.left,root.right);
     function dfs(l,r){
         //没有左右节点的情况
         if(l===null&&r===null) return true
@@ -666,5 +666,119 @@ var isSubStructure = function(A, B) {
         return recur(A.left,B.left)&&recur(A.right,B.right);
     }
     return Boolean(A&&B)&&(recur(A,B)||isSubStructure(A.left,B)||isSubStructure(A.right,B));
+};
+```
+## 30、[具有所有最深节点的最小子树](https://leetcode-cn.com/problems/smallest-subtree-with-all-the-deepest-nodes/)
+给你一个有根节点的二叉树，找到它最深的叶节点的最近公共祖先。
+
+```js
+//深度优先遍历
+var lcaDeepestLeaves = function(root) {
+    const dfs=(node)=>{
+        if(!node) return new TreeNodeDepth(null,0);
+        const leftObj=dfs(node.left);
+        const rightObj=dfs(node.right);
+        if(leftObj.depth>rightObj.depth){
+            //左结点对应的深度加1
+            return new TreeNodeDepth(leftObj.node,leftObj.depth+1);
+        }
+        if(leftObj.depth<rightObj.depth){
+            //右结点的深度加1
+            return new TreeNodeDepth(rightObj.node,rightObj.depth+1);
+        }
+        return new TreeNodeDepth(node,leftObj.depth+1);
+    }
+    return dfs(root).node;;
+};
+function TreeNodeDepth(node,depth){
+    this.node=node;
+    this.depth=depth;
+    console.log(this);
+}
+```
+## 31、[从前序和中序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
+```js
+
+```
+
+## 32、[将有序数组转换为二叉搜索树](https://leetcode-cn.com/problems/convert-sorted-array-to-binary-search-tree/)
+将一个按照升序排列的有序数组，转换为一棵高度平衡二叉搜索树。
+
+本题中，一个高度平衡二叉树是指一个二叉树每个节点 的左右两个子树的高度差的绝对值不超过 1。
+```js
+//高度平衡二叉树 即左右子树的结点数差不多;
+//所以可以直接取有序数组的中间位置的数作为根节点,开始位置到中间位置的数组的为左子树，中间位置到结束位置的数组为右子树;
+var sortedArrayToBST = function(nums) {
+    const recur=(num,start,end)=>{
+        if(start>end) return null;
+        const mid=Math.floor((start+end)/2);
+        const node=new TreeNode(nums[mid]);
+        node.left=recur(nums,start,mid-1);
+        node.right=recur(nums,mid+1,end);
+        return node;
+    }
+    return recur(nums,0,nums.length-1);
+};
+```
+## 33、[二叉树的坡度](https://leetcode-cn.com/problems/binary-tree-tilt/)
+给定一个二叉树，计算 整个树 的坡度 。
+
+一个树的 节点的坡度 定义即为，该节点左子树的节点之和和右子树节点之和的 差的绝对值 。如果没有左子树的话，左子树的节点之和为 0 ；没有右子树的话也是一样。空结点的坡度是 0 。
+
+整个树 的坡度就是其所有节点的坡度之和。
+```js
+var findTilt = function(root) {
+    let sum=0;
+    const recur=(node,parent)=>{
+        if(!node) return 0;
+        const leftVal= recur(node.left);
+        const rightVal=recur(node.right);
+        sum+=Math.abs(leftVal-rightVal);
+        //当前结点对应的值=> 左右结点的值+当前结点的值
+        return leftVal+rightVal+node.val;
+    }
+    recur(root);
+    return sum;
+};
+```
+
+## 34、[另一颗树的子树](https://leetcode-cn.com/problems/subtree-of-another-tree/)
+给定两个非空二叉树 s 和 t，检验 s 中是否包含和 t 具有相同结构和节点值的子树。s 的一个子树包括 s 的一个节点和这个节点的所有子孙。s 也可以看做它自身的一棵子树。
+下面这种情况是不成立的。
+**给定的树 s：**
+     3
+    / \
+   4   5
+  / \
+ 1   2
+    /
+   0
+**给定的树 t：**
+
+   4
+  / \
+ 1   2
+返回 false。
+
+```js
+var isSubtree = function(s, t) {
+    const check=(s,t)=>{
+        //s和t都没有子节点了
+        if(!t&&!s) return true;
+        //一个有一个没有，或者两个都有，但是他们的值不等，那么t都不是s的子树
+        if(!t||!s||t.val!==s.val) return false;
+        return check(s.left,t.left)&&check(s.right,t.right);
+    }
+    const recur=node=>{
+        if(!node) return false;
+        let flag;
+        // //找到一个他们值相同的点
+        // if(node.val===t.val){
+        //     //判断他们是否相等
+        //     flag =check(node,t);
+        // }
+        return check(node,t)|| recur(node.left)||recur(node.right);
+    };
+    return recur(s);
 };
 ```
