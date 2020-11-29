@@ -5,6 +5,9 @@ type: 技术
 tags: jquery
 note: jquery获取窗口大小的兼容性处理
 ---
+下面盗用一张[艾伦 Aaron](https://www.cnblogs.com/aaronjs/p/3564562.html)大佬总结的图
+<img src="../../images/outer-innner--width-height.jpg"/>
+
 ## 1、获取元素宽高的兼容处理
 ```js
 //添加innerHeight, innerWidth, height, width, outerHeight and outerWidth methods
