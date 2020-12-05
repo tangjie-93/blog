@@ -102,8 +102,8 @@ interface FuncWithAttachment {
 + 1、不仅仅表示 `object、class、function`类型
 + 2、不能重名（自然不存在同名聚合了），扩展已有的 type 需要创建新 `type`。
 + 3、支持复杂的类型操作
-+ 没有创建新的类型，知识创建一个新的名字来引用那个类型。
-+ 4、可以被`extends`和 `implements`,只是语法上会有些不同。`type`主要是通过交差类型来实现继承的。
++ 4、**没有创建新的类型**，只是创建一个新的名字来引用那个类型。
++ 5、可以被`extends`和 `implements`,只是语法上会有些不同。`type`主要是通过交差类型来实现继承的。
 ```ts
     //type extends type
     type PartialPointX = {x:number;};
@@ -121,7 +121,7 @@ interface FuncWithAttachment {
     interface ParticalPointX = {x:number;};
     type Point = ParticalPointX & {y:number};
 ```
-+  5、在无法通过接口来描述一个类型并且需要使用联合类型或元组类型时，这时通常会使用类型别名。
++  6、在无法通过接口来描述一个类型并且**需要使用联合类型或元组类型**时，这时通常会使用类型别名。
 ```ts
     type Name = string;
     type PartialPointX = {x:number;};
@@ -400,3 +400,4 @@ interface Student {
 
 type studentKey = keyof Student; // "name" | "age"
 ```
+
