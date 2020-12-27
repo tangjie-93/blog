@@ -25,12 +25,6 @@ function createSidebarMapObject (dir) {
                     // const link = getLink(fPath)
                     fileName === "README" ? fileMapObj[curPath].unshift('') : fileMapObj[curPath].push(fileName)
                 }
-                // console.log(fileName);
-                // if(typeof fileMapObj[curPath]==='undefined'){
-                //     fileMapObj[curPath]=fileName;
-                // }else if(Array.isArray(fileMapObj[curPath])){
-                //     fileMapObj[curPath].push(fileName)
-                // }
             }
         })
 
