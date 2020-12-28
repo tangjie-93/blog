@@ -2,7 +2,7 @@
 title: jquery之正则表达式详解
 date: '2020-10-28'
 type: 技术
-tags: javascript
+tags: jquery
 note: jquery之正则表达式详解
 ---
 #### 1、非空字符

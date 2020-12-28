@@ -117,6 +117,15 @@ note: typescript基本知识点总结
 
 ## 3、接口
 
++ 可以用来描述对象。
++ 可以用来描述行为的抽象
++ 可以用来对函数进行约束
+```js
+interface Speakable{
+    speak():void //接口里只能放定义，所有的方法都是抽象的
+}
+```
+
 &#8195;&#8195;接口的作用是为了给这些类型命名和为我们的代码或者第三方代码定义契约。
 ```typescript
     function printLabel(labelledObj: { name: string }) {
@@ -277,7 +286,7 @@ myArray[2] = "Mallory"; // 报错
 **6、类类型**
 
 **1、实现接口**
-
+&#8195;&#8195;类可以实现多个接口，但是一次只能继承一个类
 ```typescript
     interface ClockInterface {
         currentTime: Date;
@@ -298,9 +307,8 @@ myArray[2] = "Mallory"; // 报错
 **2、类静态部分和实例部分的区别**
 
 ​		当一个类实现一个接口时，只对其实例部分进行类型检查。而constructor存在类的静态部分，所以不在检查的范围内。
-
 ```ts
-//为构造函数所有
+//为构造函数所有，使用接口来约束类
 interface ClockConstructor {
     new (hour: number, minute: number): ClockInterface;
 }
@@ -319,6 +327,7 @@ class DigitalClock implements ClockInterface {
         console.log("beep beep");
     }
 }
+//类可以实现多个接口，但是一次只能继承一个类
 class AnalogClock implements ClockInterface {
     constructor(h: number, m: number) { }
     tick() {
@@ -349,6 +358,13 @@ square.color = "blue";
 square.sideLength = 10;
 square.penWidth = 5.0;
 ```
+**4、抽象类VS接口**
+
++ 不同类之间共有的属性或方法，可以抽象成一个接口。 
++ 而抽象类是供其他类继承的基类，抽象类不允许实例化。抽象类中的抽象方法必须放在子类中被实现。
++ 抽象类本质是一个无法实例化的类，其中能够实现方法和初始化属性，而接口仅能用于描述，既不提供方法的实现，也不为属性进行初始化。
++ 一个类可以继承一个类或者抽象类，但可以实现多个接口。
++ 抽象类也可以实现接口。
 
 ----
 
@@ -512,6 +528,7 @@ let employeeName = buildName("Joseph", "Samuel", "Lucas", "MacKinZie");
 
 ```ts
 let suits = ["hearts", "spades", "clubs", "diamonds"];
+//函数的定义和声明要在一起
 //重载时只需要定义函数就行，不用实现
 function pickCard(x: {suit: string; card: number; }[]): number; //重载1
 function pickCard(x: number): {suit: string; card: number; };//重载2
@@ -582,7 +599,7 @@ function identity<T>(arg: T): T {
   let output = identity("myString");  // type of output will be 'string'
   ```
 
-**1、使用泛型变量**
+#### 1、使用泛型变量
 
 ```ts
 function loggingIdentity<T>(arg: T[]): T[] {
@@ -596,7 +613,7 @@ function loggingIdentity<T>(arg: Array<T>): Array<T> {
 } 
 ```
 
-**2、泛型接口**
+#### 2、泛型接口
 
 ```ts
 interface GenericIdentityFn {
@@ -620,7 +637,7 @@ function identity<T>(arg: T): T {
 
 let myIdentity: GenericIdentityFn<number> = identity;
 ```
-**3、泛型类**
+#### 3、泛型类
 
 ​		泛型类指的是实例部分的类型，类的静态属性不能使用这个泛型类型。
 
@@ -635,7 +652,7 @@ myGenericNumber.zeroValue = 0;
 myGenericNumber.add = function(x, y) { return x + y; };
 ```
 
-**4、泛型约束**
+#### 4、泛型约束（extends）
 
 ```ts
 interface Lengthwise {
@@ -724,7 +741,7 @@ interface Named {
 let x: Named={name: 'Alice', location: 'Seattle'};
 ```
 
-**1、比较两个函数**
+#### 1、比较两个函数
 
 &#8195;&#8195;函数传参时，参数少的可以赋值给参数多的。源函数的返回值类型必须是目标函数返回值类型的子类型。
 
@@ -743,7 +760,7 @@ let y = () => ({name: 'Alice', location: 'Seattle'});
 x = y; // OK 类型系统强制源函数的返回值类型必须是目标函数返回值类型的子类型。
 y = x; // Error because x() lacks a location property，就比如在调用y函数时，获取的返回结果没有location后会报错。因为已经指定了返回类型。
 ```
-**2、枚举**
+#### 2、枚举
 
 ```ts
 enum Status { Ready, Waiting };
@@ -753,7 +770,7 @@ let status = Status.Ready;
 status = Color.Green;  // Error 不同枚举类型之间是不兼容的
 ```
 
-**3、类**
+#### 3、类
 
 ​		比较两个类类型的对象时，只有实例的成员会被比较,类的私有成员和受保护成员会影响兼容性。静态成员和构造函数不在比较的范围内。
 
@@ -777,7 +794,7 @@ a = s;  // OK
 s = a;  // OK
 ```
 
-**4、泛型**
+#### 4、泛型
 
 ​		类型参数只影响使用其作为类型一部分的结果类型。
 
@@ -813,7 +830,7 @@ identity = reverse;  // OK, because (x: any) => any matches (y: any) => any
 
 ---
 ## 8、高级类型
-**1、联合类型**
+#### 1、联合类型
 
 ​		表示一个值可以是几种类型之一。用竖线（|）分隔每个类型。如果一个值是联合类型，我们只能**访问此联合类型的所有类型里共有的成员。**
 
@@ -836,7 +853,7 @@ let pet = getSmallPet();
 pet.layEggs(); // okay Fish类和Bird类的共有成员。
 pet.swim();    // errors
 ```
-**2、类型保护和区分类型：**
+#### 2、类型保护和区分类型
 
   + 用户自定义的类型保护。简单的定义一个函数，**返回值是一个谓词**。谓词是`parameter is Type`形式。`parameter`必须来自于当前函数签名里的一个参数名。
 
@@ -880,7 +897,7 @@ pet.swim();    // errors
 
   + `instanceof` 类型保护。是通过构造函数来细化类型的一种方式。
 
-**3、交叉类型**
+#### 3、交叉类型
 
 &#8195;&#8195;将多个类型合并为一个类型。并且该类型并且包含所有类型的特性。`Person&Animal&Log`同时是`Person和Animal和Log`，该类型的对象同时拥有了这三种类型的成员。
 
@@ -917,9 +934,9 @@ console.log(unionObj.getName());//jim
 console.log(unionObj.getType());//dog
 ```
 
-**4、类型别名**
+#### 4、类型别名
 
-&#8195;&#8195;类型别名会给一个类型起个新名字。起别名不会新建一个类型，只是创建了一个新名字来引用那个类型。
+&#8195;&#8195;类型别名会给一个类型起个新名字。**起别名不会新建一个类型**，只是创建了一个新名字来引用那个类型。
 
 ```ts
 type Name = string;
@@ -935,7 +952,7 @@ function getName(n: NameOrResolver): Name {
 }
 ```
 
-​		类型别名也可以是泛型。同时还可以使用类型别名在属性里引用自己。
++ 类型别名也可以是泛型。同时还可以使用类型别名在属性里引用自己。
 
 ```ts
 type Container<T>={value:T};
@@ -946,13 +963,13 @@ type Tree<T>{
     right:Tree<T>;
 }
 ```
-​		与交叉类型一起使用，可以创造出一些复杂类型。
++ 与交叉类型一起使用，可以创造出一些复杂类型。
 
 ```ts
 type Tree<T>=T&{
 	value:T;
 	left:Tree<T>;
-  right:Tree<T>;
+    right:Tree<T>;
 }
 interface Person{
     name:string;
@@ -965,7 +982,7 @@ s=person.value.name
 s=person.left.right.value.name
 ```
 
-​		类型名不能出现在声明右侧的任何地方。
++ 类型名不能出现在声明右侧的任何地方。
 
 ```ts
 type Yikes = Array<Yikes>; // error
@@ -975,9 +992,22 @@ type Yikes = Array<Yikes>; // error
 
 + 接口创建了一个新的类型，可以在任何地方使用。类型别名不会创建新类型。
 + 类型别名不能被`extends`和`implements`。
+```js
+type Text extends point = { z: String }//报错
+```
 + 在无法通过接口来描述一个类型并且需要使用联合类型或元组类型时，这时通常会使用类型别名。
+```js
+interface Circle {
+    radius: number,
+}
+interface Point {
+    x: number,
+    y: number;
+};
+type rec=Circle|Point
+```
 
-**5、字符串字面量类型**
+#### 5、字符串字面量类型
 
 &#8195;&#8195;字符串字面量类型允许我们指定字符串的固定值。
 
@@ -997,7 +1027,7 @@ test("123","ease-in");//ok
 test("123","ease");//erorr easeType参数传递的必须是Easing类型
 ```
 
-**6、可辨识联合**
+#### 6、可辨识联合
 
 &#8195;&#8195;合并类型来创建一个可辨识联合的高级模式，也被称为`标签联合`或`代数数据类型`。
 
@@ -1029,9 +1059,9 @@ function area(s: Shape) {
 }
 ```
 
-**完整性检查**
+#### 7、完整性检查
 
-​		当没有涵盖所有可辨识联合的变化是，想让编译器通知我们报错。可以通过以下两种方式来。实现
+&#8195;&#8195;当没有涵盖所有可辨识联合的变化是，想让编译器通知我们报错。可以通过以下两种方式来。实现
 
 + 指定返回值类型
 
@@ -1061,7 +1091,7 @@ function area(s: Shape) {
   }
   ```
 
-**7、索引类型**
+#### 7、索引类型
 
 &#8195;&#8195;通过使用索引类型，编译器能够检查使用了动态属性名的代码。
 
@@ -1079,7 +1109,8 @@ function area(s: Shape) {
       age:26
   }
   //T[K][]表示 Person[name][]或者Person[age][]   K表示name|age
-  function pluck<T,K extends keysof T>(o:T,names:k[]):T[K][]{
+  //keyof T 表示 Object.keys(obj);
+  function pluck<T,K extends keyof T>(o:T,names:K[]):T[K][]{
       return names.map(n=>o[n])
   }
   let values:(number|string)[]=pluck(person,['name','age']);
@@ -1108,9 +1139,9 @@ function area(s: Shape) {
   ```
 
 
-**8、映射类型**
+#### 8、映射类型
 
-&#8195;&#8195;映射类型——从旧类型里创建新类型，基于一些已存在的类型，按照一定方式转换字段。新类型以相同的形式去转换旧类型里每个属性。
+&#8195;&#8195;映射类型——从旧类型里创建新类型，基于一些已存在的类型，按照一定方式转换字段。新类型以相同的形式去转换旧类型里每个属性。`Readonly、Required、Pick、Partial`
 
 ```ts
 interface Person{
@@ -1118,6 +1149,7 @@ interface Person{
   age:number;
 }
 //使用类型别名来根据Person创建只读和可选类型。
+
 1、定义只读类型,属于同态
 type ReadonlyPerson<T>={
   readonly [p in keyof T]:T[p]
@@ -1125,6 +1157,10 @@ type ReadonlyPerson<T>={
 2、定义可选类型，属于同态
 type PartialPerson<T>={
   [p in keyof T]?:T[p]
+}
+let p1:PartialPerson={
+    name:"james",
+    age:10
 }
 3、属于同态
 type Pick<T,k extends keyof T>={
@@ -1134,10 +1170,25 @@ type Pick<T,k extends keyof T>={
 type Record<k extends string,T>={
     [p in K]:T
 }
+type Partial<T>={
+     [p in keyof T]?:T[p]
+}
+
+//partial可选
 type personPartial=Partial<Person>
 type personReadonly=ReadonlyPerson<Person>;
 const partial:personPartial={name:"123"};
 const readonly:personReadonly={name:"123",age:12};
+
+//required必填
+type required = {
+    [k in keyof Person]-?: Person[k];
+}
+let p: required = {
+    name: '123',
+    age: 12,
+    gender: 'fale'
+}
 ```
 
 &#8195;&#8195;映射类型的语法和索引签名的语法类型相似，映射类型内部使用了`for...in或者keyof`。包含了三个部分。
@@ -1494,7 +1545,7 @@ declare var d3: D3.Base;
 
 ## 12、声明合并
 
-**1、接口合并**
+#### **1、接口合并**
 
 + 接口的非函数的成员应该是唯一的。如果它们不是唯一的，那么它们必须是相同的类型。
 
@@ -1522,7 +1573,7 @@ declare var d3: D3.Base;
   }
   ```
 
-**2、命名空间合并**
+#### **2、命名空间合并**
 
 + 对于**命名空间的合并**，模块导出的同名接口进行合并，构成单一命名空间内含合并后的接口。
 + 对于命名空间里值的合并，如果当前已经存在给定名字的命名空间，那么后来的命名空间的导出成员会被添加到应存在的那个模块里。
@@ -1578,9 +1629,6 @@ declare var d3: D3.Base;
       }
   }
   ```
-
-  
-
 ## 13、混合
 
 ​		从可重用组件构建类的另种方式是通过基类来构建他们，这种方式称为混合。
@@ -1632,14 +1680,12 @@ console.log(timestampedActivatableUserExample.timestamp);
 console.log(timestampedActivatableUserExample.isActivated);
 ```
 
-
-
 ## 14、装饰器
 
 &#8195;&#8195;装饰器是一种特殊类型的声明，它能够被附加到类声明、方法、访问符，属性或参数上。使用`@expression`形式，`expression`求值后必须为一个函数，在运行时调用，被装饰的声明信息作为参数传入。
 其实就是一个语法糖，背后利用的是`Object.defineProperty(target,name,descripter)`。本质上是`AOP`
 
-**1、装饰器工厂**
+#### **1、装饰器工厂**
 
 是一个简单的函数，返回一个表达式，供装饰器在运行时调用。
 
@@ -1652,7 +1698,7 @@ function clolor(value:string){
 }
 ```
 
-**2、装饰器组合**
+#### **2、装饰器组合**
 
 表示多个装饰器同时应用到一个声明上。当多个装饰器声明在同一个声明上会进行如下操作。
 
@@ -1697,16 +1743,17 @@ function clolor(value:string){
   f(): called
   ```
 
-**3、装饰器求值**
+#### **3、装饰器求值**
 
 类中不同声明上的装饰器将按照以下规定的顺序应用。
+属性方法先执行，谁先写谁先执行。参数和方法在一起的时候，先执行参数然后再执行方法。最后是类装饰器。
 
 + 参数装饰器，然后依次是方法装饰器*，*访问符装饰器，或属性装饰器应用到每个实例成员。
 + 参数装饰器，然后依次是方法装饰器*，*访问符装饰器，或属性装饰器应用到每个静态成员。
 + 参数装饰器应用到构造函数。
 + 类装饰器应用到类。
 
-**4、类装饰器**
+#### **4、类装饰器**
 
 ​		在类声明之前被调用。应用于类构造函数，可以用来监视、修改或替换类定义。该装饰器不能用在声明文件(`.d.ts`)，也不能用在任何外部上下文(`declare的类`)。
 
@@ -1782,7 +1829,7 @@ class Greeter{
 }
 ```
 
-**5、方法装饰器**
+#### **5、方法装饰器**
 
 &#8195;&#8195;方法装饰器声明在一个方法的声明之前（紧靠着方法声明）。会被应用到方法的属性描述符上，可以用来监视、修改或替换方法定义。该装饰器不能用在声明文件(`.d.ts`)，也不能用在任何外部上下文(`declare的类`)。
 
@@ -1817,7 +1864,7 @@ class Greeter{
     }
     ```
 
-**6、访问器装饰器**
+#### **6、访问器装饰器**
 
 访问器装饰器声明在一个访问器的声明之前（紧靠着访问器声明）。 访问器装饰器应用于访问器的属性描述符并且可以用来监视，修改或替换一个访问器的定义。访问器装饰器不能用在声明文件中（.d.ts），或者任何外部上下文（比如 `declare`的类）里。
 
@@ -1856,15 +1903,15 @@ class Greeter{
     ```
 
 
-**7、属性装饰器**
+#### **7、属性装饰器**
 
 ​		属性装饰器声明在一个属性声明之前（紧靠着属性声明）。 属性装饰器不能用在声明文件中（.d.ts），或者任何外部上下文（比如 `declare`的类）里。属性描述符*不会做为参数传入属性装饰器，属性描述符只能用来监视类中是否声明了某个名字的属性。
 
 属性装饰器表达式会在运行时当作函数被调用，传入下列2个参数：
 
-+ 对于静态成员来说是类的构造函数，对于实例成员是类的原型对象。
++ 第一个参数对于静态成员来说是类的构造函数，对于实例成员是类的原型对象。
 
-+ 成员的名字。
++ 第二个参数是成员的名字。
 ```ts
     function setDefaultValue(target: Object, propertyName: string) {
       target[propertyName] = "jamestang";
@@ -1878,7 +1925,7 @@ class Greeter{
     console.log(new Person().name); // 输出: jamestang
 ```
 
-**8、参数装饰器**
+#### **8、参数装饰器**
 
 参数装饰器声明在一个参数声明之前（紧靠着参数声明）。 
 
@@ -1926,7 +1973,7 @@ class Greeter{
 
   ```ts
   // Compile with --noImplicitThis
-  
+  //type用来定义一个类型或者类型别名
   type ObjectDescriptor<D, M> = {
     data?: D;
     methods?: M & ThisType<D & M>; // Type of 'this' in methods is D & M
