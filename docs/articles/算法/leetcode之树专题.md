@@ -616,6 +616,46 @@ var trimBST = function(root, low, high) {
 };
 ```
 
+<<<<<<< HEAD
+## 24、[二叉树的最小深度](https://leetcode-cn.com/problems/minimum-depth-of-binary-tree/submissions/)
+&#8195;&#8195;给定一个二叉树，找出其最小深度。最小深度是从根节点到最近叶子节点的最短路径上的节点数量。
+说明：叶子节点是指没有子节点的节点。
+```js
+//获取树的最小深度
+const minDepth=function(root){
+    if(!root) return 0;
+    const recur=node=>{
+        //没有左右节点 则当前节点的深度是1
+        if(!node.left&&!node.right) return 1;
+        let minValue=Number.MAX_SAFE_INTEGER;；
+        if(node.left){
+            minValue=Math.min(minValue,recur(node.left));
+        }
+        if(node.right){
+            minValue=Math.min(minValue,recur(node.right))
+        }
+        return minValue+1;
+    }
+}
+//获取树的最大深度
+const minDepth=function(root){
+    if(!root) return 0;
+    const recur=node=>{
+        //没有左右节点 则当前节点的深度是1
+        if(!node.left&&!node.right) return 1;
+        let maxValue=Number.MIN_SAFE_INTEGER;
+        if(node.left){
+            maxValue=Math.max(maxValue,recur(node.left));
+        }
+        if(node.right){
+            maxValue=Math.max(maxValue,recur(node.right))
+        }
+        return maxValue+1;
+    }
+}
+```
+ 
+=======
 ## 21、[后续遍历][好叶子节点对的数量](https://leetcode-cn.com/problems/number-of-good-leaf-nodes-pairs/)
 &#8195;&#8195;给你二叉树的根节点 `root` 和一个整数 `distance` 。如果二叉树中两个 叶 节点之间的 最短路径长度 小于或者等于 distance ，那它们就可以构成一组 好叶子节点对 。返回树中 好叶子节点对的数量 。
 ```js
@@ -782,3 +822,4 @@ var isSubtree = function(s, t) {
     return recur(s);
 };
 ```
+
