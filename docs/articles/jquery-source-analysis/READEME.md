@@ -5,7 +5,9 @@ type: 技术
 tags: javascript
 note: jquery整体封装设计总结
 ---
+
 `jquery`的整个代码的封装就是以自执行函数的形式来封装的，自执行函数在执行的过程中会形成闭包。下面将对`jQuery`整体封装设计进行大概的分析。可以总结出如下亮点。
+
 + `jQuery`的闭包封装
 ```js
 const params1 = typeof window !== 'undefined' ? window : this;

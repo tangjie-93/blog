@@ -1,3 +1,10 @@
+---
+title: jquer3.5.1源码
+date: '2020-11-27'
+type: 技术
+tags: jquery
+note: jquer3.5.1源码
+---
 ```js
 /*!
  * jQuery JavaScript Library v3.5.1
