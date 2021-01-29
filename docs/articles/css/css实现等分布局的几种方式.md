@@ -18,11 +18,11 @@ note: css实现等分布局的几种方式
 
 ```css
 .parent{
-    overflow: hidden;
+    overflow: hidden;//成为BFC
     background: gray
 }
 .child{
-    float: left;
+    float: left;//成为BFC
     height: 100px;
     width: 25%;
     padding: 20px;

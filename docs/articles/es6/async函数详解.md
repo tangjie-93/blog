@@ -190,7 +190,6 @@ const fun=x=>{
         },1000)
     })
 }
-functio
 const generator=gen=>{
     const iterator=gen();
     function next(x){

@@ -57,16 +57,16 @@ note: 对BFC的理解
 ```
 ```css
 .div1 {
-  float: left;
+  float: left;// 使得#div1成为为BFC
   width: 300px;
   background-color: pink;
-  height: calc(100vh - 100px);
+  height: 100vh;
 }
 
 .div2 {
   background-color: black;
   height: 100vh;
-  overflow: hidden; // 使得#div2称为BFC
+  overflow: hidden; // 使得#div2成为BFC
 }
 ```
 + 3、 (去除浮动) 防止元素塌陷,可以包含浮动元素
