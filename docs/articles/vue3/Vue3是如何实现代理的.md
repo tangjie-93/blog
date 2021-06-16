@@ -50,7 +50,6 @@ function createSetter(){
             console.log("修改操作")
         }   
         return res;
-       return res;
     }
 }
 function createGetter(){

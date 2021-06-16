@@ -25,7 +25,7 @@ note: javascript之深浅拷贝的区别
 }
 let obj={...objData}
 let obj=Object.assign({},objData)
-```
+ ```
 普通数组对象可以使用以下方法克隆
 ```js
 let objData=[1,2,[3,4]];
@@ -120,7 +120,9 @@ console.log(sCopyData);
 console.log(person);
 ```
 输出结果如下所示。从输出结果可以看出，name属性和arr属性都改变了，但是拷贝前后对象互不影响。
-<!-- <img width="300px"  src="https://user-gold-cdn.xitu.io/2019/4/10/16a02e517d94498d?w=472&h=264&f=png&s=27078"> -->
+
+<img width="300px"  src="https://user-gold-cdn.xitu.io/2019/4/10/16a02e517d94498d?w=472&h=264&f=png&s=27078" />
+
 <img width="300px"  src="../../images/深拷贝.png">
 
 ## 3、对象合并
