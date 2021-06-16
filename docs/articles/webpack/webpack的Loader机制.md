@@ -5,4 +5,4 @@ type: 技术
 tags: webpack
 note: webpack的Loader机制
 ---
-<image src="../../images/webpack原理.png" alt="暂无图片>
+<image src="../../images/webpack原理.png" alt="暂无图"/>
