@@ -98,7 +98,7 @@ export default {
 			this.data.total = this.pages.length;
 		},
 		gogogo(path) {
-			window.location.href = path;
+			window.location.href ="/blog" +path;
 		},
 		pageChange(thisPageNo) {
 			this.page = thisPageNo;
