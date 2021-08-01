@@ -69,7 +69,7 @@ note: Vue父子组件钩子函数运行先后情况
 </body>
 </html>
 ```
-此时父子组件的钩子函数的输出结果如下所示：
+此时组件的钩子函数的输出结果如下所示：
 <img src="../../images/vue-hooks.png" alt="暂无数据">
 <!-- ![](https://user-gold-cdn.xitu.io/2019/8/15/16c9458b653a47f7?w=1914&h=376&f=png&s=49072) -->
 
@@ -97,7 +97,7 @@ export default {
         }
     },
     components:{
-        hookChild
+        hookChild,//静态引入
         // hookChild:()=>import("./hookChild") //动态引入
     },
     beforeCreate(){
