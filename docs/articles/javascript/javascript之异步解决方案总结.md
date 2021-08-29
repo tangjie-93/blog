@@ -22,11 +22,31 @@ function test(a,callback){
 ### 2、生成器（generator）
 **特点：** 可以控制函数的执行。
 ```js
-function *fun(){
-    yield 5;
-    yield 6;
-    return 7;
+function query(interval) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(interval);
+    }, interval);
+  });
 }
+function* generator() {
+  let value;
+  value = yield query(1000);
+  console.log("第一个请求", value);
+  value = yield query(2000);
+  console.log("第一个请求", value);
+  value = yield query(3000);
+  console.log("第一个请求", value);
+}
+let iterator = generator();
+iterator.next().value.then((value) => {
+    iterator.next(value).value.then(value=>{
+        iterator.next(value).value.then(value=>{
+            iterator.next(value);
+        })
+    });
+});
+
 ```
 ### 3、Promise
 **Promise的优点：**
@@ -48,11 +68,19 @@ promise.then(res=>{
 
 **优点:** 代码清晰。将异步变成了同步。
 ```js
+function query(interval) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(interval);
+    }, interval);
+  });
+}
 async function test(){
     try{
-
+      const value = await query(1000);
+      return value;
     }catch(err){
-        console
+        console.log(err)
     }
 }
 ```

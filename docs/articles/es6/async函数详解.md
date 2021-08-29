@@ -181,27 +181,71 @@ genObj.next().then(x => console.log(x));
 ```       
 &#8195;异步 `Generator` 函数内部，能够同时使用`await`和`yield`命令。可以这样理解，`await`命令用于将外部操作产生的值输入函数内部，`yield`命令用于将函数内部的值输出。
 
-`async await`的源码实现
+`async await`的源码实现,本质上是promise和generator的语法糖
 ```js
-const fun=x=>{
-    return new Promise((resolve)=>{
-        setTimeout(()=>{
-            resolve(++x);
-        },1000)
+//gen是一个generator函数
+const AsyncFunction=gen=>{
+    return new Promise((resolve,reject)=>{
+        const iterator=gen();
+        function next(x){
+            let {
+                value,//存储每一次发送请求的promise实例
+                done //记录是否都迭代完成
+            }=iterator.next(x);
+            if(done) {
+                resolve(value);
+                return value;
+            }
+            if(!isPromise(value)){
+                value= Promise.resolve(value);
+            }
+            value.then(res=>next(res)).catch(err=>{
+                reject(err);
+                err=>iterator.throw(err);
+            })
+        }
+        next();
     })
+   
 }
-const generator=gen=>{
-    const iterator=gen();
-    function next(x){
-        const {
-            value,
-            done
-        }=iterator.next(x);
-        if(done) return value;
-        value.then(res=>{
-            next(res)
-        })
+
+function isPromise(x){
+    if(x!==null && /^(object|function)$/i.test(typeof x)){
+        let then;
+        try{
+            then=x.then;
+        }catch(err){
+            return false;
+        }
+        if(typeof then ==='function'){
+            return true;
+        }
     }
-    next();
+    return false;
 }
+
+
+function query(interval) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(interval);
+    }, interval);
+  });
+}
+function* generator() {
+  let value;
+  value = yield query(1000);
+  console.log("第一个请求", value);
+  value = yield query(2000);
+  console.log("第一个请求", value);
+  value = yield query(3000);
+  console.log("第一个请求", value);
+} 
+
+AsyncFunction(generator).then(res=>{
+    console.log("请求成功");
+}).catch(err=>{
+    console.log("请求失败")
+})
+
 ```
