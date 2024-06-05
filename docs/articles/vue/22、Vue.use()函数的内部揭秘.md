@@ -14,7 +14,7 @@ Vue.use = function (plugin) {
         return this
     }
 
-    // additional parameters，表示出Vue之外的参数
+    // additional parameters，表示除Vue之外的参数
     var args = toArray(arguments, 1);
     args.unshift(this);//将Vue添加到args中首位
     //如果传入的插件有install属性，且其是一个函数
@@ -30,8 +30,8 @@ Vue.use = function (plugin) {
 ```
 下面是 `Vue.use()` 搭配 `Vue.extend()` 注册一个插件的简单例子。
 ## 1、定义插件需要用到的组件
-```vue
-//<Modal>用的是iview ui库的组件
+```js
+// <Modal>用的是iview ui库的组件 
 <template>
     <Modal
         v-model="visible"
@@ -129,7 +129,9 @@ Vue.use = function (plugin) {
 }
 </style>
 ```
+
 ## 2、插件内容的核心代码
+
 ```js
 import ConfirmModal from './ShowModal.vue';
 function confirmModal (component, props, Vue) {
