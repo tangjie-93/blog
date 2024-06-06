@@ -37,6 +37,7 @@ note: 从源码上解释Computed和watch的区别
 + 在 `watch` 初始化测过程中，会创建一个 `watcher`,并添加 `user` 属性，证明这是一个用户添加的 `watcher`。
 + 当用户为 `watch`添加`immediate`属性且值为`true`时，会立刻执行 `watch`里面定义的`handler`，在这里要**注意**，如果监听的对象或属性是来自`props`，那么它的值是 `props`的默认值。
 + 当用户为 `watch` 添加 `deep` 属性时，会调用 `traverse(value)` 方法，这个方法本质上是递归监听的对象，在递归的过程中会取值触发 `getter`钩子，给对象中的属性添加依赖。属性依赖的 `watcher`，跟对象的 `watcher`是同一个，因此在对象的属性发生变化时，也会触发更新，调用`Watch`类的`run`方法,在`run中`执行 ` this.cb.call(this.vm, value, oldValue)`，来调用`watch`中的`handler`。
-**小结:**
-当我们要进行数值计算,而且依赖于其他数据，那么把这个数据设计为 `computed`
+
+**小结:**<br>
+当我们要进行数值计算,而且依赖于其他数据，那么把这个数据设计为 `computed`。<br>
 如果你需要在某个数据变化时做一些事情，使用 `watch`来观察这个数据变化。
