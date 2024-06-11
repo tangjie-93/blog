@@ -1,5 +1,5 @@
 ---
-title: 闭包
+title: javascript之闭包
 date: '2020-08-05'
 type: 技术
 tags: javascript

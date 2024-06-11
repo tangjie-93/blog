@@ -71,6 +71,9 @@ Function.prototype.Call = function(context,...args) {
     delete context[key];
     return result;
 }
+function foo(){
+    console.log(this);
+}
 var obj={c:4};
 var arr=[1,2,3];
 //Array

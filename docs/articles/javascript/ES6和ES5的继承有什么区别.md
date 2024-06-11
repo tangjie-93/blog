@@ -14,16 +14,17 @@ note: ES6和ES5的继承的区别
 ### 7、ES6子类可以直接通过`__proto__`寻址到父类。
 ```js
 //ES6
-class Super {}
-class Sub extends Super {}
+class Super {};
+class Sub extends Super {};
 
 const sub = new Sub();
+sub.__proto__ === Sub.prototype;//true
 Sub.__proto__ === Super;//true
-Sub.Prototype.__proto__=Super.Prototype
+Sub.prototype.__proto__===Super.prototype;// true
 
 //ES5
-function Super() {}
-function Sub() {}
+function Super() {};
+function Sub() {};
 
 Sub.prototype = new Super();
 Sub.prototype.constructor = Sub;

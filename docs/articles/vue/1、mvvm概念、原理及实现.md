@@ -31,7 +31,7 @@ note: mvvm概念、原理及实现
 **1、数据劫持——就是给对象属性添加get,set钩子函数。**
 
 + 1、观察对象，给对象增加Object.defineProperty
-+ 2、vue的特点就是新增不存在的属性时不会给该属性添加get、set钩子函数。
++ 2、vue的特点就是新增不存在的属性时,不会给该属性添加get、set钩子函数。
 + 3、深度响应。循环递归遍历data的属性，给属性添加get，set钩子函数。
 + 4、每次赋予一个新对象时（即调用set钩子函数时），会给这个新对象进行数据劫持(defineProperty)。
 ```javascript
@@ -51,6 +51,8 @@ function defineReactive(data){
             set(newVal){
                 if(val!==newVal){
                     val=newVal;
+                    // 监听新值
+                    this.observe(val);
                     //通知订阅者，数据变化了（发布）
                     dep.notify();
                     return newVal;
@@ -77,7 +79,7 @@ class MVVM{
         this._proxy(this.$data);
         //将方法也挂载到vm上
         this._proxy(this.$methods);
-        //将数据属性挂载到vm实例上
+        //将计算属性挂载到vm实例上
         Object.keys(this.$computed).forEach(key=>{
             Object.defineProperty(this,key,{
                 get(){

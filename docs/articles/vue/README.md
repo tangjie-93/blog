@@ -55,6 +55,6 @@ class EventBus{
 ```
 以上代码用的是发布订阅模式。
 
-参考链接：  
-1、[面试官系列(2): Event Bus的实现](https://juejin.im/post/5ac2fb886fb9a028b86e328c)     
-2、[一个合格的中级前端工程师必须要掌握的 28 个 JavaScript 技巧](https://juejin.im/post/5cef46226fb9a07eaf2b7516#heading-28)
+参考链接： <br>
+1、[面试官系列(2): Event Bus的实现](https://juejin.im/post/5ac2fb886fb9a028b86e328c)<br>     
+2、[一个合格的中级前端工程师必须要掌握的 28 个 JavaScript 技巧](https://juejin.im/post/5cef46226fb9a07eaf2b7516#heading-28)<br>
