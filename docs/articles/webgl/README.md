@@ -15,7 +15,7 @@ note: WebGL基础知识总结
 
 #### 2、渲染管线流程图
 
-<img src="../../images/WebGL-渲染管线.png" alt="暂无数据" />
+<img src="../../images/webgl/WebGL-渲染管线.png" alt="暂无数据" />
 
 `WebGL（Web Graphics Library）`是一种用于在Web浏览器中进行3D图形渲染的技术，其渲染管线包括以下步骤：
 
@@ -64,8 +64,12 @@ note: WebGL基础知识总结
 
   + 最终经过测试和混合的片元会写入帧缓冲区，帧缓冲区中的数据最终显示在屏幕上。
 
-**下面用一个`demo`来展示整个渲染过程**
->顶点着色器代码
+
+**`GPU`中的处理我们是看不见的，下面我们用一个`demo`来展示在 `js` 代码中的渲染过程。**
+
+> 1.顶点着色器代码
+
+顶点着色器的作用是计算顶点的位置。
 ```js
 <script id="vertexShader" type="x-shader/x-vertex">
   //attribute声明vec4类型变量apos
@@ -77,7 +81,9 @@ note: WebGL基础知识总结
   }
 </script>
 ```
->片元着色器代码
+> 2.片元着色器代码
+
+片段着色器的作用计算出当前绘制图元中每个像素的颜色值。
 ```js
 <script id="fragmentShader" type="x-shader/x-fragment">
   void main() {
@@ -86,7 +92,31 @@ note: WebGL基础知识总结
   }
 </script>
 ```
-> 连接着色器程序
+**注意** 如果顶点数据给的不是-1到1之间的数据，那么顶点着色器的代码就得经过下面的换算
+```js
+<script id="vertex-shader-2d" type="notjs">
+  attribute vec2 a_position;
+  uniform vec2 u_resolution;
+  void main() {
+    // 从像素坐标转换到 0.0 到 1.0
+    vec2 zeroToOne = a_position / u_resolution;
+    // 再把 0->1 转换 0->2
+    vec2 zeroToTwo = zeroToOne * 2.0;
+    // 把 0->2 转换到 -1->+1 (裁剪空间)
+    vec2 clipSpace = zeroToTwo - 1.0;
+    // WebGL认为左下角是 0，0 。 想要像传统二维API那样起点在左上角，我们只需翻转y轴即可
+    gl_Position = vec4(clipSpace* vec2(1, -1), 0, 1);
+  }
+</script>
+```
+> 3.创建WebGL上下文
+
+```js
+const canvas = document.querySelector("#c");
+const gl = canvas.getContext("webgl");
+```
+> 4.连接着色器程序
+
 **js 程序中的 GLSL 语言——如何连接着色器程序**
 - createShader：创建着色器对象
 - shaderSource：提供着色器源码
@@ -96,7 +126,8 @@ note: WebGL基础知识总结
 - linkProgram：链接着色器程序
 - useProgram：启用着色器程序
 下面是完整的例子
-```JS
+
+```js
 function initShader(gl) {
   1.获取着色器源码:
   //顶点着色器源码
@@ -124,15 +155,16 @@ function initShader(gl) {
   return program;
   }
 ```
-> 数据准备阶段
+> 5.数据准备阶段
 ```js
  const data = new Float32Array([
-        -0.5, 0.5,
+    -0.5, 0.5,
     -0.5, -0.5,
     0.5, 0.5,
-    ]);
+  ]);
 ```
-> 数据传输阶段
+> 6.数据传输阶段
+
 + gl.createBuffer：创建缓冲区。
 + gl.bindBuffer：绑定某个缓冲区对象为当前缓冲区。
 + gl.bufferData：往缓冲区中复制数据。
@@ -152,7 +184,7 @@ gl.vertexAttribPointer(aposLocation, 2, gl.FLOAT, false, 0, 0);
 //允许数据传递
 gl.enableVertexAttribArray(aposLocation);
 ```
-> 数据渲染阶段
+> 6.数据渲染阶段
 ```js
 //设置清屏颜色为黑色。
 gl.clearColor(0, 0, 0, 1.0);
@@ -231,7 +263,7 @@ void main() {
 ### 4、gl_PointCoord
 渲染点片元坐标。一个顶点渲染为一个正方形区域，每个正方形区域以正方向区域的左上角建立一个直角坐标系，然后使用内置变量`gl_PointCoord` 描述正方形区域中像素或者说片元的坐标，比如正方形区域的左上角坐标是 `(0.0,0.0`),正方形区域几何中心坐标是 `(0.5,0.5)`，右下角坐标是`(1.0,1.0)`。 图片来源于网络
 
-<img src="../..//images/PointCoord.png" />
+<img src="../..//images/webgl/PointCoord.png" />
 
 **`gl_PointCoord` 在片元着色器中的应用** 
 ```js
@@ -250,7 +282,7 @@ void main(){
 ```
 下面是使用 `gl_pointCoord`裁剪成 **圆形** 的图片和没有被裁减的 **正方形** 的图片对比情况。
 <div style='text-align:center'>
-<img src="../../images/PointCoord-圆形.png" width='300' />  <img src="../../images/PointCoord-正方形.png" width='300' />
+<img src="../../images/webgl/PointCoord-圆形.png" width='300' />  <img src="../../images/webgl/PointCoord-正方形.png" width='300' />
 </div>
 
 ### 5、gl_FragCoord
@@ -278,7 +310,7 @@ void main(){
 ```
 结果如下图所示：
 
-<img src="../../images/gl_FragCoord.png" width='400' />
+<img src="../../images/webgl/gl_FragCoord.png" width='400' />
 
 ## 3、attribute和uniform以及varying的区别
 `attribute` 和 `uniform` 关键字的目的主要是为了 `javascript` 语言可以通过相关的WebGL API把一些数据传递给着色器。而`varying` 主要是将顶点着色器中的数据传递给片元着色器。
@@ -347,21 +379,21 @@ R3 = B1 x A1 + B2 x (1 - A1)
 
 开始  `α融合` 后的效果
 
-<img src='../../images/webgl-α融合.png' alt='暂无图片' width='300'>
+<img src='../../images/webgl/webgl-α融合.png' alt='暂无图片' width='300'>
 
 不开启的效果
 
-<img src='../../images/webgl-未开启α融合.png' width='300'>
+<img src='../../images/webgl/webgl-未开启α融合.png' width='300'>
 
 #### 2、深度测试
 
 深度测试跟片元的深度值`z`有关。片元的深度值`Z`反应的是一个片元距离观察位置的远近。
 + **开启渲染管线的深度测试单元**(`gl.enable(gl.DEPTH_TEST)`)，所有的片元会经过该功能单元的逐片元测试，通过比较片元深度值`Z`，`WebGL`图形系统默认沿着Z轴正方向观察， 同一个屏幕坐标位置的所有片元离观察点远的会被舍弃，只保留一个离眼睛近的片元。前面的立方体中都开启了深度测试单元。<br>
-<img src='../../images/立方体-开始深度测试.png' alt='暂无图片' width='300' /><br>
+<img src='../../images/webgl/立方体-开始深度测试.png' alt='暂无图片' width='300' /><br>
 + 如果**渲染管线没有开启深度测试单元**， 深度缓冲区中的片元深度数据(`z`值)不会起到什么作用。对于相同屏幕坐标的片元，`WebGL`会按照片元的绘制顺序覆盖替换，后绘制片元的像素值覆盖颜色缓冲区中已经绘制片元的像素值。立方体每个面的片元绘制顺序是由该面的顶点在类型数据中的顺序决定的。<br>
-<img src='../../images/立方体-未开启深度测试.png' alt='暂无图片' width='300' /><br>
+<img src='../../images/webgl/立方体-未开启深度测试.png' alt='暂无图片' width='300' /><br>
 + 如果立方体开启深度测试的同时还开启了α融合的话，如果想要α融合起作用的话，需要关闭深度测试(调用`gl.blendFunc()`)， α融合会在深度测试之后进行。 **深度测试单元是比较先后绘制两个片元的深度值决定取舍，α融合单元是把先后绘制的两个片元RGB值分别乘以一个系数得到新的`RGB`值**，覆盖替换原来颜色缓冲区中同屏幕坐标的RGB值。<br>
-<img src='../../images/立方体-开始深度测试和α融合.png' alt='暂无图片' width='300'><br>
+<img src='../../images/webgl/立方体-开始深度测试和α融合.png' alt='暂无图片' width='300'><br>
 
 ## 5、WebGL坐标系
 `WebGL` 采用右手坐标系，`X`轴向右为正，`Y` 轴向上为正，`Z` 轴沿着屏幕往往为正。
@@ -374,9 +406,9 @@ R3 = B1 x A1 + B2 x (1 - A1)
 + **观察坐标系**：将世界空间坐标转化为用户视野前方的坐标而产生的结果。人眼或者摄像机看到的世界中的物体相对于他自身的位置所参照的坐标系就叫观察坐标系。是以人眼/摄像机为原点而建立的坐标系。
 + **裁剪坐标系**：将相机坐标进行投影变换后得到的坐标，也就是 `gl_Position` 接收的坐标。观察坐标变换为裁剪坐标的投影矩阵可以为两种不同的形式，每种形式都定义了不同的平截头体。
   + 正射投影矩阵：又名正交投影，正射投影矩阵创建的是一个立方体的观察箱，它定义了一个裁剪空间，在该裁剪空间之外的坐标都会被丢弃。 正射投影矩阵需要指定观察箱的长度、宽度和高度。经过正射投影矩阵映射后的坐标 `w` 分量不会改变，始终是 1，所以在经过透视除法后物体的轮廓比例不会发生改变，这种投影一般用在建筑施工图纸中，不符合人眼观察世界所产生的近大远小的规律。
-<img src='../../images/正射投影矩阵.png'>
+<img src='../../images/webgl/正射投影矩阵.png'>
   + 透视投影矩阵: 透视投影矩阵将给定的平截头体范围映射到裁剪空间，除此之外它还会修改每个顶点坐标的 `w` 值，使得离人眼越远的物体的坐标 `w` 值越大。被变换到裁剪空间的坐标都会在 `-w` 到 `w` 的范围之间（任何大于这个范围的坐标都会被裁剪掉）。`WebGL` 要求所有可见的坐标都落在`【-1.0 - 1.0】`范围内，因此，一旦坐标转换到裁剪空间，透视除法就会被应用到裁剪坐标上。透视投影需要设置**近平面、远平面、透视深度**。
-<img src='../../images/透视投影矩阵.png' alt='暂无图片'>
+<img src='../../images/webgl/透视投影矩阵.png' alt='暂无图片'>
 **NDC坐标系**：一旦所有顶点被变换到裁剪空间，`GPU` 会对裁剪坐标执行透视除法，在这个过程中 `GPU` 会将顶点坐标的 `X，Y，Z` 分量分别除以齐次 `W` 分量。这一步会在每一个顶点着色器运行的最后被自动执行。最终所有坐标分量的范围都会在 `【-1，1】`之间，超出这个范围的坐标都将被 `GPU` 丢弃。
 **屏幕坐标系**：有了 `NDC` 坐标之后，`GPU` 会执行最后一步变换操作，视口变换，这个过程会将所有在`【-1, 1】`之间的坐标映射到屏幕空间中，并被变换成片段。
 
@@ -399,7 +431,7 @@ R3 = B1 x A1 + B2 x (1 - A1)
 
 在着色器中图片的坐标称为**纹理坐标**，图片称为**纹理图像**，图片上的一个像素称为**纹素**，一个纹素就是一个 `RGB` 或者`RGBA`值。把整个图片看成一个平面区域，用一个二维`UV`坐标可以描述每一个纹素的位置。下图来源于网络。
 
-<img src="../../images/WebGL-UV.png" alt="暂无图片" />
+<img src="../../images/webgl/WebGL-UV.png" alt="暂无图片" />
 
 上图展示了 **纹理坐标** 和 **顶点坐标** 的对应关系。在纹理坐标系统中左下角是坐标原点 `(0,0)`。顶点坐标在顶点着色器中经过光栅化处理后得到片元数据，纹理坐标在光栅化过程中会进行插值计算，得到一系列的纹理坐标数据，纹理坐标会按照一定的规律对应纹理图像上的纹素，内插得到的片元纹理坐标会传递给片元着色器。
 
@@ -600,8 +632,33 @@ vec3 lightDirection = u_LightPosition - v_Position;
     + gl.vertexAttrib3f：给着色器属性赋值，值为三个浮点数。
 + uniform：着色器全局属性
     + gl.getUniformLocation：获取全局变量位置。
-    + gl.uniform4f：给全局变量赋值 4 个浮点数。
-    + gl.uniform1i：给全局变量赋值 1 个整数。
+    + gl.uniform1f (floatUniformLoc, v);                 // float
+    + gl.uniform1fv(floatUniformLoc, [v]);               // float 或 float array
+    + l.uniform2f (vec2UniformLoc,  v0, v1);            // vec2
+    + gl.uniform2fv(vec2UniformLoc,  [v0, v1]);          // vec2 或 vec2 array
+    + gl.uniform3f (vec3UniformLoc,  v0, v1, v2);        // vec3
+    + gl.uniform3fv(vec3UniformLoc,  [v0, v1, v2]);      // vec3 或 vec3 array
+    + gl.uniform4f (vec4UniformLoc,  v0, v1, v2, v4);    // vec4 给全局变量赋值 4 个浮点数。
+    + gl.uniform4fv(vec4UniformLoc,  [v0, v1, v2, v4]);  // vec4 或 vec4 array
+    
+    + gl.uniformMatrix2fv(mat2UniformLoc, false, [  4x element array ])  // mat2 或 mat2 array
+    + gl.uniformMatrix3fv(mat3UniformLoc, false, [  9x element array ])  // mat3 或 mat3 array
+    + gl.uniformMatrix4fv(mat4UniformLoc, false, [ 16x element array ])  // mat4 或 mat4 array
+    
+    + gl.uniform1i (intUniformLoc,   v);                 // int 给全局变量赋值 1 个整数。
+    + gl.uniform1iv(intUniformLoc, [v]);                 // int 或 int array
+    + gl.uniform2i (ivec2UniformLoc, v0, v1);            // ivec2
+    + gl.uniform2iv(ivec2UniformLoc, [v0, v1]);          // ivec2 或 ivec2 array
+    + gl.uniform3i (ivec3UniformLoc, v0, v1, v2);        // ivec3
+    + gl.uniform3iv(ivec3UniformLoc, [v0, v1, v2]);      // ivec3 or ivec3 array
+    + gl.uniform4i (ivec4UniformLoc, v0, v1, v2, v4);    // ivec4
+    + gl.uniform4iv(ivec4UniformLoc, [v0, v1, v2, v4]);  // ivec4 或 ivec4 array
+    
+    + gl.uniform1i (sampler2DUniformLoc,   v);           // sampler2D (textures)
+    + gl.uniform1iv(sampler2DUniformLoc, [v]);           // sampler2D 或 sampler2D array
+    
+    + gl.uniform1i (samplerCubeUniformLoc,   v);         // samplerCube (textures)
+    + gl.uniform1iv(samplerCubeUniformLoc, [v]);         // samplerCube 或 samplerCube array
 + buffer：缓冲区
     + gl.createBuffer：创建缓冲区对象。
     + gl.bindBuffer：将缓冲区对象设置为当前缓冲。
@@ -627,6 +684,7 @@ vec3 lightDirection = u_LightPosition - v_Position;
     + gl.bindTexture：绑定纹理对象到当前纹理。
     + gl.texImage2D：将图片数据传递给 GPU。
     + gl.texParameterf：设置图片放大缩小时的过滤算法。
+
 
 ## 10.webgl怎么处理传递进去的数据的
 + 构建图形的数据
@@ -709,5 +767,8 @@ function setGeometry(gl) {
 ```
 + 最终呈现的结果
 
-<img src='./images/F.png'>
+<img src='../../images/webgl/F.png'>
+
+
+
 
