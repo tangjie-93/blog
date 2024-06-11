@@ -628,3 +628,86 @@ vec3 lightDirection = u_LightPosition - v_Position;
     + gl.texImage2D：将图片数据传递给 GPU。
     + gl.texParameterf：设置图片放大缩小时的过滤算法。
 
+## 10.webgl怎么处理传递进去的数据的
++ 构建图形的数据
+数据一般是按三角形去绘制，按照顺时针的顺序去绘制的，并且第二个三角形的第一个点是前面一个三角形的最后一个点，并最终绘制成图形的。
+```js
+// 构建图形的数据 
+function setGeometry(gl) {
+  gl.bufferData(
+      gl.ARRAY_BUFFER,
+      new Float32Array([
+          // left column
+          0, 0,
+          30, 0,
+          0, 150,
+          0, 150,
+          30, 0,
+          30, 150,
+
+          // top rung
+          30, 0,
+          100, 0,
+          30, 30,
+          30, 30,
+          100, 0,
+          100, 30,
+
+          // middle rung
+          30, 60,
+          67, 60,
+          30, 90,
+          30, 90,
+          67, 60,
+          67, 90,
+      ]),
+      gl.STATIC_DRAW);
+}
+```
++ 绘制图形
+```js
+// look up where the vertex data needs to go.
+  var positionLocation = gl.getAttribLocation(program, "a_position");
+
+  // Create a buffer to put positions in
+  var positionBuffer = gl.createBuffer();
+  // Bind it to ARRAY_BUFFER (think of it as ARRAY_BUFFER = positionBuffer)
+  gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+ // Draw the scene.
+  function drawScene() {
+    webglUtils.resizeCanvasToDisplaySize(gl.canvas);
+
+    // Tell WebGL how to convert from clip space to pixels
+    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+
+    // Clear the canvas.
+    gl.clear(gl.COLOR_BUFFER_BIT);
+
+    // Tell it to use our program (pair of shaders)
+    gl.useProgram(program);
+
+    // Turn on the attribute
+    gl.enableVertexAttribArray(positionLocation);
+
+    // Bind the position buffer.
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+
+    // Tell the attribute how to get data out of positionBuffer (ARRAY_BUFFER)
+    var size = 2;          // 2 components per iteration
+    var type = gl.FLOAT;   // the data is 32bit floats
+    var normalize = false; // don't normalize the data
+    var stride = 0;        // 0 = move forward size * sizeof(type) each iteration to get the next position
+    var offset = 0;        // start at the beginning of the buffer
+    gl.vertexAttribPointer(
+        positionLocation, size, type, normalize, stride, offset);
+    // Draw the geometry.
+    var primitiveType = gl.TRIANGLES;
+    var offset = 0;
+    var count = 18;  // 6 triangles in the 'F', 3 points per triangle
+    gl.drawArrays(primitiveType, offset, count);
+  }
+```
++ 最终呈现的结果
+
+<img src='./images/F.png'>
+

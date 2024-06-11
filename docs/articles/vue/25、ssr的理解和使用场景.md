@@ -33,19 +33,19 @@ note: ssr的理解和使用场景
 由服务端请求首屏数据，而不是客户端请求首屏数据，这是“快”的一个主要原因。服务端在内网进行请求，数据响应速度快。客户端在不同网络环境进行数据请求，且外网http请求开销大，导致时间差。 下图为服务端渲染的数据请求路线和客户端渲染的数据请求路线图。
 
 服务端渲染路线
-<img src="https://upload-images.jianshu.io/upload_images/6522842-ee4752e9500e9976.jpeg?imageMogr2/auto-orient/strip|imageView2/2/w/1200/format/webp" alt="暂无图片" title="服务端渲染路线" />
+<img src="../../images/vue/服务端渲染路线.webp" alt="暂无图片" title="服务端渲染路线" />
 
 客户端渲染路线
-<img src="https://upload-images.jianshu.io/upload_images/6522842-b86735d102cef2c4.jpeg?imageMogr2/auto-orient/strip|imageView2/2/w/1200/format/webp" alt="暂无图片" title="客户端渲染路线" />
+<img src="../../images/vue/客户端渲染路线.webp" alt="暂无图片" title="客户端渲染路线" />
 
 + `html` 渲染
 服务端渲染是先向后端服务器请求数据，然后生成完整首屏 `html` 返回给浏览器；而客户端渲染是等 `js` 代码下载、加载、解析完成后再请求数据渲染，等待的过程页面是什么都没有的，就是用户看到的白屏。就是服务端渲染不需要等待 `js` 代码下载完成并请求数据，就可以返回一个已有完整数据的首屏页面。
 
 客户端渲染
-<img src="https://upload-images.jianshu.io/upload_images/6522842-820ed3ef583c5ef0.png?imageMogr2/auto-orient/strip|imageView2/2/w/1200/format/webp" alt="暂无图片" title="客户端渲染" />
+<img src="../../images/vue/客户端渲染.webp" alt="暂无图片" title="客户端渲染" />
 
 服务端渲染
-<img src="https://upload-images.jianshu.io/upload_images/6522842-23923fbd080ccf26.png?imageMogr2/auto-orient/strip|imageView2/2/w/1200/format/webp" alt="暂无图片" title="服务端渲染" >
+<img src="../../images/vue/服务端渲染.webp" alt="暂无图片" title="服务端渲染" >
 
 ## 3、服务端渲染的使用场景
 内容丰富，复杂交互的动态网页，对首屏加载有要求的项目，对 `seo` 有要求的项目（因为服务端第一次渲染的时候，已经把关键字和标题渲染到响应的 `html` 中了，爬虫能够抓取到此静态内容，因此更利于 `seo`）。此方式一些适合的项目：活动模板，新闻通知类，博客系统，混合开发等等。

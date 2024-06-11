@@ -99,13 +99,13 @@ setCounter = () => {
     this.changeValue(2); 
 };
 ```
-## 2、生命周期
-下面是 `16.3` 版本的生命周期图谱。
-<img src="../../images/react生命周期-16.3.png" alt="暂无图片"/>
+<!-- ## 2、生命周期 -->
+<!-- 下面是 `16.3` 版本的生命周期图谱。
+<img src="../../images/react/react生命周期-16.3.png" alt="暂无图片"/>
 下面是 `16.4` 版本的生命周期图谱
-<img src="../../images/react生命周期-16.4.png" alt="暂无图片" />
+<img src="../../images/react/react生命周期-16.4.png" alt="暂无图片" /> -->
 
-## 4、HOC-高阶组件
+## 2、HOC-高阶组件
 高阶组件是参数为组件，返回值为新组件的函数。
 ```js
 function warpComp(cmp){
@@ -127,8 +127,8 @@ const FancyButton = React.forwardRef((props, ref) => (
 const ref = React.createRef();
 <FancyButton ref={ref}>Click me!</FancyButton>;
 ```
-
+<!-- 
 ## 5、pureComponent
 
-## 6、hook
+## 6、hook -->
 

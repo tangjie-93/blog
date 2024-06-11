@@ -32,9 +32,6 @@ console.log(person1.__proto__);
 console.log(Person.prototype);
 console.log(person1.__proto__===Person.prototype);//true
 ```
-输出结果如下：
-<img>
-![](https://user-gold-cdn.xitu.io/2019/4/6/169f1de8bb834e7f?w=1918&h=348&f=png&s=66345)
 
 **总结：**
 >1、调用构造函数创建的**实例对象**的 `prototype` 属性为 `undefined`,构造函数的 `prototype` 是一个对象（`Function.prototype`除外,是一个函数）。
@@ -45,9 +42,6 @@ console.log(person1.__proto__===Person.prototype);//true
 
 >4、在默认情况下，所有原型对象都会自动获得一个 `constructor` (构造函数)属性，这个属性包含一个指向 `prototype` 属性所在函数的指针。
 
-下图展示了使用Person构造函数创建实例后各个对象之间的关系
-<img src="https://user-gold-cdn.xitu.io/2019/1/18/1685e7139ef652db?w=987&h=423&f=png&s=53240" alt="暂无图片">
-上图展示了 Person 构造函数、 Person 的原型属性以及 Person现有的两个实例之间的关系。
 
 #### 3、 跟__proto__属性相关的两个方法
 
@@ -183,8 +177,7 @@ console.log(friend instanceof Person);//false
 console.log(friend instanceof Object);//true
 console.log(friend2 instanceof Person);//true
 ```
-结果分析：这是因为friend1的prototype指向的是没重写Person.prototype之前的Person.prototype，也就是构造函数最初的原型对象。而friend2的prototype指向的是重写Person.prototype后的Person.prototype。如下图所示
-<img src="https://user-gold-cdn.xitu.io/2019/1/18/1685f0eaf93e9a82?w=1034&h=808&f=png&s=100941" alt="暂无图片">
+结果分析：这是因为friend1的prototype指向的是没重写Person.prototype之前的Person.prototype，也就是构造函数最初的原型对象。而friend2的prototype指向的是重写Person.prototype后的Person.prototype。
 
 #### 6、 原型链
 

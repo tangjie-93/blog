@@ -5,7 +5,7 @@ type: 技术
 tags: http
 note: 常见web安全及防护原理
 ---
-<img src="../../images/web安全.png" alt="暂无图片" />
+<img src="../../images/http/web安全.png" alt="暂无图片" />
 ## 常见web安全问题及防护原理
 <h4>&#8195;1、XSS(Cross Site Scripting)</h4>
 &#8195;&#8195;跨站脚本攻击。恶意攻击者往Web页面里插入恶意的Script代码，当用户浏览该页之时，嵌入其中Web里面的Script代码会被执行，从而达到恶意攻击用户的目的。分为存储型和反射型两类。

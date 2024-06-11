@@ -212,7 +212,7 @@ setTimeout(function() {
 <h4>2、node环境中js事件循环机制</h4>
 &#8195;&#8195;个人觉得node中的js执行机制比在浏览器中的要复杂一些。盗用掘金网友的一张图很好的解释了node环境中的事件循环机制。
 
-<img src="../../images/node-eventloop.jpg" alt="暂无图片">
+<img src="../../images/node/node-eventloop.jpg" alt="暂无图片">
 
 &#8195;&#8195;node环境中的eventLoop是按阶段来执行的，主要有6个阶段，这个阶段里的代码执行完毕，才会去执行下一个阶段里的代码。**6个阶段中的代码都执行完毕才算是完成一个事件循环。**
 + 原生的libuv事件循环中的队列主要有4种类型：    
@@ -227,7 +227,7 @@ setTimeout(function() {
 
 **&#8195;&#8195;而在node环境中的输出结果是这样的，两次执行结果还不一样**
 &#8195;&#8195;上面的代码在node环境中的执行结果如下所示。
-<img src="../../images/node-eventloop-example.png" alt="暂无数据">
+<img src="../../images/node/node-eventloop-example.png" alt="暂无数据">
 
 结果分析：
 + 首先执行主线程中的同步代码，输出 `promise1`。

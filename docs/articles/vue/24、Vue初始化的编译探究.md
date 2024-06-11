@@ -7,7 +7,7 @@ note: Vue初始化的编译探究
 ---
 
 `Vue` 的编译过程内部是比较复杂的，牵涉到虚拟 `dom` , 还牵涉到 `patch`算法。`Vue`的编译过程可以用下面的一张图来表达。
-<img src="../../images/Vue编译原理.png" alt="暂无图片">
+<img src="../../images/vue/Vue编译原理.png" alt="暂无图片">
 编译的整个流程如下所示：
 + 获取 `template`
     + template属性存在——`idToTemplate(template)`

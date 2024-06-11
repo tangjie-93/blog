@@ -177,4 +177,4 @@ router.get('/:id', ...); // 等同于"/users/:id"
 + secure：cookie是否只有https请求下才发送。
 + httpOnly：是否只有服务器可以取到cookie，默认为true。
 
-## 6、koa源码实现
+<!-- ## 6、koa源码实现 -->

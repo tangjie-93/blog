@@ -106,5 +106,5 @@ export default {
 
 &#8195;&#8195;[插件封装完整地址](https://github.com/tangjie-93/vue/tree/master/plugin-demo-ts-vue3)。**源码位置————`packages/runtime-core/src/apiCreateApp`中的`createAppAPI`函数中的`mount`方法。**
 
-<img src="../../images/vue3-mount.png" />
+<img src="../../images/vue/vue3-mount.png" />
 

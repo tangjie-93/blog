@@ -9,7 +9,7 @@ note: HTTP缓存详解，包括强制缓存(Expires和cache-control)和协商缓
 
 &#8195;&#8195;缓存机制无处不在，有客户端缓存（cookie、localstorage等），服务端缓存（session），代理服务器缓存等。在HTTP中具有缓存功能的是浏览器缓存。 HTTP缓存作为web性能优化的重要手段，对于从事web开发的朋友有重要的意义。思维导图如下：
 
-<img src="../../images/cookie.png" alt="暂无图片" >
+<img src="../../images/http/cookie.png" alt="暂无图片" >
 
 ### 1、缓存的分类
 
@@ -26,7 +26,7 @@ res.setHeader('Expires', new Date(Date.now() + 10 * 1000).toUTCString())
 ```
 &#8195;&#8195;通过`res.setHeader(Expires,time)` 会在响应头中添加一个 `Expires`字段，表示过期时间。在过期时间内，获取文件时响应头里的 `Status Code`都是 `200 OK (from memory cache)`。添加 `Expires`响应头的结果如下所示。
 
-<img src="../../images/http-Expires.png" alt="暂无图片" />
+<img src="../../images/http/http-Expires.png" alt="暂无图片" />
 
 ##### 2）Cache-Control 
 `Cache-Control` 有很多属性，不同的属性代表的意义也不同。 
@@ -45,7 +45,7 @@ res.setHeader('Cache-Control', 'max-age=20')
 ```
 &#8195;&#8195;通过在响应头中添加`Cache-Control`,在过期时间内，获取文件时响应头里的 `Status Code`都是 `200 OK (from memory cache)`。添加`Cache-Control`后的结果如下图所示。
 
-<img src="../../images/http-cache-control.png" alt="暂无图片" />
+<img src="../../images/http/http-cache-control.png" alt="暂无图片" />
 
 ####  2、协商缓存
 &#8195;&#8195;又称对比缓存，客户端会先从本地缓存中获取到一个缓存数据的标识(`ETag`)， 然后服务器检查该`ETag` 证是否失效，如果没有失效服务端会返回 `304`(只有响应头，没有响应体)，此时客户端直接从缓存中获取所请求的数据，如果标识失效，服务端会返回更新后的数据。  
@@ -108,8 +108,8 @@ http.createServer((req, res) => {
 
 首次请求时，会在响应头里添加 `last-modified`,表示最后修改时间。第二次请求时，会在请求头中添加 `If-Modified-Since`,用于跟服务端的 `last-modified`的值进行对比。
 
-<img src="../../images/http-last-modified.png" alt="暂无图片">
-<img src="../../images/http-if-modified-since.png" alt="暂无图片">
+<img src="../../images/http/http-last-modified.png" alt="暂无图片">
+<img src="../../images/http/http-if-modified-since.png" alt="暂无图片">
 
 #### 情况2：根据ETag来进行协商缓存（HTTP 1.1）
 
@@ -124,8 +124,8 @@ http.createServer((req, res) => {
 
 &#8195;&#8195;第一次请求时会在响应头里添加 `Etag(4b1f0259b32390df6baf991c917efe716945af29)`,如下所示。在第二次请求时，请求头里会添加 `If-None-Match: 4b1f0259b32390df6baf991c917efe716945af29`,用于跟服务器端的`Etag`比较，看是否一样。
 
-<img src="../../images/http-Etag-res.png" alt="暂无图片" />
-<img src="../../images/http-Etag-req.png" alt="暂无图片" />
+<img src="../../images/http/http-Etag-res.png" alt="暂无图片" />
+<img src="../../images/http/http-Etag-req.png" alt="暂无图片" />
 
 **测试demo如下。**
 ```js
@@ -169,7 +169,7 @@ http.createServer((req, res) => {
 
 ```
 **判断缓存是否过期可以用以下一张图来概括**
-<img src="../../images/cookie2.jpg" alt="暂无图片">
+<img src="../../images/http/cookie2.jpg" alt="暂无图片">
 
 #### 2、如果服务器同时设置了Cache-Control:max-age和Expires以及ETag(If-None-Match)、If-Modified-Since（Last Modified）时，怎么办？  
 &#8195;&#8195;具体判断过程如下所示。

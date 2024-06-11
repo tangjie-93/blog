@@ -6,7 +6,7 @@ tags: javascript
 note: js数据类型及其常见用法
 ---
 &#8195;&#8195;`javascript`中一种有9种数据类型，有7种简单数据类型（也称为基本数据类型）：`undefined、null、boolean、number 和string、symbol、bigint`，还有2种复杂数据类型——`Object`和 `function`。
-<img src="../../images/js数据类型.png">
+<img src="../../images/js/js数据类型.png">
 
 ## 1、undefined
 &#8195;&#8195;`undefined` 类型只有一个值，即特殊的`undefined`。根据工作中总结，只要有这几种情况下会出现`undefined`。

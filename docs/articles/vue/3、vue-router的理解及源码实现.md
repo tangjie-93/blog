@@ -19,6 +19,7 @@ hash路由模式的实现主要是基于下面几个特性:
 + hash 值的改变，都会在浏览器的访问历史中增加一个记录。因此我们能通过浏览器的回退、前进按钮控制hash 的切换；
 + 可以通过 a 标签，并设置 href 属性，当用户点击这个标签后，URL 的 hash 值会发生改变；或者使用  `JavaScript` 来对 `loaction.hash` 进行赋值，改变 URL 的 hash 值；
 + 我们可以使用 `hashchange` 事件来监听 hash 值的变化，从而对页面进行跳转（渲染）。
+
 **代码实现**
 ```js
 class hashRouters {

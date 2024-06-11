@@ -7,7 +7,7 @@ note: 主要是经常被问到这些知识点，而自己总是不能回答的�
 ---
 ​		
 ​		主要是经常被问到这些知识点，而自己总是不能回答的很全面，所以在这里做一个总结，以便自己以后忘记的时候可以很好的复习。参考来源主要是 **<<javascript高级程序设计>>**
-<img src="../../images/js对象的创建和继承.png" alt="暂无数据">
+<img src="../../images/js/js对象的创建和继承.png" alt="暂无数据">
 <h3>一、创建对象的几种方式</h3>
 <h4>1、工厂模式</h4>
 
@@ -195,7 +195,7 @@ let instance=new SubTYype();
 console.log(instance.getSuperValue);//true
 console.log(instance);
 ```
-<img src="../../images/原型链继承.png" alt="暂无数据">
+<img src="../../images/js/原型链继承.png" alt="暂无数据">
 <!-- <img src="https://user-gold-cdn.xitu.io/2019/6/21/16b7ac0533987a7c?w=406&h=222&f=png&s=21116" alt="暂无数据"> -->
 
 &#8195;&#8195;从上面的图片可以看出，instance具有了subproperty的实例属性，getSubValue和property以及getSuperValue的原型属性(即instance的__proto__指向SuperType的原型对象，SuperType的__proto__又指向SuperType的原型对象)。并且它的constructor目前指向的是SuperType。

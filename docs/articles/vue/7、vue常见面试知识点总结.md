@@ -133,11 +133,6 @@ this.myObject.newProperty = 'hi'
     }
 </script>
 ```
-点击事件操作结果如下所示：
-<!-- <img src="" alt="暂无图片"> -->
-![](https://user-gold-cdn.xitu.io/2019/1/8/1682c3e7198d25d8?w=1245&h=266&f=png&s=52950)
-
-![](https://user-gold-cdn.xitu.io/2019/1/8/1682c3d82f035f28?w=1242&h=280&f=png&s=53751)
 
 &#8195;&#8195;从上面的输出结果我们可以看出，我们调用使用`this.arr[0]={name:"张大",age:40};`来修改数据元素时并没有改变视图中的元素。
 而我们通过使用`this.$set(this.arr,0,{name:"张大",age:40});`能够实时修改视图元素。   

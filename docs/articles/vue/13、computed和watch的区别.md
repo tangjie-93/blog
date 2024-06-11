@@ -13,7 +13,7 @@ note: 从源码上解释Computed和watch的区别
 
 #### `Computed` 初始化时的流程图如下：
 
-<img src="../../images/computed的初始化流程图.jpg" alt="暂无图片">
+<img src="../../images/vue/computed的初始化流程图.jpg" alt="暂无图片">
 
 **`computed` 的源码解析如下：**
 + 1、在 `computed` 初始化的过程中会创建一个 `watcher` 并设置`lazy=true`,所以在初始化时会求值，在页面中调用 `computed` 时，开始求值，调用 `watcher.evaluate()`方法,并将 `dirty=false`。
@@ -30,7 +30,7 @@ note: 从源码上解释Computed和watch的区别
 `watch` 适合一个值影响多个值的情形。`computed` 适合多个值影响一个值的情形。
 
 **`watch` 初始化时的流程图如下**：
-<img src="../../images/watch的初始化流程.jpg" alt="暂无图片">
+<img src="../../images/vue/watch的初始化流程.jpg" alt="暂无图片">
  
 
 #### `watch` 的源码解析如下：

@@ -13,7 +13,7 @@ note: vuex的常用api及内部原理
 + `Vuex 的状态存储是响应式的`。当 Vue 组件从 store 中读取状态的时候，若 store 中的状态发生变化，那么相应的组件也会相应地得到高效更新。
 
 &#8195;&#8195;用一张官网的图可以很好的描述Vuex的状态管理模式。
-<img src="../../images/vuex.png" alt="暂无图片" style="display:block;width:50%;margin:0 auto">
+<img src="../../images/vue/vuex.png" alt="暂无图片" style="display:block;width:50%;margin:0 auto">
 
 **2、核心概念**
 + **1、state<br>**

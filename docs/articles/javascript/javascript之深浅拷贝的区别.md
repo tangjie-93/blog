@@ -123,7 +123,7 @@ console.log(person);
 
 <img width="300px"  src="https://user-gold-cdn.xitu.io/2019/4/10/16a02e517d94498d?w=472&h=264&f=png&s=27078" />
 
-<img width="300px"  src="../../images/深拷贝.png">
+<img width="300px"  src="../../images/js/深拷贝.png">
 
 ## 3、对象合并
 ```js

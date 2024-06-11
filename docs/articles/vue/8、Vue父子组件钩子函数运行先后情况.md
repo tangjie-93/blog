@@ -70,7 +70,7 @@ note: Vue父子组件钩子函数运行先后情况
 </html>
 ```
 此时组件的钩子函数的输出结果如下所示：
-<img src="../../images/vue-hooks.png" alt="暂无数据">
+<img src="../../images/vue/vue-hooks.png" alt="暂无数据">
 <!-- ![](https://user-gold-cdn.xitu.io/2019/8/15/16c9458b653a47f7?w=1914&h=376&f=png&s=49072) -->
 
 **总结：** 通过对比 `mounted` 和 `beforeMount` 钩子函数的运行前后，我们可以发现他们的区别在于组件是否被编译。即`view` 中的数据是否被编译完成。
@@ -192,12 +192,12 @@ export default {
 </script>
 ```
 此时父子组件的钩子函数的输出结果如下所示：
-<img src="../../images/parent-child-hook2.png" alt="暂无数据">
+<img src="../../images/vue/parent-child-hook2.png" alt="暂无数据">
 
 &#8195;&#8195;通过监听钩子函数运行发现，当 `mounted` 钩子函数运行后，才会在界面上显示所挂载的元素。并且**子组件的mounted钩子函数要晚于父组件的mounted钩子函数**，子组件是在父组件的`beforeUpdate`和 `updated` 钩子函数之间加载的。同时也说明组件**动态引入方式子组件是在父组件挂载之后才挂载的**。
 
 #### **2、第二种情况(静态引入)**：import hookChild from "./hookChild。钩子函数的运行情况如下：
-<img src="../../images/parent-child-hook.png" alt="暂无数据">
+<img src="../../images/vue/parent-child-hook.png" alt="暂无数据">
 <!-- ![](https://user-gold-cdn.xitu.io/2019/5/27/16af9c5f6a53c12a?w=1918&h=243&f=png&s=38077) -->
 
 &#8195;&#8195;相对于组件的动态引入方式，组件的静态引入方式的父组件少调用了 `beforeUpdete` 和 `updated` 两个钩子函数。
