@@ -298,5 +298,4 @@ const count = 3;// 顶点着色器运行的次数
 gl.drawArrays(primitiveType, offset, count);
 ```
 
-## 3.
 <Valine></Valine>
