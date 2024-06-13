@@ -48,8 +48,8 @@ note: WebGL坐标系详解
 
 **注意：** 在 `NDC` 坐标系中，不使用深度测试时，同一个位置后绘制的顶点会覆盖掉原来的顶点的颜色。从下面的两个例子中就可以得到答案。
 
-[z值小的顶点后绘制](https://github.com/tangjie-93/WebGL/blob/main/%E8%B7%9F%E7%9D%80%E5%AE%98%E7%BD%91%E5%AD%A6WebGL%2BWebGL%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97/%E5%9D%90%E6%A0%87%E7%B3%BB/demo/%E8%AF%81%E6%98%8ENDC%E5%9D%90%E6%A0%87%E7%B3%BB%E6%98%AF%E5%B7%A6%E6%89%8B%E5%9D%90%E6%A0%87%E7%B3%BB.html)
-[z值小的顶点先绘制](https://github.com/tangjie-93/WebGL/blob/main/%E8%B7%9F%E7%9D%80%E5%AE%98%E7%BD%91%E5%AD%A6WebGL%2BWebGL%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97/%E5%9D%90%E6%A0%87%E7%B3%BB/demo/%E8%AF%81%E6%98%8ENDC%E5%9D%90%E6%A0%87%E7%B3%BB%E6%98%AF%E5%B7%A6%E6%89%8B%E5%9D%90%E6%A0%87%E7%B3%BB.html)
+[z值小的顶点后绘制](https://github.com/tangjie-93/WebGL/blob/main/%E8%B7%9F%E7%9D%80%E5%AE%98%E7%BD%91%E5%AD%A6WebGL%2BWebGL%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97/%E5%9D%90%E6%A0%87%E7%B3%BB/demo/z%E5%80%BC%E5%B0%8F%E7%9A%84%E9%A1%B6%E7%82%B9%E5%90%8E%E7%BB%98%E5%88%B6.html)
+[z值小的顶点先绘制](https://github.com/tangjie-93/WebGL/blob/main/%E8%B7%9F%E7%9D%80%E5%AE%98%E7%BD%91%E5%AD%A6WebGL%2BWebGL%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97/%E5%9D%90%E6%A0%87%E7%B3%BB/demo/z%E5%80%BC%E5%B0%8F%E7%9A%84%E9%A1%B6%E7%82%B9%E5%85%88%E7%BB%98%E5%88%B6.html)
 
 #### 5.1 不使用投影矩阵
 
@@ -157,7 +157,7 @@ gl.uniformMatrix4fv(u_MvpMatrix, false, mvpMatrix.elements);
 
 <img src='../../images/webgl/NDC坐标系.png'><br>
 
-`demo`地址为 [使用投影矩阵(near>far)](https://github.com/tangjie-93/WebGL/blob/main/%E8%B7%9F%E7%9D%80%E5%AE%98%E7%BD%91%E5%AD%A6WebGL%2BWebGL%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97/%E5%9D%90%E6%A0%87%E7%B3%BB/demo/%E4%BD%BF%E7%94%A8%E6%8A%95%E5%BD%B1%E7%9F%A9%E9%98%B5near%E5%A4%A7%E4%BA%8Efar.html)。
+`demo`地址为 [使用投影矩阵(near>far)](https://github.com/tangjie-93/WebGL/blob/main/%E8%B7%9F%E7%9D%80%E5%AE%98%E7%BD%91%E5%AD%A6WebGL%2BWebGL%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97/%E5%9D%90%E6%A0%87%E7%B3%BB/demo/%E4%BD%BF%E7%94%A8%E6%8A%95%E5%BD%B1%E7%9F%A9%E9%98%B5near%E5%A4%A7%E4%BA%8Efar(z%E5%80%BC%E5%B0%8F%E7%9A%84%E9%A1%B6%E7%82%B9%E5%90%8E%E7%BB%98%E5%88%B6).html)。
 
 > `near<far` 的正交投影
 
@@ -175,7 +175,7 @@ mvpMatrix.setOrtho(-1, 1, -1, 1, -1, 1);
 
 现在我们看到的才是 `z=-0.1`三角形在 `z=-0.5`的三角形的上面。根据上面的矩阵，我们可以看到我们实际上是将坐标沿`z`轴，做了`-1`的缩放。此时我们可以将坐标系看成是`z`轴正向朝屏幕外的坐标系，也就是我们常说的右手坐标系。
 
-`demo`地址为[使用投影矩阵(near<far)](https://github.com/tangjie-93/WebGL/blob/main/%E8%B7%9F%E7%9D%80%E5%AE%98%E7%BD%91%E5%AD%A6WebGL%2BWebGL%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97/%E5%9D%90%E6%A0%87%E7%B3%BB/demo/%E4%BD%BF%E7%94%A8%E6%8A%95%E5%BD%B1%E7%9F%A9%E9%98%B5near%E5%B0%8F%E4%BA%8Efar.html)
+`demo`地址为[使用投影矩阵(near<far)](https://github.com/tangjie-93/WebGL/blob/main/%E8%B7%9F%E7%9D%80%E5%AE%98%E7%BD%91%E5%AD%A6WebGL%2BWebGL%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97/%E5%9D%90%E6%A0%87%E7%B3%BB/demo/%E4%BD%BF%E7%94%A8%E6%8A%95%E5%BD%B1%E7%9F%A9%E9%98%B5near%E5%B0%8F%E4%BA%8Efar(z%E5%80%BC%E5%B0%8F%E7%9A%84%E9%A1%B6%E7%82%B9%E5%85%88%E7%BB%98%E5%88%B6).html)
 
 **结论：** 使用正交投影后的坐标，然后根据深度测试，以及左手坐标系，同一个位置的颜色由`z`值最小的顶点决定。
 
