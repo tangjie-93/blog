@@ -87,7 +87,7 @@ note: background属性详解
 <div class="box></div>
 ```
 效果如下所示
-<img src="../../images/box-shadow.png" alt="暂无图片">
+<img src="../../images/css/box-shadow.png" alt="暂无图片">
 
 ## 3、text-shadow
 `text-shadow` 给文本设置阴影，可以给文本添加一个或多个阴影，用逗号隔开。默认值为`none`,主要有以下属性：
@@ -105,7 +105,7 @@ text-shadow: 5px 5px 5px #FF0000,-5px -5px 5px blue;
 <h1>文本阴影效果！</h1>
 ```
 效果如下所示：
-<img src="../../images/text-shadow.png" alt="暂无图片"/>
+<img src="../../images/css/text-shadow.png" alt="暂无图片"/>
 
 ## 4、filter
 通常用来表示图片的可视效果(模糊和饱和度)。主要有以下属性：

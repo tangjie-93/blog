@@ -25,7 +25,7 @@ const verticesColors = new Float32Array([
 ```
 按照绘制顺序 绿色的三角形在最下面，蓝色的三角形在最上面。如下图所示。
 [实例 `demo` 地址](./demo/index1.html)
-<img width='200' src='../../images/正常绘制1.png'>
+<img width='200' src='../../images/webgl/正常绘制1.png'>
 
 当我们将顶点数据做如下修改时。
 ```js
@@ -46,7 +46,7 @@ const verticesColors = new Float32Array([
 ```
 绘制结果如下图所示。蓝色的三角形还是在上面
 
-<img width='200' src='../../images/正常绘制2.png'>
+<img width='200' src='../../images/webgl/正常绘制2.png'>
 
 [实例 `demo` 地址](./demo/index2.html)
 这样看的可能还不太明显，我们可以将三角形进行一定角度的旋转。
@@ -54,7 +54,7 @@ const verticesColors = new Float32Array([
 modelMatrix.setTranslate(0, 0, 0).setRotate(-10,0,1,0);
 ```
 我们可以得到下面的渲染效果
-<img src='../../images/正常绘制2-旋转.png'>
+<img src='../../images/webgl/正常绘制2-旋转.png'>
 可以看到三角形是按照右手坐标系旋转了10度，那也就是按照左手坐标系旋转了-10度，同时也可以看出，绿色的三角形是在最下面的。这也证明了没有开启深度测试之前的是根据左手坐标系去绘制的。
 ## 2.隐藏面消除
 
@@ -74,7 +74,7 @@ gl.clear(gl.DEPTH_BUFFER_BIT);
 
 经过上面的三部曲操作后，绘制结果如下图所示：
 
-<img width=200 src='../../images/深度测试.png'>
+<img width=200 src='../../images/webgl/深度测试.png'>
 
 [实例 `demo` 地址](./demo/index3.html)
 
@@ -90,7 +90,7 @@ gl.POLYGON_OFFSET_FILL: 多边形位移
 当几何图形的两个表面极为接近时，会出现问题，表面上看起来斑斑驳驳的，这种现象称之为**深度冲突**。下面我们来绘制两个`Z`值完全一致的三角形来进行测试。
 `demo`地址 `./demo/zFight.html`
 绘制结果如下所示：
-<img width=200 src='../../images/深度冲突.png'>
+<img width=200 src='../../images/webgl/深度冲突.png'>
 
 `WebGL`为了解决这个问题，提供了一种**多边形偏移**的机制来解决这个问题。该机制将自动在`z`值上添加一个偏移量，偏移量的值由物体表面相对于观察者视线的角度来确定。启动该机制只需要两行代码。
 + 启用多边形偏移。
@@ -103,7 +103,7 @@ gl.enable(gl.POLYGON_OFFSET_FILL)
 ```
 `gl.polygonOffset(factor, units) `偏移量按照公式`m*factor+r*units`计算，其中`m`表示顶点所在表面相对于观察者的视角的角度，而`r`表示硬件能够区分两个`z`值之差的最小值。
 开启多边形偏移后的绘制结果如下所示。
-<img width=200 src='../../images/深度冲突-解决方案.png'>
+<img width=200 src='../../images/webgl/深度冲突-解决方案.png'>
 
 [`demo`地址 ](./demo/zFight.html)
 

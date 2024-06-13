@@ -65,12 +65,12 @@ note: float引起的问题和解决方案
 ```
 
 **不给父元素添加after伪类时的效果如下所示：行内元素（span）紧挨着浮动元素、块级元素位于浮动元素之下。**
-<img src="../../images/float.png" alt="暂无图片">
+<img src="../../images/css/float.png" alt="暂无图片">
 
 <!-- ![](https://user-gold-cdn.xitu.io/2019/4/7/169f837603d405e5?w=1916&h=727&f=png&s=96304) -->
 
 **给父元素添加after伪类时的效果如下所示：父元素同级的元素（span div#test2）将都另起一行。**
-<img src="../../images/float-after.png" alt="暂无图片">
+<img src="../../images/css/float-after.png" alt="暂无图片">
 <!-- ![](https://user-gold-cdn.xitu.io/2019/4/7/169f83160d7eb2b5?w=1889&h=726&f=png&s=96500) -->
 
 > 3、浮动外部元素。 
@@ -96,7 +96,7 @@ span{
 <span>我是span标签</span>
 <div id="test2">我是块级元素</div>
 ```   
-<img src="../../images/float-4.png" alt="暂无图片">
+<img src="../../images/css/float-4.png" alt="暂无图片">
 
 > 4、给包含浮动元素的父标签添加`css`属性 `overflow:auto/hidden; zoom:1; zoom:1`用于兼容IE6。
 
@@ -124,5 +124,5 @@ span{
 ```
 
 **效果如下所示：父元素同级的元素（span div#test2）将都另起一行。**
-<img src="../../images/float-overflow.png">
+<img src="../../images/css/float-overflow.png">
 <!-- ![](https://user-gold-cdn.xitu.io/2019/4/7/169f839ef647d6dd?w=1912&h=672&f=png&s=93624) -->

@@ -60,7 +60,7 @@ absolue定位效果如下
 <span>我是普通行内标签</span>
 <span id="test6">我是普通行内标签-test6</span>
 ```
-<img src="../../images/position-absolute.png" alt="暂无图片">
+<img src="../../images/css/position-absolute.png" alt="暂无图片">
 
 float定位效果如下
 
@@ -98,7 +98,7 @@ float定位效果如下
 <div id="test5">我是普通块级标签2-test5</div>
 <span>我是普通行内标签</span>
 ```
-<img src="../../images/position-float.png" alt="暂无图片">
+<img src="../../images/css/position-float.png" alt="暂无图片">
 
 結果分析：
 

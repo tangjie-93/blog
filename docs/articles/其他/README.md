@@ -307,7 +307,7 @@ git blame 文件名 -L//参数L来检查需要修改的某几行。
 ```
 
 ### **5、工作区和暂存区**
-<img src="../../images/git.jpg" alt="暂无图片" >
+<img src="../../images/other/git.jpg" alt="暂无图片" >
 
 + **工作区：** 在电脑里能看到的目录，如vue文件夹就是一个工作区。
 + **版本库：** 工作区的隐藏目录.git。
@@ -457,11 +457,11 @@ git diff HEAD -- "文件" //查看工作区和版本库里最新版本的某个�
 ```
 &#8195;&#8195;**创建当前分支**（如下图所示）
 
-<img src="../../images/git-branch.jpg" alt="暂无图片" style="display:block;">
+<img src="../../images/other/git-branch.jpg" alt="暂无图片" style="display:block;">
 
 &#8195;&#8195;**在当前当前分支提交，时间线的变化**（如下图所示）
 
-<img src="../../images/git-branch2.jpg" alt="暂无图片">
+<img src="../../images/other/git-branch2.jpg" alt="暂无图片">
 **2、解决冲突**
 
 ```javascript

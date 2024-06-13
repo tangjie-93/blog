@@ -151,7 +151,7 @@ gl.uniformMatrix4fv(u_MvpMatrix, false, mvpMatrix.elements);
 <img width=500 src='../../images/webgl/单位矩阵.png'><br>
 
 根据正射投影的示意图。再结合 `near = 1` 要比`far =-1`大，表示在视线方向上，**远裁剪面(或者叫远平面)实际在近裁剪面(或者叫近平面)** 的前面，表示我们将**远近截面** 做了旋转`180度`，将`z`轴正向朝向屏幕里面，这是刚好跟左手坐标系一样。<br>
-<img src='../../images/webgl/正交投影.awebp'><br>
+<img src='../../images/webgl/正交投影.png'><br>
 
 通过上面的参数设置的正交投影矩阵， **可以得出结论**：当正射矩阵中的`near>far`时，`WebGL`就会使用左手坐标系统。此时看到的效果还是会跟之前一样。**就算我们改变顶点的绘制顺序，最终的视觉效果都是一样的**，都如下图所示<br>
 

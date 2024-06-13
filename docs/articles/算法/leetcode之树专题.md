@@ -190,7 +190,7 @@ function isBalanced(root){
 百度百科中最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q，最近公共祖先表示为一个结点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。”
 
 例如，给定如下二叉搜索树:  root = [6,2,8,0,4,7,9,null,null,3,5]
-<img src="../../images/binarysearchtree_improved.png">
+<img src="../../images/算法/binarysearchtree_improved.png">
 示例 1:
 
 输入: root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 8
@@ -277,7 +277,7 @@ function hasPathSum(root,sum){
 给定一个二叉搜索树, 找到该树中两个指定节点的最近公共祖先。
 百度百科中最近公共祖先的定义为："对于有根树 T 的两个结点 p、q，最近公共祖先表示为一个结点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。"
 例如，给定如下二叉搜索树:  root = [6,2,8,0,4,7,9,null,null,3,5]
-<img src="../../images/binarysearchtree_improved.png" />
+<img src="../../images/算法/binarysearchtree_improved.png" />
 
 ```js
 示例 1:
@@ -422,7 +422,7 @@ var averageOfLevels = function(root) {
 给定一个 N 叉树，找到其最大深度。
 最大深度是指从根节点到最远叶子节点的最长路径上的节点总数。
 例如，给定一个 3叉树 :
-<img src="../../images/narytreeexample.png" />
+<img src="../../images/算法/narytreeexample.png" />
 我们应返回其最大深度，3。
 
 ```js
@@ -480,7 +480,7 @@ var diameterOfBinaryTree = function(root) {
 给出这样的一个二叉树，你需要输出所有节点中的第二小的值。如果第二小的值不存在的话，输出 -1 。
 示例 1：
 
-<img src="../../images/smbt1.jpg" />
+<img src="../../images/算法/smbt1.jpg" />
 输入：root = [2,2,5,null,null,5,7]
 输出：5
 解释：最小的值是 2 ，第二小的值是 5 。
@@ -524,8 +524,8 @@ var findSecondMinimumValue = function(root) {
 ```
 ## 18 、前序遍历[ 二叉树的堂兄弟节点](https://leetcode-cn.com/problems/cousins-in-binary-tree/)
 在二叉树中，根节点位于深度 0 处，每个深度为` k `的节点的子节点位于深度` k+1 `处。如果二叉树的两个节点深度相同，但父节点不同，则它们是一对堂兄弟节点。我们给出了具有唯一值的二叉树的根节点 `root`，以及树中两个不同节点的值 `x` 和` y`。只有与值 `x` 和 `y `对应的节点是堂兄弟节点时，才返回 `true`。否则，返回 `false`。
-示例 2：
-<img src="../../images/cousins.png" />
+<!-- 示例 2：
+<img src="../../images/算法/cousins.png" /> -->
 
 输入：root = [1,2,3,null,4,null,5], x = 5, y = 4
 输出：true
@@ -589,7 +589,7 @@ const pathSum=function(root,sum){
 ```
 ## 20、[修剪二叉搜索树](https://leetcode-cn.com/problems/trim-a-binary-search-tree/)
 &#8195;&#8195;给你二叉搜索树的根节点 `root` ，同时给定最小边界`low `和最大边界 `high`。通过修剪二叉搜索树，使得所有节点的值在`[low, high]`中。修剪树不应该改变保留在树中的元素的相对结构（即，如果没有被移除，原有的父代子代关系都应当保留）。 可以证明，存在唯一的答案。所以结果应当返回修剪好的二叉搜索树的新的根节点。注意，根节点可能会根据给定的边界发生改变。
-<img src="../../images/trim2.jpg" />
+<img src="../../images/算法/trim2.jpg" />
 示例 2：
 输入：root = [3,0,4,null,2,null,null,1], low = 1, high = 3
 输出：[3,2,null,1]

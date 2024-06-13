@@ -7,7 +7,7 @@ note: <该思维导图是根据`<<深入浅出webpack>>`章节大纲总结出来
 ---
 &#8195;&#8195;<该思维导图是根据`<<深入浅出webpack>>`章节大纲总结出来的。通过阅读这本书梳理webpack所包含的知识点，了解了webpack（版本为4.X）的相关配置，以及loader和plugin的原理以及编写。思维导图能够很形象的描述出各知识点之间的关系，同时也能加深知识点在我们心中的印象。画此思维导图的目的也是为了供以后自己复习用的。
 
-<img src="../../images/webpack核心概念及常见配置项.png" alt="webpack.png">
+<img src="../../images/webpack/webpack核心概念及常见配置项.png" alt="webpack.png">
 
 ### 1、webpack的作用
 
