@@ -91,14 +91,15 @@ function setGeometry(gl) {
 ```
 
 ## 2.使用矩阵去实现二维的平移、旋转和缩放
-二维的平移、旋转和缩放我们一般用三维矩阵来操作。矩阵主要是由前面的平移、旋转、缩放操作的常规操作来封装推导实现的。矩阵的运算是大学线性代数的知识，大家要是不记得话可以去回忆一下矩阵的乘法等运算知识。
+二维的平移、旋转和缩放我们一般用三维矩阵来操作。
+矩阵主要是由前面的平移、旋转、缩放操作的常规操作来封装推导实现的。矩阵的运算是大学线性代数的知识，大家要是不记得话可以去回忆一下矩阵的乘法等运算知识。
 具体推导过程可以参考下面的文章。
 [平移、旋转和缩放矩阵的推导](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-2d-matrices.html)
 ```js
 const m3 = {
     // x0 = 2x/width-1； y0 = -2y/height + 1;  (x,y)是屏幕空间坐标，(x0,y0)是裁剪空间坐标
     // 将像素空坐标转换为裁剪空间(各方向单位为 -1 到 +1 )坐标
-    projection: function(width, height) {
+    makeProjectionMatrix: function(width, height) {
         // 注意：这个矩阵翻转了 Y 轴，所以 0 在上方
         return [
             2 / width,  0,           0,
@@ -114,6 +115,7 @@ const m3 = {
             0, 0, 1,
         ];
     },
+    // 平移
     translation: function(tx, ty) {
         return [
             1, 0, 0,
@@ -125,6 +127,7 @@ const m3 = {
      * newX = x *  c + y * s;
        newY = x * -s + y * c;
      */
+    // 旋转
     rotation: function(angleInRadians) {
         const c = Math.cos(angleInRadians);
         const s = Math.sin(angleInRadians);
@@ -134,7 +137,7 @@ const m3 = {
             0, 0, 1,
         ];
     },
- 
+    // 缩放
     scaling: function(sx, sy) {
         return [
             sx, 0, 0,
@@ -142,6 +145,7 @@ const m3 = {
             0, 0, 1,
         ];
     },
+    // 矩阵相乘
     multiply: function(a, b) {
         const a00 = a[0 * 3 + 0];
         const a01 = a[0 * 3 + 1];
@@ -210,4 +214,166 @@ void main() {
 }
 ```
 
+下面我们一起来推导以下上面几个矩阵。
 
+#### 2.1 像素空坐标转换为裁剪空间矩阵的推导
+```js
+ // x0 = 2x/width-1； y0 = -2y/height + 1;  (x,y)是屏幕空间坐标，(x0,y0)是裁剪空间坐标
+// 将像素空坐标转换为裁剪空间(各方向单位为 -1 到 +1 )坐标
+function makeProjectionMatrix(width, height) {
+    // 注意：这个矩阵翻转了 Y 轴，所以 0 在上方
+    return [
+        2 / width,  0,           0,
+        0,          -2 / height, 0,
+        -1,         1,           1
+    ];
+}
+```
++ 定义矩阵 
+```js
+const projectionMatrix = {
+    a,b,c,
+    d,e,f,
+    g,h,i
+}
+```
++ 屏幕空间和裁剪空间的计算公式
+```js
+x0 = 2x/width-1;// width为canvas的宽度
+y0 = -2y/height + 1;//height为canvas的高度
+```
+上面的计算公式我们可以通过矩阵运算得到。
++ 矩阵运算跟计算公式的关系
+为了便于计算，我们将当前屏幕坐标 也定义成一个`3X1(3行1列)`矩阵`P{x,y,1}`，那么就可以得到下面的矩阵运算
+```js
+projectionMatrix*P = {
+    ax+dy+g,
+    bx+ey+h,
+    cx+fy+i
+}
+x0 = 2x/width-1 = ax+dy+g;//得到 a = 2/width,d = 0, g = -1
+y0 = -2y/height + 1;//得到 b = 0, e = -2/height,h =1
+z0 = 1; //得到 c= 0，f = 0,i =1；
+```
+将求出的 `a,b,e,d,e,f,g,h,i`代入上面定义的矩阵，就得到了我们之前创建的屏幕空间换算到裁剪空间的矩阵了。
+#### 2.2 平移矩阵的推导
+```js
+ // 平移
+function  translation(tx, ty) {
+    return [
+        1, 0, 0,
+        0, 1, 0,
+        tx, ty, 1,
+    ];
+},
+```
++ 定义矩阵 
+```js
+const translationMatrix = {
+    a,b,c,
+    d,e,f,
+    g,h,i
+}
+```
++ 平移坐标的计算公式
+```js
+x0 = x + tx;//tx为x轴平移距离
+y0 = y + ty;//ty为y轴平移距离
+```
++ 矩阵运算跟计算公式的关系
+屏幕坐标定义成一个`3X1(3行1列)`矩阵`P{x,y,1}`
+```js
+translationMatrix * P = {
+    ax+dy+g,
+    bx+ey+h,
+    cx+fy+i
+}
+x0 = x + tx = ax+dy+g;//得到 a = 1,d = 0, g = tx
+y0 = y + ty;//得到 b = 0, e = 1,h = ty
+z0 = 1; //得到 c= 0，f = 0,i =1；
+```
+将求出的 `a,b,e,d,e,f,g,h,i` 代入上面定义的矩阵，就得到了我们之前创建的平移矩阵了。
+#### 2.3 缩放矩阵的推导
+```js
+// 缩放矩阵
+function scaling(sx, sy) {
+    return [
+        sx, 0, 0,
+        0, sy, 0,
+        0, 0, 1,
+    ];
+},
+```
++ 定义矩阵 
+```js
+const translationMatrix = {
+    a,b,c,
+    d,e,f,
+    g,h,i
+}
+```
++ 缩放坐标的计算公式
+```js
+x0 = sx*x;//sx为x轴缩放因子
+y0 = sy*y;//sy为y轴轴缩放因子
+```
++ 矩阵运算跟计算公式的关系
+屏幕坐标定义成一个`3X1(3行1列)`矩阵`P{x,y,1}`
+```js
+translationMatrix * P = {
+    ax+dy+g,
+    bx+ey+h,
+    cx+fy+i
+}
+x0 = sx*x = ax+dy+g;//得到 a = sx,d = 0, g = 0
+y0 = sy*y;//得到 b = 0, e = sy,h = 0
+z0 = 1; //得到 c= 0，f = 0,i =1；
+```
+将求出的 `a,b,e,d,e,f,g,h,i` 代入上面定义的矩阵，就得到了我们之前创建的缩放矩阵了。
+
+#### 2.3 旋转矩阵的推导
+推导过程可以看下官网的这个例子 [WebGL 二维旋转](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-2d-rotation.html)
+```js
+/****
+ * newX = x *  c + y * s;
+ * newY = x * -s + y * c;
+*/
+// 旋转
+function rotation(angleInRadians) {
+    const c = Math.cos(angleInRadians);
+    const s = Math.sin(angleInRadians);
+    return [
+        c,-s, 0,
+        s, c, 0,
+        0, 0, 1,
+    ];
+},
+```
++ 定义矩阵 
+```js
+const translationMatrix = {
+    a,b,c,
+    d,e,f,
+    g,h,i
+}
+```
++ 平移坐标的计算公式
+```js
+x0 = x *  c + y * s;//c = Math.cos(angleInRadians)
+y0 = x * -s + y * c;//s = Math.sin(angleInRadians)
+```
+> 平移坐标的计算公式的推导
+
++ 矩阵运算跟计算公式的关系
+屏幕坐标定义成一个`3X1(3行1列)`矩阵`P{x,y,1}`
+```js
+translationMatrix * P = {
+    ax+dy+g,
+    bx+ey+h,
+    cx+fy+i
+}
+x0 = sx*x = ax+dy+g;//得到 a = sx,d = 0, g = 0
+y0 = sy*y;//得到 b = 0, e = sy,h = 0
+z0 = 1; //得到 c= 0，f = 0,i =1；
+```
+将求出的 `a,b,e,d,e,f,g,h,i` 代入上面定义的矩阵，就得到了我们之前创建的缩放矩阵了。
