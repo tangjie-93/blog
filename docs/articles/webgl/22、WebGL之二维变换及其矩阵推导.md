@@ -1,4 +1,10 @@
-
+---
+title: WebGL之二维变换及其矩阵推导
+date: '2024-06-14'
+type: 技术
+tags: WebGL
+note: WebGL之二维变换及其矩阵推导
+---
 
 ## 1.二维的平移、旋转、缩放的实现
 + 在`WebGL`中的平移、旋转、缩放操作
@@ -333,10 +339,12 @@ z0 = 1; //得到 c= 0，f = 0,i =1；
 
 #### 2.3 旋转矩阵的推导
 推导过程可以看下官网的这个例子 [WebGL 二维旋转](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-2d-rotation.html)
+
+
 ```js
 /****
- * newX = x *  c + y * s;
- * newY = x * -s + y * c;
+ * newX = x * c + y * s;
+ * newY = -x * s + y * c;
 */
 // 旋转
 function rotation(angleInRadians) {
@@ -357,12 +365,11 @@ const translationMatrix = {
     g,h,i
 }
 ```
-+ 平移坐标的计算公式
++ 旋转坐标的计算公式
 ```js
-x0 = x *  c + y * s;//c = Math.cos(angleInRadians)
-y0 = x * -s + y * c;//s = Math.sin(angleInRadians)
+x0 = x *  c - y * s;//c = Math.cos(angleInRadians)
+y0 = x *  s + y * c;//s = Math.sin(angleInRadians)
 ```
-> 平移坐标的计算公式的推导
 
 + 矩阵运算跟计算公式的关系
 屏幕坐标定义成一个`3X1(3行1列)`矩阵`P{x,y,1}`
@@ -377,3 +384,43 @@ y0 = sy*y;//得到 b = 0, e = sy,h = 0
 z0 = 1; //得到 c= 0，f = 0,i =1；
 ```
 将求出的 `a,b,e,d,e,f,g,h,i` 代入上面定义的矩阵，就得到了我们之前创建的缩放矩阵了。
+
+**旋转坐标的计算公式的详细推导过程**
+> 初始坐标表示
+
+**注意: `NDC`坐标系是左手坐标系，即 `z` 轴指向屏幕里面。在左手坐标系中，顺时针旋转对应于正方向。**
+
+首先，我们将原始坐标 `(x,y)` 表示为极坐标的形式。极坐标形式可以帮助我们更直观地理解旋转操作,因此我们可以将`(x,y)`用下面的极坐标表示。
++ `r` 是向量的长度（即向量的模）
++ `ϕ` 是向量与 `x` 轴之间的角度。
+```js
+x = rcosϕ //r 是向量的长度（即向量的模），
+y = rsinϕ // ϕ 是向量与 x 轴之间的角度。
+```
+> 旋转后的坐标
+
+旋转一个角度 `θ` 后，新坐标 `(x′,y′)`的极坐标表示变为：
++ `r` 仍然是向量的长度，
++ `ϕ-θ` 是向量与 `x` 轴之间的新角度。
+因此旋转后的坐标可以表示为
+```js
+x′=rcos(ϕ-θ)
+y′=rsin(ϕ-θ)
+```
+利用三角函数中的合角公式来展开`cos(ϕ-θ)`和`rsin(ϕ-θ)`
+```js
+cos(ϕ-θ) = cosϕcosθ + sinϕsinθ
+sin(ϕ-θ) = sinϕcosθ - cosϕsinθ
+```
+将这些公式代入旋转后的坐标公式中：
+```js
+x′= rcosϕcosθ + rsinϕsinθ
+y′= rsinϕcosθ - rcosϕsinθ
+```
+由于 `x=rcosϕ` 和 `y=rsinϕ`，我们可以将其代入上面的公式：
+```js
+x′ = xcosθ + ysinθ
+y′ = -xsinθ + ycosθ
+```
+
+<Valine></Valine>
