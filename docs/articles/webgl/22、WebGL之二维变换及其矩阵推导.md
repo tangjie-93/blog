@@ -153,35 +153,53 @@ const m3 = {
     },
     // 矩阵相乘
     multiply: function(a, b) {
-        const a00 = a[0 * 3 + 0];
+        /**
+         * a*b
+         */
+        const a00 = a[0 * 3 + 0];// 第一行
         const a01 = a[0 * 3 + 1];
         const a02 = a[0 * 3 + 2];
-        const a10 = a[1 * 3 + 0];
+        const a10 = a[1 * 3 + 0];// 第二行
         const a11 = a[1 * 3 + 1];
         const a12 = a[1 * 3 + 2];
-        const a20 = a[2 * 3 + 0];
+        const a20 = a[2 * 3 + 0];// 第三行
         const a21 = a[2 * 3 + 1];
         const a22 = a[2 * 3 + 2];
-        const b00 = b[0 * 3 + 0];
+        const b00 = b[0 * 3 + 0];// 第一行
         const b01 = b[0 * 3 + 1];
         const b02 = b[0 * 3 + 2];
-        const b10 = b[1 * 3 + 0];
+        const b10 = b[1 * 3 + 0];// 第二行
         const b11 = b[1 * 3 + 1];
         const b12 = b[1 * 3 + 2];
-        const b20 = b[2 * 3 + 0];
+        const b20 = b[2 * 3 + 0];// 第三行
         const b21 = b[2 * 3 + 1];
         const b22 = b[2 * 3 + 2];
-        return [
-            b00 * a00 + b01 * a10 + b02 * a20,
-            b00 * a01 + b01 * a11 + b02 * a21,
-            b00 * a02 + b01 * a12 + b02 * a22,
-            b10 * a00 + b11 * a10 + b12 * a20,
-            b10 * a01 + b11 * a11 + b12 * a21,
-            b10 * a02 + b11 * a12 + b12 * a22,
-            b20 * a00 + b21 * a10 + b22 * a20,
-            b20 * a01 + b21 * a11 + b22 * a21,
-            b20 * a02 + b21 * a12 + b22 * a22,
-        ];
+        const c00 = a00 * b00 + a10 * b01 + a20 * b02;// 第一行
+        const c01 = a01 * b00 + a11 * b01 + a21 * b02;
+        const c02 = a02 * b00 + a12 * b01 + a22 * b02;
+        const c10 = a00 * b10 + a10 * b11 + a20 * b12;// 第二行
+        const c11 = a01 * b10 + a11 * b11 + a21 * b12;
+        const c12 = a02 * b10 + a12 * b11 + a22 * b12;
+        const c20 = a00 * b20 + a10 * b21 + a20 * b22;// 第三行
+        const c21 = a01 * b20 + a11 * b21 + a21 * b22;
+        const c22 = a02 * b20 + a12 * b21 + a22 * b22;
+        // return [
+        //     b00 * a00 + b01 * a10 + b02 * a20,// a矩阵的第一列*b矩阵的第一行
+        //     b00 * a01 + b01 * a11 + b02 * a21,// a矩阵的第二列*b矩阵的第一行
+        //     b00 * a02 + b01 * a12 + b02 * a22,
+        //     b10 * a00 + b11 * a10 + b12 * a20,
+        //     b10 * a01 + b11 * a11 + b12 * a21,
+        //     b10 * a02 + b11 * a12 + b12 * a22,
+        //     b20 * a00 + b21 * a10 + b22 * a20,
+        //     b20 * a01 + b21 * a11 + b22 * a21,
+        //     b20 * a02 + b21 * a12 + b22 * a22,
+        // ];
+        // 实际上时按照 b*a 的顺序来计算，因为 b 是列向量，而 a 是行向量
+        retrun [
+            c00, c01, c02,
+            c10, c11, c12,
+            c20, c21, c22
+        ]
   },
 };
 ```
