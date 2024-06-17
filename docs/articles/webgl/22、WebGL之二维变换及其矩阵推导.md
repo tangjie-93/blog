@@ -322,7 +322,7 @@ translationMatrix * P = {
     cx+fy+i
 }
 x0 = x + tx = ax+dy+g;//得到 a = 1,d = 0, g = tx
-y0 = y + ty;//得到 b = 0, e = 1,h = ty
+y0 = y + ty = bx+ey+h,;//得到 b = 0, e = 1,h = ty
 z0 = 1; //得到 c= 0,f = 0,i =1
 ```
 根据上面的乘法结果可以得出平移矩阵的结果。
