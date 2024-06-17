@@ -1,10 +1,10 @@
 ---
-title: WebGL之透关照
+title: WebGL之光照
 date: '2024-06-17'
 lastmodifydate: '2024-06-17'
 type: 技术
 tags: WebGL
-note: WebGL之透关照
+note: WebGL之光照
 ---
 ## 1.光源类型
 真实世界中的光主要有2种类型，**平行光**和**点光源光**：类似于电灯泡发出的光。
