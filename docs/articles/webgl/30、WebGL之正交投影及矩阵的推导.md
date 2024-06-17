@@ -37,7 +37,7 @@ note: WebGL之正交投影及矩阵的推导
 ##  2.正交投影矩阵的推导
 首先我们需要找出 `p`和 `p'`之间的关系。`p`和`p'`之间的关系可以用如下矩阵来表示。
 
-<img src='../../images/正射矩阵推导过程1.png'>
+<img src='../../images/webgl/正射矩阵推导过程1.png'>
 
 上面的矩阵运算后可以得到下面的计算结果。
 
@@ -105,6 +105,24 @@ z' = ix + jy + kz + l = 2z/(zFar-zNear) - (zFar+zNear)/(zFar-zNear)
 
 <img src='../../images/webgl/正交投影.svg' >
 
+用 `JavaScript` 实现正交投影矩阵的代码则如下所示
+```js
+function orthographic(left, right, bottom, top, near, far) {
+    return [
+        2 / (right - left), 0, 0, 0,
+        0, 2 / (top - bottom), 0, 0,
+        0, 0, -2 / (far - near), 0,
+        -(right + left) / (right - left), -(top + bottom) / (top - bottom), -(far + near) / (far - near), 1
+    ];
+}
+
+// 示例
+const left = -1, right = 1, bottom = -1, top = 1, near = -1, far = 1;
+const orthoMatrix = orthographic(left, right, bottom, top, near, far);
+console.log("Orthographic Projection Matrix:", orthoMatrix);
+```
+
+[正交投影demo地址](https://github.com/tangjie-93/WebGL/blob/main/%E8%B7%9F%E7%9D%80%E5%AE%98%E7%BD%91%E5%AD%A6WebGL%2BWebGL%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97/%E6%8A%95%E5%BD%B1/demo/%E6%AD%A3%E5%B0%84%E6%8A%95%E5%BD%B1.html)
 
 **总结：** 计算正交投影的关键是要求出 `p` 和 `p'` 之间的关系，及屏幕坐标跟投影坐标的关系。
 
