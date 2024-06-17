@@ -1,7 +1,7 @@
 ---
 title: WebGL之相机
 date: '2024-06-17'
-lastmodifydate: '2024-06-16'
+lastmodifydate: '2024-06-17'
 type: 技术
 tags: WebGL
 note: WebGL之相机
@@ -194,7 +194,7 @@ function multiplyMatrices(a, b) {
 }
 ```
 
-下面是使用视图矩阵的代码[demo地址]()
+下面是使用视图矩阵的代码[demo地址](https://github.com/tangjie-93/WebGL/blob/main/%E8%B7%9F%E7%9D%80%E5%AE%98%E7%BD%91%E5%AD%A6WebGL%2BWebGL%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97/%E7%9B%B8%E6%9C%BA(%E8%A7%86%E5%9B%BE)/index-%E4%B8%8D%E4%BD%BF%E7%94%A8%E9%80%86%E7%9F%A9%E9%98%B5.html)
 
 **参考文档**<br>
 [相机矩阵的推导](https://juejin.cn/book/6844733755580481543/section/6844733755941191694)<br>
