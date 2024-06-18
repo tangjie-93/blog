@@ -209,7 +209,7 @@ const pc = new Float32Array([ // Vertex coordinates and color
 
 > 开启深度测试的情况
 
-开启深度测试后，不管顶点坐标的绘制顺序是怎样的，顶点的颜色由顶点的深度(`z`值)所决定，同一位置的顶点，其颜色由`z`值最大的顶点决定(这里的`z`值，说的时`NDC`坐标系中(左手坐标系，`z`轴指向屏幕里面)的坐标)。
+开启深度测试后，不管顶点坐标的绘制顺序是怎样的，顶点的颜色由顶点的深度(`z`值)所决定，同一位置的顶点，其颜色由`z`值最靠近视点的顶点决定(这里的`z`值，说的时`NDC`坐标系中(左手坐标系，`z`轴指向屏幕里面)的坐标)。
 ```js
 const pc = new Float32Array([ // Vertex coordinates and color
      0.5,  0.4,  -0.5,  1.0,  1.0,  0.0,  // The red triangle is behind
@@ -247,13 +247,13 @@ const pc = new Float32Array([ // Vertex coordinates and color
 ]);
 //或者
 const pc2 = new Float32Array([ // Vertex coordinates and color
-     0.0,  0.5,  0.1,  0.0,  0.0,  1.0,  // The front blue one 
-    -0.5, -0.5,  0.1,  0.0,  0.0,  1.0,
-     0.5, -0.5,  0.1,  1.0,  1.0,  0.0, 
-
      0.5,  0.4,  0.5,  1.0,  1.0,  0.0,  // The red triangle is behind
     -0.5,  0.4,  0.5,  1.0,  0.0,  0.0,
      0.0, -0.6,  0.5,  1.0,  0.0,  0.0, 
+
+     0.0,  0.5,  0.1,  0.0,  0.0,  1.0,  // The front blue one 
+    -0.5, -0.5,  0.1,  0.0,  0.0,  1.0,
+     0.5, -0.5,  0.1,  1.0,  1.0,  0.0, 
 ]);
 ...
 gl.enable(gl.DEPTH_TEST);
