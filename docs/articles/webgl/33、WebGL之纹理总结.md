@@ -173,6 +173,7 @@ gl.uniform2f(textureSizeLocation, image.width, image.height);
 ### 2.三维纹理
 
 三维纹理跟二维纹理唯一不同的就是，三维不再是一个面了，三维需要给多个面添加纹理。这里使用官网的一个 绘制 `F`的模型的例子。来解析纹理坐标跟模型坐标的关系。如下所示是 `F` 图片。
+
 <img width=200 src='../../images/webgl/F-纹理.png'>
 
 着色器代码跟二维纹理的一样，不同的是模型数据和纹理坐标数据不一样了。
@@ -474,19 +475,20 @@ function setTexcoords(gl) {
 ```
 
 最终的效果如下图所示
-<img src='../../images/webgl/F效果.png'>
+
+<img src='../../images/webgl/F效果.png'><br>
 
 
-如果我只想使用一部分图像覆盖 `F` 的正面怎么办，纹理是通过“纹理坐标”来引用的。下面是纹理坐标的示意图。
-<img src='../../images/webgl/texture-coordinates-diagram.svg'>
+如果我只想使用一部分图像覆盖 `F` 的正面怎么办，纹理是通过 **纹理坐标** 来引用的。下面是纹理坐标的示意图。<br>
+<img src='../../images/webgl/texture-coordinates-diagram.svg'><br>
 
-通过在 `PS` 软件中，我们是可以得到图片中  `F` 字的坐标的。
-<img src='../../images/webgl/F-纹理.png'>
+通过在 `PS` 软件中，我们是可以得到图片中  `F` 字的坐标的。<br>
+<img src='../../images/webgl/F-纹理.png'><br>
 
 > 将像素坐标转换成纹理坐标
 
-下面是将正反两面的图形换了。效果就是  `F` 模型跟 `F` 图片贴合了。
-<img src='../../images/webgl/F贴合.png'>
+下面是将正反两面的图形换了。效果就是  `F` 模型跟 `F` 图片贴合了。<br>
+<img src='../../images/webgl/F贴合.png'><br>
 
 ```js
 texcoordX = pixelCoordX / (width  - 1)
@@ -629,7 +631,7 @@ function setTexcoords(gl) {
 }
 ```
 
-**注意：** 如果纹理坐标不在[0,1]之间时，`WebGL` 默认会重复纹理， `0.0` 到 `1.0` 是一份纹理的“拷贝”，`1.0` 到 `2.0` 是另外一份拷贝， `-4.0` 到 `-3.0` 也是另外一份拷贝。
+**注意：** 如果纹理坐标不在[0,1]之间时，`WebGL` 默认会重复纹理， `0.0` 到 `1.0` 是一份纹理的 **拷贝**，`1.0` 到 `2.0` 是另外一份拷贝， `-4.0` 到 `-3.0` 也是另外一份拷贝。
 
 ### 3.纹理创建步骤
 创建纹理主要有几下几个步骤。
@@ -645,7 +647,7 @@ gl.bindTexture(gl.TEXTURE_2D, texture);
 ```js
  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA,gl.UNSIGNED_BYTE, image);
 ```
-+ 是否设置对纹理的y轴进行翻转
++ 是否设置对纹理的 `y` 轴进行翻转
 ```js
  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
 ```
@@ -676,7 +678,7 @@ gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
 //竖直填充
 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
 ```
-**注意：** 如果图片的宽和高是2的指数时，直接使用 `gl.generateMipmap`来设置纹理。不是的话就是使用`gl.texParameteri()`来进行差值了。
+**注意：** 如果图片的宽和高是 `2` 的指数时，直接使用 `gl.generateMipmap`来设置纹理。不是的话就是使用`gl.texParameteri()`来进行差值了。
 ```js
 function isPowerOf2(value) {
   return (value & (value - 1)) === 0;
@@ -709,12 +711,17 @@ image.addEventListener('load', function() {
   drawScene();
 });
 ```
+[demo地址](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-3d-textures.html)
 
 ### 4.使用纹理图集
 
-给立方体的每个面设置不同的图像。一般最好的方法是将 图像放在一个纹理中，然后利用纹理坐标映射不同的图像到每个面。然后为立方体的每个面设置不同的纹理坐标。[demo地址](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-3d-textures.html)
+给立方体的每个面设置不同的图像。一般最好的方法是将 图像放在一个纹理中，然后利用纹理坐标映射不同的图像到每个面。然后为立方体的每个面设置不同的纹理坐标。
+
+[纹理图集demo地址]()
+
 首先准备一张图片。
-<img src='../../images/webgl/noodles.jpeg'>
+
+<img src='../../images/webgl/noodles.jpeg'><br>
 
 > 准备立方体的数据。
 ```js
@@ -823,10 +830,14 @@ function setTexcoords(gl) {
       gl.STATIC_DRAW);
 }
 ```
+具体效果如下图所示：<br>
 
+<img src='../../images//webgl/纹理图集.gif'>
 
 ### 5.纹理动画
-**纹理动画本质上是设置纹理重复并通过改变顶点的坐标来实现的**。下面是实现纹理动画的的核心代码。
+**本质上是设置纹理重复并通过改变顶点的坐标来实现的**。
+
+下面是实现纹理动画的的核心代码。
 > 着色器代码
 ```js
 <script type="shader-source" id="vertexShader">
@@ -871,9 +882,9 @@ function loadTexture(gl, src, attribute, callback) {
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
       //设置纹理贴图填充方式(纹理贴图像素尺寸大于顶点绘制区域像素尺寸)
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-    // 水平填充
+    // 水平填充，并设置重复
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
-    //竖直填充
+    //竖直填充，并设置重复
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
     //给全局变量赋值 1 个整数。
     gl.uniform1i(attribute, 0);
@@ -920,11 +931,7 @@ function loadTexture(gl, src, attribute, callback) {
 let anim = 0.005;
 function render(gl, positions) {
     // 向缓冲区传递数据
-    gl.bufferData(
-    gl.ARRAY_BUFFER,
-    new Float32Array(positions),
-    gl.STATIC_DRAW
-  );
+  gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(positions),gl.STATIC_DRAW);
   //设置清屏颜色为黑色。
   gl.clearColor(0, 0, 0, 1);
   gl.clear(gl.COLOR_BUFFER_BIT);
