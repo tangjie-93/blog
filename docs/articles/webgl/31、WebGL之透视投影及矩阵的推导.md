@@ -69,20 +69,10 @@ $$
 由于 `r = t*aspectRatio = n * tan(θ) * aspectRatio`，我们可以进一步简化：
 
 $$
-x_{ndc} = \frac{n x}{n \cdot \tan(\theta) \cdot \text{aspect ratio} \cdot z} = \frac{x}{\tan(\theta) \cdot \text{aspect ratio} \cdot z}
+x_{ndc} = \frac{n x}{n \cdot \tan(\theta) \cdot \text{aspectRatio} \cdot z} = \frac{x}{\tan(\theta) \cdot \text{aspectRatio} \cdot z}
 $$
 
-**注意：** 在透视投影矩阵中, 上面得到的这个计算过程是通过**透视投影矩阵**的乘法和**透视除法**实现的。
-通过$x_{ndc}$ 的结果，我们可以得知它的大小跟`z`坐标的值有关。结合透视除法 
-$$
-x_{ndc} =  \frac{x_{clip}}{w}
-$$
-我们可以得出`w = kz`，再结合经过透视除法后，坐标系从左手坐标系(`z`轴指向屏幕外面)变成了右手坐标系(`z` 轴指向了屏幕里面)，则有`k`等于负数，为了便于计算，我们使`k = -1`,则有`w = -z`。
-那么经过透视除法之前的裁剪坐标系中的坐标应该是
-
-$$
-x_{ndc} \cdot -z = - \frac{x}{\tan(\theta) \cdot \text{aspect ratio}}
-$$
+**注意：** 在透视投影矩阵中, 上面得到的这个计算过程是通过**透视投影矩阵**的乘法和**透视除法**实现的。同时说明 $x_{ndc}$ 的大小 跟`z`轴坐标的大小成反比。
 
 #### 2. **y轴映射**
 我们需要将 `y` 坐标从 `[−t,t]` 映射到 `[−1,1]`。
@@ -101,13 +91,8 @@ y_{ndc} = \frac{n y}{n \cdot tan(\theta) \cdot z}
         = \frac{y}{tan(\theta) \cdot z} 
 $$
 
-**注意：** 在透视投影矩阵中, 上面得到的这个计算过程是通过**透视投影矩阵**的乘法和**透视除法**实现的。
+**注意：** 在透视投影矩阵中, 上面得到的这个计算过程是通过**透视投影矩阵**的乘法和**透视除法**实现的。同时说明 $y_{ndc}$ 的大小 跟`z`轴坐标的大小成反比。
 
-那么经过透视除法之前的裁剪坐标系中的坐标应该是
-
-$$
-y_{ndc} \cdot -z = - \frac{y}{tan(\theta)} 
-$$
 
 #### 3. **z轴映射**
 我们需要将 `z` 坐标从 `[n,f]` 映射到 `[-1,1]`。对于 `z` 轴映射，我们希望在近平面和远平面之间进行线性变换。
@@ -190,8 +175,8 @@ $$
 
 [透视投影demo地址](https://github.com/tangjie-93/WebGL/blob/main/%E8%B7%9F%E7%9D%80%E5%AE%98%E7%BD%91%E5%AD%A6WebGL%2BWebGL%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97/%E6%8A%95%E5%BD%B1/demo/%E9%80%8F%E8%A7%86%E6%8A%95%E5%BD%B1.html)
 
-**参考文档**
-[WebGL 三维透视投影](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-3d-perspective.html)
+**参考文档**<br>
+[WebGL 三维透视投影](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-3d-perspective.html)<br>
 [透视投影](https://juejin.cn/book/6844733755580481543/section/6844733755941191687)
 
 
