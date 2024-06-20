@@ -488,14 +488,15 @@ vec3 lightDirection = u_LightPosition - v_Position;
 + draw：绘制
     + gl.drawArrays：数组绘制方式。
     + gl.drawElements：索引绘制方式。
-+ 图元
-    + gl.POINTS：点。
-    + gl.LINE：基本线段。
-    + gl.LINE_STRIP：连续线段。
-    + gl.LINE_LOOP：闭合线段。
-    + gl.TRIANGLES：基本三角形。
-    + gl.TRIANGLE_STRIP：三角带。
-    + gl.TRIANGLE_FAN：三角扇。
++ 图元类型及**图形绘制函数**
+    -  drawArrays(type,start,count): 用指定的图元进行绘制。`type`主要有以下一些类型。`start` 指定从哪个点开始绘制。`count`指定绘制需要使用到多少个点。
+    - gl.POINTS: 绘制一系列点。
+    - gl.LINE_STRIP: 绘制一个线条。即，绘制一系列线段，上一点连接下一点。
+    - gl.LINE_LOOP: 绘制一个线圈。即，绘制一系列线段，上一点连接下一点，并且最后一点与第一个点相连。
+    - gl.LINES: 绘制一系列单独线段。每两个点作为端点，线段之间不连接。
+    - gl.TRIANGLE_STRIP：绘制一个三角带。
+    - gl.TRIANGLE_FAN：绘制一个三角扇。
+    - gl.TRIANGLES: 绘制一系列三角形。每三个点作为顶点。
 + 纹理贴图
     + gl.createTexture：创建纹理对象。
     + gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true); 设置图片的翻转
@@ -503,6 +504,48 @@ vec3 lightDirection = u_LightPosition - v_Position;
     + gl.bindTexture：绑定纹理对象到当前纹理。
     + gl.texImage2D：将图片数据传递给 GPU。
     + gl.texParameterf：设置图片放大缩小时的过滤算法。
++ 常用方法总结
+  - precision：精度设置限定符，使用此限定符设置完精度后，之后所有该数据类型都将沿用该精度，除非单独设置。
+  - distance：计算顶点之间距离。
+  - discard:舍弃片元。
+
++ 如何创建并连接着色器程序**
+  - createShader：创建着色器对象
+  - shaderSource：提供着色器源码
+  - compileShader：编译着色器对象
+  - createProgram：创建着色器程序
+  - attachShader：绑定着色器对象
+  - linkProgram：链接着色器程序
+  - useProgram：启用着色器程序
+下面是完整的例子
+```JS
+function initShader(gl) {
+  1.获取着色器源码:
+  //顶点着色器源码
+  const vertexShaderSource = document.getElementById('vertexShader').innerText;
+  //片元着色器源码
+  const fragmentShaderSource = document.getElementById('fragmentShader').innerText;
+  2.创建着色器对象
+  const vertexShader = gl.createShader(gl.VERTEX_SHADER);
+  const fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+  3.为着色器对象提供源码
+  gl.shaderSource(vertexShader, vertexShaderSource);
+  gl.shaderSource(fragmentShader, fragmentShaderSource);
+  4.编译着色器 编译是将GLSL（OpenGL着色器语言）代码转换为GPU可执行代码的过程。
+  gl.compileShader(vertexShader);
+  gl.compileShader(fragmentShader);
+  5.创建和连接着色器程序
+  const program = gl.createProgram();
+  //将编译后的顶点着色器和片元着色器附加到程序对象上。
+  gl.attachShader(program, vertexShader);
+  gl.attachShader(program, fragmentShader);
+  // 链接着色器程序。链接是将多个着色器组合成一个完整的程序的过程，链接成功后，这个程序可以用于渲染。
+  gl.linkProgram(program);
+  // 将创建和链接好的着色器程序设置为当前使用的程序
+  gl.useProgram(program);
+  return program;
+  }
+```
 
 
 ## 10.webgl怎么处理传递进去的数据的
@@ -587,7 +630,4 @@ function setGeometry(gl) {
 + 最终呈现的结果
 
 <img src='../../images/webgl/F.png'>
-
-
-
-
+<Valine></Valine>
