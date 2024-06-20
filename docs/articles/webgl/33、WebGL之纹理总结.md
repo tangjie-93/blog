@@ -649,7 +649,11 @@ gl.bindTexture(gl.TEXTURE_2D, texture);
 ```
 + 是否设置对纹理的 `y` 轴进行翻转
 ```js
- gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+ gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true); //纹理图片上下反转,使得图片的左下角与UV坐标原点重合。
+```
++ 激活纹理(可选)
+```js
+gl.activeTexture(gl.TEXTURE0);//激活0号纹理单元TEXTURE0(默认激活的就是0号纹理单元)
 ```
 + 设置纹理的差值方式
 ```js
@@ -717,7 +721,7 @@ image.addEventListener('load', function() {
 
 给立方体的每个面设置不同的图像。一般最好的方法是将 图像放在一个纹理中，然后利用纹理坐标映射不同的图像到每个面。然后为立方体的每个面设置不同的纹理坐标。
 
-[纹理图集demo地址]()
+[纹理图集demo地址](https://github.com/tangjie-93/WebGL/blob/main/%E8%B7%9F%E7%9D%80%E5%AE%98%E7%BD%91%E5%AD%A6WebGL%2BWebGL%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97/%E7%BA%B9%E7%90%86/demo/%E7%BA%B9%E7%90%86%E5%9B%BE%E9%9B%86.html)
 
 首先准备一张图片。
 
