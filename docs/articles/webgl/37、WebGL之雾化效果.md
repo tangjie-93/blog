@@ -1,10 +1,10 @@
 ---
-title: WebGL之α融合
-date: '2024-06-20'
-lastmodifydate: '2024-06-20'
+title: WebGL之雾化效果
+date: '2024-06-21'
+lastmodifydate: '2024-06-24'
 type: 技术
 tags: WebGL
-note: WebGL之α融合
+note: WebGL之雾化效果
 ---
 ## 1.雾化
 用来描述远处的物体看上去较为模糊的现象。
@@ -133,5 +133,9 @@ void main() {
 ```
 
 [demo地址](https://github.com/tangjie-93/WebGL/blob/main/%E8%B7%9F%E7%9D%80%E5%AE%98%E7%BD%91%E5%AD%A6WebGL%2BWebGL%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97/%E9%AB%98%E7%BA%A7%E6%8A%80%E6%9C%AF/%E9%9B%BE%E5%8C%96(%E5%A4%A7%E6%B0%94%E6%95%88%E6%9E%9C)/demo/fog-w.html)
+
+**参考文档**
+
+[WebGL 雾](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-fog.html)
 
 <Valine></Valine>
