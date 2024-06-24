@@ -1,5 +1,5 @@
 ---
-title: WebGL之选中物体
+title: 35、WebGL之选中物体
 date: '2024-06-20'
 lastmodifydate: '2024-06-20'
 type: 技术

@@ -29,7 +29,8 @@ function createSidebarMapObject (dir) {
         })
 
     }
-    getAllFiles(temPath)
+    getAllFiles(temPath);
+    fileMapObj
     return fileMapObj;
 }
 function getLink (link) {
@@ -56,7 +57,15 @@ function createSideBar (fileMapObj) {
     const sidebar = {};
     Object.keys(fileMapObj).forEach(function (key) {
         const link = getLink(key);
-        sidebar[link] = fileMapObj[key];
+        const list = fileMapObj[key].sort((a,b)=>{
+            if(a === "") return -1;
+            const strs1 = a.split("、");
+            const strs2 = b.split("、");
+            const numIndex = strs1.length>1?strs1[0]:0;
+            const numIndex2 = strs2.length>1?strs2[0]:0;
+            return numIndex - numIndex2;
+        })
+        sidebar[link] = list;
     })
     return sidebar;
 }
@@ -89,7 +98,7 @@ module.exports = {
             { text: '掘金', link: 'https://juejin.im/user/5bd074165188251ce71d8e2c' },
         ],
         sidebar,
-        sidebarDepth: 2,
+        sidebarDepth: 3,
         // displayAllHeaders: true,
         lastUpdated: 'Last Updated',
         smoothScroll: true

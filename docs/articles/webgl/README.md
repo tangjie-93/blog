@@ -1,5 +1,5 @@
 ---
-title: WebGL基础知识总结
+title: 0、WebGL基础知识总结
 date: '2021-06-13'
 type: 技术
 tags: WebGL

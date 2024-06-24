@@ -1,5 +1,5 @@
 ---
-title: WebGL之光照
+title: 32、WebGL之光照
 date: '2024-06-17'
 lastmodifydate: '2024-06-17'
 type: 技术

@@ -1,5 +1,5 @@
 ---
-title: WebGL之雾化效果
+title: 37、WebGL之雾化效果
 date: '2024-06-21'
 lastmodifydate: '2024-06-24'
 type: 技术
@@ -89,12 +89,17 @@ void main() {
   gl.enable(gl.DEPTH_TEST);
 
 ```
+
+
 下面是雾化效果的示意图
+
 <img src='../../images/webgl/fog.png' width=200 />
 
 [demo地址](https://github.com/tangjie-93/WebGL/blob/main/%E8%B7%9F%E7%9D%80%E5%AE%98%E7%BD%91%E5%AD%A6WebGL%2BWebGL%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97/%E9%AB%98%E7%BA%A7%E6%8A%80%E6%9C%AF/%E9%9B%BE%E5%8C%96(%E5%A4%A7%E6%B0%94%E6%95%88%E6%9E%9C)/demo/fog.html)
 
-## 3.使用w分量
+
+
+## 3.使用w分量的线性雾
 在顶点着色器中计算顶点与视点之间的距离，会造成较大的开销，可能还会影响性能。我们可以使用顶点经过模型视图投影变换后的的坐标`(gl_Position.w)`的`w`分量来近似估算出这个距离。
 
 实际上，这个`w`分量的值就是顶点的视图坐标`z`分量乘以`-1`。在视图坐标系中，视点在原点，视线沿着`Z`轴负方向，观察者看到的其他物体其视图坐标系值`z`分量都是负的。而`gl_Position.w)`的 `w`分量值正好是`z`分量值乘以`-1`,所以可以直接使用该值来近视与视点的距离。
@@ -132,7 +137,64 @@ void main() {
 }
 ```
 
+**注意：** 使用深度很简单但是有一个问题。假设围绕相机有一圈物体。我们根据到相机 `z`平面的距离计算雾量。这意味着你转动相机，当它在视图空间中的 `z` 值趋近于 `0` ，物体会越来越不受雾的影响。
+
 [demo地址](https://github.com/tangjie-93/WebGL/blob/main/%E8%B7%9F%E7%9D%80%E5%AE%98%E7%BD%91%E5%AD%A6WebGL%2BWebGL%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97/%E9%AB%98%E7%BA%A7%E6%8A%80%E6%9C%AF/%E9%9B%BE%E5%8C%96(%E5%A4%A7%E6%B0%94%E6%95%88%E6%9E%9C)/demo/fog-w.html)
+
+## 4.指数雾
+它根据距观察者距离的平方变厚。一个常见的 **指数雾公式** 是：
+```js
+fogAmount = 1. - exp2(-fogDensity * fogDensity * fogDistance * fogDistance * LOG2));
+fogAmount = clamp(fogAmount, 0., 1.);
+```
+注意：基于密度的雾没有最近值和最远值设置。
+点元着色器代码
+```js
+attribute vec4 a_position;
+attribute vec2 a_texcoord;
+
+uniform mat4 u_worldView;
+uniform mat4 u_projection;
+
+varying vec2 v_texcoord;
+varying vec3 v_position;
+
+void main() {
+  // Multiply the position by the matrix.
+  gl_Position = u_projection * u_worldView * a_position;
+
+  // Pass the texcoord to the fragment shader.
+  v_texcoord = a_texcoord;
+
+  // Pass the view position to the fragment shader
+  v_position = (u_worldView * a_position).xyz;
+}
+```
+片元着色器代码
+```js
+precision mediump float;
+
+// Passed in from the vertex shader.
+varying vec2 v_texcoord;
+varying vec3 v_position;
+
+// The texture.
+uniform sampler2D u_texture;
+uniform vec4 u_fogColor;
+uniform float u_fogDensity;
+
+void main() {
+  vec4 color = texture2D(u_texture, v_texcoord);
+
+  #define LOG2 1.442695
+
+  float fogDistance = length(v_position);
+  float fogAmount = 1. - exp2(-u_fogDensity * u_fogDensity * fogDistance * fogDistance * LOG2);
+  fogAmount = clamp(fogAmount, 0., 1.);
+
+  gl_FragColor = mix(color, u_fogColor, fogAmount);
+```
+[demo地址](https://github.com/tangjie-93/WebGL/blob/main/%E8%B7%9F%E7%9D%80%E5%AE%98%E7%BD%91%E5%AD%A6WebGL%2BWebGL%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97/%E9%AB%98%E7%BA%A7%E6%8A%80%E6%9C%AF/%E9%9B%BE%E5%8C%96(%E5%A4%A7%E6%B0%94%E6%95%88%E6%9E%9C)/demo/fog-%E6%8C%87%E6%95%B0.html)
 
 **参考文档**
 

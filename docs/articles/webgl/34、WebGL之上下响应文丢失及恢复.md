@@ -1,5 +1,5 @@
 ---
-title: WebGL之上下响应文丢失
+title: 34、WebGL之上下响应文丢失
 date: '2024-06-20'
 lastmodifydate: '2024-06-20'
 type: 技术

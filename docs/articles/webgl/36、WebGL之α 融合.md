@@ -1,5 +1,5 @@
 ---
-title: WebGL之α融合
+title: 36、WebGL之α融合
 date: '2024-06-20'
 lastmodifydate: '2024-06-20'
 type: 技术
