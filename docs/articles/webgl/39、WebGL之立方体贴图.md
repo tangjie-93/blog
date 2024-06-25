@@ -7,7 +7,9 @@ tags: WebGL
 note: WebGL之立方体贴图
 ---
 ## 1.立方体贴图
-在 `WebGL` 中实现立方体贴图`（Cube Mapping）`是一种用于环境贴图或反射效果的技术。以下是如何在 `WebGL` 中实现立方体贴图的步骤，包括创建一个立方体并应用贴图。立方体贴图由六个面组成，分别对应立方体的六个方向（正 `X`、负 `X`、正`Y`、负`Y`、正`Z`、负`Z`）。每个面都是一个独立的 `2D` 纹理。
+在 `WebGL` 中实现立方体贴图`（Cube Mapping）`是一种用于环境贴图或反射效果的技术。以下是如何在 `WebGL` 中实现立方体贴图的步骤，包括创建一个立方体并应用贴图。立方体贴图由六个面组成，分别对应立方体的六个方向（正 `X`、负 `X`、正`Y`、负`Y`、正`Z`、负`Z`）。每个面都是一个独立的 `2D` 纹理。不像常规的纹理坐标有`2`个纬度，立方体纹理使用法向量， 根据法向量的朝向选取立方体`6`个面中的一个，这个面的像素用来采样生成颜色。
+我们除了使用图片绘制纹理，我们还可以使用`canvas`来绘制纹理。
+
 #### 1.1 使用图片绘制纹理
 核心代码如下所示
 + 顶点着色器代码
@@ -18,9 +20,8 @@ varying vec3 v_normal;
 void main() {
   // Multiply the position by the matrix.
   gl_Position = u_matrix * a_position;
-  // Pass a normal. Since the positions
-  // centered around the origin we can just 
-  // pass the position
+  // 传递法向量。因为位置是以几何中心为原点的
+  // 我们可以直接传递位置
   // 直接使用顶点位置作为法向量可以简化计算。如果顶点是在单位球体上的点，顶点的归一化坐标即为法向量。
   v_normal = normalize(a_position.xyz);
 }
@@ -151,4 +152,11 @@ function generateFace(ctx, faceColor, textColor, text) {
 ## 2.天空盒子
 在 `WebGL` 中，天空盒子`（skybox）`是一种常见的技术，用于模拟远处的环境，使场景看起来像被包围在一个巨大的立方体或球体内。天空盒子通常使用立方体贴图`（cube map）`来创建。
 
+
 ## 3.环境贴图
+环境贴图表示你所绘制物体的环境。环境贴图用于模拟物体周围的环境光照和反射。常见的应用包括反射贴图和折射贴图。
+
+**参考文档**<br>
+[WebGL 立方体贴图](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-cube-maps.html)<br>
+[WebGL 环境贴图 (反射)](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-environment-maps.html)<br>
+[WebGL 天空盒子](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-skybox.html)<br>
