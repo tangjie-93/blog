@@ -19,7 +19,9 @@ note: 指的是使用 WebGL 渲染三维图形，然后将渲染结果作为纹�
 
 ## 3.如何实现渲染到纹理
 
-如果我们想把`WebGL`中渲染出的图像作为纹理使用，那么就需要将纹理对象作为颜色关联对象关联到祯缓冲区对象上，然后在祯缓冲区进行绘制，此时颜色关联对像就代替了颜色缓冲区。如果我们需要进行隐藏面消除，我们就需要再创建一个渲染缓冲区对象来作为祯缓冲区的深度关联对象，来代替深度缓冲区。
+如果我们想把`WebGL`中渲染出的图像作为纹理使用，那么就需要将纹理对象作为颜色关联对象关联到祯缓冲区对象上，然后在祯缓冲区进行绘制，此时颜色关联对像就代替了颜色缓冲区。
+
+如果我们需要进行隐藏面消除，我们就需要再创建一个渲染缓冲区对象来作为祯缓冲区的深度关联对象，来代替深度缓冲区。
 
 需要实现上面的效果，需要执行下面的8个步骤。
 #### 1.创建祯缓冲区对像
@@ -104,7 +106,7 @@ function draw(gl, canvas, fbo, plane, cube, angle, texture, viewProjMatrix, view
   drawTexturedPlane(gl, gl.program, plane, angle, fbo.texture, viewProjMatrix);  // Draw the plane
 }
 ```
-[具体的demo地址](./index.html)
+[渲染到纹理](https://github.com/tangjie-93/WebGL/blob/main/%E8%B7%9F%E7%9D%80%E5%AE%98%E7%BD%91%E5%AD%A6WebGL%2BWebGL%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97/%E9%AB%98%E7%BA%A7%E6%8A%80%E6%9C%AF/%E6%B8%B2%E6%9F%93%E5%88%B0%E7%BA%B9%E7%90%86/index.html)
 
 渲染效果如下所示
 

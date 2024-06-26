@@ -4,8 +4,9 @@ date: '2024-06-20'
 lastmodifydate: '2024-06-20'
 type: 技术
 tags: WebGL
-note: WebGL之选中物体
+note: 关于找到用户点击的物体，一个最简单的方法是：为每一个对象赋予一个数字id，我们可以在关闭光照和纹理的情况下将数字id当作颜色绘制所有对象。 随后我们将得到一帧图片，上面绘制了所有物体的剪影，而深度缓冲会自动帮我们排序。 我们可以读取鼠标坐标下的像素颜色为数字id，就能得到这个位置上渲染的对应物体。
 ---
+
 ## 1.选中物体
 通过在顶点着色器中定义一个`uniform bool u_Clicked`变量,用于判断鼠标点击的位置是否在`canvas`的区域内，通过判断`u_Clicked`的值来给模型设置相应的选中颜色。
 + **顶点着色器中的代码**如下所示
@@ -93,6 +94,7 @@ void main() {
     var rect = ev.target.getBoundingClientRect();
     if (rect.left <= x && x < rect.right && rect.top <= y && y < rect.bottom) {
       // If Clicked position is inside the <canvas>, update the selected surface
+      // 纹理坐标的(0,0)点在左下脚
       const x_in_canvas = x - rect.left, y_in_canvas = rect.bottom - y;
       const face = checkFace(gl, n, x_in_canvas, y_in_canvas, currentAngle, u_PickedFace, viewProjMatrix, u_MvpMatrix);
       gl.uniform1i(u_PickedFace, face); // Pass the surface number to u_PickedFace
@@ -129,6 +131,7 @@ if(u_PickedFace == 0) { // 将表面编号存入 alpha 分量
 具体`demo` 参考 [选中物体](https://github.com/tangjie-93/WebGL/blob/main/%E8%B7%9F%E7%9D%80%E5%AE%98%E7%BD%91%E5%AD%A6WebGL%2BWebGL%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97/%E9%AB%98%E7%BA%A7%E6%8A%80%E6%9C%AF/%E9%80%89%E4%B8%AD%E7%89%A9%E4%BD%93/demo/%E9%80%89%E4%B8%AD%E9%9D%A2.html)
 
 ## 3.在多个物体中选中一个物体
+关于找到用户点击的物体，一个最简单的方法是：为每一个对象赋予一个数字 `id`，我们可以在关闭光照和纹理的情况下将**数字`id`当作颜色绘制所有对象**。 随后我们将得到一帧图片，上面绘制了所有物体的剪影，而深度缓冲会自动帮我们排序。 我们可以**读取鼠标坐标下的像素颜色为数字id**，就能得到这个位置上渲染的对应物体。
 
 
 <Valine></Valine>
