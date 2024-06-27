@@ -133,5 +133,315 @@ if(u_PickedFace == 0) { // 将表面编号存入 alpha 分量
 ## 3.在多个物体中选中一个物体
 关于找到用户点击的物体，一个最简单的方法是：为每一个对象赋予一个数字 `id`，我们可以在关闭光照和纹理的情况下将**数字`id`当作颜色绘制所有对象**。 随后我们将得到一帧图片，上面绘制了所有物体的剪影，而深度缓冲会自动帮我们排序。 我们可以**读取鼠标坐标下的像素颜色为数字id**，就能得到这个位置上渲染的对应物体。
 
+为了实现点击效果，我们需要用到**帧缓冲**，同时也会用到两份着色器数据，一份用于正常绘制，一份用于绘制模型的独一无二的颜色编号。
++ 正常绘制的着色器代码
+```js
+// 点元着色器
+<script id="3d-vertex-shader" type="x-shader/x-vertex">
+  attribute vec4 a_position;
+  attribute vec4 a_color;
+
+  uniform mat4 u_matrix;
+
+  varying vec4 v_color;
+
+  void main() {
+    // Multiply the position by the matrix.
+    gl_Position = u_matrix * a_position;
+
+    // Pass the color to the fragment shader.
+    v_color = a_color;
+  }
+</script>
+// 片元着色器
+<script id="3d-fragment-shader" type="x-shader/x-fragment">
+  precision mediump float;
+
+  // Passed in from the vertex shader.
+  varying vec4 v_color;
+
+  uniform vec4 u_colorMult;
+
+  void main() {
+    gl_FragColor = v_color * u_colorMult;
+  }
+  </script>
+```
++ 选中的着色器代码
+```js
+// 点元着色器代码
+<script id="pick-vertex-shader" type="x-shader/x-vertex">
+  attribute vec4 a_position;
+  
+  uniform mat4 u_matrix;
+  
+  void main() {
+      // Multiply the position by the matrix.
+      gl_Position = u_matrix * a_position;
+  }
+</script>
+// 片元着色器代码
+<script id="pick-fragment-shader" type="x-shader/x-fragment">
+  precision mediump float;
+
+  uniform vec4 u_id;
+
+  void main() {
+      gl_FragColor = u_id;
+  }
+</script>
+```
+
++ 创建和使用帧缓冲
+```js
+   // 创建并绑定帧缓冲
+const fb = gl.createFramebuffer();
+gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
+
+// 创建用于纹理
+const targetTexture = createTexture(gl);
+// 附加纹理为第一个颜色附件
+// 将祯缓冲的颜色关联对象指定为一个纹理对象
+gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, targetTexture, 0);
+
+ // 创建并绑定渲染缓冲对象
+const depthBuffer = gl.createRenderbuffer();
+gl.bindRenderbuffer(gl.RENDERBUFFER, depthBuffer);
+//祯缓冲的深度关联对象指定为一个渲染缓冲对象
+gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, depthBuffer);
+
+//在画布显示尺寸跟css尺寸不一致时
+// 设置帧缓冲附件尺寸
+// 纹理和深度渲染缓冲区配置代码，通过调用它来调整它们的尺寸，使之与画布的大小一致。
+function setFramebufferAttachmentSizes(width, height) {
+  // 绑定纹理
+  gl.bindTexture(gl.TEXTURE_2D, targetTexture);
+  // define size and format of level 0
+  const level = 0;
+  const internalFormat = gl.RGBA;
+  const border = 0;
+  const format = gl.RGBA;
+  const type = gl.UNSIGNED_BYTE;
+  const data = null;
+  // 用于将图像数据上传到纹理对象的方法
+  //data 是 null，我们不需要提供数据，只需要让WebGL分配一个纹理。
+  // 设置纹理尺寸
+  gl.texImage2D(gl.TEXTURE_2D, level, internalFormat,
+    width, height, border,
+    format, type, data);
+  // 绑定渲染缓冲区
+  gl.bindRenderbuffer(gl.RENDERBUFFER, depthBuffer);
+   // 设置深度渲染缓冲尺寸
+  gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, width, height);
+}
+
+```
++ 创建对象
+```js
+// 创建每个对象的信息 Make infos for each object for each object.
+function createObjects(gl, programInfo) {
+    const shapes = createShapes(gl);
+    const objects = [];
+    const objectsToDraw = [];
+    const baseHue = rand(0, 360);
+    const numObjects = 200;
+    for (let ii = 0; ii < numObjects; ++ii) {
+        const id = ii + 1;
+        const u_colorMult = chroma.hsv(eMod(baseHue + rand(0, 120), 360), rand(0.5, 1), rand(0.5, 1)).gl();
+        const object = {
+            uniforms: {
+                u_colorMult,
+                u_world: m4.identity(),
+                u_id: [
+                    ((id >> 0) & 0xFF) / 0xFF,
+                    ((id >> 8) & 0xFF) / 0xFF,
+                    ((id >> 16) & 0xFF) / 0xFF,
+                    ((id >> 24) & 0xFF) / 0xFF,
+                ],
+            },
+            translation: [rand(-100, 100), rand(-100, 100), rand(-150, -50)],
+            xRotationSpeed: rand(0.8, 1.2),
+            yRotationSpeed: rand(0.8, 1.2),
+        };
+        objects.push(object);
+        objectsToDraw.push({
+            programInfo: programInfo,
+            bufferInfo: shapes[ii % shapes.length],
+            uniforms: object.uniforms,
+        });
+    }
+    return {
+        objects,
+        objectsToDraw
+    }
+
+}
+
+function createShapes(gl) {
+    // creates buffers with position, normal, texcoord, and vertex color
+    // data for primitives by calling gl.createBuffer, gl.bindBuffer,
+    // and gl.bufferData
+    //创建缓冲区数据
+    const sphereBufferInfo = primitives.createSphereWithVertexColorsBufferInfo(gl, 10, 12, 6);
+    const cubeBufferInfo = primitives.createCubeWithVertexColorsBufferInfo(gl, 20);
+    const coneBufferInfo = primitives.createTruncatedConeWithVertexColorsBufferInfo(gl, 10, 0, 20, 12, 1, true, false);
+
+    return [sphereBufferInfo, cubeBufferInfo, coneBufferInfo];
+}
+```
++ 渲染场景
+渲染场景包括两部分，一部分是将利用帧缓冲区将物体渲染到纹理
+```js
+gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
+gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+
+gl.enable(gl.CULL_FACE);
+gl.enable(gl.DEPTH_TEST);
+
+// Clear the canvas AND the depth buffer.
+gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+drawObjects(gl,objectsToDraw, pickingProgramInfo);
+```
+渲染后，将鼠标位置的像素获取到，并转换成编号,然后将对应编号的物体的颜色修改成指定颜色。
+```js
+const pixelX = mouseX * gl.canvas.width / gl.canvas.clientWidth;
+// 纹理坐标的原点在左下角
+const pixelY = gl.canvas.height - mouseY * gl.canvas.height / gl.canvas.clientHeight - 1;
+const data = new Uint8Array(4);
+gl.readPixels(
+  pixelX,            // x
+  pixelY,            // y
+  1,                 // width
+  1,                 // height
+  gl.RGBA,           // format
+  gl.UNSIGNED_BYTE,  // type
+  data);             // typed array to hold result
+const id = data[0] + (data[1] << 8) + (data[2] << 16) + (data[3] << 24);
+
+// restore the object's color
+if (oldPickNdx >= 0) {
+  const object = objects[oldPickNdx];
+  object.uniforms.u_colorMult = oldPickColor;
+  oldPickNdx = -1;
+}
+
+// 高亮鼠标下的物体
+if (id > 0) {
+  const pickNdx = id - 1;
+  oldPickNdx = pickNdx;
+  const object = objects[pickNdx];
+  oldPickColor = object.uniforms.u_colorMult;
+  // 用于改变颜色
+  object.uniforms.u_colorMult =  [1, 0, 0, 1]; //(frameCount & 0x8) ? [1, 0, 0, 1] : [1, 1, 0, 1];
+}
+```
+最后用指定的颜色绘制鼠标下的物体
+```js
+// 将物体绘制到canvas
+gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+drawObjects(gl,objectsToDraw);
+```
+完成的渲染代码如下所示
+```js
+function drawScene(time) {
+  time *= 0.0005;
+  ++frameCount;
+  if (webglUtils.resizeCanvasToDisplaySize(gl.canvas)) {
+    // 当canvas改变尺寸后，同步帧缓冲的尺寸
+    setFramebufferAttachmentSizes(gl.canvas.width, gl.canvas.height);
+  }
+
+  // 创建透视投影矩阵
+  const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
+  const projectionMatrix =
+    m4.perspective(fieldOfViewRadians, aspect, 1, 2000);
+
+  // 创建相机矩阵
+  const cameraPosition = [0, 0, 100];
+  const target = [0, 0, 0];
+  const up = [0, 1, 0];
+  const cameraMatrix = m4.lookAt(cameraPosition, target, up);
+
+  // 根据相机创建视图矩阵
+  const viewMatrix = m4.inverse(cameraMatrix);
+  // 得到视图投影矩阵
+  const viewProjectionMatrix = m4.multiply(projectionMatrix, viewMatrix);
+
+  // 计算每个物体的mvp矩阵
+  objects.forEach(function (object) {
+    object.uniforms.u_matrix = computeMatrix(
+      viewProjectionMatrix,
+      object.translation,
+      object.xRotationSpeed * time,
+      object.yRotationSpeed * time);
+  });
+
+  // ------ 将物体绘制到纹理 --------
+
+  gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
+  gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+
+  gl.enable(gl.CULL_FACE);
+  gl.enable(gl.DEPTH_TEST);
+
+  // Clear the canvas AND the depth buffer.
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+  drawObjects(gl,objectsToDraw, pickingProgramInfo);
+
+  // ------ Figure out what pixel is under the mouse and read it
+
+  const pixelX = mouseX * gl.canvas.width / gl.canvas.clientWidth;
+  // 纹理坐标的原点在左下角
+  const pixelY = gl.canvas.height - mouseY * gl.canvas.height / gl.canvas.clientHeight - 1;
+  const data = new Uint8Array(4);
+  gl.readPixels(
+    pixelX,            // x
+    pixelY,            // y
+    1,                 // width
+    1,                 // height
+    gl.RGBA,           // format
+    gl.UNSIGNED_BYTE,  // type
+    data);             // typed array to hold result
+  const id = data[0] + (data[1] << 8) + (data[2] << 16) + (data[3] << 24);
+
+  // restore the object's color
+  if (oldPickNdx >= 0) {
+    const object = objects[oldPickNdx];
+    object.uniforms.u_colorMult = oldPickColor;
+    oldPickNdx = -1;
+  }
+
+  // 高亮鼠标下的物体
+  if (id > 0) {
+    const pickNdx = id - 1;
+    oldPickNdx = pickNdx;
+    const object = objects[pickNdx];
+    oldPickColor = object.uniforms.u_colorMult;
+    // 用于改变颜色
+    object.uniforms.u_colorMult =  [1, 0, 0, 1]; //(frameCount & 0x8) ? [1, 0, 0, 1] : [1, 1, 0, 1];
+  }
+  // 将物体绘制到canvas
+  gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+  gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+  drawObjects(gl,objectsToDraw);
+  requestAnimationFrame(drawScene);
+}
+```
+`demo`地址 [多个物理中选中物体-优化前](https://github.com/tangjie-93/WebGL/blob/main/%E8%B7%9F%E7%9D%80%E5%AE%98%E7%BD%91%E5%AD%A6WebGL%2BWebGL%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97/%E9%AB%98%E7%BA%A7%E6%8A%80%E6%9C%AF/%E9%80%89%E4%B8%AD%E7%89%A9%E4%BD%93/demo/%E5%A4%9A%E4%B8%AA%E7%89%A9%E4%BD%93%E4%B8%AD%E9%80%89%E4%B8%AD%E7%89%A9%E4%BD%93-%E4%BC%98%E5%8C%96%E5%90%8E.html)
+
+上面的代码我们可以做一下优化，我们要把物品通过id渲染到与画布相同大小的纹理上。在概念上这是最容易做到的。
+
+但是，我们可以只渲染鼠标下面的像素。为了做到这一点，我们使用一个只覆盖这个像素空间的视锥体。
+
+到目前为止，对于  `3D` 处理，我们一直在使用一个叫做 `perspective` (透视投影) 的函数，该函数将视场、长宽和近远平面的z值作为输入，并制作一个透视投影矩阵，将这些值所定义的视锥体转换为裁剪空间。
+
+大多数三维数学库都有另一个叫做 `frustum`(正交投影) 的函数，它需要6个值，近Z面的左、右、上、下值，然后是Z面的Z-近和Z-远值，并生成一个由这些值定义的投影矩阵。
+
+利用上述方法，我们可以为鼠标下方的一个像素生成一个投影矩阵。
+
+`demo`地址 [多个物理中选中物体-优化后](https://github.com/tangjie-93/WebGL/blob/main/%E8%B7%9F%E7%9D%80%E5%AE%98%E7%BD%91%E5%AD%A6WebGL%2BWebGL%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97/%E9%AB%98%E7%BA%A7%E6%8A%80%E6%9C%AF/%E9%80%89%E4%B8%AD%E7%89%A9%E4%BD%93/demo/%E5%A4%9A%E4%B8%AA%E7%89%A9%E7%90%86%E4%B8%AD%E9%80%89%E4%B8%AD%E7%89%A9%E4%BD%93-%E4%BC%98%E5%8C%96%E5%89%8D.html)
 
 <Valine></Valine>

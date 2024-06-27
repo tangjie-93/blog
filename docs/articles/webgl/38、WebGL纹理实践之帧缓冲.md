@@ -42,6 +42,7 @@ gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
 ```js
 const texture = gl.createTexture();
 gl.bindTexture(gl.TEXTURE_2D, texture);
+//注意 data 是 null，我们不需要提供数据，只需要让WebGL分配一个纹理。
 gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
 // 设置筛选器
 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
