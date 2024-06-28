@@ -250,6 +250,8 @@ precision mediump float;
 ```
 具体`demo`地址[点光源逐片元光照效果](https://github.com/tangjie-93/WebGL/blob/main/%E8%B7%9F%E7%9D%80%E5%AE%98%E7%BD%91%E5%AD%A6WebGL%2BWebGL%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97/%E5%85%89%E7%85%A7/demo/%E7%82%B9%E5%85%89%E6%BA%90%E9%80%90%E7%89%87%E5%85%83%E5%85%89%E7%85%A7.html)
 
+## 5.聚光灯的着色效果
+
 **参考文档**<br>
 [WebGL 三维点光源](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-3d-lighting-point.html)<br>
 [WebGL 三维方向光源](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-3d-lighting-directional.html)<br>
