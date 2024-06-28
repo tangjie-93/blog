@@ -8,7 +8,7 @@ note: WebGL之性能优化
 ---
 正常情况下，每绘制一个模型都要调用一次 `gl.uniform4v`，`gl.uniformMatrix4fv` 还有`gl.drawArrays`。加入需要绘制`n`个相同的模型，那么就需要调用`n`次 `gl.uniform4v`，`gl.uniformMatrix4fv` 还有`gl.drawArrays`。如果我们的着色器很复杂的化，那么调用的`WebGL`方法就会很多。
 
-**实例化** 就是一个帮助我们减少函数调用的好路子。 它的工作原理是让你告诉WebGL你想绘制多少次相同的物体（实例的数量）。
+**实例化** 就是一个帮助我们减少函数调用的好路子。 它的工作原理是让你告诉 `WebGL` 你想绘制多少次相同的物体（实例的数量）。
 
 对于每个 `attribute`，你可以让它每次调用顶点着色器时迭代到缓冲区的 下一个值（默认行为），或者是每绘制 `N`（`N`通常为`1`）个实例时才迭代到 下一个值。
 
@@ -74,6 +74,7 @@ const matrices = [];
 for (let i = 0; i < numInstances; ++i) {
   const byteOffsetToMatrix = i * 16 * 4;
   const numFloatsForView = 16;
+  // 初始化矩阵
   matrices.push(new Float32Array(matrixData.buffer,byteOffsetToMatrix,numFloatsForView));
 }
 const matrixBuffer = gl.createBuffer();
@@ -104,6 +105,7 @@ matrices.forEach((mat, ndx) => {
 });
 ```
 + 上传新的矩阵数据
+`gl.bufferSubData(gl.ARRAY_BUFFER, 0, matrixData)` 用于更新已存在的缓冲区对象中的子数据，用于将新数据（或部分数据）上传到已绑定的缓冲区对象中。因为前面调用了`  gl.bufferData(gl.ARRAY_BUFFER, matrixData.byteLength, gl.DYNAMIC_DRAW);`
 ```js
 gl.bindBuffer(gl.ARRAY_BUFFER, matrixBuffer);
 gl.bufferSubData(gl.ARRAY_BUFFER, 0, matrixData);
@@ -151,6 +153,51 @@ ext.drawArraysInstancedANGLE(
 `demo`地址 [实例化绘制](https://github.com/tangjie-93/WebGL/blob/main/fundmantalExamples/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/%E5%AE%9E%E4%BE%8B%E5%8C%96%E7%BB%98%E5%88%B6.html)
 
 ## 2.WebGL - 顶点索引
+
+在 `WebGL` 中有两个基本的绘制函数。 `gl.drawArrays` 和 `gl.drawElements`。 这个网站的文章中，大部分是调用 `gl.drawArrays` 的。
+
+`gl.drawElements` 需要一个填充了顶点索引的缓存，然后以此来绘制。
+
+使用顶点索引时，有几个需要注意的地方。
++ 缓冲区的对象不一样了
+
+使用顶点缓冲时的缓冲类型是`ELEMENT_ARRAY_BUFFER`，之前是  `gl.ARRAY_BUFFER`。
+
++ 创建顶点缓冲
+```js
+// create the buffer
+const indexBuffer = gl.createBuffer();
+// make this buffer the current 'ELEMENT_ARRAY_BUFFER'
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
+
+// Fill the current element array buffer with data
+const indices = [
+    0, 1, 2,   // first triangle
+    2, 1, 3,   // second triangle
+];
+gl.bufferData(
+    gl.ELEMENT_ARRAY_BUFFER,
+    new Uint16Array(indices),
+    gl.STATIC_DRAW
+);
+```
++ 绘制对象的方法不一样了
+之前的方法
+```js
+const primitiveType = gl.TRIANGLES;
+const offset = 0;
+const count = 6;//num vertices per instance
+gl.drawArrays(primitiveType,offset,count);
+```
+使用顶点索引
+```js
+const primitiveType = gl.TRIANGLES;
+const offset = 0;
+const count = 6;
+const indexType = gl.UNSIGNED_SHORT;
+gl.drawElements(primitiveType, count, indexType, offset);
+```
+
 
 `demo`地址 [顶点索引](https://github.com/tangjie-93/WebGL/blob/main/fundmantalExamples/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/%E9%A1%B6%E7%82%B9%E7%B4%A2%E5%BC%95.html)
 
