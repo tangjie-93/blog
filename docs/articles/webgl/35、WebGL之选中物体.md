@@ -303,7 +303,7 @@ gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
 drawObjects(gl,objectsToDraw, pickingProgramInfo);
 ```
-渲染后，将鼠标位置的像素获取到，并转换成编号,然后将对应编号的物体的颜色修改成指定颜色。
+渲染后，将鼠标位置的像素获取到，并转换成编号`id`,然后将对应编号的物体的颜色修改成指定颜色。
 ```js
 const pixelX = mouseX * gl.canvas.width / gl.canvas.clientWidth;
 // 纹理坐标的原点在左下角
@@ -336,7 +336,7 @@ if (id > 0) {
   object.uniforms.u_colorMult =  [1, 0, 0, 1]; //(frameCount & 0x8) ? [1, 0, 0, 1] : [1, 1, 0, 1];
 }
 ```
-最后用指定的颜色绘制鼠标下的物体
+最后用指定的颜色绘制鼠标下的物体。
 ```js
 // 将物体绘制到canvas
 gl.bindFramebuffer(gl.FRAMEBUFFER, null);
@@ -432,16 +432,92 @@ function drawScene(time) {
 ```
 `demo`地址 [多个物理中选中物体-优化前](https://github.com/tangjie-93/WebGL/blob/main/%E8%B7%9F%E7%9D%80%E5%AE%98%E7%BD%91%E5%AD%A6WebGL%2BWebGL%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97/%E9%AB%98%E7%BA%A7%E6%8A%80%E6%9C%AF/%E9%80%89%E4%B8%AD%E7%89%A9%E4%BD%93/demo/%E5%A4%9A%E4%B8%AA%E7%89%A9%E4%BD%93%E4%B8%AD%E9%80%89%E4%B8%AD%E7%89%A9%E4%BD%93-%E4%BC%98%E5%8C%96%E5%90%8E.html)
 
-上面的代码我们可以做一下优化，我们要把物品通过id渲染到与画布相同大小的纹理上。在概念上这是最容易做到的。
+上面的代码我们可以做一下优化，上面我们不物体渲染了两次，一次是利用帧缓冲把物体渲染到纹理中，第二次是把物体渲染到画布上。
 
-但是，我们可以只渲染鼠标下面的像素。为了做到这一点，我们使用一个只覆盖这个像素空间的视锥体。
+我们可以把优化成只渲染鼠标下的像素，为了做到这一点，我们需要使用一个只覆盖这个像素空间的视锥体。
 
-到目前为止，对于  `3D` 处理，我们一直在使用一个叫做 `perspective` (透视投影) 的函数，该函数将视场、长宽和近远平面的z值作为输入，并制作一个透视投影矩阵，将这些值所定义的视锥体转换为裁剪空间。
+到目前为止，对于  `3D` 处理，我们一直在使用一个叫做 `perspective` (透视投影) 的函数，该函数将视场、长宽和近远平面的 `z` 值作为输入，并制作一个透视投影矩阵，将这些值所定义的视锥体转换为裁剪空间。
 
-大多数三维数学库都有另一个叫做 `frustum`(正交投影) 的函数，它需要6个值，近Z面的左、右、上、下值，然后是Z面的Z-近和Z-远值，并生成一个由这些值定义的投影矩阵。
+大多数三维数学库都有另一个叫做 `frustum`(正交投影) 的函数，它需要6个值，近 `Z` 面的左、右、上、下值，然后是`Z`面的 `Z`-近和`Z`-远值，并生成一个由这些值定义的投影矩阵。
 
-利用上述方法，我们可以为鼠标下方的一个像素生成一个投影矩阵。
+利用上述方法，我们可以为鼠标下方的一个像素生成一个投影矩阵。我们可以通过以下代码来实现：
++ 计算覆盖视锥体前方的近平面矩形尺寸(投影矩阵的近平面)
+```js
+ const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
+const top = Math.tan(fieldOfViewRadians * 0.5) * near;
+const bottom = -top;
+const left = aspect * bottom;
+const right = aspect * top;
+const width = Math.abs(right - left);
+const height = Math.abs(top - bottom);
+```
++ 计算近平面覆盖鼠标下1像素的部分
+```js
+//将鼠标为主转换为像素坐标
+const pixelX = mouseX * gl.canvas.width / gl.canvas.clientWidth;
+const pixelY = gl.canvas.height - mouseY * gl.canvas.height / gl.canvas.clientHeight - 1;
+```
++ 计算鼠标下的像素在近平面上的位置
+  将鼠标位置映射到近平面上的坐标
+```js
+// 计算的是鼠标在近平面上对应的左边界。
+// pixelX * width / gl.canvas.width表示在近平面上的宽度
+const subLeft = left + pixelX * width / gl.canvas.width;
+```
+**解释**
+> 先将画布上的像素坐标（`pixelX`） 转换为在近平面上的相对位置（通过  `pixelX/gl.canvas.width`  计算出鼠标在画布宽度中的比例）。
 
+> 再将这个比例乘以近平面的宽度（  `width` ）得到在近平面上对应的长度。
+
+> 最后，将这个长度加到近平面的左边界（`left`），得到在近平面上对应的实际 `X` 坐标（`subLeft`）。
+```js
+// 计算的是鼠标在近平面上对应的下边界。
+// pixelY * height / gl.canvas.height表示在近平面上的高度
+const subBottom = bottom + pixelY * height / gl.canvas.height;
+```
+**解释**
+> 先将画布上的像素坐标（`pixelY`）转换为在近平面上的相对位置（通过 `pixelY/gl.canvas.height` 计算出鼠标在画布高度中的比例）。
+
+> 再将这个比例乘以近平面的高度（`height`）得到在近平面上对应的长度。
+
+> 最后，将这个长度加到近平面的下边界（`bottom`），得到在近平面上对应的实际Y坐标（`subBottom`）。
+```js
+// 是近平面上一个像素的宽度
+const subWidth = width / gl.canvas.width;
+//是近平面上一个像素的高度
+const subHeight = height / gl.canvas.height;
+```
+
++ 为这个像素创建视锥体
+```js
+const projectionMatrix = m4.frustum(
+  subLeft,
+  subLeft + subWidth,
+  subBottom,
+  subBottom + subHeight,
+  near,
+  far);
+```
++ 设置帧缓冲纹理渲染尺寸大小
+现在不再需要`gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);`设置整个画布大小了，现在我们设置一个只有1x1像素的帧缓冲，这样就可以覆盖鼠标下的那个像素了。
+```js
+gl.viewport(0, 0, 1, 1);
+```
++ 创建一个只有1x1像素的纹理和深度缓冲
+//不再在判断`webglUtils.resizeCanvasToDisplaySize(gl.canvas)`的真假值来执行 `setFramebufferAttachmentSizes`,而是直接在创建帧缓冲的时候就设置。
+```js
+setFramebufferAttachmentSizes(1, 1);
+```
++ 只为模型计算模型变换矩阵,因为现在渲染到纹理和渲染到画布用的透视投影矩阵不一样了
+```js
+// 为每个物体计算矩阵
+objects.forEach(function(object) {
+  object.uniforms.u_world = computeMatrix(
+      object.translation,
+      object.xRotationSpeed * time,
+      object.yRotationSpeed * time);
+});
+```
 `demo`地址 [多个物理中选中物体-优化后](https://github.com/tangjie-93/WebGL/blob/main/%E8%B7%9F%E7%9D%80%E5%AE%98%E7%BD%91%E5%AD%A6WebGL%2BWebGL%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97/%E9%AB%98%E7%BA%A7%E6%8A%80%E6%9C%AF/%E9%80%89%E4%B8%AD%E7%89%A9%E4%BD%93/demo/%E5%A4%9A%E4%B8%AA%E7%89%A9%E7%90%86%E4%B8%AD%E9%80%89%E4%B8%AD%E7%89%A9%E4%BD%93-%E4%BC%98%E5%8C%96%E5%89%8D.html)
 
 <Valine></Valine>
