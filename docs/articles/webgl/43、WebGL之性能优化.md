@@ -15,7 +15,7 @@ note: WebGL之性能优化
 
 ## 1.WebGL性能优化 - 实例化绘制
 我们不妨使用 `attribute`来提供`matrix`和`color`的值以取代`uniform` 。 我们会在缓冲区里为每个实例提供矩阵和颜色，设置好从缓冲区里读取数据的 `attribute`，然后告诉`WebGL`只有在绘制下一个实例的时候才迭代到下一个值。
-+ 顶点着色器
+#### 1.顶点着色器
 ```js
 <script id="vertex-shader-3d" type="x-shader/x-vertex">
 attribute vec4 a_position;
@@ -35,7 +35,7 @@ void main() {
 }
 </script>
 ```
-+ 片元着色器
+#### 2.片元着色器
 因为 `attribute` 只能在顶点着色器中声明所以我们需要用 `varying` 把颜色传递到片元着色器。
 ```js
  <script id="fragment-shader-3d" type="x-shader/x-fragment">
@@ -47,7 +47,7 @@ void main() {
     }
 </script>
 ```
-+ 启用实例化
+#### 3.启用实例化
 ```js
 const canvas = document.querySelector('#canvas');
 const gl = canvas.getContext('webgl');
@@ -60,8 +60,95 @@ if (!ext) {
   return alert('need ANGLE_instanced_arrays');
 }
 ```
+#### 4. 创建缓冲区来存储提供给`attribute`的矩阵和颜色
+`new Float32Array(matrixData.buffer,byteOffsetToMatrix,numFloatsForView)`参数的意义:
+  + `matrixData.buffer`:  表示总字节大小
+  + `byteOffsetToMatrix`: 表示字节偏移量
+  + `numFloatsForView`：指定创建的矩阵视图包含的浮点数数量
+```js
+// 为每一个实例设置矩阵
+const numInstances = 5;
+// make a typed array with one view per matrix
+const matrixData = new Float32Array(numInstances * 16);
+const matrices = [];
+for (let i = 0; i < numInstances; ++i) {
+  const byteOffsetToMatrix = i * 16 * 4;
+  const numFloatsForView = 16;
+  matrices.push(new Float32Array(matrixData.buffer,byteOffsetToMatrix,numFloatsForView));
+}
+const matrixBuffer = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, matrixBuffer);
+// 只为缓冲区申请特定大小的空间
+gl.bufferData(gl.ARRAY_BUFFER, matrixData.byteLength, gl.DYNAMIC_DRAW);
 
-`demo`地址 [实例化绘制]()
+// 为每一个实例设置颜色
+const colors =  new Float32Array([
+                  1, 0, 0, 1,  // red
+                  0, 1, 0, 1,  // green
+                  0, 0, 1, 1,  // blue
+                  1, 0, 1, 1,  // magenta
+                  0, 1, 1, 1,  // cyan
+                ]);
+const colorBuffer = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+gl.bufferData(gl.ARRAY_BUFFER,colors, gl.STATIC_DRAW);
+```
+**注意**: `gl.bufferData`最后一个参数是 `gl.DYNAMIC_DRAW`。这是一个给WebGL的指示， 告诉它我们要经常刷新这里的数据。
+
+####  5.绘制
++ 更新所有的矩阵
+```js
+matrices.forEach((mat, ndx) => {
+    m4.translation(-0.5 + ndx * 0.25, 0, 0, mat);
+    m4.zRotate(mat, time * (0.1 + 0.1 * ndx), mat);
+});
+```
++ 上传新的矩阵数据
+```js
+gl.bindBuffer(gl.ARRAY_BUFFER, matrixBuffer);
+gl.bufferSubData(gl.ARRAY_BUFFER, 0, matrixData);
+```
++ 为矩阵设置`attribute`
+```js
+const bytesPerMatrix = 4 * 16;
+for (let i = 0; i < 4; ++i) {
+  const loc = matrixLoc + i;
+  gl.enableVertexAttribArray(loc);
+  // 注意stride和offset
+  const offset = i * 16;  // 一行有4个单精度浮点数，1个就占用4字节
+  gl.vertexAttribPointer(
+      loc,              // location
+      4,                // size (num values to pull from buffer per iteration)
+      gl.FLOAT,         // type of data in buffer
+      false,            // normalize
+      bytesPerMatrix,   // stride, num bytes to advance to get to next set of values
+      offset,           // offset in buffer
+  );
+  // 这行说的是attribute只对下一个实例才进行迭代
+  ext.vertexAttribDivisorANGLE(loc, 1);
+}
+```
++ 为颜色设置`attribute`
+```js
+// 为颜色设置attribute
+gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+gl.enableVertexAttribArray(colorLoc);
+gl.vertexAttribPointer(colorLoc, 4, gl.FLOAT, false, 0, 0);
+// this line says this attribute only changes for each 1 instance
+ext.vertexAttribDivisorANGLE(colorLoc, 1);
+```
++ 绘制所有的模型
+```js
+ext.drawArraysInstancedANGLE(
+  gl.TRIANGLES,
+  0,             // offset
+  numVertices,   // 每个实例的顶点数
+  numInstances,  // 实例的数量
+);
+```
+
+`demo`地址 [非实例化绘制](https://github.com/tangjie-93/WebGL/blob/main/fundmantalExamples/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/%E9%9D%9E%E5%AE%9E%E4%BE%8B%E5%8C%96%E7%BB%98%E5%88%B6.html)
+`demo`地址 [实例化绘制](https://github.com/tangjie-93/WebGL/blob/main/fundmantalExamples/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/%E5%AE%9E%E4%BE%8B%E5%8C%96%E7%BB%98%E5%88%B6.html)
 
 ## 2.WebGL - 顶点索引
 
