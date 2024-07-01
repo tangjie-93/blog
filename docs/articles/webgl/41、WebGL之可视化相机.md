@@ -1,10 +1,10 @@
 ---
-title: 41、WebGL之锯齿问题解决
+title: 41、WebGL之可视化相机
 date: '2024-06-28'
-lastmodifydate: '2024-06-28'
+lastmodifydate: '2024-07-01'
 type: 技术
 tags: WebGL
-note: WebGL之锯齿问题解决
+note: WebGL之可视化相机
 ---
 
 
