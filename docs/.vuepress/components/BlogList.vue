@@ -3,12 +3,12 @@
 		<div class=" items ">
 
 			<el-row>
-				<el-col :span="24" v-for=" (item, index) in data.items" :key="item.key" :offset=" index%2 == 1? 2: 0 ">
+				<el-col :span="6" v-for=" (item, index) in data.items" :key="item.key" :offset=" index%2 == 1? 2: 0 ">
 					<el-card class="box-card" shadow="always" :body-style="{ padding: '0px' }">
 						<div style=" cursor:pointer;" @click="gogogo(item.path)">
 							<div slot="header" class="cardHeader">
 								<div style=" padding: 10px ">
-									<span class="blogTitle">{{ item.title }}</span>
+									<span class="blogTitle">{{ formatTitle(item.title) }}</span>
 
 								</div>
 							</div>
@@ -20,7 +20,14 @@
 							<div class="cardFooter">
 								<el-tag size="mini" type="warning">{{item.frontmatter.type  }} </el-tag>
 								<el-tag v-for=" tag in item.frontmatter.tags.split('|') " :key="tag" style="margin-left: 5px" size="mini">{{ tag}}</el-tag>
-								<time class="time">{{ item.frontmatter.date }}</time>
+								 <div class="date-container">
+									<span class="date">date</span>
+									<time class="time">{{ item.frontmatter.date }}</time>
+								 </div>
+								 <div class="date-container">
+									<span class="last-date">update time</span>
+									<time class="time">{{ item.frontmatter.date }}</time>
+								 </div>
 							</div>
 						</div>
 					</el-card>
@@ -41,7 +48,7 @@
 export default {
 	data() {
 		return {
-			pageSize: 10,
+			pageSize: 20,
 			page: 1,
 			data: {
 				items: [],
@@ -89,12 +96,15 @@ export default {
 		},
 	},
 	methods: {
+		formatTitle(title){
+			title = title.split('、');
+			return title.length>1? title[1]:title[0];
+		},
 		show() {
 			this.pages.sort((a, b) => this.formateDate(b.frontmatter.date) - this.formateDate(a.frontmatter.date));
 			let startNo = this.pageSize * (this.page - 1);
 			let endNo = this.pageSize * this.page;
 			this.data.items = this.pages.slice(startNo, endNo);
-			debugger;
 			this.data.total = this.pages.length;
 		},
 		gogogo(path) {
@@ -123,6 +133,15 @@ export default {
 };
 </script>
 <style scope>
+.el-row{
+	display: flex;
+    flex-wrap: wrap;
+    margin: -5px;
+}
+.el-col-6{
+	padding: 0  10px;
+}
+
 .blogTitle {
 	font-size: 18px;
 	font-weight: bold;
@@ -144,10 +163,10 @@ export default {
 .el-col-offset-2 {
 	margin-left: 0;
 }
-el-row .time {
+.el-row .time {
 	font-size: 13px;
 	color: #999;
-	float: right;
+	/* float: right; */
 }
 
 .cardHeader {
@@ -161,7 +180,12 @@ el-row .time {
 	height: 80px;
 }
 .cardFooter {
+	display: flex;
+    justify-content: space-between;
 	padding: 10px;
 	height: 20px;
+}
+.date-container{
+	display: inline-block;
 }
 </style>

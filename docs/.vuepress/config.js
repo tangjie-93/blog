@@ -102,5 +102,9 @@ module.exports = {
         // displayAllHeaders: true,
         lastUpdated: 'Last Updated',
         smoothScroll: true
-    }
+    },
+    // 使用自定义的首页组件
+    // layouts: {
+    //     Layout: require.resolve('./components/BlogList.vue')
+    // }
 }
