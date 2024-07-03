@@ -143,7 +143,49 @@ m4.multiply(m4.yRotation(-0.01), moonNode.localMatrix, moonNode.localMatrix);
 
 // 更新场景图中所有节点的世界矩阵
 solarSystemNode.updateWorldMatrix();
+
+// 更新所有物体的渲染矩阵
+objects.forEach(function (object) {
+    // 更新所有物体的渲染矩阵
+    object.drawInfo.uniforms.u_matrix = m4.multiply(viewProjectionMatrix, object.worldMatrix);
+});
 ```
+#### 4.绘制模型
+绘制模型时，我们做了以下两点优化
++ 如果将要绘制的对象和前一个对象使用相同的程序， 则不需要调用 `gl.useProgram`
++ 绘制的形状/几何体/顶点 是之前绘制过的，相同的参数就不必再设置一遍
+```js
+let lastUsedProgramInfo = null;
+let lastUsedBufferInfo = null;
+// 渲染物体
+objectsToDraw.forEach(function (object) {
+    const {programInfo,bufferInfo} = object;
+    let bindBuffers = false;
+    // 优化点1
+    if (programInfo !== lastUsedProgramInfo) {
+        lastUsedProgramInfo = programInfo;
+        // 由于我们只有一个程序，所以我们只需要调用一次 gl.useProgram就行了
+        gl.useProgram(programInfo.program);
+
+        // 更换程序后要重新绑定缓冲，因为只需要绑定程序要用的缓冲。
+        // 如果两个程序使用相同的bufferInfo但是第一个只用位置数据，
+        // 当我们从第一个程序切换到第二个时，有些属性就不存在
+        bindBuffers = true;
+    }
+    // 设置所需的属性 优化点2
+    if (bindBuffers || bufferInfo !== lastUsedBufferInfo) {
+        lastUsedBufferInfo = bufferInfo;
+        webglUtils.setBuffersAndAttributes(gl, programInfo, bufferInfo);
+    }
+
+    // 设置全局变量
+    webglUtils.setUniforms(programInfo, object.uniforms);
+
+    // 绘制
+    gl.drawArrays(gl.TRIANGLES, 0, bufferInfo.numElements);
+});
+```
+
 
 **总结：** 
 
@@ -155,6 +197,7 @@ solarSystemNode.updateWorldMatrix();
 #### 4.拆分localMatrix
 为了解决在计算 `localMatrix `可能出现的问题(对矩阵缩放到`0`再恢复)，我们需要对`Node`类加强一下。
 通过定义一个`TRS`类，来管理`localMatrix`。
+将平移、旋转和缩放操作分别处理，并且在每次需要时生成最终的变换矩阵，而不是不断累积，这避免了数值误差的累积，使得变换结果更加准确。
 ```js
 class TRS  {
     constructor() {
@@ -208,6 +251,7 @@ class Node {
 
 **参考文档**
 
+[WebGL 绘制多个物体](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-drawing-multiple-things.html)<br>
 [WebGL - 场景图](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-scene-graph.html)<br>
 
 <Valine></Valine>
