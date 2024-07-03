@@ -250,7 +250,299 @@ precision mediump float;
 ```
 具体`demo`地址[点光源逐片元光照效果](https://github.com/tangjie-93/WebGL/blob/main/%E8%B7%9F%E7%9D%80%E5%AE%98%E7%BD%91%E5%AD%A6WebGL%2BWebGL%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97/%E5%85%89%E7%85%A7/demo/%E7%82%B9%E5%85%89%E6%BA%90%E9%80%90%E7%89%87%E5%85%83%E5%85%89%E7%85%A7.html)
 
-## 5.聚光灯的着色效果
+
+## 5.三维点光源-高光效果
+
+观察现实世界中的物体，如果物体表面恰好将光线反射到你眼前， 就会显得非常明亮，像镜子一样。我们可以通过计算光线是否反射到眼前来模拟这种情况。
+
+**测试方法**：如果入射角和反射角恰好与眼睛和和光源的夹角相同，那么光线就会反射到眼前。
+
+<img width=300 src='../../images/webgl/镜面高光.png'>
+
+**计算方法**：根据物体表面到光源的方向，加上物体表面到视点/眼睛/相机的方向，再除以 `2` 得到 `halfVector` 向量， 将这个向量和法向量比较，如果方向一致，那么光线就会被反射到眼前。
+
+<img width=300 src='../../images/webgl/光线到眼睛.png'>
+
+在着色器中中的代码表示如下所示：
++ 顶点着色器
+
+在点元着色器中计算 `计算表面到光源的方向` 和 `计算表面到相机的方向`,并将之传入到片元着色器。
+```js
+attribute vec4 a_position;
+attribute vec3 a_normal;
+ 
+uniform vec3 u_lightWorldPosition;
+uniform vec3 u_viewWorldPosition;
+ 
+uniform mat4 u_world;
+uniform mat4 u_worldViewProjection;
+uniform mat4 u_worldInverseTranspose;
+ 
+varying vec3 v_normal;
+ 
+varying vec3 v_surfaceToLight;
+varying vec3 v_surfaceToView;
+ 
+void main() {
+  // 将位置和矩阵相乘
+  gl_Position = u_worldViewProjection * a_position;
+ 
+  // 重定向法向量并传递到片段着色器
+  v_normal = mat3(u_worldInverseTranspose) * a_normal;
+ 
+  // 计算表面的世界坐标
+  vec3 surfaceWorldPosition = (u_world * a_position).xyz;
+ 
+  // 计算表面到光源的方向
+  // 然后传递到片段着色器
+  v_surfaceToLight = u_lightWorldPosition - surfaceWorldPosition;
+ 
+  // 计算表面到相机的方向
+  // 然后传递到片段着色器
+  v_surfaceToView = u_viewWorldPosition - surfaceWorldPosition;
+}
+```
++ 片元着色器
+
+在片元着色器中计算表面到光源和相机之间的 `halfVector`， 将它和法向量相乘，查看光线是否直接反射到眼前
+```js
+// 从顶点着色器中传入的值
+varying vec3 v_normal;
+varying vec3 v_surfaceToLight;
+varying vec3 v_surfaceToView;
+ 
+uniform vec4 u_color;
+ 
+void main() {
+  // 由于 v_normal 是可变量，所以经过插值后不再是单位向量，
+  // 单位化后会成为单位向量
+  vec3 normal = normalize(v_normal);
+ 
+  vec3 surfaceToLightDirection = normalize(v_surfaceToLight);
+  vec3 surfaceToViewDirection = normalize(v_surfaceToView);
+  vec3 halfVector = normalize(surfaceToLightDirection + surfaceToViewDirection);
+ 
+  float light = dot(normal, surfaceToLightDirection);
+  float specular = dot(normal, halfVector);
+ 
+  gl_FragColor = u_color;
+ 
+  // 只将颜色部分（不包含 alpha） 和光照相乘
+  gl_FragColor.rgb *= light;
+ 
+  // 直接加上高光
+  gl_FragColor.rgb += specular;
+}
+```
+在`js`代码中，我们只需要设置`u_lightWorldPosition`和`u_viewWorldPosition`即可
+```js
+const lightWorldPositionLocation =
+    gl.getUniformLocation(program, "u_lightWorldPosition");
+const viewWorldPositionLocation =
+    gl.getUniformLocation(program, "u_viewWorldPosition");
+ 
+...
+ 
+// 计算相机矩阵
+const camera = [100, 150, 200];
+const target = [0, 35, 0];
+const up = [0, 1, 0];
+const cameraMatrix = makeLookAt(camera, target, up);
+//设置光源位置
+gl.uniform3fv(lightWorldPositionLocation, [20, 30, 60]);
+// 设置相机位置
+gl.uniform3fv(viewWorldPositionLocation, camera);
+```
+
+但是上面计算得到的高光效果并不是我们想要的，太亮了。
+
+<img width=300 src='../../images/webgl/高光-太亮.png'>
+
+为了解决太亮的问题，我们可以将点乘结果(`dot(normal, halfVector)`)进行求幂运算来解决太亮的问题， 它会把高光从线性变换变成指数变换。
+```js
+specular = pow(dot(normal, halfVector), u_shininess);
+```
+为了避免`specular = pow(dot(normal, halfVector), u_shininess)`得到的结果是赋值，所以我们只将点乘结果(法线方向和表面到光线的方向的点乘)为正(`dot(normal, surfaceToLightDirection)>0.0`)的部分进行计算，其他部分设置为 `0.0`。
+```js
+uniform vec4 u_color;
+uniform float u_shininess;
+...
+void mian(){
+  float light = dot(normal, surfaceToLightDirection);
+  float specular = 0.0;
+  if (light > 0.0) {
+    specular = pow(dot(normal, halfVector), u_shininess);
+  }
+}
+```
+在`js`中设置`u_shininess`的值，用于调节亮度。
+```js
+const shininessLocation = gl.getUniformLocation(program, "u_shininess");
+ 
+...
+ 
+// 设置亮度
+gl.uniform1f(shininessLocation, shininess);
+```
+如果你还想设置光照颜色和高光颜色的化可以进行如下设置
+```js
+uniform vec4 u_color;
+uniform float u_shininess;
+uniform vec3 u_lightColor;
+uniform vec3 u_specularColor;
+ 
+...
+void main() {
+  // 只将颜色部分（不包含 alpha） 和光照相乘
+  gl_FragColor.rgb *= light * u_lightColor;
+ 
+  // 直接和高光相加
+  gl_FragColor.rgb += specular * u_specularColor;
+}
+```
+在`js`中设置`u_lightColor`和`u_specularColor`的值
+```js
+const lightColorLocation =
+    gl.getUniformLocation(program, "u_lightColor");
+const specularColorLocation =
+    gl.getUniformLocation(program, "u_specularColor");
+...
+// 设置光照颜色
+gl.uniform3fv(lightColorLocation, m4.normalize([1, 0.6, 0.6]));  // 绿光
+// 设置高光颜色
+gl.uniform3fv(specularColorLocation, m4.normalize([1, 0.6, 0.6]));  // 红光
+```
+下面是视觉效果
+
+<img width=300 src='../../images/webgl/高光-设置颜色.png'>
+
+`demo`地址 [镜面高光效果](https://github.com/tangjie-93/WebGL/blob/main/fundmantalExamples/%E5%85%89%E7%85%A7/%E4%B8%89%E7%BB%B4%E7%82%B9%E5%85%89%E6%BA%90-%E9%AB%98%E5%85%89.html)
+
+## 6.聚光灯的着色效果
+
+#### 1.聚光灯的原理
+把点光源想象成一个点，光线从那个点照向所有方向。 实现聚光灯只需要**以那个点为起点选择一个方向，作为聚光灯的方向**， 然后将其他光线方向与所选方向点乘，然后随意选择一个限定范围， 然后判断光线是否在限定范围内，如果不在就不照亮。<br>
+
+<img width=300 src='../../images/webgl/高光.png'><br>
+
+在上方的图示中我们可以看到光线照向所有的方向，并且将每个方向的点乘结果显示在上面。 然后指定一个`方向`表示聚光灯的方向，选择一个限定（上方以度为单位）。计算`dot(surfaceToLight, -lightDirection)`的点乘结果。如果点乘结果大于这个限定，就照亮，否则不照亮。计算公式如下：
+```js
+dotFromDirection = dot(surfaceToLight, -lightDirection)
+if (dotFromDirection >= limitInDotSpace) {
+   // 使用光照
+}
+```
+#### 2.代码实现
+计算聚光灯效果的代码我们只需要在上面计算高光效果上的片元着色器代码做出如下修改就行。
+```js
+ 
+// 从顶点着色器传入的值
+varying vec3 v_normal;
+varying vec3 v_surfaceToLight;
+varying vec3 v_surfaceToView;
+ 
+uniform vec4 u_color;
+uniform float u_shininess;
+uniform vec3 u_lightDirection;// 聚光灯的方向
+uniform float u_limit;          // 在点乘空间中
+ 
+void main() {
+  // 因为 v_normal 是可变量，被插值过
+  // 所以不是单位向量，单位可以让它成为再次成为单位向量
+  vec3 normal = normalize(v_normal);
+ 
+  vec3 surfaceToLightDirection = normalize(v_surfaceToLight);
+  vec3 surfaceToViewDirection = normalize(v_surfaceToView);
+  vec3 halfVector = normalize(surfaceToLightDirection + surfaceToViewDirection);
+  float light = 0.0;
+  float specular = 0.0;
+ 
+  float dotFromDirection = dot(surfaceToLightDirection,
+                               -u_lightDirection);
+  if (dotFromDirection >= u_limit) {
+    light = dot(normal, surfaceToLightDirection);
+    if (light > 0.0) {
+      specular = pow(dot(normal, halfVector), u_shininess);
+    }
+  }
+  // 如果光线在聚光灯范围内 inLight 就为 1，否则为 0。 跟上面计算specular等价
+  //float inLight = step(u_limit, dotFromDirection);
+  //float light = inLight * dot(normal, surfaceToLightDirection);
+  //float specular = inLight * pow(dot(normal, halfVector), u_shininess);
+ 
+  gl_FragColor = u_color;
+ 
+  // 只将颜色部分（不包含 alpha） 和光照相乘
+  gl_FragColor.rgb *= light;
+ 
+  // 直接加上高光
+  gl_FragColor.rgb += specular;
+}
+```
+在`js`中设置聚光灯的方向和限定
+```js
+const lightDirection = [0, 0, 1];
+const limit = degToRad(20);
+...
+const lightDirectionLocation = gl.getUniformLocation(program, "u_lightDirection");
+const limitLocation = gl.getUniformLocation(program, "u_limit");
+
+...
+const lmat = m4.lookAt(lightPosition, target, up);
+lmat = m4.multiply(m4.xRotation(lightRotationX), lmat);
+lmat = m4.multiply(m4.yRotation(lightRotationY), lmat);
+// get the zAxis from the matrix
+// negate it because lookAt looks down the -Z axis
+lightDirection = [-lmat[8], -lmat[9],-lmat[10]];
+gl.uniform3fv(lightDirectionLocation, lightDirection);
+gl.uniform1f(limitLocation, Math.cos(limit));
+```
+**注意**：
++ `gl.uniform1f(limitLocation, Math.cos(limit));`这里设置的是点乘空间中的限定，而不是角度。
++ `lightDirection`光照方向随着模型的旋转也要改变，所以需要重新计算。
+
+此时得到的光照效果如下，非常粗糙和僵硬。只有在聚光灯范围内才有光照效果， 在外面就直接变黑，没有任何过渡。
+
+<img width=300 src='../../images/webgl/聚光灯-粗糙.png'><br>
+
+#### 3.平滑过渡
+
+为了解决上面的问题，我们需要对光照进行平滑过渡。我们可以使用两个限定值代替原来的一个， 一个内部限定一个外部限定。如果在内部限定内就使用 `1.0`， 在外部限定外面就使用 `0.0`，在内部和外部限定之间就使用 `1.0` 到 `0.0` 之间的插值。
+```js
+uniform float u_innerLimit;     // 在点乘空间中
+uniform float u_outerLimit;     // 在点乘空间中
+ 
+...
+void main() {
+ 
+  float dotFromDirection = dot(surfaceToLightDirection,
+                               -u_lightDirection);
+  float limitRange = u_innerLimit - u_outerLimit;
+  // 计算插值，将之前接近1的值变成0~1之间的值
+  float inLight = clamp((dotFromDirection - u_outerLimit) / limitRange, 0.0, 1.0);
+  float light = inLight * dot(normal, surfaceToLightDirection);
+  float specular = inLight * pow(dot(normal, halfVector), u_shininess);
+}
+```
+
+上面的代码中我们使用了`clamp`函数，它可以将值限制在指定范围内。我们可以使用`smoothstep`对上面的`inLight`的求取进行以下简化。
+```js
+  float dotFromDirection = dot(surfaceToLightDirection,
+                               -u_lightDirection);
+  float inLight = smoothstep(u_outerLimit, u_innerLimit, dotFromDirection);
+  float light = inLight * dot(normal, surfaceToLightDirection);
+  float specular = inLight * pow(dot(normal, halfVector), u_shininess);
+```
+`smoothstep` 和 `step` 相似返回一个 `0` 到 `1` 之间的值，但是它获取最大和最小边界值，返回该值在边界范围映射到 `0` 到 `1` 之间的插值。
+```js
+smoothstep(lowerBound, upperBound, value)
+```
+
+最终的聚光灯效果如下所示
+
+<img width=300 src='../../images/webgl/聚光灯-平滑.png'><br>
+
+完整`demo`地址 [聚光灯](https://github.com/tangjie-93/WebGL/blob/main/fundmantalExamples/%E5%85%89%E7%85%A7/%E4%B8%89%E7%BB%B4%E8%81%9A%E5%85%89%E7%81%AF.html)
 
 **参考文档**<br>
 [WebGL 三维点光源](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-3d-lighting-point.html)<br>
