@@ -10,6 +10,7 @@ note: WebGL之阴影
 
 **参考文档**
 
+[WebGL 平面的和透视的投影映射](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-planar-projection-mapping.html#toc)<br>
 [WebGL 阴影](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-shadows.html)<br>
 
 <Valine></Valine>
