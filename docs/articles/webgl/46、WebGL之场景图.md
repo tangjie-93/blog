@@ -145,6 +145,14 @@ m4.multiply(m4.yRotation(-0.01), moonNode.localMatrix, moonNode.localMatrix);
 solarSystemNode.updateWorldMatrix();
 ```
 
+**总结：** 
+
++ `earthOrbitNode`地球轨道节点的局部空间的 `原点` 位于太阳系节点,坐标是`(0,0,0)`。
++ `moonOrbitNode` 月球轨道节点的局部空间的 `原点` 位于地球轨道节点,坐标都是`(100,0,0)`。
+
+`demo`地址 [太阳系场景图](https://github.com/tangjie-93/WebGL/blob/main/fundmantalExamples/%E5%9C%BA%E6%99%AF%E5%9B%BE/%E5%A4%AA%E9%98%B3%E7%B3%BB%E5%9C%BA%E6%99%AF%E5%9B%BE.html)
+
+#### 4.拆分localMatrix
 为了解决在计算 `localMatrix `可能出现的问题(对矩阵缩放到`0`再恢复)，我们需要对`Node`类加强一下。
 通过定义一个`TRS`类，来管理`localMatrix`。
 ```js
@@ -170,7 +178,7 @@ class TRS  {
     }
 };
 ```
-`Node`类中添加`TRS`实例，并重写`localMatrix`和`worldMatrix`。
+`Node`类中添加`TRS`实例，将`localMatrix`拆分为`translation`,`rotation`和`scale`。
 ```js
 class Node {
     constructor(source) {
@@ -190,6 +198,12 @@ class Node {
 
 }
 ```
+
+最终的实际效果如下所示：
+
+<img width=300 src='../../images/webgl/场景图.png'>
+
+重写的`demo`地址 [太阳系场景图-使用TRS](https://github.com/tangjie-93/WebGL/blob/main/fundmantalExamples/%E5%9C%BA%E6%99%AF%E5%9B%BE/%E5%A4%AA%E9%98%B3%E7%B3%BB%E5%9C%BA%E6%99%AF%E5%9B%BE-%E4%BD%BF%E7%94%A8TRS.html)
 
 
 **参考文档**
