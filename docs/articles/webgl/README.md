@@ -509,7 +509,7 @@ vec3 lightDirection = u_LightPosition - v_Position;
   - distance：计算顶点之间距离。
   - discard:舍弃片元。
 
-+ 如何创建并连接着色器程序**
++ 如何创建并连接着色器程序
   - createShader：创建着色器对象
   - shaderSource：提供着色器源码
   - compileShader：编译着色器对象
@@ -517,6 +517,7 @@ vec3 lightDirection = u_LightPosition - v_Position;
   - attachShader：绑定着色器对象
   - linkProgram：链接着色器程序
   - useProgram：启用着色器程序
+
 下面是完整的例子
 ```JS
 function initShader(gl) {
