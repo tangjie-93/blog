@@ -180,7 +180,7 @@ render();
 
 <img width=300 src='../../images/webgl/WebGL平面的和透视的投影映射.png'><br>
 
-`demo`地址[数据纹理](https://github.com/tangjie-93/WebGL/blob/main/fundmantalExamples/%E9%98%B4%E5%BD%B1/WebGL%E6%95%B0%E6%8D%AE%E7%BA%B9%E7%90%86.html)
+`demo`地址[数据纹理](https://github.com/tangjie-93/WebGL/blob/main/fundmantalExamples/%E6%8A%95%E5%BD%B1%E6%98%A0%E5%B0%84/WebGL%E6%95%B0%E6%8D%AE%E7%BA%B9%E7%90%86.html)
 
 **接下来我们将使用平面投影的方式将一个纹理投影到该球体和平面上**。
 ## 2.实现投影映射
@@ -309,7 +309,7 @@ function drawScene(projectionMatrix, cameraMatrix) {
 
 <img width=300 src='../../images/webgl/平面投影纹理.png'><br>
 
-`demo`地址[平面投影纹理](https://github.com/tangjie-93/WebGL/blob/main/fundmantalExamples/%E9%98%B4%E5%BD%B1/WebGL%E5%B9%B3%E9%9D%A2%E6%8A%95%E5%BD%B1%E6%98%A0%E5%B0%84.html)
+`demo`地址[平面投影纹理](https://github.com/tangjie-93/WebGL/blob/main/fundmantalExamples/%E6%8A%95%E5%BD%B1%E6%98%A0%E5%B0%84/WebGL%E5%B9%B3%E9%9D%A2%E6%8A%95%E5%BD%B1%E6%98%A0%E5%B0%84.html)
 
 ## 3.绘制纹理所处的空间
 通过绘制一个线框立方体来实现绘制纹理所处空间的视觉效果。以下是实现该效果的核心代码
@@ -408,7 +408,7 @@ function drawScene(projectionMatrix, cameraMatrix) {
 
 <img width=300 src='../../images/WebGL平面投影映射-视锥体.png'>
 
-`demo`地址[平面投影映射-视锥体](https://github.com/tangjie-93/WebGL/blob/main/fundmantalExamples/%E9%98%B4%E5%BD%B1/WebGL%E5%B9%B3%E9%9D%A2%E6%8A%95%E5%BD%B1%E6%98%A0%E5%B0%84-%E8%A7%86%E9%94%A5%E4%BD%93.html)
+`demo`地址[平面投影映射-视锥体](https://github.com/tangjie-93/WebGL/blob/main/fundmantalExamples/%E6%8A%95%E5%BD%B1%E6%98%A0%E5%B0%84/WebGL%E5%B9%B3%E9%9D%A2%E6%8A%95%E5%BD%B1%E6%98%A0%E5%B0%84-%E8%A7%86%E9%94%A5%E4%BD%93.html)
 
 有一点需要注意的是，我们并没有真正地投影该纹理。为了做到这一点，我们需要使用一个`投影矩阵`。
 
@@ -508,7 +508,7 @@ textureMatrix = m4.multiply(
     m4.inverse(textureWorldMatrix));
 ```
 
-`demo`地址[平面投影映射-视锥体-使用投影矩阵](https://github.com/tangjie-93/WebGL/blob/main/fundmantalExamples/%E9%98%B4%E5%BD%B1/WebGL%E5%B9%B3%E9%9D%A2%E6%8A%95%E5%BD%B1%E6%98%A0%E5%B0%84-%E8%A7%86%E9%94%A5%E4%BD%93-%E4%BD%BF%E7%94%A8%E6%8A%95%E5%BD%B1%E7%9F%A9%E9%98%B5.html)
+`demo`地址[平面投影映射-视锥体-使用投影矩阵](https://github.com/tangjie-93/WebGL/blob/main/fundmantalExamples/%E6%8A%95%E5%BD%B1%E6%98%A0%E5%B0%84/WebGL%E5%B9%B3%E9%9D%A2%E6%8A%95%E5%BD%B1%E6%98%A0%E5%B0%84-%E8%A7%86%E9%94%A5%E4%BD%93-%E4%BD%BF%E7%94%A8%E6%8A%95%E5%BD%B1%E7%9F%A9%E9%98%B5.html)
 
 **参考文档**
 
