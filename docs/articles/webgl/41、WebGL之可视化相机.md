@@ -297,7 +297,7 @@ const viewMatrix = m4.inverse(cameraMatrix2);
 
 let mat = m4.multiply(perspectiveProjectionMatrix2, viewMatrix);
 // 使用第一个相机的矩阵作为表示相机的物体的世界矩阵
-// 那么表示立方体和锥体的坐标则是相对于第一个相机的坐标系而言的
+// 表示将立方体和锥体使用第一个相机的矩阵进行模型变换
 mat = m4.multiply(mat, cameraMatrix);
 
 gl.useProgram(solidColorProgramInfo.program);
@@ -331,7 +331,7 @@ mat = m4.multiply(mat, m4.inverse(perspectiveProjectionMatrix));
 const viewMatrix = m4.inverse(cameraMatrix2);
 let mat = m4.multiply(perspectiveProjectionMatrix2, viewMatrix);
 // 使用第一个相机的矩阵作为表示相机的物体的世界矩阵
-// 那么表示立方体和锥体的坐标则是相对于第一个相机的坐标系而言的
+// 表示将立方体和锥体使用第一个相机的矩阵进行模型变换
 mat = m4.multiply(mat, cameraMatrix);
 
 gl.useProgram(solidColorProgramInfo.program);

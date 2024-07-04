@@ -1,7 +1,7 @@
 ---
-title: 46、WebGL之场景图
+title: 47、WebGL之场景图
 date: '2024-06-28'
-lastmodifydate: '2024-06-28'
+lastmodifydate: '2024-07-03'
 type: 技术
 tags: WebGL
 note: WebGL之场景图
