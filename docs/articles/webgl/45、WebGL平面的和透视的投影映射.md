@@ -406,7 +406,7 @@ function drawScene(projectionMatrix, cameraMatrix) {
 
 视觉效果如下所示：
 
-<img width=300 src='../../images/WebGL平面投影映射-视锥体.png'>
+<img width=300 src='../../images/webgl/WebGL平面投影映射-视锥体.png'>
 
 `demo`地址[平面投影映射-视锥体](https://github.com/tangjie-93/WebGL/blob/main/fundmantalExamples/%E6%8A%95%E5%BD%B1%E6%98%A0%E5%B0%84/WebGL%E5%B9%B3%E9%9D%A2%E6%8A%95%E5%BD%B1%E6%98%A0%E5%B0%84-%E8%A7%86%E9%94%A5%E4%BD%93.html)
 
