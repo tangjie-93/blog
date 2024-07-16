@@ -6,7 +6,7 @@ type: 技术
 tags: threejs
 note: 源码解析
 ---
-`Matrix`是`threejs`中一个比较重要的类，它主要用来处理三维空间中的变换。里面封装了很多工具函数，下面是一些重要函数的解析。
+`Matrix`是`threejs`中一个比较重要的类，它主要用来处理三维空间中的变换。里面封装了很多工具函数，下面是一些重要函数的解析。[Matrix官方文档地址](https://threejs.org/docs/index.html?q=matrix#api/zh/math/Matrix4)
 
 ## 1、decompose
 这个函数 `decompose` 用于将一个 4x4 矩阵分解为平移（`position`）、旋转（`quaternion`）和缩放（`scale`）三个部分。
@@ -440,4 +440,5 @@ makeRotationFromEuler( euler ) {
 
 }
 ```
+
 <Valine></Valine>
