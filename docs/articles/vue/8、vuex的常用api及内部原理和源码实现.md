@@ -1,5 +1,5 @@
 ---
-title: vuex的常用api
+title: 9.vuex的常用api
 date: '2020-01-14'
 type: 技术
 tags: vue

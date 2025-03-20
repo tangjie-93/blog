@@ -1,5 +1,5 @@
 ---
-title: javascript之this详解
+title: 34.javascript之this详解
 date: '2020-01-14'
 type: 技术
 tags: javascript

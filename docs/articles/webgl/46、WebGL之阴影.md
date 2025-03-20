@@ -1,5 +1,5 @@
 ---
-title: 45、WebGL之阴影
+title: 45.WebGL之阴影
 date: '2024-06-28'
 lastmodifydate: '2024-06-28'
 type: 技术

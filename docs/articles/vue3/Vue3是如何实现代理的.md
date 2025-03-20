@@ -1,5 +1,5 @@
 ---
-title: vue3数据代理功能的实现
+title: 5.vue3数据代理功能的实现
 date: '2020-12-7'
 type: 技术
 tags: vue3

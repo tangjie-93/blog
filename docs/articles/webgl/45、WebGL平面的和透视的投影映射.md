@@ -1,5 +1,5 @@
 ---
-title: 45、WebGL平面的和透视的投影映射
+title: 45.WebGL平面的和透视的投影映射
 date: '2024-06-28'
 lastmodifydate: '2024-07-04'
 type: 技术

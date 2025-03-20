@@ -1,5 +1,5 @@
 ---
-title: Proxy和Object.defineProperty的对比
+title: 5.Proxy和Object.defineProperty的对比
 date: '2020-01-14'
 type: 技术
 tags: vue

@@ -1,5 +1,5 @@
 ---
-title: url重定向和url重写的区别
+title: 35.url重定向和url重写的区别
 date: '2020-01-14'
 type: 技术
 tags: javascript

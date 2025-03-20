@@ -1,5 +1,5 @@
 ---
-title: ​vue通信方法EventBus的实现
+title: 1.​vue通信方法EventBus的实现
 date: '2020-01-14'
 type: 技术
 tags: vue

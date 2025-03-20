@@ -1,5 +1,5 @@
 ---
-title: javascript之WebWorker详解
+title: 36.javascript之WebWorker详解
 date: '2020-03-23'
 type: 技术
 tags: javascript

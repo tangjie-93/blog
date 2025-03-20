@@ -1,5 +1,5 @@
 ---
-title: 客户端缓存和服务器缓存的区别
+title: 20.客户端缓存和服务器缓存的区别
 date: '2020-01-14'
 type: 技术
 tags: javascript

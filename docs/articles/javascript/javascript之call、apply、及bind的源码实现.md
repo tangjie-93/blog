@@ -1,5 +1,5 @@
 ---
-title: call、apply、及bind的源码实现
+title: 30.call、apply、及bind的源码实现
 date: '2020-01-14'
 type: 技术
 tags: javascript

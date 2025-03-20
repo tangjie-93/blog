@@ -1,5 +1,5 @@
 ---
-title: Vue3计算属性的实现
+title: 6.Vue3计算属性的实现
 date: '2020-12-8'
 type: 技术
 tags: vue3

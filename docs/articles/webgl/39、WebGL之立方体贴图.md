@@ -1,5 +1,5 @@
 ---
-title: 39、WebGL之立方体贴图
+title: 39.WebGL之立方体贴图
 date: '2024-06-24'
 lastmodifydate: '2024-06-25'
 type: 技术

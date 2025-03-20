@@ -1,5 +1,5 @@
 ---
-title: vue中key的作用以及工作原理
+title: 25.vue中key的作用以及工作原理
 date: '2020-06-20'
 type: 技术
 tags: vue

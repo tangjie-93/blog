@@ -1,5 +1,5 @@
 ---
-title: js数据类型及其常见用法
+title: 25.js数据类型及其常见用法
 date: '2020-03-07'
 type: 技术
 tags: javascript

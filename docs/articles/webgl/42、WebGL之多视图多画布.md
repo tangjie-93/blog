@@ -1,5 +1,5 @@
 ---
-title: 41、WebGL之多视图多画布
+title: 41.WebGL之多视图多画布
 date: '2024-06-28'
 lastmodifydate: '2024-07-018'
 type: 技术

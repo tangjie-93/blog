@@ -1,5 +1,5 @@
 ---
-title: vue对数组实现监听的代码实现
+title: 17.vue对数组实现监听的代码实现
 date: '2020-06-06'
 type: 技术
 tags: vue

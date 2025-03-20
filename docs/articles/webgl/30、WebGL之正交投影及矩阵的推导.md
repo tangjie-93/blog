@@ -1,5 +1,5 @@
 ---
-title: 30、WebGL之正交投影及矩阵的推导
+title: 30.WebGL之正交投影及矩阵的推导
 date: '2024-06-17'
 lastmodifydate: '2024-06-17'
 type: 技术

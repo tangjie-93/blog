@@ -1,5 +1,5 @@
 ---
-title: 初始化构造函数时new所起的作用
+title: 15.javascript之初始化构造函数时new所起的作用
 date: '2020-01-14'
 type: 技术
 tags: javascript

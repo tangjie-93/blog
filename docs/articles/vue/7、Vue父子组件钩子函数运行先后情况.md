@@ -1,5 +1,5 @@
 ---
-title: Vue父子组件钩子函数运行先后情况
+title: 8.Vue父子组件钩子函数运行先后情况
 date: '2020-01-14'
 type: 技术
 tags: vue

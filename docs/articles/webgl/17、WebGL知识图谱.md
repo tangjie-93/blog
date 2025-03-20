@@ -1,5 +1,5 @@
 ---
-title: 17、WebGL知识图谱
+title: 17.WebGL知识图谱
 date: '2024-06-11'
 type: 技术
 tags: WebGL

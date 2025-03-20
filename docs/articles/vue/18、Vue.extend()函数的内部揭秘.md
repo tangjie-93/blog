@@ -1,5 +1,5 @@
 ---
-title: Vue.extend()函数的内部揭秘
+title: 19.Vue.extend()函数的内部揭秘
 date: '2020-06-10'
 type: 技术
 tags: vue

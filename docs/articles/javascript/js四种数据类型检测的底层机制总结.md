@@ -1,5 +1,5 @@
 ---
-title: js四种数据类型检测的底层机制总结
+title: 39.js四种数据类型检测的底层机制总结
 date: '2020-09-13'
 type: 技术
 tags: javascript

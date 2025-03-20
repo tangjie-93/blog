@@ -1,5 +1,5 @@
 ---
-title: 20、WebGL坐标系详解
+title: 20.WebGL坐标系详解
 date: '2024-06-12'
 type: 技术
 tags: WebGL

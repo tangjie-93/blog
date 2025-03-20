@@ -1,5 +1,5 @@
 ---
-title: 29、WebGL之相机
+title: 28.WebGL之相机
 date: '2024-06-17'
 lastmodifydate: '2024-06-17'
 type: 技术

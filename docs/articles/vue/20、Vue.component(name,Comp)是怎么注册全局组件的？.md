@@ -1,5 +1,5 @@
 ---
-title: Vue.component(name,Comp)是怎么注册全局组件的？
+title: 21.Vue.component(name,Comp)是怎么注册全局组件的？
 date: '2020-06-10'
 type: 技术
 tags: vue

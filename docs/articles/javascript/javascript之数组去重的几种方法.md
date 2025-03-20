@@ -1,5 +1,5 @@
 ---
-title: 数组去重的几种方法
+title: 26.数组去重的几种方法
 date: '2020-01-14'
 type: 技术
 tags: javascript

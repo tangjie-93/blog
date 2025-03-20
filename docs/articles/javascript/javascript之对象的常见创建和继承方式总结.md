@@ -1,5 +1,5 @@
 ---
-title: 对象的常见创建和继承方式
+title: 18.对象的常见创建和继承方式
 date: '2020-01-14'
 type: 技术
 tags: javascript

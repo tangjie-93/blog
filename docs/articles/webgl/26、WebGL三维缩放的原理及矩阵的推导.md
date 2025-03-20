@@ -1,5 +1,5 @@
 ---
-title: 26、WebGL缩放的原理及公式的推导
+title: 26.WebGL缩放的原理及公式的推导
 date: '2024-06-16'
 lastmodifydate: '2024-06-16'
 type: 技术

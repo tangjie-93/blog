@@ -1,5 +1,5 @@
 ---
-title: vue3是如何封装插件的
+title: 3.vue3是如何封装插件的
 date: '2020-12-12'
 type: 技术
 tags: vue3

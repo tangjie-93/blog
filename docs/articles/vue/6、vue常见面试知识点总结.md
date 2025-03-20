@@ -1,5 +1,5 @@
 ---
-title: vue常见知识点总结
+title: 7.vue常见知识点总结
 date: '2020-01-14'
 type: 技术
 tags: vue

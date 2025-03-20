@@ -1,5 +1,5 @@
 ---
-title: 44、WebGL之文字
+title: 44.WebGL之文字
 date: '2024-06-28'
 lastmodifydate: '2024-06-28'
 type: 技术

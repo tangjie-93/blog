@@ -1,5 +1,5 @@
 ---
-title: 41、WebGL之可视化相机
+title: 41.WebGL之可视化相机
 date: '2024-06-28'
 lastmodifydate: '2024-07-02'
 type: 技术

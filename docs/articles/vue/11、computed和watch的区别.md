@@ -1,5 +1,5 @@
 ---
-title: computed和watch的区别
+title: 12.computed和watch的区别
 date: '2020-07-24'
 type: 技术
 tags: vue

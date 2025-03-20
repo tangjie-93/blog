@@ -1,5 +1,5 @@
 ---
-title: Vue初始化的编译探究
+title: 22.Vue初始化的编译探究
 date: '2020-06-13'
 type: 技术
 tags: vue

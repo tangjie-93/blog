@@ -1,5 +1,5 @@
 ---
-title: 23、WebGL之矩阵乘法的推导
+title: 23.WebGL之矩阵乘法的推导
 date: '2024-06-14'
 lastmodifydate: '2024-06-16'
 type: 技术

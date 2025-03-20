@@ -1,5 +1,5 @@
 ---
-title: vue中diff算法的理解
+title: 26.vue中diff算法的理解
 date: '2020-06-21'
 type: 技术
 tags: vue

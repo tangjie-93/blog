@@ -1,5 +1,5 @@
 ---
-title: Vue.use()函数的内部实现原理
+title: 20.Vue.use()函数的内部实现原理
 date: '2020-06-10'
 type: 技术
 tags: vue

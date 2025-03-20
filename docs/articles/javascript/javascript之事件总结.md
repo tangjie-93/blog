@@ -1,5 +1,5 @@
 ---
-title: javascript之事件总结
+title: 24.javascript之事件总结
 date: '2020-10-24'
 type: 技术
 tags: javascript

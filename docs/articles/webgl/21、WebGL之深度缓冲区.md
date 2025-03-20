@@ -1,5 +1,5 @@
 ---
-title: 21、WebGL之深度缓冲区
+title: 21.WebGL之深度缓冲区
 date: '2024-06-13'
 type: 技术
 tags: WebGL

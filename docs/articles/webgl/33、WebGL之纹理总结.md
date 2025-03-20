@@ -1,5 +1,5 @@
 ---
-title: 33、WebGL之纹理总结
+title: 33.WebGL之纹理总结
 date: '2024-06-18'
 lastmodifydate: '2024-06-18'
 type: 技术

@@ -1,5 +1,5 @@
 ---
-title: Object.defineProperty​详解
+title: 38.Object.defineProperty​详解
 date: '2020-01-14'
 type: 技术
 tags: javascript

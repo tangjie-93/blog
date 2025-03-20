@@ -1,5 +1,5 @@
 ---
-title: prototype和__proto__区别​
+title: 33.prototype和__proto__区别​
 date: '2020-01-14'
 type: 技术
 tags: javascript

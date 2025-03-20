@@ -1,5 +1,5 @@
 ---
-title: v-for和v-if的优先级探讨及解决方案
+title: 24.v-for和v-if的优先级探讨及解决方案
 date: '2020-06-20'
 type: 技术
 tags: vue

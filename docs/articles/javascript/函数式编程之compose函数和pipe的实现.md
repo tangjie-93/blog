@@ -1,5 +1,5 @@
 ---
-title: 函数式编程之compose函数和pipe的实现
+title: 6.函数式编程之compose函数和pipe的实现
 date: '2020-01-14'
 type: 技术
 tags: javascript

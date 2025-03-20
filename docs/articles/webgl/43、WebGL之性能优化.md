@@ -1,5 +1,5 @@
 ---
-title: 43、WebGL之性能优化
+title: 43.WebGL之性能优化
 date: '2024-06-28'
 lastmodifydate: '2024-06-28'
 type: 技术

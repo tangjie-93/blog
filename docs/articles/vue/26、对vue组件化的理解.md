@@ -1,5 +1,5 @@
 ---
-title: 对vue组件化的理解
+title: 27.对vue组件化的理解
 date: '2020-06-21'
 type: 技术
 tags: vue

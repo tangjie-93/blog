@@ -1,5 +1,5 @@
 ---
-title: mvvm概念、原理及实现
+title: 2.mvvm概念、原理及实现
 date: '2020-01-14'
 type: 技术
 tags: vue

@@ -1,5 +1,5 @@
 ---
-title: javascript之异步解决方案总结
+title: 28.javascript之异步解决方案总结
 date: '2020-03-17'
 type: 技术
 tags: javascript

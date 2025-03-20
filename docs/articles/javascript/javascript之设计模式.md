@@ -1,5 +1,5 @@
 ---
-title: javascript之设计模式
+title: 22.javascript之设计模式
 date: '2020-01-14'
 type: 技术
 tags: javascript

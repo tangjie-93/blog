@@ -1,5 +1,5 @@
 ---
-title: vue-router的理解
+title: 4.vue-router的理解
 date: '2020-03-13'
 type: 技术
 tags: vue

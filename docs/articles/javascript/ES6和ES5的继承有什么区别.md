@@ -1,5 +1,5 @@
 ---
-title: ES6和ES5的继承的区别
+title: 13.ES6和ES5的继承的区别
 date: '2020-01-14'
 type: 技术
 tags: javascript

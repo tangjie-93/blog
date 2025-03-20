@@ -1,5 +1,5 @@
 ---
-title: ssr的理解和使用场景
+title: 23.ssr的理解和使用场景
 date: '2020-06-14'
 type: 技术
 tags: vue
