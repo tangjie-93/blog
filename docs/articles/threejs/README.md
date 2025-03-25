@@ -1,5 +1,5 @@
 ---
-title: 0、threejs基础知识总结
+title: 1、threejs基础知识总结
 date: '2024-07-11'
 lastmodifydate: '2024-07-11'
 type: 技术
