@@ -1,5 +1,5 @@
 ---
-title: 1.js变量声明提升
+title: 1、js变量声明提升
 date: '2020-01-14'
 type: 技术
 tags: javascript

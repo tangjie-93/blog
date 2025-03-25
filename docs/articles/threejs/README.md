@@ -7,7 +7,7 @@ tags: threejs
 note: threejs基础知识总结
 ---
 
-## 1、Three整体结构
+## 1、three整体结构
 
 <img src="../../images/threejs/threejs9结构.svg" >
 
