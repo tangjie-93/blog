@@ -49,6 +49,23 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--vp-c-brand-1); 
     & .logo { width: 26px; height: 26px; border-radius: 7px; }
 }
 .VPNavBarSearch .DocSearch-Button { border: 1px solid var(--blog-border); border-radius: 6px; }
+/* 桌面端让正文成为独立滚动区，滚动条从导航栏下方开始。 */
+@media (min-width: 960px) {
+    html, body { overflow: hidden; height: 100%; }
+    .Layout { min-height: 0; height: 100vh; overflow: hidden; }
+    .VPContent {
+        flex: 1 1 auto;
+        min-height: 0;
+        margin-top: var(--vp-nav-height);
+        padding-top: 0;
+        overflow-x: hidden;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        scrollbar-color: var(--blog-border) transparent;
+        scrollbar-width: thin;
+    }
+    .VPContent.has-sidebar { margin-top: var(--vp-nav-height); }
+}
 @media (min-width: 768px) and (max-width: 959px) {
     .VPNavBar .VPNavBarMenuLink { padding-inline: 8px; }
     .VPNavBar .VPNavBarSearch { padding-left: 12px; }

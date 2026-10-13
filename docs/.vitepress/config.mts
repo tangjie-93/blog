@@ -5,6 +5,24 @@ import { createNavigation } from './navigation.mjs'
 const { nav, sidebar } = createNavigation(fileURLToPath(new URL('../articles', import.meta.url)))
 const base = process.env.VITEPRESS_BASE || '/'
 
+const navGroups = [
+  { text: '语言与标准', categories: ['javascript', 'es6', 'typescript', 'css', 'http'] },
+  { text: '框架与工程', categories: ['vue', 'vue3', 'react', 'node', 'webpack', 'linux'] },
+  { text: '图形与交互', categories: ['webgl', 'threejs'] },
+  { text: '源码与算法', categories: ['jquery-source-analysis', '算法', '其他'] }
+]
+const navByCategory = new Map(nav.map(item => [decodeURIComponent(item.link.split('/')[2] || ''), item]))
+const groupedNav = navGroups.map(({ text, categories }) => ({
+  text,
+  items: categories.flatMap(category => {
+    const item = navByCategory.get(category)
+    return item ? [item] : []
+  })
+}))
+const groupedCategories = new Set(navGroups.flatMap(group => group.categories))
+const remainingNav = nav.filter(item => !groupedCategories.has(decodeURIComponent(item.link.split('/')[2] || '')))
+if (remainingNav.length) groupedNav.push({ text: '更多专题', items: remainingNav })
+
 export default defineConfig({
   lang: 'zh-CN',
   title: '前端技术积累',
@@ -20,7 +38,7 @@ export default defineConfig({
     nav: [
       { text: '首页', link: '/' },
       { text: '文章', link: '/timeline/' },
-      { text: '技术栈', items: nav },
+      { text: '技术栈', items: groupedNav },
       { text: '标签', link: '/tags/' },
       { text: '充电站', link: '/summarize/' },
       { text: '关于', link: '/about/' },
@@ -40,6 +58,5 @@ export default defineConfig({
     darkModeSwitchLabel: '外观',
     lightModeSwitchTitle: '切换到浅色模式',
     darkModeSwitchTitle: '切换到深色模式',
-    footer: { message: '记录 · 实践 · 分享', copyright: '前端技术积累 · tangjie-93' }
   }
 })
