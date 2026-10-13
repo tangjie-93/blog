@@ -26,6 +26,8 @@ a { color:var(--brand); }
     & .veditor { min-height:120px; padding:12px; font-size:14px; line-height:1.8; }
     & .vwrap .vedit { padding-top:12px; }
     & .vrow { padding:8px 0 0; }
+    & .vrow:has(.vctrl) { display:none; }
+    & a[alt="Markdown is supported"] { display:none; }
     & .vbtn { padding:8px 18px; border:1px solid var(--border); border-radius:6px; color:var(--text); background:var(--soft); }
     & .vsubmit { color:var(--on-brand); background:var(--brand); border-color:var(--brand); }
     & .vbtn:hover { opacity:.85; color:var(--text); border-color:var(--brand); }

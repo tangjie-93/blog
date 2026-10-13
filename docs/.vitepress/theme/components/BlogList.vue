@@ -19,7 +19,7 @@
                     <span>{{ post.type || '技术笔记' }}</span>
                     <span class="blog-list__index" aria-hidden="true">{{ String((page - 1) * PAGE_SIZE + index + 1).padStart(2, '0') }}</span>
                 </div>
-                <h2 class="blog-list__title"><a :href="withBase(post.url)">{{ post.title }}<span class="blog-list__arrow" aria-hidden="true">↗</span></a></h2>
+                <h2 class="blog-list__title"><a :href="withBase(post.url)">{{ displayTitle(post.title) }}<span class="blog-list__arrow" aria-hidden="true">↗</span></a></h2>
                 <p v-if="post.note" class="blog-list__note">{{ post.note }}</p>
                 <div class="blog-list__meta">
                     <span v-for="tag in post.tags" :key="tag" class="blog-list__tag">{{ tag }}</span>
@@ -45,6 +45,11 @@ const listElement = ref<HTMLElement | null>(null)
 const filteredPosts = computed(() => filterPosts(posts, props))
 const pageCount = computed(() => Math.ceil(filteredPosts.value.length / PAGE_SIZE))
 const visiblePosts = computed(() => filteredPosts.value.slice((page.value - 1) * PAGE_SIZE, page.value * PAGE_SIZE))
+
+/** 归档卡片已用右上角编号表示顺序，标题保留正文名称即可。 */
+function displayTitle(title: string): string {
+    return title.replace(/^\d+[、.．]\s*/, '')
+}
 
 /** 切换到指定页，待列表更新后回到开头，避免用户继续停留在上一页底部。 */
 async function changePage(nextPage: number): Promise<void> {

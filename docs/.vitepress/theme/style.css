@@ -49,12 +49,27 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--vp-c-brand-1); 
     & .logo { width: 26px; height: 26px; border-radius: 7px; }
 }
 .VPNavBarSearch .DocSearch-Button { border: 1px solid var(--blog-border); border-radius: 6px; }
+.VPNavBarMenuGroup .VPMenuGroup .title {
+    color: var(--vp-c-text-1);
+    font-weight: 700;
+}
+@media (min-width: 960px) {
+    .VPNavBarMenuGroup {
+        & .VPMenu { width: min(720px, calc(100vw - 32px)); min-width: 0; padding: 16px; }
+        & .VPMenu > .items { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+        & .VPMenu > .items > .VPMenuGroup { margin: 0; border: 0; padding: 0 16px; }
+        & .VPMenu > .items > .VPMenuGroup + .VPMenuGroup { margin-top: 0; border-top: 0; border-left: 1px solid var(--vp-c-divider); padding-top: 0; }
+        & .VPMenuGroup .title { padding: 0 0 8px; font-size: 14px; }
+        & .VPMenuGroup .VPMenuLink { margin: 0; padding: 0; }
+        & .VPMenuGroup .VPMenuLink .link { padding-inline: 0; }
+    }
+}
 /* 桌面端让正文成为独立滚动区，滚动条从导航栏下方开始。 */
 @media (min-width: 960px) {
     html, body { overflow: hidden; height: 100%; }
     .Layout { min-height: 0; height: 100vh; overflow: hidden; }
-    .VPContent {
-        flex: 1 1 auto;
+    .Layout > .VPContent {
+        flex: 1 1 0;
         min-height: 0;
         margin-top: var(--vp-nav-height);
         padding-top: 0;
@@ -64,7 +79,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--vp-c-brand-1); 
         scrollbar-color: var(--blog-border) transparent;
         scrollbar-width: thin;
     }
-    .VPContent.has-sidebar { margin-top: var(--vp-nav-height); }
+    .Layout > .VPContent.has-sidebar { margin-top: var(--vp-nav-height); }
 }
 @media (min-width: 768px) and (max-width: 959px) {
     .VPNavBar .VPNavBarMenuLink { padding-inline: 8px; }
