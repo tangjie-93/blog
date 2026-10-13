@@ -31,10 +31,10 @@ export default defineConfig({
   appearance: 'dark',
   cleanUrls: false,
   rewrites: (path) => path.replace(/(^|\/)README\.md$/, '$1index.md'),
-  head: [['link', { rel: 'icon', href: `${base}image/logo.png` }]],
+  head: [['link', { rel: 'icon', href: `${base}image/blog-mark.svg` }]],
   markdown: { lineNumbers: true },
   themeConfig: {
-    logo: '/image/logo.png',
+    logo: '/image/blog-mark.svg',
     nav: [
       { text: '首页', link: '/' },
       { text: '文章', link: '/timeline/' },
