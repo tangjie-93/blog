@@ -1,0 +1,85 @@
+:root {
+    --vp-c-brand-1: #087d70;
+    --vp-c-brand-2: #0b9484;
+    --vp-c-brand-3: #087d70;
+    --vp-c-brand-soft: rgba(12, 153, 134, .09);
+    --vp-c-bg: #f6f9f9;
+    --vp-c-bg-alt: #eef3f3;
+    --vp-c-bg-soft: #edf3f3;
+    --vp-c-text-1: #152b32;
+    --vp-c-text-2: #4f656d;
+    --blog-panel: rgba(255, 255, 255, .75);
+    --blog-border: #d5e2e3;
+    --blog-muted: #597179;
+    --blog-on-accent: #fff;
+    --vp-font-family-base: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    --vp-button-brand-bg: var(--vp-c-brand-1);
+    --vp-button-brand-text: var(--blog-on-accent);
+    --vp-c-divider: var(--blog-border);
+    --vp-c-gutter: var(--blog-border);
+}
+.dark {
+    --vp-c-brand-1: #58e5cb;
+    --vp-c-brand-2: #7aeed9;
+    --vp-c-brand-3: #39c6ae;
+    --vp-c-brand-soft: rgba(88, 229, 203, .09);
+    --vp-c-bg: #0a1017;
+    --vp-c-bg-alt: #0d151e;
+    --vp-c-bg-elv: #121c27;
+    --vp-c-bg-soft: #101b25;
+    --vp-c-text-1: #e4edf3;
+    --vp-c-text-2: #a0b0bf;
+    --vp-c-text-3: #7e91a2;
+    --blog-panel: rgba(16, 26, 37, .8);
+    --blog-border: #23313d;
+    --blog-muted: #8b9eae;
+    --blog-on-accent: #08241f;
+}
+body { -webkit-font-smoothing: antialiased; }
+::selection { background: var(--vp-c-brand-soft); color: var(--vp-c-brand-1); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--vp-c-brand-1); outline-offset: 5px; }
+.tech-home {
+    background-image: radial-gradient(ellipse at 80% 18%, var(--vp-c-brand-soft), transparent 38%), linear-gradient(var(--vp-c-brand-soft) 1px, transparent 1px), linear-gradient(90deg, var(--vp-c-brand-soft) 1px, transparent 1px);
+    background-size: auto, 64px 64px, 64px 64px;
+    & .VPFooter { background: var(--vp-c-bg); }
+}
+.VPNavBar {
+    & .content-body { background: var(--vp-c-bg) !important; }
+    & .title { letter-spacing: .5px; font-size: 15px; }
+    & .logo { width: 26px; height: 26px; border-radius: 7px; }
+}
+.VPNavBarSearch .DocSearch-Button { border: 1px solid var(--blog-border); border-radius: 6px; }
+.VPDoc {
+    & .vp-doc { line-height: 1.9; }
+    & .vp-doc h1 { letter-spacing: -.8px; line-height: 1.45; }
+    & .vp-doc > div > h2 { margin-top: 44px; border-top-color: var(--blog-border); }
+    & .vp-doc p, & .vp-doc li { line-height: 1.9; }
+    & .vp-doc div[class*='language-'] { border: 1px solid var(--blog-border); border-radius: 10px; }
+    & .vp-doc :not(pre) > code { color: var(--vp-c-brand-1); }
+    & .vp-doc blockquote { border-left-color: var(--vp-c-brand-1); background: var(--vp-c-brand-soft); padding: 8px 18px; border-radius: 0 8px 8px 0; }
+}
+.blog-archive .VPDoc:not(.has-sidebar) {
+    padding: 24px 28px 32px;
+    & .container { max-width: 1320px; margin-inline: auto; }
+    & .content { max-width: 100%; min-width: 0; margin: 0 auto; padding: 0; }
+    & .content-container { max-width: 100%; }
+}
+.blog-archive .vp-doc > div {
+    & > h1 { text-align: center; font-size: 28px; }
+    & > p { margin: 8px 0 20px; text-align: center; color: var(--vp-c-text-2); font-size: 14px; }
+}
+/* Markdown 页面根节点随路由替换，动画无需接管路由或重复挂载导航。 */
+.vp-doc > div, .VPPage > div > div { animation: blog-content-enter 200ms ease-out; }
+@keyframes blog-content-enter {
+    from { opacity: .35; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@media (max-width: 640px) {
+    .blog-archive .VPDoc:not(.has-sidebar) { padding: 20px 16px 28px; }
+    .blog-archive .vp-doc > div > h1 { font-size: 24px; }
+}
+.VPFooter { border-top-color: var(--blog-border); }
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto !important; }
+    *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}

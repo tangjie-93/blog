@@ -4,50 +4,138 @@
 
 ## 本地运行
 
-需要 `Node.js 22` 或更新版本。
+需要 `Node.js 22` 或更新版本，以及 `pnpm 10.28.2`（版本固定在 `package.json` 的 `packageManager` 中）。
 
 ```sh
-npm ci
-npm run docs:dev
+pnpm install --frozen-lockfile
+pnpm run docs:dev
 ```
 
 构建、验证和预览：
 
 ```sh
-npm test
-npm run docs:build
-npm run docs:preview
+pnpm test
+pnpm run docs:build
+pnpm run docs:preview
 ```
 
 产物目录：`docs/.vitepress/dist`。`docs/**/README.md` 会生成对应目录的 `index.html`，其余文章继续生成同名 `.html` 文件。遍历算法的一篇文章原文件名末尾有空格，会导致预渲染失败，已去掉空格并为原 URL 添加永久重定向。
 
+## 发布到 `GitHub Pages`
+
+`.github/workflows/deploy.yml` 在推送到 `dev` 时通过 `pnpm` 安装依赖、运行测试，验证根路径构建，再构建并发布 `GitHub Pages`。`PR` 只验证，不发布。
+
+首次启用时，在仓库 [Pages 设置](https://github.com/tangjie-93/blog/settings/pages) 中，将 `Build and deployment → Source` 设置为 `GitHub Actions`，再把这些配置和 `pnpm-lock.yaml` 提交并推送到 `dev`。部署使用工作流自带的 `GITHUB_TOKEN`，无需额外保存部署令牌。
+
+发布成功后的默认地址为 [博客首页](https://tangjie-93.github.io/blog/)。在 `Actions` 中打开 `Deploy VitePress to GitHub Pages` 查看发布结果。
+
+工作流通过 `VITEPRESS_BASE=/blog/` 指定仓库子路径，本地开发和 `Cloudflare Pages` 默认使用 `/`。本地验证 `GitHub Pages` 产物：
+
+```sh
+VITEPRESS_BASE=/blog/ pnpm run docs:build
+VITEPRESS_BASE=/blog/ pnpm run docs:preview
+```
+
+`Cloudflare` 的 `_redirects` 和 `_headers` 不会在 `GitHub Pages` 生效，旧带空格文章地址的永久重定向仍仅由 `Cloudflare` 提供。
+
 ## 发布到 Cloudflare Pages
 
-### 连接 GitHub，自动发布
-
-在 `Cloudflare` 控制台选择 `Workers & Pages` → 创建 `Pages` 项目 → 连接 `tangjie-93/blog`，使用以下设置：
+项目当前使用以下配置：
 
 | 设置 | 值 |
 | --- | --- |
-| 生产分支 | `dev`（需先把迁移后的源码推送到此分支） |
-| 根目录 | 仓库根目录 |
-| 构建命令 | `npm run docs:build` |
+| `Pages` 项目 | `tangjie-blog` |
+| 生产分支 | `dev` |
+| 生产地址 | `https://tangjie-blog.pages.dev` |
+| 构建命令 | `pnpm run docs:build` |
 | 输出目录 | `docs/.vitepress/dist` |
-| Node 版本 | `22`，也可在环境变量中设置 `NODE_VERSION=22` |
+| `Node.js` 版本 | `22`，也可设置环境变量 `NODE_VERSION=22` |
 
-`.github/workflows/deploy.yml` 现在只验证构建；部署由 `Pages` 的仓库集成执行，避免再触发旧阿里云同步。
+### 1. 通过 `GitHub` 自动发布
 
-### 从本地上传
+在 `Cloudflare` 控制台进入 `Workers & Pages`，创建 `Pages` 项目并连接 `tangjie-93/blog`，填写上表中的构建配置。之后推送到 `dev` 分支，`Pages` 会自动构建并发布。
+
+`Cloudflare Pages` 仍由仓库集成独立发布；`GitHub Actions` 同时发布到 `GitHub Pages`。在 `Cloudflare` 的构建配置中将命令改为 `pnpm run docs:build`，并设置 `PNPM_VERSION=10.28.2`；不要在这里设置 `VITEPRESS_BASE=/blog/`。
+
+### 2. 使用 `Wrangler` 登录并确认账号
+
+`Wrangler` 使用独立于 `Codex` 的 Cloudflare 登录凭据。先在项目目录执行：
 
 ```sh
-npx wrangler login
-npx wrangler pages project create tangjie-blog --production-branch dev
-npm run deploy
+pnpm exec wrangler login
+pnpm exec wrangler whoami
 ```
 
-如果同名项目已存在，先确认该项目属于此博客，再直接执行 `npm run deploy`。`wrangler.toml` 中的项目名需要与目标项目一致。
+`whoami` 输出的账号必须与 Cloudflare 控制台左上角当前选择的账号一致。若账号不对，先执行 `pnpm exec wrangler logout`，再重新登录。
 
-`Git` 集成与直接上传的项目创建方式需要事先选定；若计划以后由 `GitHub` 自动部署，推荐先从控制台创建 `Git` 集成项目，再按需用命令行上传。不要在已有站点未确认用途时覆盖它。
+### 3. 查询或创建 Pages 项目
+
+```sh
+# 查看当前账号下的所有 Pages 项目
+pnpm exec wrangler pages project list
+
+# 仅在项目尚不存在时创建
+pnpm exec wrangler pages project create tangjie-blog --production-branch dev
+```
+
+如果 `tangjie-blog` 已经存在，不要重复创建；先确认它属于此博客，再继续部署。项目名必须与 `wrangler.toml` 和 `package.json` 中的配置一致。
+
+### 4. 构建并上传
+
+推荐使用项目脚本，它会先构建再上传：
+
+```sh
+pnpm run deploy
+```
+
+等价的分步命令如下：
+
+```sh
+pnpm run docs:build
+pnpm exec wrangler pages deploy docs/.vitepress/dist --project-name tangjie-blog
+```
+
+需要明确指定分支时，在上传命令末尾增加 `--branch dev`。不要在未确认项目用途时覆盖已有站点。
+
+### 5. 查看部署记录和地址
+
+```sh
+# 查看最近的部署记录
+pnpm exec wrangler pages deployment list --project-name tangjie-blog
+
+# 查看最新生产部署
+pnpm exec wrangler pages deployment list \
+  --project-name tangjie-blog \
+  --environment production
+```
+
+部署列表中的 `Deployment` 地址可用于预览，生产地址通常是 `https://tangjie-blog.pages.dev`。也可以在控制台进入 `Workers & Pages` → `tangjie-blog` → `Deployments` 查看构建详情。
+
+### 6. 本地预览和部署日志
+
+先构建静态文件，再用 `Pages` 运行时预览：
+
+```sh
+pnpm run docs:build
+pnpm exec wrangler pages dev docs/.vitepress/dist
+```
+
+如果项目包含 `Pages Functions`，可以实时查看某次部署的函数日志：
+
+```sh
+pnpm exec wrangler pages deployment tail <deployment-id> \
+  --project-name tangjie-blog \
+  --environment production
+```
+
+本博客是静态站点，没有 `Pages Functions` 时，构建失败应优先查看控制台中该部署的 `Build log`。
+
+### 7. 常见问题
+
+- **控制台显示 `No projects found`**：检查左上角账号，再运行 `pnpm exec wrangler whoami` 和 `pnpm exec wrangler pages project list`；两边账号必须一致。
+- **部署成功但页面没有更新**：先运行 `pnpm exec wrangler pages deployment list --project-name tangjie-blog`，确认最新部署的分支和状态，再检查浏览器缓存。
+- **构建失败**：确认使用 `Node.js 22`，并检查输出目录 `docs/.vitepress/dist` 是否生成。
+- **同名项目无法创建**：项目已经存在时直接运行 `pnpm run deploy`，不要再次执行 `pages project create`。
 
 旧 `/blog/` 前缀通过 `docs/public/_redirects` 重定向至新站根路径。`Cloudflare Pages` 会把 `.html` 请求规范化为无扩展名 URL，物理页面和文章内容仍保留。原域名切换需要另行绑定自定义域名和配置 `DNS`；新站重定向不能改变旧域名的响应。
 

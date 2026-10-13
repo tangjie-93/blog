@@ -1,4 +1,11 @@
 ---
-title: 首页
+title: 文章归档
+pageClass: blog-archive
+aside: false
 ---
-<BlogList/>
+
+# 文章归档
+
+从一个问题出发，记录每一次理解与实践。
+
+<BlogList />

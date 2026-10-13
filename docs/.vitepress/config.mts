@@ -3,15 +3,17 @@ import { fileURLToPath } from 'node:url'
 import { createNavigation } from './navigation.mjs'
 
 const { nav, sidebar } = createNavigation(fileURLToPath(new URL('../articles', import.meta.url)))
+const base = process.env.VITEPRESS_BASE || '/'
 
 export default defineConfig({
   lang: 'zh-CN',
   title: '前端技术积累',
   description: '记录前端学习与实践，分享 JavaScript、Vue、WebGL、工程化和算法的深入思考。',
-  base: '/',
+  base,
+  appearance: 'dark',
   cleanUrls: false,
   rewrites: (path) => path.replace(/(^|\/)README\.md$/, '$1index.md'),
-  head: [['link', { rel: 'icon', href: '/image/logo.png' }]],
+  head: [['link', { rel: 'icon', href: `${base}image/logo.png` }]],
   markdown: { lineNumbers: true },
   themeConfig: {
     logo: '/image/logo.png',
