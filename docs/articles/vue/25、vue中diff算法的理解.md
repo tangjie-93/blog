@@ -6,7 +6,9 @@ tags: vue
 note: vue中diff算法的理解
 ---
 `diff` 算法主要与以下的几个函数有关。
-+ [patchVnode](https://github.com/vuejs/vue/blob/dev/src/core/vdom/patch.js)
+
+## [`patchVnode`](https://github.com/vuejs/vue/blob/dev/src/core/vdom/patch.js)
+
 ```js
 //正真的替换节点操作
   function patchVnode (
@@ -62,7 +64,9 @@ note: vue中diff算法的理解
     }
   }
 ```
-+ [updateChildren](https://github.com/vuejs/vue/blob/dev/src/core/vdom/patch.js)
+
+## [`updateChildren`](https://github.com/vuejs/vue/blob/dev/src/core/vdom/patch.js)
+
 ```js
  function updateChildren (parentElm, oldCh, newCh, insertedVnodeQueue, removeOnly) {
     let oldStartIdx = 0
@@ -149,6 +153,9 @@ note: vue中diff算法的理解
     }
   }
 ```
+
+## `diff` 算法的原理总结
+
 主要可以从以下几个方面来讲述。
 + 1、`diff`算法是虚拟 `DOM` 技术的必然产物：通过新旧虚拟 `DOM` 做对比(`diff`),将变化的地方更新在真实 `DOM` 上；也需要 `diff` 高效的执行对比过程，从而降低时间复杂度为`O(n)`。(**定义**)
 + 2、vue2.x 中为了降低 `watcher` 粒度，每个组件只有一个 `watcher` 与之对应，只有引入 `diff` 才能精确的找到发生变化的地方。（`watch`和`computed` 创建的 `watcher` 不算，它们都没有 `updateComponent()` 操作。）(**必要性**)

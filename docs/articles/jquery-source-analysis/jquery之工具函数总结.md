@@ -7,7 +7,7 @@ note: jquery之工具函数总结
 ---
 在看`jquery`源码时，发现有一些写的好的方法就忍不住记录下来，供自己以后在封装工具函数时参考。
 
-#### 1、数据类型检测
+## 1、数据类型检测
 ```js
 //下面的函数是源码中的数据类型检测方法
 function toType (obj) {
@@ -61,7 +61,7 @@ console.log(toType(new Error()))
 console.log(toType(new Date()))
 //toType2和toType都能准确的测试出数据类型
 ```
-#### 2、`jQuery.extend`扩展方法
+## 2、`jQuery.extend`扩展方法
 ```js
 //不足，该方法只考虑Object和Array
 jQuery.extend=jQuery.fn.extend=function(){
@@ -177,7 +177,7 @@ jQuery.extend(true, obj2);
 //扩展 obj2
 jQuery.extend(obj2, obj3);
 ```
-#### 3、`isPlainObject` 判断对象是否是纯对象
+## 3、`isPlainObject` 判断对象是否是纯对象
 ```js
 //1、是否是纯对象 {}
 function isPlainObject(obj){
@@ -204,7 +204,7 @@ function isPlainObject(obj){
     return typeof Ctor === "function" && fnToString.call(Ctor) === ObjectFunctionString;
 }
 ```
-#### 4、判断对象是否是空对象
+## 4、判断对象是否是空对象
 ```js
 //判断是否是空对象
 function isEmptyObject(obj){
@@ -221,7 +221,7 @@ function isEmptyObject(obj){
     return keys.length===0;
 }
 ```
-#### 5、创建缓存
+## 5、创建缓存
 + 缓存最大个数时固定的。
 + 当超出缓存最大个数限制时，将最早添加到缓存中的数据删除
 ```js
@@ -263,7 +263,7 @@ console.log(setCache);
 //     'name9 ': 'james'
 //   }
 ```
-#### 6、为不同的属性添加相同的方法
+## 6、为不同的属性添加相同的方法
 ```js
 function addHandle (attrs, handler) {
     const arr = attrs.split("|");
@@ -280,7 +280,7 @@ addHandle("type|href|height|width", function (elem, name, isXML) {
     }
 });
 ```
-#### 7、动态创建script脚本并马上删除的方法
+## 7、动态创建script脚本并马上删除的方法
 ```js
 const document = window.document;
 const preservedScriptAttributes = {
@@ -306,7 +306,7 @@ function DOMEval (code, node, doc) {
 		doc.head.appendChild(script).parentNode.removeChild(script);
 	}
 ```
-#### 8、正则表达式方式的字符串分割
+## 8、正则表达式方式的字符串分割
 该正则表达式可以用来分割字符串，比`split`的功能更强大。可以同时按照不同分隔符来分割字符串。
 ```js
 //在中括号中的^表示非的意思,\X20表示空格,/g表示全局搜索,使用match方法时将返回匹配数组
@@ -332,11 +332,11 @@ function createOptions(options){
 createOptions("once\tmemory");//{ "once":true,"memory":true }
 createOptions("once memory");//{"once":true,"memory":true}
 ```
-#### 9、唯一值的设置
+## 9、唯一值的设置
 ```js
 let expando = "sizzle" + 1 * new Date(),
 ```
-#### 10、使用正则表达式快速改变大小写
+## 10、使用正则表达式快速改变大小写
 ```js
 const rmsPrefix = /^-ms-/,
 		rdashAlpha = /-([a-z])/g;
@@ -351,7 +351,7 @@ function fcamelCase (_all, letter) {
 //测试
 console.log(camelCase("-asx123"));//=>msAsx123
 ```
-#### 11、如何在不改变字符串的情况下将字符串改变成数字
+## 11、如何在不改变字符串的情况下将字符串改变成数字
 ```js
 function getData (data) {
     if (data === "true") {
@@ -375,7 +375,7 @@ function getData (data) {
     return data;
 }
 ```
-#### 12、`ownerDocument`和 `documentElement`的区别
+## 12、`ownerDocument`和 `documentElement`的区别
 + `ownerDocument`是`Node`对象的一个属性，返回的是某个元素的**根节点文档对象**：即`document`对象
 + `documentElement`是 `Document`对象的属性，返回的是**文档根节点**。
 + 对于`HTML`文档来说，`documentElement`是`<html>`标签对应的`Element`对象，`ownerDocument`是`document`对象。
@@ -383,12 +383,12 @@ function getData (data) {
 document.getElementsByTagName("body")[0].ownerDocument===document;//true
 document.documentElement;//=><html>...</html>
 ```
-#### 13、使用正则表达式去除前后空格
+## 13、使用正则表达式去除前后空格
 ```js
 //表示以空格开头或者空格结尾的正则表达式
 const rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
 ```
-#### 14、使用正则表达式将特定位置字符转换为大写
+## 14、使用正则表达式将特定位置字符转换为大写
 ```js
 'background-image'.replace(/-([\da-z])/gi, fcamelCase = function( all, letter ) {
        return letter.toUpperCase();

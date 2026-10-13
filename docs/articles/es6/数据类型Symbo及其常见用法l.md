@@ -57,8 +57,10 @@ if (sym) {}
 Number(sym) // TypeError
 Console.log(sym + 2) // TypeError
 ```
-### Symbol的常见用法
-<h4>&#8195;1、	作为属性名</h4>
+## Symbol的常见用法
+
+### &#8195;1、	作为属性名
+
 
 &#8195;&#8195;Symbol 值作为对象属性名时，不能用点运算符。一般使用方括号。
 ```js
@@ -94,10 +96,14 @@ function getArea(shape, options) {
 }
 getArea(shapeType.triangle, { width: 100, height: 100 });
 ```
-<h4>&#8195;2、	属性名的遍历</h4>
+
+### &#8195;2、	属性名的遍历
+
 
 &#8195;&#8195;Symbol 作为属性名，该属性不会出现在`for...in、for...of`循环中，也不会被`Object.keys()、Object.getOwnPropertyNames()、JSON.stringify()`返回。但是，它也不是私有属性，有一个`Object.getOwnPropertySymbols`方法，可以获取指定对象的所有 `Symbol` 属性名。可以利用这个特性，为对象定义一些非私有的、但又希望只用于内部的方法。
-<h4>&#8195;3、	Symbol.for()、Symbol.keyFor()</h4>
+
+### &#8195;3、	Symbol.for()、Symbol.keyFor()
+
 
 &#8195;&#8195;**Symbol.for("foo"):** 接受一个字符串作为参数，然后搜索有没有以该参数作为名称的 `Symbol` 值。如果有，就返回这个 `Symbol` 值，否则就新建并返回一个以该字符串为名称的 `Symbol` 值。
 ```js
@@ -114,7 +120,9 @@ Symbol.keyFor(s2) // undefined
 ```       
 &#8195;&#8195;**注意：`Symbol.for`为 `Symbol` 值登记的名字，是全局环境的，可以在不同的 `iframe` 或 `service worker` 中取到同一个值。**
 
-<h4>&#8195;4、	内置的Symbol值</h4>
+
+### &#8195;4、	内置的Symbol值
+
 
 &#8195;&#8195;**Symbol.hasInstance：** 对象的`Symbol.hasInstance`属性，指向一个内部方法。当其他对象使用`instanceof`运算符，判断是否为该对象的实例时，会调用这个方法。比如，`foo instanceof Foo`在语言内部，实际调用的是`Foo[Symbol.hasInstance](foo)`。
 ```js

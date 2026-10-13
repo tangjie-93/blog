@@ -5,7 +5,9 @@ type: 技术
 tags: es6
 note: Iterator详解
 ---
-<h3>Iterator</h3>
+
+## Iterator
+
 
 &#8195;&#8195;`Iterator`是一种接口，为各种不同的数据结构提供统一的访问机制。任何数据结构只要部署 `Iterator`接口，就可以完成遍历操作（即依次处理该数据结构的所有成员）。
 Iterator 的作用有三个：
@@ -64,7 +66,9 @@ NodeList.prototype[Symbol.iterator] = Array.prototype[Symbol.iterator];
 NodeList.prototype[Symbol.iterator] = [][Symbol.iterator];
 [...document.querySelectorAll('div')] // 可以执行了
 ```       
-<h4>1、	调用iterator接口的场合</h4>
+
+### 1、	调用iterator接口的场合
+
 
 >（1）	解构赋值  
 ```js

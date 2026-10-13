@@ -5,11 +5,16 @@ type: 技术
 tags: typescript
 note: typescript在vue中的使用
 ---
+
+## 引入 `TypeScript` 的原因
+
 &#8195;&#8195;**将`Typescript`引入`Vue`的原因有以下几个：**
 + **可读性。** `ts` 是 `js` 的超集，支持 `js` 的所有语法，并对`js` 进行了一些扩展。大大提高了代码的可阅读性。
 + **静态类型检查。** 静态类型检查可以避免很多不必要的错误，不用通过调试来发现这些问题。
 + **代码提示。** `ts` 配合 `vscode` ，代码提示非常友好。
 + **代码重构。**  在全项目中更改某个变量名，会自动修改整个项目的`import`。
+
+## `vue-property-decorator` 的主要属性
 
 &#8195;&#8195;**`TypeScript`在vue中的使用完全依靠的是`vue-property-decorator`模块。该模块中主要有这几个属性。**<br>
 + 1、@Component (完全继承于 `vue-class-component`)
@@ -22,7 +27,10 @@ note: typescript在vue中的使用
 + 7、@Provide
 + 8、Mixins (在vue-class-component中定义)
 
-**在vue的es6环境中，组件的使用方式是这样的。**
+## 组件写法对比
+
+### `Vue` 与 `ES6` 写法
+
 ```javascript
 <script>
 import Chart from '@/components/Charts/Keyboard'
@@ -81,7 +89,9 @@ export default{
 }
 </script>
 ```
-**而在vue和Ts的集成环境中，是这样的。**
+
+### `Vue` 与 `TypeScript` 写法
+
 ```typescript
 <script lang="ts">
     import {Vue, Component,Prop,Model} from 'vue-property-decorator';

@@ -7,7 +7,7 @@ note: 多个纹理贴图
 ---
 可以给一个面添加多个问题，并且还能然纹理动起来。这个`demo`是在纹理贴图和纹理动画的基础上修改的。修改的代码如下所示：
 
-#### 1、片元着色器代码
+## 1、片元着色器代码
 这里用到了两个纹理，所以在片元着色器中需要创建两个纹理变（`u_Texture,u_Texture1`）。通过`texture2D`函数得到片元的颜色，再将多个颜色进行矢量相乘，就得到了片元的最终颜色。
 ```js
 <script type="shader-source" id="fragmentShader">
@@ -28,7 +28,7 @@ note: 多个纹理贴图
     }
 </script>
 ```
-#### 3、JavaScript代码
+## 3、JavaScript代码
 + 1、构建着色器需要的数据与顶点着色器交互
 ```js
 function assignValue(gl, program) {

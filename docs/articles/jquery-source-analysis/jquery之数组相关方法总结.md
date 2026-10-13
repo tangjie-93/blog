@@ -5,7 +5,7 @@ type: 技术
 tags: jquery
 note: jquery之数组循环方法总结
 ---
-#### 1、`toType` 数据类型检测
+## 1、`toType` 数据类型检测
 ```js
 //数据类型检测
 function toType (obj) {
@@ -19,7 +19,7 @@ function toType (obj) {
         toString.call(obj).toLowerCase().slice(8, -1) : baseType
 }
 ```
-#### 2、`isFunction`判断是否为函数
+## 2、`isFunction`判断是否为函数
 ```js
 //判断是否是函数
 function isFunction (obj) {
@@ -27,7 +27,7 @@ function isFunction (obj) {
 	return typeof obj === "function" && typeof obj.nodeType !== "number";
 };
 ```
-#### 3、`isWindow`判断是否为`window`
+## 3、`isWindow`判断是否为`window`
 ```js
 //判断是否是window
 function isWindow (obj) {
@@ -35,7 +35,7 @@ function isWindow (obj) {
     return obj != null && obj === obj.window;
 };
 ```
-#### 4、`isArrayLike`判断是否为类数组
+## 4、`isArrayLike`判断是否为类数组
 ```js
 //判断是否是类数组
 function isArrayLike (obj) {
@@ -71,7 +71,7 @@ isArrayLike({
     length: 1
 });//false 不是类数组
 ```
-#### 5、数组、类数组和对象的循环遍历
+## 5、数组、类数组和对象的循环遍历
 下方函数用到的方法都在上面
 ```js
 //循环遍历，支持数组、类数组和对象
@@ -102,7 +102,7 @@ each([1, 2, 3, 4], (index, item) => {
     console.log(item);//输出 1,2,3
 })
 ```
-#### 6、数组过滤方法
+## 6、数组过滤方法
 ```js
 function grep (elems, callback, invert) {
     let callbackInverse, i = 0;
@@ -129,7 +129,7 @@ const res2 = grep(arr, (item, i) => {
 }, true)
 console.log(res2);[0,2,4]
 ```
-#### 7、数组对象map方法
+## 7、数组对象map方法
 ```js
 //数组扁平化
 function flat(arr){
@@ -179,7 +179,7 @@ console.log(res);[
     {key:1,value:1},{key:2,vallue:2},{key:3,value:3}
 ]
 ```
-#### 8、数组排序并去重
+## 8、数组排序并去重
 ```js
 function uniqueSort (results) {
     let elem, i = 0;
@@ -195,7 +195,7 @@ function uniqueSort (results) {
 //测试
 sortOrder([3, 2, 1, 5, 2, 6, 6, 7, 8, 1, 4]);
 ```
-#### 9、数组合并
+## 9、数组合并
 ```js
 //将第二个数组/类数组合并到第一个数组/类数组
 function merge(first, second) {
@@ -218,7 +218,7 @@ let obj2 = [3,4];
 merge(obj1, obj2);
 console.log(obj1);//{ '0': 1, '1': 2, '2': 3, '3': 4, length: 4 }
 ```
-#### 10、构建数组
+## 10、构建数组
 ```js
 //results是数组或者类数组 默认为空数组
  function makeArray(arr, results=[]) {

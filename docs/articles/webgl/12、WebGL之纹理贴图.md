@@ -16,7 +16,7 @@ note:  纹理贴图
 在片元着色器中利用插值得到的坐标数据可以抽取纹理图像中的纹素，将抽取的纹素逐个赋值给光栅化顶点坐标得到的片元。
 
 实现纹理贴图的代码如下：
-#### 1、顶点着色器代码
+## 1、顶点着色器代码
 关键字`attribute`声明的顶点数据赋值给`varying`关键字声明的变量，该顶点数据在顶点光栅化的时候会进行插值计算，内插出一系列和片元一一对应的数据，不论顶点的颜色数据，还是顶点的纹理坐标数据都会进行插值计算。
 ```js
 <script type="shader-source" id="vertexShader">
@@ -32,7 +32,7 @@ note:  纹理贴图
     }
 </script>
 ```
-#### 2、 片元着色器代码
+## 2、 片元着色器代码
 `sampler2D`关键字和 `float、int、vec2、mat4`一样都是标识数据类型的关键字。
 `gl_FragColor = texture2D(u_Texture, v_Uv)`;类似`gl_FragColor = v_color;`都是逐片元赋值像素数据。
 
@@ -52,7 +52,7 @@ note:  纹理贴图
     }
 </script>
 ```
-#### 3、JavaScript代码bufen
+## 3、JavaScript代码bufen
 + 获取`WebGL`上下文
 ```js
  function init() {

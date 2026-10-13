@@ -29,7 +29,7 @@ hw.next() // { value: undefined, done: true }
 ```        
 &#8195;&#8195;该函数有三个状态：`hello`，`world` 和 `return` 语句（结束执行）。调用 `Generator` 函数后，该函数并不执行，返回的也不是函数运行结果，而是一个**指向内部状态的指针对象**，也就是上一章介绍的遍历器对象（`Iterator Object`）。下一步，必须调用遍历器对象的`next`方法，使得指针移向下一个状态（**执行yield后面的语句，直到遇到yield或者return语句**）。
 
-#### 1、yield表达式
+## 1、yield表达式
 
 &#8195;&#8195;`yield`表达式就是暂停标志。**并将紧跟在`yield`后面的那个表达式的值，作为返回的对象的`value`属性值。**`yield`表达式后面的表达式，只有当调用`next`方法、内部指针指向该语句时才会执行。
 
@@ -75,7 +75,7 @@ function* gen(){
 var g = gen();
 g[Symbol.iterator]() === g   // true
 ```       
-#### 2、next方法的参数
+## 2、next方法的参数
 
 &#8195;&#8195;**`yield`表达式本身没有返回值，或者说总是返回`undefined`。`next`方法可以带一个参数，该参数就会被当作上一个`yield`表达式的返回值。** 从语义上讲，第一个`next`方法用来启动遍历器对象，所以不用带有参数。
 ```js
@@ -144,7 +144,7 @@ console.log( genObj.next('b'));
 ![](https://user-gold-cdn.xitu.io/2019/4/14/16a1bd728468770c?w=1918&h=196&f=png&s=44019)
 &#8195;&#8195;结果分析：第一次调用 `next()`,执行到 `yield 1`结束；第二次调用`next()`执行到`yield`结束；第三次调用`next("a")`执行 `var a=yield`中的 `yield`；第四次调用`next("b")`方法调用`var a=yield`语句和`var b=yield`中的`yield`；
 
-#### 3、for…of
+## 3、for…of
 
 &#8195;&#8195;`for...of`循环可以自动遍历 `Generator` 函数运行时生成的 `Iterator` 对象，且此时不再需要调用 `next` 方法。
 ```js
@@ -184,7 +184,7 @@ for (let n of numbers()) {
 }
 // 1,2
 ```       
-#### 4、Generator.prototype.throw()
+## 4、Generator.prototype.throw()
 
 &#8195;&#8195;在函数体外抛出错误，然后在 Generator 函数体内捕获。**如果是全局throw()命令，只能被函数体外的catch语句捕获。**
 ```js
@@ -314,7 +314,7 @@ log(g());
 // 第三次运行next方法 { value: undefined, done: true }
 // caller done
 ```       
-#### 5、Generator.prototype.return()
+## 5、Generator.prototype.return()
 
 &#8195;&#8195;返回给定的值，并且终结遍历 `Generator` 函数。
 ```js
@@ -349,7 +349,7 @@ g.next() // { value: 5, done: false }
 g.next() // { value: 7, done: true }
 g.next() // { value: undefined, done: true }
 ```       
-#### 6、next()、throw()、return()的共同点及区别
+## 6、next()、throw()、return()的共同点及区别
 
 &#8195;&#8195;它们的作用都是让 `Generator` 函数恢复执行，并且使用不同的语句替换`yield`表达式。
 
@@ -357,7 +357,7 @@ g.next() // { value: undefined, done: true }
 >`throw()`是将`yield`表达式替换成一个`throw`语句。    
 >`return()`是将`yield`表达式替换成一个`return`语句。 
 
-#### 7、yield* 表达式
+## 7、yield* 表达式
 &#8195;&#8195;用到yield*表达式，用来在一个 Generator 函数里面执行另一个 Generator 函数。
 ```js       
 function* foo() {
@@ -470,7 +470,7 @@ for(let x of iterTree(tree)) {
 }
 // a  // b   // c   // d   // e
 ```       
-#### 8、作为对象的属性的Generator函数
+## 8、作为对象的属性的Generator函数
 ```js
 let obj = {
     * myGeneratorMethod() {
@@ -478,7 +478,7 @@ let obj = {
     }
 };
 ```        
-#### 9、Generator函数的this
+## 9、Generator函数的this
 
 &#8195;&#8195;**Generator 函数总是返回一个遍历器，ES6 规定这个遍历器是 Generator 函数的实例，也继承了 Generator 函数的prototype对象上的方法**。
 ```js
@@ -526,7 +526,7 @@ f.c // 3
 ```       
 &#8195;&#8195;多个线程（单线程情况下，即多个函数）可以并行执行，但是只有一个线程（或函数）处于正在运行的状态，其他线程（或函数）都处于暂停态（suspended），线程（或函数）之间可以交换执行权。并行执行、交换执行权的线程（或函数），就称为协程。
 
-#### 10、应用
+## 10、应用
 
 &#8195;&#8195;1、异步操作的同步表达。
 通过 Generator 函数部署 Ajax 操作，可以用同步的方式表达。
@@ -666,7 +666,7 @@ function* doStuff() {
 for (task of doStuff()) {}
     // task是一个函数，可以像回调函数那样使用它
 ```         
-#### 11、Generator函数的异步调用（**需要好好理解弄懂**）
+## 11、Generator函数的异步调用（**需要好好理解弄懂**）
 &#8195;&#8195;异步编程的方法主要有这几种：
 
 >1、回调函数(耦合性太强)    

@@ -5,6 +5,9 @@ type: 技术
 tags: vue
 note: require.context()的用法详解
 ---
+
+## 参数说明
+
 ```javascript
 require.context(directory,useSubdirectories,regExp)
 ```
@@ -14,7 +17,8 @@ require.context(directory,useSubdirectories,regExp)
 
 例如 `require.context("@/views/components",false,/\.vue$/)`
 
-**1、常常用来在组件内引入多个组件。**
+## 在组件内引入多个组件
+
 ```javascript
 const path = require('path')
 const files = require.context('@/components/home', false, /\.vue$/)
@@ -28,7 +32,9 @@ export default{
     components:modules
 }
 ```
-**2、在main.js中引入大量公共组件**
+
+## 在 `main.js` 中引入公共组件
+
 ```javascript
 import Vue from 'vue'
 // 自定义组件

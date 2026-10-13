@@ -6,7 +6,7 @@ tags: vue
 note: Proxy和Object.defineProperty的对比
 ---
 
-**Proxy的优势如下**
+## `Proxy` 的优势
 
 + Proxy可以直接监听整个对象而非属性。
 + Proxy可以直接监听数组的变化。
@@ -14,11 +14,12 @@ note: Proxy和Object.defineProperty的对比
 + Proxy返回的是一个新对象，我们可以只操作新的对象达到目的，而`Object.defineProperty`只能遍历对象属性直接修改;
 + Proxy做为新标准将受到浏览器产商重点持续的性能优化,也就是传说中的新标准的性能红利。
 
-**Object.defineProperty 的优势如下**
+## `Object.defineProperty` 的优势
 
 + 兼容性好，支持 IE9，而 Proxy 的存在浏览器兼容性问题,而且无法用 polyfill 磨平。
 
-**Object.defineProperty 不足在于**：
+## `Object.defineProperty` 的不足
+
 + `Object.defineProperty` 只能劫持对象的属性,因此我们需要对每个对象的每个属性进行遍历。
 + `Object.defineProperty`不能监听数组。是通过重写数据的那7个可以改变数据的方法来对数组进行监听的。
 + `Object.defineProperty` 也不能对 `es6` 新产生的 `Map`,`Set` 这些数据结构做出监听。

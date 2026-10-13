@@ -18,7 +18,7 @@ await命令后面，可以是 Promise 对象和原始类型的值（数值、字
 >4)	**返回值是 Promise。**
 async函数的返回值是 Promise 对象，进一步说，**async函数完全可以看作多个异步操作，包装成的一个 Promise 对象，而await命令就是内部then命令的语法糖**。
 
-#### 1、Async的语法
+## 1、Async的语法
 
 >1、async函数返回一个 Promise 对象。
 
@@ -41,7 +41,7 @@ f().then(
 
 &#8195;&#8195;`async`函数返回的 `Promise` 对象，必须等到内部所有`await`命令后面的 `Promise` 对象执行完，才会发生状态改变，除非遇到`return`语句或者抛出错误。也就是说，只有`async`函数内部的异步操作执行完，才会执行`then`方法指定的回调函数。
 
-#### 2、Await命令
+## 2、Await命令
 
 &#8195;&#8195;正常情况下，`await`命令后面是一个 `Promise` 对象，返回该对象的结果。如果不是 `Promise` 对象，就直接返回对应的值。
 ```js
@@ -55,7 +55,7 @@ f().then(v => console.log(v))
 ```       
 &#8195;&#8195;另一种情况是，await命令后面是一个thenable对象（即定义then方法的对象），那么await会将其等同于 Promise 对象。
 
-#### 3、错误处理
+## 3、错误处理
 
 &#8195;&#8195;如果await后面的异步操作出错，那么等同于async函数返回的 Promise 对象被reject。
 ```js
@@ -69,7 +69,7 @@ f()
 .catch(e => console.log(e))
 // Error：出错了
 ```
-#### 4、使用注意点
+## 4、使用注意点
 
 &#8195;&#8195;1)	await命令后面的Promise对象，运行结果可能是rejected，所以最好把await命令放在try...catch代码块中。	
 ```js
@@ -132,7 +132,7 @@ const a = async () => {
 ```       
 &#8195;&#8195;b()运行的时候，a()是暂停执行，上下文环境都保存着。一旦b()或c()报错，错误堆栈将包括a()。
 
-#### 5、实例：按顺序完成异步操作
+## 5、实例：按顺序完成异步操作
 
 ```js
 async function logInOrder(urls) {
@@ -158,7 +158,7 @@ async function logInOrder(urls) {
 ```
 &#8195;&#8195;**虽然map方法的参数是async函数，但它是并发执行的，因为只有async函数内部是继发执行，外部不受影响。**
 
-#### 6、异步遍历器
+## 6、异步遍历器
 
 &#8195;&#8195;异步遍历器的最大的语法特点，就是调用遍历器的next方法，返回的是一个 Promise 对象。
 ```js
@@ -168,7 +168,7 @@ asyncIterator
     ({ value, done }) => /* ... */
     );
 ```
-#### 7、异步 Generator 函数
+## 7、异步 Generator 函数
 
 &#8195;&#8195;语法上，异步 Generator 函数就是async函数与 Generator 函数的结合。
 ```js

@@ -7,7 +7,9 @@ note: 自己在使用vue的过程中经常会用到听到`数据双向绑定`这
 ---
 &#8195;&#8195;自己在使用vue的过程中经常会用到听到`数据双向绑定`这个词，而且我们还可以直接通过调用`this.msg`(this表示vue实例),来获取data上的数据，以前一直不太明白为什么可以这样获取，直到有一天我在论坛里看到了`寻找海蓝96`这位大佬写的文章,才明白其原理，所以在此记录一下。
 
-<h3 id="a1">1、Object.defineProperty(obj,key,descriptor) </h3>
+
+## 1、Object.defineProperty(obj,key,descriptor) {#a1}
+
 &#8195;&#8195;`Object.defineProperty`主要是通过Get和Set这两个访问器属性来实现数据双向绑定的。说到这里必须先介绍以下js对象的两种特性。
 `ECMAScript`中有两种属性:数据属性和访问器属性。这是js中任何对象都拥有的特性。      
 

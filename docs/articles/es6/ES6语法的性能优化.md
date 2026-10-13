@@ -5,10 +5,14 @@ type: 技术
 tags: es6
 note: ES6语法的性能优化
 ---
+## 变量声明
+
 >1、建议不再使用var命令，而是使用let命令取代。
 
 >2、在let和const之间，建议优先使用const，尤其是在全局环境，不应该设置变量，只应设置常量。
 原因：一个是const可以提醒阅读程序的人，这个变量不应该改变；另一个是const比较符合函数式编程思想，运算不改变值，只是新建值，而且这样也有利于将来的分布式运算；最后一个原因是 JavaScript 编译器会对const进行优化，所以多使用const，有利于提高程序的运行效率，也就是说let和const的本质区别，其实是编译器内部的处理不同。
+
+## 字符串
 
 >3、静态字符串一律使用单引号或反引号，不使用双引号。动态字符串使用反引号。
 ```js
@@ -19,7 +23,8 @@ const b = 'foo' + a + 'bar';
 const a = 'foobar';
 const b = `foo${a}bar`;
 ```       
->4、解构赋值
+## 解构赋值
+
 使用数组成员对变量赋值时，优先使用解构赋值。
 ```js
 const arr = [1, 2, 3, 4];
@@ -44,7 +49,7 @@ function getFullName(obj) {
 function getFullName({ firstName, lastName }) {
 }
 ```
->5、**对象**
+## 对象
 
 &#8195;&#8195;单行定义的对象，最后一个成员不以逗号结尾。多行定义的对象，最后一个成员以逗号结尾。
 ```js
@@ -73,12 +78,16 @@ Object.assign(a, { x: 3 });
 const a = { x: null };
 a.x = 3;
 ```
+## 数组复制与转换
+
 >6、使用扩展运算符（...）拷贝数组。使用 Array.from 方法，将类似数组的对象转为数组。
 ```js
 const itemsCopy = [...items];
 const foo = document.querySelectorAll('.foo');
 const nodes = Array.from(foo);
 ```   
+## 函数与参数
+
 >7、简单的、单行的、不会复用的函数，建议采用箭头函数。如果函数体较为复杂，行数较多，还是应该采用传统的函数写法。   
 
 >8、不要在函数体内使用 arguments 变量，使用 rest 运算符（...）代替。
@@ -104,7 +113,11 @@ function handleThings(opts = {}) {
     // ...
 }
 ```
+## `Object` 与 `Map`
+
 >10、注意区分 `Object` 和 `Map`，只有模拟现实世界的实体对象时，才使用 `Object`。如果只是需要`key: value`的数据结构，使用 Map 结构。因为 `Map` 有内建的遍历机制。
+
+## 类与继承
 
 >11、总是用 `Class`，取代需要 `prototype` 的操作。因为 `Class` 的写法更简洁，更易于理解。
 ```js
@@ -130,6 +143,8 @@ class Queue {
 }
 ```
 >12、使用extends实现继承，因为这样更简单，不会有破坏instanceof运算的危险。
+
+## 模块导入与导出
 
 >13、如果模块只有一个输出值，就使用export default，如果模块有多个输出值，就不使用export default。export default与普通的export不要同时使用。
 

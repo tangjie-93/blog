@@ -28,12 +28,12 @@ p.then(res=>{
 
 ## 2、Promise对象的特点
 
-#### 1、对象的状态不受外界影响。
+### 1、对象的状态不受外界影响。
 &#8195;&#8195;`Promise`对象有三种状态`fulfilled,rejected,pending）`。只有异步操作的结果，可以决定当前是哪一种状态，任何其他操作都无法改变这个状态。 
 + pending: 初始状态，既不是成功，也不是失败状态。
 + fulfilled: 意味着操作成功完成。
 + rejected: 意味着操作失败。
-#### 2、状态一旦发生改变，就不会再变，任何时候都可以得到这个结果。
+### 2、状态一旦发生改变，就不会再变，任何时候都可以得到这个结果。
 &#8195;&#8195; `Promise`对象的状态改变，只有两种可能：从`pending`变为`fulfilled`和从`pending`变为`rejected`。
 
 **Promise的优点：** 
@@ -61,7 +61,7 @@ p.then((arg) => {
 ```
 ## 3、Promise的实例方法
 
-#### 1、Promise.prototype.then(onFulfilled, onRejected)
+### 1、Promise.prototype.then(onFulfilled, onRejected)
 + `onFulfilled`和`onRejected`分别是`Promise`实例对象成功和失败情况的回调函数。
 + 该方法返回一个新的 `promise`实例对象。
 + **将以回调的返回值（return，只要不报错），作为`then` 函数调用时 `onFulfilled` 回调函数的参数。** 并且`then`方法可以被同一个 `promise` 对象调用多次。
@@ -222,7 +222,7 @@ promise.then((res) => {
     console.log(res, Date.now() - start);//success 1007
 })
 ```
-#### 2、Promise.prototype.catch(onRejected)
+### 2、Promise.prototype.catch(onRejected)
 &#8195;&#8195;该方法的原码如下所示：
       
 ```javascript       
@@ -360,7 +360,7 @@ new Promise((resolve, reject) => {
     console.log(res);
 })
 ```
-#### 3、Promise.prototype.finally(onFinally)
+### 3、Promise.prototype.finally(onFinally)
 &#8195;&#8195;该方法返回一个 `Promise`，在`promise`执行结束时，无论结果是`fulfilled`或者是`rejected`，在执行`then()`和`catch()`后，都会执行`finally`指定的回调函数。源码实现如下：
 
 ```javascript          
@@ -378,7 +378,7 @@ Promise.prototype.finally = function (f) {
 ```
 
 ## 3、Promise的静态方法
-#### 1、Promise.all(iterable)
+### 1、Promise.all(iterable)
 &#8195;&#8195;该方法返回一个新的 `promise` 对象，该 `promise`对象在 `iterable` 参数对象里所有的 `promise`对象都成功的时候才会触发成功，一旦有任何一个 `iterable`里面的 `promise` 对象失败则立即触发该 `promise` 对象的失败。        
 
 源码实现如下：
@@ -441,7 +441,9 @@ setTimeout(function(){
     console.log(p);//Promise {<rejected>: 44}
 });
 ```
-<h4>&#8195;2、Promise.race(iterable)</h4>
+
+### &#8195;2、Promise.race(iterable)
+
 
 &#8195;&#8195;原码实现如下：
 ```javascript        
@@ -464,7 +466,7 @@ let p=Promise.race([]);
 console.log(p);//Promise {<pending>}
         
 ```
-#### 3、Promise.resolve(value)
+### 3、Promise.resolve(value)
 
 &#8195;&#8195;**该方法的作用就是将现有对象转为 Promise 实例,并且该实例的状态为resolve。**
 该方法的源码实现如下：
@@ -545,7 +547,9 @@ const p = Promise.resolve()；
 console.log(p);//Promise {<resolved>: undefined}
 ```
 
-<h4>&#8195;4、Promise.rejected(value)</h4>
+
+### &#8195;4、Promise.rejected(value)
+
 &#8195;&#8195;返回一个新的 Promise 实例，该实例的状态为rejected。
 
 ```javascript            

@@ -5,10 +5,16 @@ export function createCommentDocument(scriptUrl: string, storageUrl: string, pat
     const config = JSON.stringify({ ...settings, path, title, scriptUrl, storageUrl }).replace(/</g, '\\u003c')
     return `<!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<style>body{margin:0;padding:12px;font:14px/1.6 system-ui,sans-serif;color:#3c3c43;background:#fff;overflow-wrap:anywhere}button,input,textarea{font:inherit}a{color:#3451b2}#message{color:#666}</style></head>
+<style>body{display:flow-root;margin:0;padding:12px;font:14px/1.6 system-ui,sans-serif;color:#3c3c43;background:#fff;overflow-wrap:anywhere}button,input,textarea{font:inherit}a{color:#3451b2}#message{color:#666}#comments .vempty:not(:has(pre)),#comments .vpower{display:none!important}</style></head>
 <body><p id="message" role="status">正在加载评论…</p><p><span class="leancloud-visitors"><strong>阅读量：</strong><span class="leancloud-visitors-count">—</span></span></p><div id="comments"></div>
 <script>
 const config=${config};
+const resizeObserver=new ResizeObserver(()=>{
+    // 读取内容自然高度并加上 iframe 边框，避免视口高度阻止评论区收缩。
+    frameElement.style.height=Math.ceil(document.body.getBoundingClientRect().height)+2+'px';
+});
+resizeObserver.observe(document.body);
+addEventListener('pagehide',()=>resizeObserver.disconnect(),{once:true});
 const visitor=document.querySelector('.leancloud-visitors');
 visitor.id=config.path;
 visitor.dataset.flagTitle=config.title;

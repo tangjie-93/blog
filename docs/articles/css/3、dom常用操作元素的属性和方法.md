@@ -8,7 +8,7 @@ note: dom常用操作元素的属性和方法
 
 `DOM(Document Object Model)` 文档对象模型。提供系列的属性和方法，让我们可以在`js`中操作页面中的元素。
 
-#### 1、获取dom元素的属性和方法
+## 1、获取dom元素的属性和方法
 + `document.getElementById(id)`
 + `[context].getElementByTagName(tagname)`
 + `[context].getElementByClassName(classname)` 在`IE6-8`下不兼容。
@@ -27,7 +27,7 @@ note: dom常用操作元素的属性和方法
 + `previousSibling`/`previousElementSibling`
  `nextSibling`/`nextElementSibling`
 //=>所有带`Element`的在`IE6-8`下都不兼容
-#### 2、DOM的增删改查
+## 2、DOM的增删改查
 ```js
 document.createElement(tagname)
 document.createTextNode(text content)
@@ -45,7 +45,7 @@ delete [ele].xx
 [ele].getAttribute("xxx");
 [ele].removeAttribute("xxx")
 ```
-#### 3、获取元素样式和操作样式
+## 3、获取元素样式和操作样式
 ```js
 //=>修改元素样式
 [ele].style.xxx=xxx;//修改或者设置行内样式

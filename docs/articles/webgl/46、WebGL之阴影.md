@@ -14,7 +14,7 @@ note: WebGL之阴影
 如果我们具有了这些深度信息，那么我们在选择要渲染哪个颜色的时候，我们就可以从被投影的纹理中进行采样，得到一个采样深度值，然后和当前正在绘制的像素的深度值进行比较。如果当前像素的深度值比采样得到的深度值大，则说明还有其他东西比当前像素更加接近光源。也就是说，某样东西挡住了光源，因此该像素是处于阴影中的。
 
 下面让我们来实现绘制阴影映射，下面是实现该效果的核心代码。
-#### 1. 开启`WEBGL_depth_texture`扩展
+## 1. 开启`WEBGL_depth_texture`扩展
 ```js
 function main() {
   // 获得一个 WebGL context
@@ -31,7 +31,7 @@ function main() {
   }
 }
 ```
-#### 2.渲染到纹理
+## 2.渲染到纹理
 + 创建纹理
 ```js
 const depthTexture = gl.createTexture();
@@ -96,7 +96,7 @@ gl.framebufferTexture2D(
 ```
 为了使用深度纹理，我们还需要能够使用不同的着色器来渲染场景多次。一次是一个简单的着色器，只是为了渲染到深度纹理上，然后再使用我们当前的着色器，该着色器会投影一个纹理。
 
-#### 3.绘制场景函数
+## 3.绘制场景函数
 ```js
 function drawScene(projectionMatrix, cameraMatrix, textureMatrix, programInfo) {
   // 从相机矩阵中创建一个视图矩阵
@@ -131,7 +131,7 @@ function drawScene(projectionMatrix, cameraMatrix, textureMatrix, programInfo) {
   webglUtils.drawBufferInfo(gl, planeBufferInfo);
 }
 ```
-#### 4.渲染函数
+## 4.渲染函数
 使用该函数从光源视角绘制一次场景，然后使用深度纹理再绘制一次场景
 ```js
 function render() {

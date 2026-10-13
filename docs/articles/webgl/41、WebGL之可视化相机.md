@@ -11,7 +11,7 @@ note: WebGL之可视化相机
 
 创建一个立方体，然后在立方体的末端添加一个圆锥,用于表示相机。我们会使用线段来绘制这个物体。我们会使用 `索引` 来连接顶点。
 相机 看向的是 `-Z` 方向，所以，让我们把立方体和圆锥放到 `+Z` 这边，而圆锥的开口方向是 `-Z` 方向。
-#### 1.1 创建立方体
+## 1.1 创建立方体
 绘制的是立方体线框。
 ```js
 // 为一个相机创建几何
@@ -40,7 +40,7 @@ function createCameraBufferInfo(gl) {
 }
 ```
 
-#### 1.2 创建圆锥
+## 1.2 创建圆锥
 ```js
 // 为一个相机创建几何
 function createCameraBufferInfo(gl) {
@@ -85,7 +85,7 @@ function createCameraBufferInfo(gl) {
   });
 }
 ```
-#### 1.3 缩放立方体以适配物体
+## 1.3 缩放立方体以适配物体
 ```js
 function createCameraBufferInfo(gl, scale = 1) {
   // 首先，让我们添加一个立方体。它的范围是 1 到 3，
@@ -133,7 +133,7 @@ function createCameraBufferInfo(gl, scale = 1) {
 }
 ```
 
-#### 1.4 着色器
+## 1.4 着色器
 + 绘制顶点颜色的着色器
 ```js
 ```
@@ -160,7 +160,7 @@ void main() {
 }
 </script>
 ```
-#### 1.5 绘制场景
+## 1.5 绘制场景
 + 获取`WebGL`上下文
 ```js
 const canvas = document.querySelector('#canvas');
@@ -286,7 +286,7 @@ function render() {
     drawScene(perspectiveProjectionMatrix2, cameraMatrix2, worldMatrix);
 }
 ```
-#### 1.6 绘制模拟相机的物体
+## 1.6 绘制模拟相机的物体
 **注意**：
 + 这里使用的视图矩阵是基于右侧场景的相机矩阵，而不是基于左侧场景的相机矩阵。
 + 这里使用的模型矩阵是左侧场景的相机矩阵。那么物体的世界坐标则是相对于左侧场景的相机坐标系而言的。
@@ -319,7 +319,7 @@ function drawObjects(gl, mat, solidColorProgramInfo, cameraBufferInfo) {
     webglUtils.drawBufferInfo(gl, cameraBufferInfo, gl.LINES);
 }
 ```
-#### 1.6 绘制视锥体
+## 1.6 绘制视锥体
 因为视椎体表示的是将某一空间的坐标转换到裁剪空间的转换，这样我们就可以创建一个表示裁剪空间的立方体，然后使用投影矩阵的逆矩阵把该立方体放置到场景内。
 
 **注意**： 因为本身我们定义的视锥体的坐标就是裁剪空间坐标了，所以需要使用投影矩阵的逆矩阵,投影矩阵的逆矩阵用于将裁剪空间中的点转换回相机空间。

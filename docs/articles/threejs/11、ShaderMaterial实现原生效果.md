@@ -7,5 +7,8 @@ tags: threejs
 note: ShaderMaterial实现原生效果
 ---
 
+## 内容待整理
+
+本文为草稿，正文尚未整理。
 
 <Valine></Valine>

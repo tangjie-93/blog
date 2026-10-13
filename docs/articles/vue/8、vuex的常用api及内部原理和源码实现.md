@@ -5,7 +5,9 @@ type: 技术
 tags: vue
 note: vuex的常用api及内部原理
 ---
-**1、什么是vuex?**<br>
+
+## 什么是 `Vuex`
+
 &#8195;&#8195;Vuex是一个专门为Vue.js一个用程序开发的`状态管理模式`。将`不同组件的共享状态`抽取出来，以一个`全局单例管理模式`来管理，利用Vue.js的`细粒度数据响应机制`来进行高效的状态更新。<br>
 &#8195;&#8195;优势：
 + 通过定义和隔离状态管理中的各种概念并通过强制规则来维护视图和状态间的独立性，使得代码变得更结构化并且易于维护。<br>
@@ -15,10 +17,14 @@ note: vuex的常用api及内部原理
 &#8195;&#8195;用一张官网的图可以很好的描述Vuex的状态管理模式。
 <img src="../../images/vue/vuex.png" alt="暂无图片" style="display:block;width:50%;margin:0 auto">
 
-**2、核心概念**
-+ **1、state<br>**
+## 核心概念
+
+### `state`
+
 &#8195;&#8195;驱动应用的数据源。在组件中通过`this.$store.state.list`来访问这些state。
-+ **2、Getter<br>**
+
+### `Getter`
+
 &#8195;&#8195;可以认为是store的计算属性，getter额返回值会根据它的依赖被缓存起来，且只有当它的依赖值发生了变化才会被重新计算。在vue组件中，通过`this.$store.getters.doneTodos`访问这些值
 
 ```javascript
@@ -70,7 +76,9 @@ note: vuex的常用api及内部原理
         }
     }
 ```
-+ **3、Mutation<br>**
+
+### `Mutation`
+
 &#8195;&#8195;更改store中状态的唯一方法就是提交mutations。
 ```javascript
     ...
@@ -117,7 +125,8 @@ export default {
 }
 ```
 
-+ **4、Action<br>**
+### `Action`
+
 &#8195;**1、Action类似于mutation，他们的不同点在于：**<br>
 &#8195;&#8195;`1）Action提交的是mutation，而不是直接改变状态。`<br>
 &#8195;&#8195;`2）Action可以包含任何异步操作`。
@@ -206,7 +215,9 @@ actions: {
     }
 }
 ```
-+ **5、Module**<br>
+
+### `Module`
+
 &#8195;&#8195;Vuex允许我们将store分割成多个模块。每个模块都有自己的state、mutation、action和getter。
 ```javascript
     const moduleA = {

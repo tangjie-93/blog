@@ -5,7 +5,7 @@ type: 技术
 tags: jquery
 note: jquery之正则表达式详解
 ---
-#### 1、非空字符
+## 1、非空字符
 该正则表达式可以用来分割字符串，比`split`的功能更强大。可以同时按照不同分隔符来分割字符串。
 ```js
 //在中括号中的^表示非的意思,\X20表示空格,/g表示全局搜索,使用match方法时将返回匹配数组
@@ -31,7 +31,7 @@ function createOptions(options){
 createOptions("once\tmemory");//{ "once":true,"memory":true }
 createOptions("once memory");//{"once":true,"memory":true}
 ```
-#### 2、匹配html的正则表达式
+## 2、匹配html的正则表达式
 ```js
 rquickExpr = /^(?:\s*(<[\w\W]+>)[^>]*|#([\w-]*))$/;
 ```
@@ -60,7 +60,7 @@ console.log(a.match(pattern));//["123abc456", "abc", "456", index: 0, input: "12
 
 3. `#([\w-]*))$`
 匹配结尾带上#号的任意字符，包括下划线与-
-#### 3、匹配一个独立的标签
+## 3、匹配一个独立的标签
 ```js
 const rsingleTag = /^<(\w+)\s*\/?>(?:<\/\1>|)$/;
 rsingleTag.test("<div>");//true

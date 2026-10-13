@@ -8,7 +8,8 @@ note: jquery整体封装设计总结
 
 `jquery`的整个代码的封装就是以自执行函数的形式来封装的，自执行函数在执行的过程中会形成闭包。下面将对`jQuery`整体封装设计进行大概的分析。可以总结出如下亮点。
 
-+ `jQuery`的闭包封装
+## `jQuery` 的闭包封装
+
 ```js
 const params1 = typeof window !== 'undefined' ? window : this;
 const params2 = function (window, noGlobal) {
@@ -45,9 +46,11 @@ const params2 = function (window, noGlobal) {
 //测试
 $(".box");//每调用一次会创建一个实例
 ```
-+ `jQuery` 的无 `new` 构建
-    + 在调用`jQuery()` 将`jQuery.fn.init`看成一个构造函数,并返回它的实例。
-    + 将`jQuery.fn.init`的原型对象指向 `jQuery` 的原型对象,这样`jQuery()` 对象就能调用 `jQuery`上的共有属性和方法。
+
+## `jQuery` 的无 `new` 构建
+
++ 在调用`jQuery()` 将`jQuery.fn.init`看成一个构造函数,并返回它的实例。
++ 将`jQuery.fn.init`的原型对象指向 `jQuery` 的原型对象,这样`jQuery()` 对象就能调用 `jQuery`上的共有属性和方法。
 ```js
 const jQuery = function (selector, context) {
     //将jQuery.fn.init看成一个构造函数
@@ -71,6 +74,9 @@ jQuery.fn.init = function (selector, context, root) { }
 jQuery.fn.init.prototype = jQuery.fn;
 $("#box");//返回一个实例，并能调用jQuery原型对象上的属性和方法
 ```
+
+## 链式调用与扩展机制
+
 + `jQuery`的链式调用
 + 通过`jQuery.extend = jQuery.fn.extend=function()` 来扩展`jQuery`自身及其原型对象。
     + `jQuery.extend` 调用的时候，`this`是指向`jQuery`对象
@@ -101,14 +107,18 @@ jQuery.extend({
     },
 })
 ```
-+ 使`jQuery`实例支持迭代
+
+## 使 `jQuery` 实例支持迭代
+
 ```js
 if (typeof Symbol === "function") {
     //在jQuery原型对象上添加Symbol.iterator属性，并指向数组原型上的Symbol.iterator属性
     jQuery.fn[Symbol.iterator] = arr[Symbol.iterator];
 }
 ```
-+ `jQuery`和`$`的命名冲突解决方式
+
+## `jQuery` 和 `$` 的命名冲突解决方式
+
 ```js
 //为了防止暴露到全局的jQuery和$命名冲突，可以提供$等使用权限的转让
 /**

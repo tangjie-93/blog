@@ -49,7 +49,7 @@ watch([() => props.tag, () => props.type], () => { page.value = 1 })
         gap: 9px;
         margin: 0 0 12px;
         color: var(--vp-c-text-2);
-        font-size: 13px;
+        font-size: 14px;
         letter-spacing: 0.04em;
     }
     & .blog-list__signal {
@@ -91,7 +91,7 @@ watch([() => props.tag, () => props.type], () => { page.value = 1 })
         gap: 12px;
         margin-bottom: 8px;
         color: var(--vp-c-brand-1);
-        font-size: 11px;
+        font-size: 12px;
         font-weight: 600;
         letter-spacing: 0.08em;
         text-transform: uppercase;
@@ -130,7 +130,7 @@ watch([() => props.tag, () => props.type], () => { page.value = 1 })
         display: -webkit-box;
         margin: 8px 0 0;
         color: var(--vp-c-text-2);
-        font-size: 13px;
+        font-size: 14px;
         line-height: 1.65;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
@@ -143,10 +143,10 @@ watch([() => props.tag, () => props.type], () => { page.value = 1 })
         gap: 8px;
         margin-top: auto;
         padding-top: 12px;
-        font-size: 11px;
+        font-size: 12px;
         color: var(--blog-muted, var(--vp-c-text-2));
 
-        & time { margin-left: auto; font-family: var(--vp-font-family-mono); font-size: 11px; }
+        & time { margin-left: auto; font-family: var(--vp-font-family-mono); font-size: 12px; }
     }
     & .blog-list__tag {
         padding: 2px 8px;
@@ -180,7 +180,7 @@ watch([() => props.tag, () => props.type], () => { page.value = 1 })
         border-radius: 8px;
         background: var(--blog-panel, var(--vp-c-bg-soft));
         color: var(--vp-c-text-1);
-        font-size: 13px;
+        font-size: 14px;
         transition: color 180ms ease, border-color 180ms ease;
 
         &:not(:disabled):hover { color: var(--vp-c-brand-1); border-color: var(--vp-c-brand-1); }

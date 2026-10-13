@@ -27,9 +27,9 @@ const tags = [...new Set(posts.flatMap(post => post.tags))].sort((a, b) => a.loc
         gap: 16px;
         margin: 16px 0 12px;
         color: var(--vp-c-text-2);
-        font-size: 13px;
+        font-size: 14px;
 
-        & span { color: var(--blog-muted, var(--vp-c-text-2)); font-family: var(--vp-font-family-mono); font-size: 11px; letter-spacing: 0.08em; }
+        & span { color: var(--blog-muted, var(--vp-c-text-2)); font-family: var(--vp-font-family-mono); font-size: 12px; letter-spacing: 0.08em; }
     }
     & .blog-tags__buttons {
         display: flex;
@@ -48,8 +48,9 @@ const tags = [...new Set(posts.flatMap(post => post.tags))].sort((a, b) => a.loc
         border: 1px solid var(--blog-border, var(--vp-c-divider));
         border-radius: 24px;
         background: var(--blog-panel, var(--vp-c-bg-soft));
-        color: var(--vp-c-text-2);
-        font-size: 13px;
+        color: var(--vp-c-text-1);
+        font-size: 15px;
+        font-weight: 500;
         line-height: 1.5;
         transition: color 180ms ease, border-color 180ms ease, background 180ms ease;
 
@@ -68,7 +69,7 @@ const tags = [...new Set(posts.flatMap(post => post.tags))].sort((a, b) => a.loc
         border-radius: 14px;
         background: var(--blog-panel, var(--vp-c-bg-soft));
         color: var(--vp-c-text-2);
-        font-size: 14px;
+        font-size: 15px;
         text-align: center;
     }
     @media (max-width: 640px) {

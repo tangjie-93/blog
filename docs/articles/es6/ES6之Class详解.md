@@ -5,7 +5,9 @@ type: 技术
 tags: es6
 note: ES6之Class详解
 ---
-<h4>1、class的基本语法</h4>
+
+## 1、class的基本语法
+
 
 &#8195;新的class写法只是**让对象原型的写法更加清晰、更像面向对象编程的语法** 而已。ES6 的类，完全可以看作构造函数的另一种写法。
 事实上，**类的所有方法都定义在类的prototype属性上面。**
@@ -48,7 +50,9 @@ Object.keys(Point.prototype)// []
 ```       
 &#8195;&#8195;上面代码中，**toString方法是Point类内部定义的方法，它是不可枚举的**。这一点与 ES5 的行为不一致。
 
-<h4>2、	constructor方法</h4>
+
+## 2、	constructor方法
+
 
 &#8195;&#8195;`constructor`方法默认返回实例对象（即`this`），完全可以指定返回另外一个对象。类必须使用`new`调用，否则会报错。
 ```js
@@ -60,7 +64,9 @@ class Foo {
 new Foo() instanceof Foo
 // false
 ```        
-<h4>3、	类的实例</h4>
+
+## 3、	类的实例
+
 
 &#8195;&#8195;与 ES5 一样，实例的属性除非显式定义在其本身（即定义在this对象上），否则都是定义在原型上（即定义在class上）。
 ```js
@@ -89,11 +95,15 @@ var p2 = new Point(3,2);
 p1.__proto__ === p2.__proto__
 //true
 ```       
-<h4>4、取值函数（getter）和存值函数（setter）</h4>
+
+## 4、取值函数（getter）和存值函数（setter）
+
 
 &#8195;&#8195;在“类”的内部可以使用get和set关键字，对某个属性设置存值函数和取值函数，拦截该属性的存取行为。
 
-<h4>5、	属性表达式</h4>
+
+## 5、	属性表达式
+
 
 ```js
 let methodName = 'getArea';
@@ -106,7 +116,9 @@ class Square {
     }
 }
 ```       
-<h4>6、	Class表达式</h4>
+
+## 6、	Class表达式
+
 
 ```js
 const MyClass = class Me {
@@ -181,7 +193,9 @@ class Logger {
     // ...
 }
 ```
-<h4>7、	静态方法</h4>
+
+## 7、	静态方法
+
 
 &#8195;&#8195;如果在一个方法前，加上`static`关键字，就表示该方法不会被实例继承，而是直接通过类来调用，这就称为“静态方法”。
 如果静态方法包含this关键字，**这个this指的是类，而不是实例**。静态方法可以与非静态方法重名。
@@ -223,7 +237,9 @@ class Bar extends Foo {
 }
 Bar.classMethod() // "hello, too"
 ```       
-<h4>8、	实例属性的新写法</h4>
+
+## 8、	实例属性的新写法
+
 
 &#8195;&#8195;这个属性也可以定义在类的最顶层，其他都不变。这种新写法的好处是，所有实例对象自身的属性都定义在类的头部，看上去比较整齐，一眼就能看出这个类有哪些实例属性。
 ```js
@@ -238,7 +254,9 @@ class IncreasingCounter {
     }
 }
 ```       
-<h4>9、	静态属性</h4>
+
+## 9、	静态属性
+
 ```js
 class MyClass {
     static myStaticProp = 42;
@@ -247,7 +265,9 @@ class MyClass {
     }
 }
 ```
-<h4>10、	私有方法和私有属性</h4>
+
+## 10、	私有方法和私有属性
+
 
 &#8195;&#8195;1、	将私有方法移出模块，因为模块内部的所有方法都是对外可见的。
 ```js
@@ -277,7 +297,9 @@ export default class myClass{
     // ...
 };
 ```        
-<h4>11、new.target()</h4>
+
+## 11、new.target()
+
 
 &#8195;&#8195;ES6 为new命令引入了一个new.target属性，该属性一般用在构造函数之中，**返回new命令作用于的那个构造函数** 。如果构造函数不是通过new命令或Reflect.construct()调用的，new.target会返回undefined，因此**这个属性可以用来确定构造函数是怎么调用的。** Class 内部调用new.target，返回当前Class。在函数外部，使用new.target会报错。
 ```js
@@ -315,7 +337,9 @@ class Square extends Rectangle {
 var c=new Rectangle(1,2);
 var obj = new Square(3); // 输出 false
 ```    
-<h4>12、 类的继承</h4>
+
+## 12、 类的继承
+
 
 &#8195;&#8195;Class 可以通过extends关键字实现继承，这比 ES5 的通过修改原型链实现继承，要清晰和方便很多。
 ```js
@@ -354,13 +378,17 @@ class ColorPoint extends Point {
 >5	子类实例对象cp同时是ColorPoint和Point（父类）两个类的实例，这与 ES5 的行为完全一致。
 
 >6	父类的静态方法，也会被子类继承。
-<h4>13、	Object.getPrototypeOf() </h4>
+
+## 13、	Object.getPrototypeOf()
+
 
 &#8195;&#8195;Object.getPrototypeOf方法可以用来从子类上获取父类。可以使用这个方法判断，一个类是否继承了另一个类。
 ```js
 Object.getPrototypeOf(ColorPoint) === Point// true
 ```      
-<h4>14、	Super关键字</h4>
+
+## 14、	Super关键字
+
 
 >1、	**super作为函数调用时，代表父类的构造函数** 。ES6 要求，子类的构造函数必须执行一次super函数。
 super虽然代表了父类A的构造函数，但是返回的是子类B的实例。
@@ -458,7 +486,9 @@ B.m() // 3
 ```       
 &#8195;&#8195;静态方法B.m里面，super.print指向父类的静态方法。这个方法里面的this指向的是B，而不是B的实例。
 
-<h4>15、	类的 prototype 属性和__proto__属性</h4>
+
+## 15、类的 `prototype` 属性和 `__proto__` 属性
+
 
  &#8195; &#8195;ES5 实现之中，每一个对象都有__proto__属性，指向对应的构造函数的prototype属性。
 ```js
@@ -477,7 +507,9 @@ Object.create(A.prototype);
 ```       
  &#8195; &#8195;作为一个对象，子类（B）的原型（__proto__属性）是父类（A）；作为一个构造函数，子类（B）的原型对象（prototype属性）是父类的原型对象（prototype属性）的实例。
  
-<h4>16、实例的 __proto__ 属性</h4>
+
+## 16、实例的 `__proto__` 属性
+
 
 &#8195;&#8195;子类实例的`__proto__`属性的`__proto__`属性，指向父类实例的`__proto__`属性。也就是说，子类的原型的原型，是父类的原型。(p2是子类，p1是父类)
 ```js

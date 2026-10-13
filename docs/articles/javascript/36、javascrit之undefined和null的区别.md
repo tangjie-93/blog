@@ -10,7 +10,9 @@ note: Undefined 类型只有一个值，即特殊的undefined。实际上，unde
     <li><a href="#a2">Null</a></li>
 </ul>
 
-<h4><span id="a1">1、Undefined</span></h4>
+
+## <span id="a1">1、Undefined</span>
+
 
 &#8195;&#8195;Undefined 类型只有一个值，即特殊的undefined。实际上，undefined值是继承自null值。undefined==null 为true。
 根据工作中总结，只要有这几种情况下会出现undefined。并且undefined===undefined为true 
@@ -46,7 +48,9 @@ alert(typeof message);     // "undefined"
 alert(typeof age);         // "undefined"   
 ```
 
-<h4><span id="a2">2、Null 类型</span></h4> 
+
+## <span id="a2">2、Null 类型</span>
+
 
 &#8195;&#8195;是第二个只有一个值的数据类型，这个特殊的值是 null。从逻辑角度来看，null值表示一个空对象指针，要意在保存对象的变量还没有真正保存对象。而这也正是使用 typeof 操作符检测 null值时会返回"object"的原因。null===null为true。这几种情况下会出现null的情况
 

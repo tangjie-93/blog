@@ -54,6 +54,6 @@ watch(commentPath, loadComments)
 <style scoped>
 .blog-comments {
     margin-top: 32px;
-    & .blog-comments__frame { display: block; width: 100%; height: 700px; border: 1px solid var(--vp-c-divider); border-radius: 8px; background: #fff; }
+    & .blog-comments__frame { display: block; box-sizing: border-box; width: 100%; height: 120px; border: 1px solid var(--vp-c-divider); border-radius: 8px; background: #fff; }
 }
 </style>

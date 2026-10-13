@@ -5,7 +5,12 @@ type: 技术
 tags: vue
 note: ​vue通信方法EventBus的实现
 ---
+
+## 组件通信与 `EventBus`
+
 vue通信方式有很多，项目中用的比较多的的有`props、vuex、$emit/$on`这3种，还有`provide/inject`(适合高阶组件)、`$attrs和$listeners`(适合高阶组件)以及`$parent/$child/ref、eventBus`等这3种方式。很多时候我们都是只会使用 `api`，而懂得原理以及实现，但我就觉得懂得原理以及实现跟一个只会调用api的开发人员时不在同一层次的。所以这里就像把跨组件通信的`eventBus`通信的原理给大家展示一下。这也是自己学到大佬的的东西后并在此记录（转载）一下。
+
+## 发布订阅模式的实现
 
 ```javascript            
 class EventBus{
@@ -55,6 +60,7 @@ class EventBus{
 ```
 以上代码用的是发布订阅模式。
 
-参考链接： <br>
+## 参考资料
+
 1、[面试官系列(2): Event Bus的实现](https://juejin.im/post/5ac2fb886fb9a028b86e328c)<br>     
 2、[一个合格的中级前端工程师必须要掌握的 28 个 JavaScript 技巧](https://juejin.im/post/5cef46226fb9a07eaf2b7516#heading-28)<br>

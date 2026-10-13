@@ -2,6 +2,8 @@
 title: 标签库
 pageClass: blog-archive
 aside: false
+prev: false
+next: false
 ---
 
 # 探索知识标签

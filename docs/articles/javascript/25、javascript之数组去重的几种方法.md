@@ -8,7 +8,9 @@ note: 数组去重的几种方法
 &#8195;&#8195;平时工作当中经常会遇到数组去重的需求，所以在这里整理一下有哪些方法可以实现数组的去重。
 <img src="../../images/js/数组去重的几种方法.png" alt="暂无数据" height="300" >
 
-<h3>1、双层for循环</h3>
+
+## 1、双层for循环
+
 
 ```js
 function removeSameEle(arr){
@@ -27,7 +29,9 @@ function removeSameEle(arr){
     return res;
 }
 ```
-<h3>2、indexof或者includes</h3>
+
+## 2、indexof或者includes
+
 
 ```js       
 function removeSameEle(arr){
@@ -42,7 +46,9 @@ function removeSameEle(arr){
 }
 ```
 
-<h3>3、filter</h3>
+
+## 3、filter
+
 
 ```js
 function removeSameEle(arr){
@@ -53,7 +59,9 @@ function removeSameEle(arr){
 }
 ```
 
-<h3>4、reduce唯一值去重</h3>
+
+## 4、reduce唯一值去重
+
 
 ```js       
 function removeSameEle(arr){
@@ -63,7 +71,9 @@ function removeSameEle(arr){
     })
 }
 ```
-<h3>5、set唯一值去重</h3>
+
+## 5、set唯一值去重
+
 &#8195;&#8195;此方法只能用于对简单数组进行去重。
 
 ```js
@@ -72,7 +82,9 @@ function removeSameEle(arr){
 }
 ```
 
-<h3>6、Map去重</h3>  
+
+## 6、Map去重
+
 
 ```js
 function removeSameEle(arr){
@@ -88,7 +100,9 @@ function removeSameEle(arr){
 }
 ```
 
-<h3>7、sort排序后去重</h3>
+
+## 7、sort排序后去重
+
 
 ```js
 function removeSameEle(arr){
@@ -106,7 +120,9 @@ function removeSameEle(arr){
 }
 ```
 
-<h3>8、使用object.keys()去重</h3>
+
+## 8、使用object.keys()去重
+
 
 ```js
 function removeSameEle(arr){

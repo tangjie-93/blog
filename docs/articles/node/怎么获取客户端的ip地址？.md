@@ -5,6 +5,9 @@ type: 技术
 tags: node
 note: 怎么获取客户端的ip地址？
 ---
+
+## 获取客户端 `IP` 的代码示例
+
 ```js
 /**
 @getClientIP

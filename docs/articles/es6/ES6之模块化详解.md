@@ -6,7 +6,9 @@ tags: es6
 note: ES6之模块化详解
 ---
 
-<h4>1、 严格模式</h4>
+
+## 1、 严格模式
+
 
 &#8195;&#8195;ES6 的模块自动采用严格模式，不管你有没有在模块头部加上"use strict";。
 严格模式主要有以下限制。
@@ -27,7 +29,9 @@ note: ES6之模块化详解
 >15、增加了保留字（比如protected、static和interface）。
 
 
-<h4>2、 	export的用法</h4>
+
+## 2、 	export的用法
+
 
 &#8195;&#8195;export命令用于**规定模块的对外接口**，import命令用于输入其他模块提供的功能。
 &#8195;&#8195;**export写法种类：**
@@ -77,7 +81,9 @@ function foo() {
 }
 foo()
 ```       
-<h4>3、	import的用法</h4>
+
+## 3、	import的用法
+
 
 &#8195;&#8195;import命令输入的变量都是只读的，因为它的本质是输入接口。也就是说，**不允许在加载模块的脚本里面，改写接口。**
 ```js
@@ -112,7 +118,9 @@ import { area, circumference } from './circle';
 console.log('圆面积：' + area(4));
 console.log('圆周长：' + circumference(14));
 ```       
-<h4>4、	模块的整体加载 import *</h4>
+
+## 4、	模块的整体加载 import *
+
 
 &#8195;&#8195;整体加载的写法： `import * from "module"`
 ```js
@@ -120,7 +128,9 @@ import * as circle from './circle';
 console.log('圆面积：' + circle.area(4));
 console.log('圆周长：' + circle.circumference(14));
 ```        
-<h4>5、	export default</h4>
+
+## 5、	export default
+
 
 &#8195;&#8195;用到export default命令，为模块指定默认输出。
 ```js
@@ -174,7 +184,9 @@ export default class { ... }
 import MyClass from 'MyClass';
 let o = new MyClass();
 ```       
-<h4>6、	export和import的复合写法</h4>
+
+## 6、	export和import的复合写法
+
 
 ```js
 export { foo, bar } from 'my_module';
@@ -198,7 +210,9 @@ export default es6;
 ```js
 export { default as es6 } from './someModule';
 ```
-<h4>7、	模块的继承</h4>
+
+## 7、	模块的继承
+
 
 ```js
 // circleplus.js
@@ -216,7 +230,9 @@ import exp from 'circleplus';
 console.log(exp(math.e));
 import exp 表示，将circleplus模块的默认方法加载为exp方法。
 ```       
-<h4>8、	Import（）</h4>
+
+## 8、	Import（）
+
 
 &#8195;&#8195;可以实现动态加载。运行时执行，也就是说，什么时候运行到这一句，就会加载指定的模块。**import()返回一个 Promise 对象。** 
 
@@ -242,7 +258,9 @@ import('./myModule.js')
     console.log(theDefault);
 });
 ```       
-<h4>9、	module的加载实现</h4>
+
+## 9、	module的加载实现
+
 
 &#8195;&#8195;浏览器加载 ES6 模块，也使用script标签，但是要加入type="module"属性。
 ```js
@@ -261,7 +279,9 @@ import('./myModule.js')
 ```js
 const isNotModuleScript = this !== undefined;
 ```       
-<h4>10、	 ES6 模块与 CommonJS 模块</h4>        
+
+## 10、	 ES6 模块与 CommonJS 模块
+
 &#8195;&#8195; ES6 模块与 CommonJS 模块完全不同。
 它们有两个重大差异。 
 
@@ -327,7 +347,9 @@ obj = {}; // TypeError
 +	__filename
 +	__dirname
 
-<h4>11、	ES6加载CommonJS模块（整体输入）</h4>
+
+## 11、	ES6加载CommonJS模块（整体输入）
+
 
 &#8195;&#8195;Node 会自动将module.exports属性，当作模块的默认输出，即等同于export default xxx。
 ```js
@@ -356,9 +378,13 @@ const app = express.default();
 import express from 'express';
 const app = express();
 ```       
-<h4>12、	CommonJS加载ES6模块（import()函数）</h4>
+
+## 12、	CommonJS加载ES6模块（import()函数）
+
 &#8195;&#8195;CommonJS 模块加载 ES6 模块，不能使用require命令，而要使用import()函数。ES6 模块的所有输出接口，会成为输入对象的属性。
-<h4>13、	CommonJS 模块的加载原理。</h4>
+
+## 13、	CommonJS 模块的加载原理。
+
 
 &#8195;&#8195;require命令第一次加载该脚本，就会执行整个脚本，然后在内存生成一个对象。
 ```js
@@ -371,7 +397,9 @@ const app = express();
 ```
 &#8195;&#8195;该对象的id属性是模块名，exports属性是模块输出的各个接口，loaded属性是一个布尔值，表示该模块的脚本是否执行完毕。其他还有很多属性，这里都省略了。以后需要用到这个模块的时候，就会到exports属性上面取值。即使再次执行require命令，也不会再次执行该模块，而是到缓存之中取值。**也就是说，CommonJS 模块无论加载多少次，都只会在第一次加载时运行一次，以后再加载，就返回第一次运行的结果，除非手动清除系统缓存。**
 
-<h4>14、	CommonJS的循环加载</h4>
+
+## 14、	CommonJS的循环加载
+
 
 &#8195;&#8195;一旦出现某个模块被"循环加载"，就只输出已经执行的部分，还未执行的部分不会输出。
 ```js
@@ -401,7 +429,9 @@ $ node main.js
 
 &#8195;&#8195;a.js脚本先输出一个done变量，然后加载另一个脚本文件b.js。**注意，此时a.js代码就停在这里，等待b.js执行完毕，再往下执行。** b.js执行到第二行，就会去加载a.js，这时，就发生了“循环加载”。系统会去a.js模块对应对象的exports属性取值，可是因为a.js还没有执行完，从exports属性只能取回已经执行的部分，而不是最后的值。（a.js已经执行的部分，只有一行。）然后，b.js接着往下执行，等到全部执行完毕，再把执行权交还给a.js。于是，a.js接着往下执行，直到执行完毕。
 	
-<h4>15、	ES6模块的循环加载</h4>
+
+## 15、	ES6模块的循环加载
+
 
 &#8195;&#8195;ES6 模块是动态引用，如果使用import从一个模块加载变量（即import foo from 'foo'），那些变量不会被缓存，而是成为一个指向被加载模块的引用
 ```js	
