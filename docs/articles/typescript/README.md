@@ -1445,7 +1445,7 @@ let myUrl = URL.parse("http://www.typescriptlang.org");
 
   ​		在构建的过程中会将`/src/views`和`/generated/templates/views`的输出拷贝到同一个目录下。所以下面的配置是可以的。**合并物理目录列表**
 
-  ```tree
+  ```text
    src
    └── views
        └── view1.ts (imports './template1')

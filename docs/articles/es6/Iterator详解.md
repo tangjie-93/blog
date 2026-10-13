@@ -39,7 +39,7 @@ const obj = {
 &#8195;&#8195;6、函数的 arguments 对象  
 &#8195;&#8195;7、NodeList 对象
 
-&#8195;&#8195;下面是两个通过调用[Symbol.iterator]()方法来Iterator接口的例子。
+&#8195;&#8195;下面是两个通过调用`[Symbol.iterator]()`方法来Iterator接口的例子。
 ```js
 //数组的遍历 部署 Iterator 接口 let iter = arr[Symbol.iterator]();
 let arr = ['a', 'b', 'c'];

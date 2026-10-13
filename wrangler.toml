@@ -1,0 +1,3 @@
+name = "tangjie-blog"
+compatibility_date = "2026-10-13"
+pages_build_output_dir = "docs/.vitepress/dist"

@@ -241,7 +241,7 @@ VueRouter.install=function(_Vue){
 }
 export default VueRouter
 ```
-传送门 [vue-router的简单实现]()
+传送门 vue-router的简单实现
 + 第二版，考虑递归
 ```js
 import Link from './router-link'
@@ -317,4 +317,4 @@ BVueRouter.install = function (_vue) {
 export default BVueRouter
 
 ```
-传送门 [vue-router的路由的递归实现]()
+传送门 vue-router的路由的递归实现

@@ -1,15 +1,30 @@
-<!-- ---
-home: true
-# heroImage: /image/logo.png
-actionText: 进入我的博客
-actionLink: '/timeline/'
+---
+layout: home
+hero:
+  name: 前端技术积累
+  text: 把知识写下来，把原理弄明白。
+  tagline: 从 JavaScript 与 Vue 到图形学、工程化和算法，记录学习中的问题、实践与思考。
+  image:
+    src: /image/logo.png
+    alt: 前端技术积累
+  actions:
+    - theme: brand
+      text: 阅读文章
+      link: /timeline/
+    - theme: alt
+      text: 按标签探索
+      link: /tags/
 features:
-- title: 简洁至上
-  details: 以 Markdown 为中心的项目结构，以最少的配置帮助你专注于写作。
-- title: Vue驱动
-  details: 享受 Vue + webpack 的开发体验，在 Markdown 中使用 Vue 组件，同时可以使用 Vue 来开发自定义主题。
-- title: 高性能
-  details: VuePress 为每个页面预渲染生成静态的 HTML，同时在页面被加载的时候，将作为 SPA 运行。
-footer: MIT Licensed | Copyright © 2019-present Evan Hehe
---- -->
-<BlogList/>
+  - title: 语言与框架
+    details: JavaScript、TypeScript、Vue 与 React，理解日常开发背后的运行机制。
+    link: /articles/javascript/
+    linkText: 阅读 JavaScript 笔记
+  - title: 图形与交互
+    details: 从矩阵变换到渲染管线，通过 WebGL 和 Three.js 探索图形世界。
+    link: /articles/webgl/
+    linkText: 阅读 WebGL 笔记
+  - title: 工程与基础
+    details: HTTP、Node.js、构建工具与数据结构，积累解决实际问题的方法。
+    link: /articles/算法/
+    linkText: 阅读算法笔记
+---

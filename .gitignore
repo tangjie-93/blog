@@ -1,5 +1,11 @@
-node_modules
-docs/.vuepress/dist
+node_modules/
+docs/.vitepress/dist/
+docs/.vitepress/cache/
+.wrangler/
+.playwright-cli/
+output/
+.env
+.env.*
+!.env.example
 *.mp3
 *.DS_Store
-*.lock

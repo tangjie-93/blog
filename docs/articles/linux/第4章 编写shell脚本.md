@@ -992,7 +992,7 @@ bc < foo.bc //把一个脚本直接传递给bc程序
 
 **1、创建数组**
 
-```bah
+```bash
 a[1]=test //方式1
 declare -a a //方式2
 ```
