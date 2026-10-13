@@ -60,6 +60,7 @@ a { color:var(--brand); }
 <body><p id="message" role="status">正在加载评论…</p><p class="comment-visitors"><span class="leancloud-visitors"><strong>阅读量：</strong><span class="leancloud-visitors-count">—</span></span></p><div id="comments"></div>
 <script>
 const config=${config};
+let notificationHookInstalled=false;
 const resizeObserver=new ResizeObserver(()=>{
     // 读取内容自然高度并加上 iframe 边框，避免视口高度阻止评论区收缩。
     frameElement.style.height=Math.ceil(document.body.getBoundingClientRect().height)+2+'px';
@@ -74,6 +75,22 @@ script.src=config.scriptUrl;
 script.onerror=()=>{document.getElementById('message').textContent='评论暂时无法加载，请刷新页面重试。'};
 script.onload=()=>{
     try {
+        // Valine 1.5 没有邮件回调，在评论保存成功后异步通知站点接口。
+        if(typeof window!=='undefined'&&!notificationHookInstalled&&window.AV?.Object?.prototype?.save){
+            const save=window.AV.Object.prototype.save;
+            const wrappedSave=function(...args){
+                const result=save.apply(this,args);
+                if(this.className==='Comment'&&result?.then){
+                    result.then(()=>{
+                        const data={nick:this.get('nick'),mail:this.get('mail'),link:this.get('link'),comment:this.get('comment'),url:this.get('url')};
+                        fetch(parent.location.origin+'/api/comment-notify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data),keepalive:true}).catch(()=>{});
+                    });
+                }
+                return result;
+            };
+            window.AV.Object.prototype.save=wrappedSave;
+            notificationHookInstalled=true;
+        }
         new Valine({el:document.getElementById('comments'),appId:config.appId,appKey:config.appKey,path:config.path,visitor:true,avatar:'mm',placeholder:'留下你的想法…',lang:'zh-CN',recordIP:false});
         document.getElementById('message').remove();
     } catch(error) { document.getElementById('message').textContent='评论暂时无法加载，请刷新页面重试。'; }

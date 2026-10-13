@@ -8,6 +8,7 @@ const base = process.env.VITEPRESS_BASE || '/'
 const navGroups = [
   { text: '语言与标准', categories: ['javascript', 'es6', 'typescript', 'css', 'http'] },
   { text: '框架与工程', categories: ['vue', 'vue3', 'react', 'node', 'webpack', 'linux'] },
+  { text: 'AI 与后端', categories: ['python', 'java', 'agent', 'rag', 'ai-coding'] },
   { text: '图形与交互', categories: ['webgl', 'threejs'] },
   { text: '源码与算法', categories: ['jquery-source-analysis', '算法', '其他'] }
 ]

@@ -190,9 +190,23 @@ pnpm exec wrangler pages deployment tail <deployment-id> \
   --environment production
 ```
 
-本博客是静态站点，没有 `Pages Functions` 时，构建失败应优先查看控制台中该部署的 `Build log`。
+构建失败应优先查看控制台中该部署的 `Build log`；`Pages Functions` 的运行错误可通过上面的日志命令查看。
 
-### 4.7 常见问题
+### 4.7 评论邮件通知
+
+留言继续写入现有的 `LeanCloud`，新评论保存成功后由 `Pages Function` 调用 `Resend` 发邮件。邮件服务密钥只保存在 `Cloudflare`，不会进入前端代码。
+
+先在 `Resend` 验证发件域名，然后在项目目录设置 `Pages` 环境变量：
+
+```sh
+pnpm exec wrangler pages secret put RESEND_API_KEY --project-name tangjie-blog
+pnpm exec wrangler pages secret put COMMENT_NOTIFY_FROM --project-name tangjie-blog
+pnpm exec wrangler pages secret put COMMENT_NOTIFY_ORIGIN --project-name tangjie-blog
+```
+
+分别填写 `Resend API Key`、已验证的发件地址（例如 `Blog <notify@example.com>`）和站点源地址（例如 `https://tangjie-blog.pages.dev`）。收件地址已默认为 `1490934761@qq.com`，如需更换可再设置 `COMMENT_NOTIFY_TO`。设置完成后重新部署 `Pages` 项目，函数路径为 `/api/comment-notify`。
+
+### 4.8 常见问题
 
 - **控制台显示 `No projects found`**：检查左上角账号，再运行 `pnpm exec wrangler whoami` 和 `pnpm exec wrangler pages project list`；两边账号必须一致。
 - **部署成功但页面没有更新**：先运行 `pnpm exec wrangler pages deployment list --project-name tangjie-blog`，确认最新部署的分支和状态，再检查浏览器缓存。

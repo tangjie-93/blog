@@ -2,9 +2,11 @@ import { readdirSync } from 'node:fs'
 import { join } from 'node:path'
 
 const labels = {
+  agent: 'Agent 架构', 'ai-coding': 'AI Coding',
   css: 'CSS', es6: 'ES6', http: 'HTTP', javascript: 'JavaScript',
+  java: 'Java',
   'jquery-source-analysis': 'jQuery 源码', linux: 'Linux', node: 'Node.js',
-  react: 'React', threejs: 'Three.js', typescript: 'TypeScript',
+  python: 'Python', rag: 'RAG', react: 'React', threejs: 'Three.js', typescript: 'TypeScript',
   vue: 'Vue', vue3: 'Vue 3', webgl: 'WebGL', webpack: 'Webpack'
 }
 

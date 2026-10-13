@@ -50,16 +50,23 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--vp-c-brand-1); 
 }
 .VPNavBarSearch .DocSearch-Button { border: 1px solid var(--blog-border); border-radius: 6px; }
 .VPNavBarMenuGroup .VPMenuGroup .title {
-    color: var(--vp-c-text-1);
-    font-weight: 700;
+    display: inline-block;
+    margin: 0 0 8px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    color: var(--vp-c-brand-1);
+    background: var(--vp-c-brand-soft);
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: .02em;
 }
 @media (min-width: 960px) {
     .VPNavBarMenuGroup {
-        & .VPMenu { width: min(720px, calc(100vw - 32px)); min-width: 0; padding: 16px; }
-        & .VPMenu > .items { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+        & .VPMenu { width: min(900px, calc(100vw - 32px)); min-width: 0; padding: 16px; }
+        & .VPMenu > .items { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
         & .VPMenu > .items > .VPMenuGroup { margin: 0; border: 0; padding: 0 16px; }
         & .VPMenu > .items > .VPMenuGroup + .VPMenuGroup { margin-top: 0; border-top: 0; border-left: 1px solid var(--vp-c-divider); padding-top: 0; }
-        & .VPMenuGroup .title { padding: 0 0 8px; font-size: 14px; }
+        & .VPMenuGroup .title { padding: 3px 8px; font-size: 13px; }
         & .VPMenuGroup .VPMenuLink { margin: 0; padding: 0; }
         & .VPMenuGroup .VPMenuLink .link { padding-inline: 0; }
     }
