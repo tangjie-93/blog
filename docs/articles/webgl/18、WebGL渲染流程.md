@@ -9,7 +9,7 @@ note: WebGL渲染流程
 ## 1、WebGL渲染流程
 
 WebGL渲染流程可以用下面的流程图来表示。
-<img src="../../images/webgl/WebGL-渲染管线.png" alt="暂无数据" />
+<img src="../../images/webgl/webgl-渲染管线.png" alt="暂无数据" />
 
 `WebGL（Web Graphics Library）`是一种用于在Web浏览器中进行3D图形渲染的技术，其渲染管线包括以下步骤：
 
