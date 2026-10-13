@@ -5,7 +5,7 @@
                 <p class="home-page__eyebrow"><span/> A DEVELOPER’S DIGITAL GARDEN</p>
                 <h1 id="home-title">保持好奇，<br>探索<span>技术边界。</span></h1>
                 <p class="home-page__description">你好，我是 Tang Jie。<br>在代码中寻找答案，在实践中建立连接。<br>这里记录前端、图形学与工程化的探索路径。</p>
-                <div class="home-page__actions"><a class="home-page__primary" :href="withBase('/timeline/')">探索文章 <span aria-hidden="true">↗</span></a><a class="home-page__secondary" :href="withBase('/about/')">关于我 <span aria-hidden="true">→</span></a></div>
+                <div class="home-page__actions"><a class="home-page__primary" :href="withBase('/timeline/')">探索文章 <span aria-hidden="true">↗</span></a></div>
                 <div class="home-page__stats"><div><strong>{{ posts.length }}</strong><span>篇技术笔记</span></div><div><strong>{{ tagCount }}</strong><span>个知识标签</span></div><div><strong>∞</strong><span>保持探索</span></div></div>
             </div>
             <HeroOrbit />

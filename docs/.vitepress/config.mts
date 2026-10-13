@@ -12,13 +12,13 @@ const navGroups = [
   { text: '源码与算法', categories: ['jquery-source-analysis', '算法', '其他'] }
 ]
 const navByCategory = new Map(nav.map(item => [decodeURIComponent(item.link.split('/')[2] || ''), item]))
-const groupedNav = navGroups.map(({ text, categories }) => ({
-  text,
-  items: categories.flatMap(category => {
+const groupedNav = navGroups.flatMap(({ text, categories }) => {
+  const items = categories.flatMap(category => {
     const item = navByCategory.get(category)
     return item ? [item] : []
   })
-}))
+  return items.length ? [{ text, items }] : []
+})
 const groupedCategories = new Set(navGroups.flatMap(group => group.categories))
 const remainingNav = nav.filter(item => !groupedCategories.has(decodeURIComponent(item.link.split('/')[2] || '')))
 if (remainingNav.length) groupedNav.push({ text: '更多专题', items: remainingNav })
@@ -41,7 +41,6 @@ export default defineConfig({
       { text: '技术栈', items: groupedNav },
       { text: '标签', link: '/tags/' },
       { text: '充电站', link: '/summarize/' },
-      { text: '关于', link: '/about/' },
       { text: '留言', link: '/comments/' }
     ],
     sidebar,
