@@ -14,14 +14,15 @@ test('category navigation preserves index and encoded article URLs in natural or
     }
     const { nav, sidebar } = createNavigation(root)
     assert.deepEqual(nav, [{ text: 'Vue', link: '/articles/vue/' }])
-    const items = sidebar['/articles/vue/'][0].items
+    const group = sidebar['/articles/vue/'][0]
+    assert.equal(group.text, 'Vue 专题')
+    assert.equal(group.link, '/articles/vue/')
+    const items = group.items
     assert.deepEqual(items.map(item => item.link), [
-      '/articles/vue/',
       '/articles/vue/2%E3%80%81this%20%26%20that.html',
       '/articles/vue/10%E3%80%81%E5%93%8D%E5%BA%94%E5%BC%8F.html'
     ])
-    assert.equal(items[0].text, '专题首页')
-    assert.equal(items[1].text, '2、this & that')
+    assert.deepEqual(items.map(item => item.text), ['1、this & that', '2、响应式'])
   } finally {
     rmSync(root, { recursive: true, force: true })
   }
@@ -32,8 +33,37 @@ test('categories without README link to their first real article', () => {
   try {
     mkdirSync(join(root, 'jquery-source-analysis'))
     writeFileSync(join(root, 'jquery-source-analysis', 'READEME.md'), '# jQuery')
-    const { nav } = createNavigation(root)
+    const { nav, sidebar } = createNavigation(root)
     assert.equal(nav[0].link, '/articles/jquery-source-analysis/READEME.html')
+    assert.equal(sidebar['/articles/jquery-source-analysis/'][0].link, undefined)
+    assert.equal(sidebar['/articles/jquery-source-analysis/'][0].items[0].text, '1、READEME')
+  } finally {
+    rmSync(root, { recursive: true, force: true })
+  }
+})
+
+test('Chinese categories match source paths while navigation links remain URL encoded', () => {
+  const root = mkdtempSync(join(tmpdir(), 'blog-nav-'))
+  try {
+    for (const category of ['其他', '算法']) {
+      mkdirSync(join(root, category))
+      for (const file of ['README.md', '1、入门 & 实践.md', '数据结构之堆.md']) {
+        writeFileSync(join(root, category, file), '# Article')
+      }
+    }
+    const { nav, sidebar } = createNavigation(root)
+    for (const category of ['其他', '算法']) {
+      const group = sidebar[`/articles/${category}/`]?.[0]
+      assert.ok(group, `${category} must have a sidebar matching its source path`)
+      assert.equal(group.text, `${category} 专题`)
+      assert.deepEqual(group.items.map(item => item.text), ['1、入门 & 实践', '2、数据结构之堆'])
+      const link = `/articles/${encodeURIComponent(category)}/`
+      assert.equal(group.link, link)
+      assert.equal(nav.find(item => item.text === category).link, link)
+      assert.deepEqual(group.items.map(item => item.link), [
+        `${link}${encodeURIComponent('1、入门 & 实践')}.html`, `${link}${encodeURIComponent('数据结构之堆')}.html`
+      ])
+    }
   } finally {
     rmSync(root, { recursive: true, force: true })
   }

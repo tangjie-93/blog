@@ -1,6 +1,18 @@
 <template>
-    <section class="blog-list" aria-label="文章列表">
-        <p class="blog-list__count" role="status"><span class="blog-list__signal" aria-hidden="true"></span> 共 {{ filteredPosts.length }} 篇文章</p>
+    <section ref="listElement" class="blog-list" aria-label="文章列表">
+        <div class="blog-list__toolbar">
+            <p class="blog-list__count" role="status" aria-live="polite" aria-atomic="true">
+                <strong>共 {{ filteredPosts.length }} 篇文章</strong>
+                <span v-if="filteredPosts.length">当前 {{ (page - 1) * PAGE_SIZE + 1 }}–{{ Math.min(page * PAGE_SIZE, filteredPosts.length) }} 篇</span>
+            </p>
+            <nav v-if="pageCount > 1" class="blog-list__pagination" aria-label="文章分页">
+                <button type="button" :disabled="page === 1" @click="changePage(page - 1)">上一页</button>
+                <select :value="page" aria-label="选择页码" @change="changePage(Number(($event.target as HTMLSelectElement).value))">
+                    <option v-for="number in pageCount" :key="number" :value="number">第 {{ number }} / {{ pageCount }} 页</option>
+                </select>
+                <button type="button" :disabled="page === pageCount" @click="changePage(page + 1)">下一页</button>
+            </nav>
+        </div>
         <div :key="`${props.tag || ''}-${props.type || ''}-${page}`" class="blog-list__grid">
             <article v-for="(post, index) in visiblePosts" :key="post.url" class="blog-list__card">
                 <div class="blog-list__eyebrow">
@@ -16,17 +28,12 @@
             </article>
         </div>
         <p v-if="!filteredPosts.length" class="blog-list__empty">暂无文章</p>
-        <nav v-if="pageCount > 1" class="blog-list__pagination" aria-label="文章分页">
-            <button type="button" :disabled="page === 1" @click="page--">上一页</button>
-            <span role="status" aria-live="polite">第 {{ page }} / {{ pageCount }} 页</span>
-            <button type="button" :disabled="page === pageCount" @click="page++">下一页</button>
-        </nav>
     </section>
 </template>
 
 <script setup lang="ts">
 import type { BlogListProps } from '../../../../src/types/blog'
-import { computed, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import { withBase } from 'vitepress'
 import { data as posts } from '../../posts.data'
 import { filterPosts } from '../blog'
@@ -34,30 +41,52 @@ import { filterPosts } from '../blog'
 const props = defineProps<BlogListProps>()
 const PAGE_SIZE = 24
 const page = ref(1)
+const listElement = ref<HTMLElement | null>(null)
 const filteredPosts = computed(() => filterPosts(posts, props))
 const pageCount = computed(() => Math.ceil(filteredPosts.value.length / PAGE_SIZE))
 const visiblePosts = computed(() => filteredPosts.value.slice((page.value - 1) * PAGE_SIZE, page.value * PAGE_SIZE))
+
+/** 切换到指定页，待列表更新后回到开头，避免用户继续停留在上一页底部。 */
+async function changePage(nextPage: number): Promise<void> {
+    page.value = Math.max(1, Math.min(nextPage, pageCount.value))
+    await nextTick()
+    listElement.value?.scrollIntoView({ block: 'start', behavior: 'instant' })
+}
 
 watch([() => props.tag, () => props.type], () => { page.value = 1 })
 </script>
 
 <style scoped>
 .blog-list {
+    scroll-margin-top: calc(var(--vp-nav-height) + 12px);
+
+    & .blog-list__toolbar {
+        display: flex;
+        position: sticky;
+        top: calc(var(--vp-nav-height) + 8px);
+        z-index: 10;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px 20px;
+        margin-bottom: 16px;
+        padding: 12px 16px;
+        border: 1px solid var(--blog-border, var(--vp-c-divider));
+        border-radius: 10px;
+        background: var(--vp-c-bg);
+        box-shadow: 0 4px 16px var(--vp-c-brand-soft);
+    }
     & .blog-list__count {
         display: flex;
+        flex-wrap: wrap;
         align-items: center;
-        gap: 9px;
-        margin: 0 0 12px;
+        gap: 4px 12px;
+        margin: 0;
         color: var(--vp-c-text-2);
         font-size: 14px;
-        letter-spacing: 0.04em;
-    }
-    & .blog-list__signal {
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: var(--vp-c-brand-1);
-        box-shadow: 0 0 12px var(--vp-c-brand-soft);
+        font-variant-numeric: tabular-nums;
+
+        & strong { color: var(--vp-c-text-1); }
     }
     & .blog-list__grid {
         display: grid;
@@ -163,24 +192,23 @@ watch([() => props.tag, () => props.type], () => { page.value = 1 })
     }
     & .blog-list__pagination {
         display: flex;
-        justify-content: center;
         align-items: center;
-        gap: 20px;
-        margin-top: 20px;
-        padding-top: 16px;
-        border-top: 1px solid var(--blog-border, var(--vp-c-divider));
-        color: var(--vp-c-text-2);
-        font-size: 12px;
+        gap: 8px;
         font-variant-numeric: tabular-nums;
+
+        & select { appearance: auto; }
     }
-    & button {
-        min-height: 40px;
-        padding: 8px 15px;
+    & button, & select {
+        min-height: 44px;
+        padding: 8px 14px;
         border: 1px solid var(--blog-border, var(--vp-c-divider));
         border-radius: 8px;
         background: var(--blog-panel, var(--vp-c-bg-soft));
         color: var(--vp-c-text-1);
         font-size: 14px;
+        line-height: 1.5;
+        white-space: nowrap;
+        cursor: pointer;
         transition: color 180ms ease, border-color 180ms ease;
 
         &:not(:disabled):hover { color: var(--vp-c-brand-1); border-color: var(--vp-c-brand-1); }
@@ -194,10 +222,13 @@ watch([() => props.tag, () => props.type], () => { page.value = 1 })
         & .blog-list__grid { grid-template-columns: 1fr; gap: 10px; }
         & .blog-list__card { padding: 14px 16px; }
         & .blog-list__title { font-size: 16px; }
-        & .blog-list__pagination { gap: 12px; }
+        & .blog-list__toolbar { gap: 10px; padding: 10px; }
+        & .blog-list__count { width: 100%; justify-content: space-between; font-size: 13px; }
+        & .blog-list__pagination { width: 100%; display: grid; grid-template-columns: 1fr auto 1fr; gap: 6px; }
+        & button, & select { min-width: 0; padding-inline: 8px; }
     }
     @media (prefers-reduced-motion: reduce) {
-        & .blog-list__card, & .blog-list__title a, & button { transition: none; }
+        & .blog-list__card, & .blog-list__title a, & button, & select { transition: none; }
         & .blog-list__card:hover { transform: none; }
     }
 }

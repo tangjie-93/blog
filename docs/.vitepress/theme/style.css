@@ -64,6 +64,42 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--vp-c-brand-1); 
 }
 /* 文章页使用整个视口，避免默认主题在宽屏叠加外边距和正文宽度限制。 */
 .Layout:has(.VPContent.has-sidebar) { --vp-layout-max-width: 100vw; }
+/* 仅文章列表滚动，侧栏外壳与顶部站点信息保持固定。 */
+.Layout aside.VPSidebar {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding-inline: 16px;
+    padding-bottom: 12px;
+    & > .curtain { display: none; }
+    & > .nav {
+        flex: 1;
+        min-height: 0;
+        overflow-x: hidden;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        scrollbar-width: thin;
+        scrollbar-color: var(--blog-border) transparent;
+        padding: 4px 4px 8px 0;
+        & > .group { width: 100%; padding-top: 4px; }
+    }
+    & .VPSidebarItem.level-0 { padding-bottom: 8px; }
+    & .VPSidebarItem.level-0 > .item {
+        margin-bottom: 6px;
+        padding: 0 8px 6px;
+        border-bottom: 1px solid var(--blog-border);
+        & .link::after { content: '首页 →'; flex-shrink: 0; margin-left: 8px; font-size: 12px; color: var(--blog-muted); }
+    }
+    & .VPSidebarItem.level-1 > .item > .link {
+        padding-inline: 8px;
+        border-radius: 6px;
+        &:hover { background: var(--vp-c-brand-soft); }
+    }
+    & .VPSidebarItem.level-1.is-active > .item > .link { background: var(--vp-c-brand-soft); }
+    @media (min-width: 960px) {
+        & .VPSidebarItem.level-1 .text { padding-block: 3px; line-height: 22px; }
+    }
+}
 .VPDoc.has-sidebar {
     padding: 24px 24px 20px;
     & .container { max-width: none; }
@@ -106,6 +142,20 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--vp-c-brand-1); 
         &.active { color: var(--vp-c-brand-1); background: var(--vp-c-brand-soft); font-weight: 600; }
     }
     & .nested { padding: 0 0 0 12px; }
+}
+.blog-guestbook .VPDoc:not(.has-sidebar) {
+    padding: 32px 24px 40px;
+    & > .container { max-width: 880px; }
+    & > .container > .content { max-width: 100%; min-width: 0; padding: 0; }
+    & .content-container { max-width: none; }
+    & .vp-doc h1 { font-size: 30px; }
+    & .vp-doc > div > p { margin: 12px 0 24px; color: var(--blog-muted); }
+    & .blog-comments { margin-top: 0; }
+    & .blog-comments > h2 { display: none; }
+    @media (max-width: 767px) {
+        padding: 24px 16px 28px;
+        & .vp-doc h1 { font-size: 26px; }
+    }
 }
 .blog-archive .VPDoc:not(.has-sidebar) {
     padding: 24px 28px 32px;

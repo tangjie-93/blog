@@ -22,10 +22,13 @@ export function createNavigation(articlesDir) {
       .map(entry => entry.name)
       .sort((a, b) => a === b ? 0 : a === 'README.md' ? -1 : b === 'README.md' ? 1 : a.localeCompare(b, 'zh-CN', { numeric: true }))
     nav.push({ text, link: files.includes('README.md') ? link : `${link}${encodeURIComponent(files[0].slice(0, -3))}.html` })
-    sidebar[link] = [{ text, items: files.map(file => ({
-      text: file === 'README.md' ? '专题首页' : file.slice(0, -3),
-      link: file === 'README.md' ? link : `${link}${encodeURIComponent(file.slice(0, -3))}.html`
-    })) }]
+    // 侧栏按源码路径匹配，只有可点击链接需要 URL 编码。
+    sidebar[`/articles/${category.name}/`] = [{ text: `${text} 专题`,
+      ...(files.includes('README.md') ? { link } : {}),
+      items: files.filter(file => file !== 'README.md').map((file, index) => ({
+        text: `${index + 1}、${file.slice(0, -3).replace(/^\d+、\s*/, '')}`,
+        link: `${link}${encodeURIComponent(file.slice(0, -3))}.html`
+      })) }]
   }
   return { nav, sidebar }
 }
