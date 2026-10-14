@@ -4,7 +4,7 @@ import { join } from 'node:path'
 const labels = {
   agent: 'Agent 架构', 'ai-coding': 'AI Coding',
   css: 'CSS', es6: 'ES6', http: 'HTTP', javascript: 'JavaScript',
-  java: 'Java',
+  java: 'Java', langchain: 'LangChain',
   'jquery-source-analysis': 'jQuery 源码', linux: 'Linux', node: 'Node.js',
   python: 'Python', rag: 'RAG', react: 'React', threejs: 'Three.js', typescript: 'TypeScript',
   vue: 'Vue', vue3: 'Vue 3', webgl: 'WebGL', webpack: 'Webpack'
@@ -28,7 +28,7 @@ export function createNavigation(articlesDir) {
     sidebar[`/articles/${category.name}/`] = [{ text: `${text} 专题`,
       ...(files.includes('README.md') ? { link } : {}),
       items: files.filter(file => file !== 'README.md').map((file, index) => ({
-        text: `${index + 1}、${file.slice(0, -3).replace(/^\d+、\s*/, '')}`,
+        text: `${index + 1}、${file.slice(0, -3).replace(/^\d+(?:、|-)\s*/, '')}`,
         link: `${link}${encodeURIComponent(file.slice(0, -3))}.html`
       })) }]
   }

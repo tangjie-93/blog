@@ -62,13 +62,13 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--vp-c-brand-1); 
 }
 @media (min-width: 960px) {
     .VPNavBarMenuGroup {
-        & .VPMenu { width: min(900px, calc(100vw - 32px)); min-width: 0; padding: 16px; }
-        & .VPMenu > .items { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
-        & .VPMenu > .items > .VPMenuGroup { margin: 0; border: 0; padding: 0 16px; }
+        & .VPMenu { width: min(780px, calc(100vw - 24px)); min-width: 0; padding: 12px; }
+        & .VPMenu > .items { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); }
+        & .VPMenu > .items > .VPMenuGroup { margin: 0; border: 0; padding: 0 10px; }
         & .VPMenu > .items > .VPMenuGroup + .VPMenuGroup { margin-top: 0; border-top: 0; border-left: 1px solid var(--vp-c-divider); padding-top: 0; }
-        & .VPMenuGroup .title { padding: 3px 8px; font-size: 13px; }
+        & .VPMenuGroup .title { margin-bottom: 5px; padding: 3px 7px; font-size: 12px; }
         & .VPMenuGroup .VPMenuLink { margin: 0; padding: 0; }
-        & .VPMenuGroup .VPMenuLink .link { padding-inline: 0; }
+        & .VPMenuGroup .VPMenuLink .link { min-height: 30px; padding: 0; font-size: 13px; }
     }
 }
 /* 桌面端让正文成为独立滚动区，滚动条从导航栏下方开始。 */

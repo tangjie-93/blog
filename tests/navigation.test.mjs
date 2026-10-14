@@ -42,6 +42,19 @@ test('categories without README link to their first real article', () => {
   }
 })
 
+test('sidebar removes numeric prefixes from English slugs', () => {
+  const root = mkdtempSync(join(tmpdir(), 'blog-nav-'))
+  try {
+    mkdirSync(join(root, 'langchain'))
+    writeFileSync(join(root, 'langchain', 'README.md'), '# LangChain')
+    writeFileSync(join(root, 'langchain', '05-agent-and-tools.md'), '# Agent')
+    const { sidebar } = createNavigation(root)
+    assert.equal(sidebar['/articles/langchain/'][0].items[0].text, '1、agent-and-tools')
+  } finally {
+    rmSync(root, { recursive: true, force: true })
+  }
+})
+
 test('Chinese categories match source paths while navigation links remain URL encoded', () => {
   const root = mkdtempSync(join(tmpdir(), 'blog-nav-'))
   try {
