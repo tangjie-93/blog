@@ -14,6 +14,7 @@ for (const page of pages) {
   if (!existsSync(path)) { failures.push(`${page}: missing HTML`); continue }
   const html = readFileSync(path, 'utf8')
   if (!html.includes('vp-doc') && !html.includes('VPHome') && !html.includes('class="home-page"')) failures.push(`${page}: missing rendered content`)
+  if (!/<link\b[^>]*rel="[^"]*stylesheet[^"]*"[^>]*href="[^"]*\/assets\/style\.[^"]+\.css"/.test(html)) failures.push(`${page}: missing site theme stylesheet`)
   for (const match of html.matchAll(/<(?:a|img|script|link|embed)\b[^>]*?\s(?:href|src)="([^"]+)"/g)) {
     const url = new URL(match[1].replaceAll('&amp;', '&'), `https://blog.local${base}${route}`)
     if (url.origin !== 'https://blog.local') continue

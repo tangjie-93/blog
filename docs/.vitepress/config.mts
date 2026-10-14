@@ -32,13 +32,13 @@ export default defineConfig({
   description: '记录前端学习与实践，分享 JavaScript、Vue、WebGL、工程化和算法的深入思考。',
   base,
   vite: {
-    optimizeDeps: { exclude: ['waline-script-asset?url', 'waline-style-asset?url'] },
+    optimizeDeps: { exclude: ['waline-script-asset?url', 'waline-style-asset?inline'] },
     envDir: fileURLToPath(new URL('../../', import.meta.url)),
     resolve: {
       // iframe 使用自包含 UMD 文件，避免浏览器解析外部模块依赖。
       alias: {
         'waline-script-asset?url': createRequire(import.meta.url).resolve('@waline/client/full') + '?url',
-        'waline-style-asset?url': createRequire(import.meta.url).resolve('@waline/client/style') + '?url'
+        'waline-style-asset?inline': createRequire(import.meta.url).resolve('@waline/client/style') + '?inline'
       }
     }
   },

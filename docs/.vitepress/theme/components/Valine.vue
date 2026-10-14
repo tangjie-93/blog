@@ -39,12 +39,12 @@ async function loadComments(): Promise<void> {
         return
     }
     try {
-        const [{ default: scriptUrl }, { default: styleUrl }] = await Promise.all([
+        const [{ default: scriptUrl }, { default: styleText }] = await Promise.all([
             import('waline-script-asset?url'),
-            import('waline-style-asset?url'),
+            import('waline-style-asset?inline'),
         ])
         if (currentLoadId !== loadId || !isMounted) return
-        documentHtml.value = createCommentDocument(new URL(scriptUrl, window.location.href).href, new URL(styleUrl, window.location.href).href, commentPath.value, page.value.title, commentSettings)
+        documentHtml.value = createCommentDocument(new URL(scriptUrl, window.location.href).href, 'data:text/css;charset=utf-8,' + encodeURIComponent(styleText), commentPath.value, page.value.title, commentSettings)
     } catch {
         if (currentLoadId === loadId) error.value = '评论暂时无法加载，请刷新页面重试。'
     }
