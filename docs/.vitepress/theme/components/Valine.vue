@@ -40,8 +40,8 @@ async function loadComments(): Promise<void> {
     }
     try {
         const [{ default: scriptUrl }, { default: styleUrl }] = await Promise.all([
-            import('@waline/client/full?url'),
-            import('@waline/client/style?url'),
+            import('waline-script-asset?url'),
+            import('waline-style-asset?url'),
         ])
         if (currentLoadId !== loadId || !isMounted) return
         documentHtml.value = createCommentDocument(new URL(scriptUrl, window.location.href).href, new URL(styleUrl, window.location.href).href, commentPath.value, page.value.title, commentSettings)
