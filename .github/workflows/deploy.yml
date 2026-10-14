@@ -9,6 +9,8 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      VITE_WALINE_SERVER_URL: https://tangjie-blog-comments.vercel.app
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
