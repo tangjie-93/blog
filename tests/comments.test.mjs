@@ -5,7 +5,7 @@ import { createCommentDocument } from '../docs/.vitepress/theme/comments.ts'
 
 /** 在隔离文档中模拟脚本加载与浏览器尺寸通知，不请求真实评论服务。 */
 function createFrameFixture(failInitialization = false) {
-  const html = createCommentDocument('/valine.js', '/storage.js', '/blog/test.html', '文章', { appId: 'test', appKey: 'test' })
+  const html = createCommentDocument('/waline.js', '/waline.css', '/blog/test.html', '文章', { serverURL: 'https://comments.example.com' })
   const frameElement = { style: {} }
   const message = { textContent: '正在加载评论…', remove() { this.removed = true } }
   const scripts = []
@@ -13,13 +13,16 @@ function createFrameFixture(failInitialization = false) {
   let height = 100
   let resize
   let disconnected = false
+  let destroyed = false
+  let options
+  const visitor = { dataset: {} }
   const body = { getBoundingClientRect: () => ({ height }) }
   runInNewContext(html.match(/<script>([\s\S]*?)<\/script>/)[1], {
     frameElement,
     document: {
       body,
       head: { appendChild: script => scripts.push(script) },
-      querySelector: () => ({ dataset: {} }),
+      querySelector: () => visitor,
       getElementById: id => id === 'message' ? message : {},
       createElement: () => ({}),
     },
@@ -29,12 +32,16 @@ function createFrameFixture(failInitialization = false) {
       disconnect() { disconnected = true }
     },
     addEventListener: (event, callback) => { listeners[event] = callback },
-    Valine: class {
-      constructor() { if (failInitialization) throw new Error('initialization failed') }
-    },
+    Waline: { init(config) {
+      if (failInitialization) throw new Error('initialization failed')
+      options = config
+      return { destroy() { destroyed = true } }
+    } },
   })
   return {
-    frameElement, message, scripts, listeners,
+    frameElement, message, scripts, listeners, visitor,
+    get options() { return options },
+    get destroyed() { return destroyed },
     get disconnected() { return disconnected },
     resizeTo(value) { height = value; resize() },
   }
@@ -52,6 +59,7 @@ test('comment frame fits loading content, expands and shrinks after content chan
   }
   frame.listeners.pagehide()
   assert.equal(frame.disconnected, true)
+  assert.equal(frame.destroyed, true)
 })
 
 test('comment script loading errors keep a visible compact error message', () => {
@@ -74,4 +82,20 @@ test('comment initialization failures retain the error state and resize normally
   assert.equal(frame.message.textContent, '评论暂时无法加载，请刷新页面重试。')
   assert.equal(frame.message.removed, undefined)
   assert.equal(frame.frameElement.style.height, '114px')
+})
+
+test('Waline uses the migrated path, two optional fields and its server notification flow', () => {
+  const frame = createFrameFixture()
+  assert.equal(frame.scripts[0].href, '/waline.css')
+  frame.scripts[0].onload()
+  assert.equal(frame.scripts[1].src, '/waline.js')
+  frame.scripts[1].onload()
+  assert.equal(frame.options.serverURL, 'https://comments.example.com')
+  assert.equal(frame.options.path, '/blog/test.html')
+  assert.equal(frame.visitor.dataset.path, '/blog/test.html')
+  assert.equal(frame.options.pageview, true)
+  assert.equal(frame.options.dark, 'html[data-theme="dark"]')
+  assert.deepEqual(Array.from(frame.options.meta), ['nick', 'mail'])
+  assert.deepEqual(Array.from(frame.options.requiredMeta), [])
+  assert.equal(frame.options.login, 'disable')
 })

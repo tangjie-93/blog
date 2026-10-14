@@ -35,8 +35,16 @@ test('posts sort newest first and support pipe/array tags and combined filters',
 })
 
 test('comment iframe safely escapes path and title script delimiters', () => {
-    const html = createCommentDocument('https://example.com/valine.js', 'https://example.com/av.js', '/blog/a.html', '</script><script>bad()</script>', { appId: 'test', appKey: 'test' })
+    const html = createCommentDocument('https://example.com/waline.js', 'https://example.com/waline.css', '/blog/a.html', '</script><script>bad()</script>', { serverURL: 'https://comments.example.com' })
     assert.equal((html.match(/<script>/g) ?? []).length, 1)
     assert.ok(!html.includes('<script>bad()'))
     assert.ok(html.includes('\\u003c/script>'))
+})
+
+test('comment form keeps only the two optional contact fields', () => {
+    const html = createCommentDocument('https://example.com/waline.js', 'https://example.com/waline.css', '/blog/a.html', '文章', { serverURL: 'https://comments.example.com' })
+    assert.ok(html.includes("meta:['nick','mail'],requiredMeta:[]"))
+    assert.ok(!html.includes('/api/comment-notify'))
+    assert.ok(!html.includes('appKey'))
+    assert.ok(!html.includes('comment-privacy'))
 })

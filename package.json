@@ -21,8 +21,7 @@
     "onlyBuiltDependencies": ["esbuild", "workerd"]
   },
   "dependencies": {
-    "leancloud-storage": "^4.15.2",
-    "valine": "1.5.3",
+    "@waline/client": "3.16.1",
     "vue": "^3.5.0"
   },
   "devDependencies": {

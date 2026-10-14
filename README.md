@@ -192,19 +192,42 @@ pnpm exec wrangler pages deployment tail <deployment-id> \
 
 构建失败应优先查看控制台中该部署的 `Build log`；`Pages Functions` 的运行错误可通过上面的日志命令查看。
 
-### 4.7 评论邮件通知
+### 4.7 评论服务：Waline
 
-留言继续写入现有的 `LeanCloud`，新评论保存成功后由 `Pages Function` 调用 `Resend` 发邮件。邮件服务密钥只保存在 `Cloudflare`，不会进入前端代码。
+评论使用 `Waline`，博客仍部署在 `Cloudflare Pages`，评论服务独立部署在 `Vercel`，数据存入 `Neon PostgreSQL`。现有 `<Valine/>` 标签保留为兼容入口，不需要批量修改文章。
 
-先在 `Resend` 验证发件域名，然后在项目目录设置 `Pages` 环境变量：
+部署步骤见 [Waline 官方入门](https://waline.js.org/en/guide/get-started/)。仓库内 `services/waline/` 是基于官方示例的独立服务，固定使用 `@waline/vercel 1.43.4`；部署目录为该子目录，不要把整个博客仓库作为评论服务部署。连接 `Neon` 后，在空数据库中执行官方 [waline.pgsql](https://github.com/walinejs/waline/blob/main/assets/waline.pgsql)，再重新部署服务。本仓库也保存了该官方脚本：`services/waline/schema.pgsql`。不要在已有数据的数据库中重复初始化。
+
+在 `Waline` 服务端配置数据库凭据及以下变量（变量名参见 [官方配置](https://waline.js.org/en/reference/server/env.html)）：
+
+| 变量 | 设置位置与用途 |
+| --- | --- |
+| `PG_HOST`、`PG_PORT`、`PG_DB`、`PG_USER`、`PG_PASSWORD`、`PG_SSL` | `Vercel` 环境变量；使用 `Neon` 提供的连接参数，端口通常为 `5432`，`PG_SSL=true`。如集成已注入对应的 `POSTGRES_*` 别名，请核对后复用，勿配置两套冲突值。 |
+| `SITE_NAME`、`SITE_URL` | 博客名称及实际公开网址。 |
+| `SERVER_URL` | 评论服务的固定公开地址。 |
+| `SECURE_DOMAINS` | 允许的博客与评论服务域名，多个以逗号分隔；测试域名单独按需添加。 |
+| `DISABLE_REGION` | 设为 `true`，不展示访客地区。 |
+
+服务建好后，立即访问 `<serverURL>/ui/register`，由站长注册首个管理员，然后在 `<serverURL>/ui` 管理、回复和删除评论。完成管理员注册后再公开接入博客。
+
+前端只需要公开的服务地址，不需要数据库密码或管理员密钥：
 
 ```sh
-pnpm exec wrangler pages secret put RESEND_API_KEY --project-name tangjie-blog
-pnpm exec wrangler pages secret put COMMENT_NOTIFY_FROM --project-name tangjie-blog
-pnpm exec wrangler pages secret put COMMENT_NOTIFY_ORIGIN --project-name tangjie-blog
+# 项目根目录；VitePress 配置从根目录加载此变量
+cp .env.example .env.local
 ```
 
-分别填写 `Resend API Key`、已验证的发件地址（例如 `Blog <notify@example.com>`）和站点源地址（例如 `https://tangjie-blog.pages.dev`）。收件地址已默认为 `1490934761@qq.com`，如需更换可再设置 `COMMENT_NOTIFY_TO`。设置完成后重新部署 `Pages` 项目，函数路径为 `/api/comment-notify`。
+将 `.env.local` 中的 `VITE_WALINE_SERVER_URL` 改成真实服务地址，然后运行 `pnpm dev`。生产构建在 `Cloudflare Pages` 的构建环境中设置同名变量；使用本地 `pnpm run deploy` 时，先确认本地变量正确。修改后必须重新构建。地址为空时页面显示评论暂不可用，不会回退到 `LeanCloud`。
+
+邮件由 `Waline` 服务端发送。按[通知文档](https://waline.js.org/guide/features/notification.html)设置 `SMTP_HOST`、`SMTP_PORT`、`SMTP_SECURE`、`SMTP_USER`、`SMTP_PASS`、`SENDER_EMAIL` 和 `AUTHOR_EMAIL`；邮箱授权码只保存在 `Vercel`。接入后验证新留言通知与回复通知。旧 `/api/comment-notify` 已移除，旧的 `Cloudflare` 邮件密钥在确认切换成功后可从控制台删除。
+
+#### 历史评论迁移与上线
+
+1. 在 `LeanCloud` 到期前导出 `Comment` 和阅读量 `Counter`，保留原始备份。导出文件可能含邮箱等私人数据，不要提交到仓库或放入 `docs/public/`。
+2. 通过 [Waline 官方迁移工具](https://waline.js.org/en/migration/tool.html)转换至目标存储格式；先在测试数据库导入并核对评论数量、昵称、时间和回复关系。阅读量是否能转换需单独核对，不能假定评论迁移会同步阅读量。
+3. 保留原评论 `url`，例如留言板为 `/blog/comments/`；前端继续使用这些历史标识，即使公开站点已不带 `/blog/` 前缀。
+4. 在 `dev` 验证留言、回复、后台删除、邮件、明暗主题和文章跳转。若暂时无法导出旧数据，先保留旧服务，不宣称历史迁移完成。
+5. 正式切换前暂停旧服务写入并导出最后一份数据，避免漏掉迁移期间的新留言。验收后正常合并 `dev` 到 `master` 并部署，不强制重写发布分支。失败时恢复旧版本，并保留新旧两端的数据备份。
 
 ### 4.8 常见问题
 
@@ -229,7 +252,7 @@ note: 一句话摘要
 ---
 ```
 
-搜索由 `VitePress` 在本地生成索引，不需要第三方搜索账号。评论继续使用原 `Valine / LeanCloud` 服务，按原 `/blog/` 路径查询历史记录；上线新域名后需要在原服务的安全域名设置中允许新域名。评论在隔离页面内按需加载，避免旧 SDK 的全局事件影响站内导航。
+搜索由 `VitePress` 在本地生成索引，不需要第三方搜索账号。评论使用 `Waline`，继续按原 `/blog/` 路径关联记录；服务端部署和历史数据迁移参见上文。评论在隔离页面内按需加载。
 
 ## 6. 官方参考
 

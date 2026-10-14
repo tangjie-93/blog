@@ -1,5 +1,6 @@
 import { defineConfig } from 'vitepress'
 import { fileURLToPath } from 'node:url'
+import { createRequire } from 'node:module'
 import { createNavigation } from './navigation.mjs'
 
 const { nav, sidebar } = createNavigation(fileURLToPath(new URL('../articles', import.meta.url)))
@@ -31,14 +32,10 @@ export default defineConfig({
   description: '记录前端学习与实践，分享 JavaScript、Vue、WebGL、工程化和算法的深入思考。',
   base,
   vite: {
-    server: {
-      proxy: {
-        '/api/comment-notify': {
-          target: 'https://tangjie-blog.pages.dev',
-          changeOrigin: true,
-          headers: { Origin: 'https://tangjie-blog.pages.dev' }
-        }
-      }
+    envDir: fileURLToPath(new URL('../../', import.meta.url)),
+    resolve: {
+      // iframe 使用自包含 UMD 文件，避免浏览器解析外部模块依赖。
+      alias: { '@waline/client/full?url': createRequire(import.meta.url).resolve('@waline/client/full') + '?url' }
     }
   },
   appearance: 'dark',

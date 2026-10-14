@@ -18,6 +18,5 @@ export interface BlogListProps {
 }
 
 export interface CommentSettings {
-    appId: string
-    appKey: string
+    serverURL: string
 }
