@@ -223,6 +223,10 @@ watch([() => props.tag, () => props.type], () => { page.value = 1 })
     @media (min-width: 641px) and (max-width: 1023px) {
         & .blog-list__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
+    @media (min-width: 960px) {
+        scroll-margin-top: 12px;
+        & .blog-list__toolbar { top: 8px; }
+    }
     @media (max-width: 640px) {
         & .blog-list__grid { grid-template-columns: 1fr; gap: 10px; }
         & .blog-list__card { padding: 14px 16px; }
