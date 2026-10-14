@@ -1,6 +1,8 @@
 import { readdirSync } from 'node:fs'
 import { join } from 'node:path'
 
+const articleLabels = { 'OpenAI Agent 机制知识字典': 'Agent 架构全景' }
+
 const labels = {
   agent: 'Agent 架构', 'ai-coding': 'AI Coding',
   css: 'CSS', es6: 'ES6', http: 'HTTP', javascript: 'JavaScript',
@@ -28,7 +30,7 @@ export function createNavigation(articlesDir) {
     sidebar[`/articles/${category.name}/`] = [{ text: `${text} 专题`,
       ...(files.includes('README.md') ? { link } : {}),
       items: files.filter(file => file !== 'README.md').map((file, index) => ({
-        text: `${index + 1}、${file.slice(0, -3).replace(/^\d+(?:、|-)\s*/, '')}`,
+        text: `${index + 1}、${(articleLabels[file.slice(0, -3)] || file.slice(0, -3)).replace(/^\d+(?:、|-)\s*/, '').split(/\s*—+\s*/)[0]}`,
         link: `${link}${encodeURIComponent(file.slice(0, -3))}.html`
       })) }]
   }
