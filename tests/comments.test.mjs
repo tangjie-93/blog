@@ -17,12 +17,18 @@ function createFrameFixture(failInitialization = false) {
   let options
   const visitor = { dataset: {} }
   const body = { getBoundingClientRect: () => ({ height }) }
+  const cards = []
+  const browser = { fetch: async () => browser.response }
+  let updateMetadata
   runInNewContext(html.match(/<script>([\s\S]*?)<\/script>/)[1], {
     frameElement,
+    window: browser,
+    URL,
     document: {
       body,
       head: { appendChild: script => scripts.push(script) },
       querySelector: () => visitor,
+      querySelectorAll: () => cards,
       getElementById: id => id === 'message' ? message : {},
       createElement: () => ({}),
     },
@@ -30,6 +36,11 @@ function createFrameFixture(failInitialization = false) {
       constructor(callback) { resize = callback }
       observe(element) { assert.equal(element, body); resize() }
       disconnect() { disconnected = true }
+    },
+    MutationObserver: class {
+      constructor(callback) { updateMetadata = callback }
+      observe() {}
+      disconnect() {}
     },
     addEventListener: (event, callback) => { listeners[event] = callback },
     Waline: { init(config) {
@@ -39,7 +50,8 @@ function createFrameFixture(failInitialization = false) {
     } },
   })
   return {
-    frameElement, message, scripts, listeners, visitor,
+    frameElement, message, scripts, listeners, visitor, browser, cards,
+    updateMetadata() { updateMetadata() },
     get options() { return options },
     get destroyed() { return destroyed },
     get disconnected() { return disconnected },
@@ -98,4 +110,31 @@ test('Waline uses the migrated path, two optional fields and its server notifica
   assert.deepEqual(Array.from(frame.options.meta), ['nick', 'mail'])
   assert.deepEqual(Array.from(frame.options.requiredMeta), [])
   assert.equal(frame.options.login, 'disable')
+})
+
+test('comment metadata uses exact Beijing time and authenticated roles, including late-rendered replies', async () => {
+  const frame = createFrameFixture()
+  function card(id) {
+    const nodes = {}
+    const head = { querySelector: selector => selector.startsWith('.comment-') ? nodes[selector] : { after: node => { nodes['.' + node.className] = node } } }
+    return { id, nodes, querySelector: () => head }
+  }
+  frame.browser.response = { ok: true, url: 'https://comments.example.com/api/comment', clone: () => ({ json: async () => ({ data: { data: [
+    { objectId: 1, time: Date.parse('2026-10-14T15:33:57Z'), nick: 'james', type: 'guest', children: [
+      { objectId: 2, time: Date.parse('2026-10-14T16:00:01Z'), type: 'administrator' },
+    ] },
+  ] } }) }) }
+  const original = frame.browser.response
+  assert.equal(await frame.browser.fetch('/api/comment'), original)
+  await new Promise(resolve => setImmediate(resolve))
+  const guest = card('1'), admin = card('2')
+  frame.cards.push(guest, admin)
+  frame.updateMetadata()
+  assert.equal(guest.nodes['.comment-date'].textContent, '2026-10-14 23:33:57')
+  assert.equal(guest.nodes['.comment-author'], undefined)
+  assert.equal(admin.nodes['.comment-date'].textContent, '2026-10-15 00:00:01')
+  assert.equal(admin.nodes['.comment-author'].textContent, '博主')
+  const date = admin.nodes['.comment-date']
+  frame.updateMetadata()
+  assert.equal(admin.nodes['.comment-date'], date)
 })
