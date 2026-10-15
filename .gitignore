@@ -9,3 +9,4 @@ output/
 !.env.example
 *.mp3
 *.DS_Store
+.vercel
