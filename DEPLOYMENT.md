@@ -172,6 +172,24 @@ vercel inspect <部署地址>
 
 ## 推荐发布顺序
 
+日常发布直接在干净的 `dev` 分支执行：
+
+```sh
+npm run deploy
+```
+
+这个命令会先推送 `dev` 触发 `GitHub Pages`，再构建并发布 `Cloudflare Pages`，最后发布 `Vercel` 生产环境。它会把同一个当前 commit 传给三个平台，因此站点页脚显示的 commit 可以用来核对版本。
+
+如果只需要发布单个平台：
+
+```sh
+npm run deploy:github
+npm run deploy:cloudflare
+npm run deploy:vercel
+```
+
+`npm run deploy` 要求当前分支为 `dev`，且工作区没有未提交改动。先提交改动，再执行发布。
+
 ```text
 本地修改
   ↓
