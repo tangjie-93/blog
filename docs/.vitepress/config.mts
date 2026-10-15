@@ -1,5 +1,5 @@
 import { defineConfig } from 'vitepress'
-import { loadEnv } from 'vite'
+import { existsSync, readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { createRequire } from 'node:module'
 import { createNavigation } from './navigation.mjs'
@@ -7,7 +7,13 @@ import { createNavigation } from './navigation.mjs'
 const { nav, sidebar } = createNavigation(fileURLToPath(new URL('../articles', import.meta.url)))
 const base = process.env.VITEPRESS_BASE || '/'
 const rootDir = fileURLToPath(new URL('../../', import.meta.url))
-const gitEnv = loadEnv('production', rootDir, 'VITE_')
+const gitEnvPath = fileURLToPath(new URL('../../.env.production.local', import.meta.url))
+const gitEnv = existsSync(gitEnvPath)
+  ? Object.fromEntries(readFileSync(gitEnvPath, 'utf8').split(/\r?\n/).filter(Boolean).map(line => {
+      const index = line.indexOf('=')
+      return [line.slice(0, index), line.slice(index + 1)]
+    }))
+  : {}
 const gitMessage = [
   `构建提交 ${gitEnv.VITE_GIT_COMMIT_ID?.slice(0, 7) || 'unknown'}`,
   `分支 ${gitEnv.VITE_GIT_BRANCH || 'unknown'}`,
