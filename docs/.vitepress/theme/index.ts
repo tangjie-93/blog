@@ -14,5 +14,20 @@ export default {
         app.component('Tags', Tags)
         app.component('Valine', Valine)
         app.component('HomePage', HomePage)
+        if (import.meta.env.PROD && typeof window !== 'undefined') {
+            Object.defineProperty(window, '__GIT_INFO__', {
+                value: Object.freeze({
+                    id: import.meta.env.VITE_GIT_COMMIT_ID || 'unknown',
+                    shortId: (import.meta.env.VITE_GIT_COMMIT_ID || 'unknown').slice(0, 7),
+                    branch: import.meta.env.VITE_GIT_BRANCH || 'unknown',
+                    commitTime: import.meta.env.VITE_GIT_COMMIT_TIME || 'unknown',
+                    buildTime: import.meta.env.VITE_BUILD_TIME || 'unknown',
+                    version: import.meta.env.VITE_APP_VERSION || 'unknown',
+                }),
+                configurable: false,
+                enumerable: false,
+                writable: false,
+            })
+        }
     },
 } satisfies Theme

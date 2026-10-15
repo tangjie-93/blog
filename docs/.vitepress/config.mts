@@ -1,26 +1,10 @@
 import { defineConfig } from 'vitepress'
-import { existsSync, readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { createRequire } from 'node:module'
 import { createNavigation } from './navigation.mjs'
 
 const { nav, sidebar } = createNavigation(fileURLToPath(new URL('../articles', import.meta.url)))
 const base = process.env.VITEPRESS_BASE || '/'
-const rootDir = fileURLToPath(new URL('../../', import.meta.url))
-const gitEnvPath = fileURLToPath(new URL('../../.env.production.local', import.meta.url))
-const gitEnv = existsSync(gitEnvPath)
-  ? Object.fromEntries(readFileSync(gitEnvPath, 'utf8').split(/\r?\n/).filter(Boolean).map(line => {
-      const index = line.indexOf('=')
-      return [line.slice(0, index), line.slice(index + 1)]
-    }))
-  : {}
-const gitMessage = [
-  `构建提交 ${gitEnv.VITE_GIT_COMMIT_ID?.slice(0, 7) || 'unknown'}`,
-  `分支 ${gitEnv.VITE_GIT_BRANCH || 'unknown'}`,
-  `提交时间 ${gitEnv.VITE_GIT_COMMIT_TIME || 'unknown'}`,
-  `构建时间 ${gitEnv.VITE_BUILD_TIME || 'unknown'}`
-].join(' · ')
-const gitNavLabel = `commit ${gitEnv.VITE_GIT_COMMIT_ID?.slice(0, 7) || 'unknown'}`
 
 const navGroups = [
   { text: '语言与标准', categories: ['javascript', 'es6', 'typescript', 'css', 'http'] },
@@ -72,7 +56,6 @@ export default defineConfig({
       { text: '标签', link: '/tags/' },
       { text: '充电站', link: '/summarize/' },
       { text: '留言', link: '/comments/' }
-      ,{ text: gitNavLabel, link: '/about/', activeMatch: '^$' }
     ],
     sidebar,
     socialLinks: [{ icon: 'github', link: 'https://github.com/tangjie-93/blog' }],
@@ -83,7 +66,7 @@ export default defineConfig({
     } } } } },
     outline: { level: [2, 3], label: '文章目录' },
     docFooter: { prev: '上一篇', next: '下一篇' },
-    footer: { message: gitMessage, copyright: '前端技术积累' },
+    footer: { copyright: '前端技术积累' },
     returnToTopLabel: '返回顶部',
     sidebarMenuLabel: '文章导航',
     darkModeSwitchLabel: '外观',
