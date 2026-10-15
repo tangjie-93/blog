@@ -3,7 +3,7 @@ title: "02、Tool Use — 多加一个工具，只加一行"
 date: "2026-10-14"
 type: "技术"
 tags: "Agent|AI Coding"
-note: "Tool Use — 多加一个工具，只加一行"
+note: "通过工具定义与处理器映射扩展能力，并用统一分发保持主循环不变。"
 ---
 
 # s02: Tool Use — 多加一个工具，只加一行

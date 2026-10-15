@@ -3,7 +3,7 @@ title: "11、Error Recovery — 错误不是结束，是重试的开始"
 date: "2026-10-14"
 type: "技术"
 tags: "Agent|AI Coding"
-note: "Error Recovery — 错误不是结束，是重试的开始"
+note: "针对限流、服务过载和超长上下文分类重试、升级参数或触发压缩。"
 ---
 
 # s11: Error Recovery — 错误不是结束，是重试的开始

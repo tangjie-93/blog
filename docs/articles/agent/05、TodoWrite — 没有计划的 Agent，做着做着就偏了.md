@@ -3,7 +3,7 @@ title: "05、TodoWrite — 没有计划的 Agent，做着做着就偏了"
 date: "2026-10-14"
 type: "技术"
 tags: "Agent|AI Coding"
-note: "TodoWrite — 没有计划的 Agent，做着做着就偏了"
+note: "用轻量任务清单记录当前目标、进度与下一步，避免 Agent 执行漂移。"
 ---
 
 # s05: TodoWrite — 没有计划的 Agent，做着做着就偏了

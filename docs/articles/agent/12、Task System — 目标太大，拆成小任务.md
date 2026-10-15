@@ -3,7 +3,7 @@ title: "12、Task System — 目标太大，拆成小任务"
 date: "2026-10-14"
 type: "技术"
 tags: "Agent|AI Coding"
-note: "Task System — 目标太大，拆成小任务"
+note: "用可持久化的任务图拆分目标、管理依赖，并支持跨会话认领与完成。"
 ---
 
 # s12: Task System — 目标太大，拆成小任务

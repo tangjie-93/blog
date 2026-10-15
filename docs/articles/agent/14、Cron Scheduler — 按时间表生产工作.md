@@ -3,7 +3,7 @@ title: "14、Cron Scheduler — 按时间表生产工作"
 date: "2026-10-14"
 type: "技术"
 tags: "Agent|AI Coding"
-note: "Cron Scheduler — 按时间表生产工作"
+note: "用持久化定时任务按计划生成提示并唤醒 Agent 执行工作。"
 ---
 
 # s14: Cron Scheduler — 按时间表生产工作

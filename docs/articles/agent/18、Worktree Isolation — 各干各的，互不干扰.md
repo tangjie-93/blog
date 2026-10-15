@@ -3,7 +3,7 @@ title: "18、Worktree Isolation — 各干各的，互不干扰"
 date: "2026-10-14"
 type: "技术"
 tags: "Agent|AI Coding"
-note: "Worktree Isolation — 各干各的，互不干扰"
+note: "为并行任务创建独立 worktree 和分支，隔离文件修改并降低协作冲突。"
 ---
 
 # s18: Worktree Isolation — 各干各的，互不干扰

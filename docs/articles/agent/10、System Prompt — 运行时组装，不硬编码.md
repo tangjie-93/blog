@@ -3,7 +3,7 @@ title: "10、System Prompt — 运行时组装，不硬编码"
 date: "2026-10-14"
 type: "技术"
 tags: "Agent|AI Coding"
-note: "System Prompt — 运行时组装，不硬编码"
+note: "按工作区、技能、记忆和运行状态动态组装系统提示词，而不是写死一份。"
 ---
 
 # s10: System Prompt — 运行时组装，不硬编码

@@ -3,7 +3,7 @@ title: "17、Autonomous Agents — 自己看板，自己认领"
 date: "2026-10-14"
 type: "技术"
 tags: "Agent|AI Coding"
-note: "Autonomous Agents — 自己看板，自己认领"
+note: "让队友轮询任务板、自动认领空闲任务并汇报状态，形成自治协作闭环。"
 ---
 
 # s17: Autonomous Agents — 自己看板，自己认领

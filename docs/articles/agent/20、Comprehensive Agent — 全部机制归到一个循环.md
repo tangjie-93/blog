@@ -3,7 +3,7 @@ title: "20、Comprehensive Agent — 全部机制归到一个循环"
 date: "2026-10-14"
 type: "技术"
 tags: "Agent|AI Coding"
-note: "Comprehensive Agent — 全部机制，归到一个循环"
+note: "把工具、权限、记忆、任务、团队、后台和 MCP 统一接回同一个执行循环。"
 ---
 
 # s20: Comprehensive Agent — 全部机制，归到一个循环

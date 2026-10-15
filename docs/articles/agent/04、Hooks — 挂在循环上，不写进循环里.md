@@ -3,7 +3,7 @@ title: "04、Hooks — 挂在循环上，不写进循环里"
 date: "2026-10-14"
 type: "技术"
 tags: "Agent|AI Coding"
-note: "Hooks — 挂在循环上，不写进循环里"
+note: "用 UserPromptSubmit、PreToolUse、PostToolUse 和 Stop 把扩展逻辑挂到循环外。"
 ---
 
 # s04: Hooks — 挂在循环上，不写进循环里

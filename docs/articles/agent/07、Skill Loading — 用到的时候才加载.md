@@ -3,7 +3,7 @@ title: "07、Skill Loading — 用到的时候才加载"
 date: "2026-10-14"
 type: "技术"
 tags: "Agent|AI Coding"
-note: "Skill Loading — 用到的时候才加载"
+note: "只在任务需要时加载技能内容，减少系统提示词体积并保持能力可扩展。"
 ---
 
 # s07: Skill Loading — 用到的时候才加载

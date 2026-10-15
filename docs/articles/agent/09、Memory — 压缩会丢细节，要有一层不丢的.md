@@ -3,7 +3,7 @@ title: "09、Memory — 压缩会丢细节，要有一层不丢的"
 date: "2026-10-14"
 type: "技术"
 tags: "Agent|AI Coding"
-note: "Memory — 压缩会丢细节，要有一层不丢的"
+note: "把长期事实与会话历史分层保存，避免压缩过程丢失关键细节。"
 ---
 
 # s09: Memory — 压缩会丢细节，要有一层不丢的
