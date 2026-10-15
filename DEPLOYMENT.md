@@ -22,6 +22,16 @@ pnpm run build
 
 同一个提交可能同时触发三个平台的构建。`GitHub Pages` 必须保留 `/blog/` 基础路径；`Cloudflare Pages` 和 `Vercel` 使用 `/`。
 
+## 当前访问地址
+
+| 平台 | 生产地址 | `dev` 预览地址 |
+| --- | --- | --- |
+| `GitHub Pages` | [tangjie-93.github.io/blog](https://tangjie-93.github.io/blog/) | — |
+| `Cloudflare Pages` | [tangjie-blog.pages.dev](https://tangjie-blog.pages.dev/) | 由 Cloudflare 部署记录生成 |
+| `Vercel` | [blog-modawuw25-tangjie-93s-projects.vercel.app](https://blog-modawuw25-tangjie-93s-projects.vercel.app/) | [blog-git-dev-tangjie-93s-projects.vercel.app](https://blog-git-dev-tangjie-93s-projects.vercel.app/) |
+
+`Vercel` 的生产地址来自当前生产部署；`dev` 地址是分支别名，会始终指向 `dev` 分支最新的预览部署。每次提交对应的临时预览地址会变化。`Cloudflare Pages` 的预览地址请在项目的 `Deployments` 页面查看。
+
 ## 发布到 GitHub Pages
 
 ### 首次配置
