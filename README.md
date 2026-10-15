@@ -85,6 +85,8 @@ pnpm run docs:preview
 
 ## 3. 发布到 `GitHub Pages`
 
+完整的三平台发布说明见 [`DEPLOYMENT.md`](./DEPLOYMENT.md)。
+
 `.github/workflows/deploy.yml` 在推送到 `dev` 时通过 `pnpm` 安装依赖、运行测试，验证根路径构建，再构建并发布 `GitHub Pages`。`PR` 只验证，不发布。
 
 首次启用时，在仓库 [Pages 设置](https://github.com/tangjie-93/blog/settings/pages) 中，将 `Build and deployment → Source` 设置为 `GitHub Actions`，再把这些配置和 `pnpm-lock.yaml` 提交并推送到 `dev`。部署使用工作流自带的 `GITHUB_TOKEN`，无需额外保存部署令牌。
