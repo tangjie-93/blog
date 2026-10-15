@@ -48,6 +48,9 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--vp-c-brand-1); 
     & .title { letter-spacing: .5px; font-size: 15px; }
     & .logo { width: 26px; height: 26px; border-radius: 7px; }
 }
+.build-info { display: inline-flex; align-items: center; margin-left: 12px; color: var(--blog-muted); font: 10px/1.5 var(--vp-font-family-mono); white-space: nowrap; }
+.build-info::before { content: '●'; margin-right: 5px; color: var(--vp-c-brand-1); font-size: 8px; }
+@media (max-width: 767px) { .build-info { display: none; } }
 .VPNavBarSearch .DocSearch-Button { border: 1px solid var(--blog-border); border-radius: 6px; }
 .VPNavBarMenuGroup .VPMenuGroup .title {
     display: inline-block;

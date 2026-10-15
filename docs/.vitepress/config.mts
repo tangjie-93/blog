@@ -20,6 +20,7 @@ const gitMessage = [
   `提交时间 ${gitEnv.VITE_GIT_COMMIT_TIME || 'unknown'}`,
   `构建时间 ${gitEnv.VITE_BUILD_TIME || 'unknown'}`
 ].join(' · ')
+const gitNavLabel = `commit ${gitEnv.VITE_GIT_COMMIT_ID?.slice(0, 7) || 'unknown'}`
 
 const navGroups = [
   { text: '语言与标准', categories: ['javascript', 'es6', 'typescript', 'css', 'http'] },
@@ -71,6 +72,7 @@ export default defineConfig({
       { text: '标签', link: '/tags/' },
       { text: '充电站', link: '/summarize/' },
       { text: '留言', link: '/comments/' }
+      ,{ text: gitNavLabel, link: '/about/', activeMatch: '^$' }
     ],
     sidebar,
     socialLinks: [{ icon: 'github', link: 'https://github.com/tangjie-93/blog' }],
