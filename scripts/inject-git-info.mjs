@@ -10,23 +10,12 @@ const run = (args, fallback) => {
   }
 }
 
-const first = (...values) => values.find(value => value && value !== 'unknown') || 'unknown'
-const commitId = first(
-  process.env.VERCEL_GIT_COMMIT_SHA,
-  process.env.CF_PAGES_COMMIT_SHA,
-  process.env.GITHUB_SHA,
-  run(['rev-parse', 'HEAD'], 'unknown')
-)
+const commitId = process.env.VERCEL_GIT_COMMIT_SHA || process.env.CF_PAGES_COMMIT_SHA || process.env.GITHUB_SHA || run(['rev-parse', 'HEAD'], 'unknown')
 const info = {
   id: commitId,
   shortId: commitId === 'unknown' ? 'unknown' : commitId.slice(0, 7),
-  branch: first(
-    process.env.VERCEL_GIT_COMMIT_REF,
-    process.env.CF_PAGES_BRANCH,
-    process.env.GITHUB_REF_NAME,
-    run(['branch', '--show-current'], 'unknown')
-  ),
-  commitTime: first(process.env.VERCEL_GIT_COMMIT_AUTHOR_DATE, run(['show', '-s', '--format=%cI', 'HEAD'], 'unknown')),
+  branch: process.env.VERCEL_GIT_COMMIT_REF || process.env.CF_PAGES_BRANCH || process.env.GITHUB_REF_NAME || run(['branch', '--show-current'], 'unknown'),
+  commitTime: process.env.VERCEL_GIT_COMMIT_AUTHOR_DATE || run(['show', '-s', '--format=%cI', 'HEAD'], 'unknown'),
   buildTime: new Date().toISOString(),
   version: JSON.parse(readFileSync(resolve('package.json'), 'utf8')).version
 }
