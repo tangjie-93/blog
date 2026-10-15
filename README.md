@@ -2,6 +2,15 @@
 
 基于 `VitePress` 的个人技术博客。文章源码沿用 `dev` 分支的 `docs/articles` 目录，分类、文件名和图片保持原有组织方式。
 
+## 访问地址
+
+- `GitHub Pages`：<https://tangjie-93.github.io/blog/>
+- `Cloudflare Pages`：<https://tangjie-blog.pages.dev/>
+- `Vercel` 生产：<https://blog-modawuw25-tangjie-93s-projects.vercel.app/>
+- `Vercel` `dev` 预览：<https://blog-git-dev-tangjie-93s-projects.vercel.app/>
+
+三平台的发布方法和分支规则见 [`DEPLOYMENT.md`](./DEPLOYMENT.md)。
+
 ## 1. 项目目录
 
 ```text
