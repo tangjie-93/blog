@@ -9,6 +9,7 @@ export interface BlogPost {
 
 export interface BlogSourcePost {
     url: string
+    src?: string
     frontmatter: Record<string, unknown>
 }
 

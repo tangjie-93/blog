@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { encodePostPath, filterPosts, getCommentPath, mapPosts } from './blog.ts'
+import { encodePostPath, filterPosts, getCommentPath, mapPosts, summarizeMarkdown } from './blog.ts'
 import { createCommentDocument } from './comments.ts'
 
 test('article paths encode reserved filename characters once and map README to directories', () => {
@@ -32,6 +32,13 @@ test('posts sort newest first and support pipe/array tags and combined filters',
     assert.equal(filterPosts(posts, { tag: 'vue' }).length, 2)
     assert.equal(filterPosts(posts, { tag: 'vue', type: '技术' })[0].title, '旧文章')
     assert.equal(filterPosts(posts, { tag: 'missing' }).length, 0)
+})
+
+test('category README cards use a body summary instead of duplicate frontmatter notes', () => {
+    const summary = summarizeMarkdown('---\ntitle: 重复标题\n---\n\n## 一、状态管理\n\n本文介绍状态更新和组件通信的常见方式。')
+    assert.equal(summary, '本文介绍状态更新和组件通信的常见方式。')
+    const [post] = mapPosts([{ url: '/articles/react/README.html', src: '\n## 一、状态管理\n\n本文介绍状态更新。', frontmatter: { title: '重复标题', note: '重复标题' } }])
+    assert.equal(post.note, '本文介绍状态更新。')
 })
 
 test('comment iframe safely escapes path and title script delimiters', () => {
