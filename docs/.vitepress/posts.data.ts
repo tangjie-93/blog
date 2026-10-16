@@ -4,4 +4,6 @@ import { mapPosts } from './theme/blog'
 
 export declare const data: BlogPost[]
 
-export default createContentLoader('articles/**/*.md', { transform: mapPosts })
+export default createContentLoader('articles/**/*.md', {
+  transform: pages => mapPosts(pages).filter(post => !post.url.endsWith('/'))
+})
