@@ -297,5 +297,3 @@ const offset = 0; //每次绘制时的偏移量
 const count = 3;// 顶点着色器运行的次数
 gl.drawArrays(primitiveType, offset, count);
 ```
-
-<Valine></Valine>

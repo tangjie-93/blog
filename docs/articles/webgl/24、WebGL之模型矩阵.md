@@ -69,5 +69,3 @@ modelMatrix.translate(Tx, 0, 0);  // Set translation matrix
 **结论:** 从上面的图片可以看出，模型变换的顺序很重要，即便旋转的参数完全一样，顺序不一样，旋转后的结果也会不一样。
 
 [demo地址](https://github.com/tangjie-93/WebGL/blob/main/%E8%B7%9F%E7%9D%80%E5%AE%98%E7%BD%91%E5%AD%A6WebGL%2BWebGL%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97/%E6%97%8B%E8%BD%AC%E5%B9%B3%E7%A7%BB%E5%92%8C%E6%97%8B%E8%BD%AC/demo/%E6%97%8B%E8%BD%AC%E5%90%8E%E5%86%8D%E5%B9%B3%E7%A7%BB.html)
-
-<Valine></Valine>

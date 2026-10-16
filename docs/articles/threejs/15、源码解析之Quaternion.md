@@ -191,6 +191,3 @@ setFromEuler( euler, update = true ) {
 
 	}
 ```
-
-
-<Valine></Valine>

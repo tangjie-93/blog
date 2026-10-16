@@ -365,4 +365,3 @@ SubType.prototype.sayAge=function(){
     console.log(this.age);
 }
 ```
-<Valine></Valine>

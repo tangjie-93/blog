@@ -343,4 +343,3 @@ gl.bindFramebuffer(gl.FRAMEBUFFER, null); // 第二次解除绑定
 **参考文档**<br>
 [WebGL 帧缓冲](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-framebuffers.html)
 [WebGL 渲染到纹理](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-render-to-texture.html)
-<Valine></Valine>

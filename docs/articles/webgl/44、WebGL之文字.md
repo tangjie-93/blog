@@ -365,5 +365,3 @@ textMatrix = m4.scale(textMatrix, textWidth * scale, textHeight * scale, 1);
 [WebGL文字 - HTML](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-text-html.html)<br>
 [WebGL 文字 - 二维Canvas](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-text-canvas2d.html)<br>
 [WebGL 文字 - 使用纹理](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-text-texture.html)<br>
-
-<Valine></Valine>

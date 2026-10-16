@@ -100,5 +100,3 @@ function resizeCanvasToDisplaySize(canvas) {
 **参考文档**
 
 [WebGL 重置画布尺寸](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-resizing-the-canvas.html)
-
-<Valine></Valine>

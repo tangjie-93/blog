@@ -199,5 +199,3 @@ function multiplyMatrices(a, b) {
 **参考文档**<br>
 [相机矩阵的推导](https://juejin.cn/book/6844733755580481543/section/6844733755941191694)<br>
 [WebGL三维相机](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-3d-camera.html)<br>
-
-<Valine></Valine>

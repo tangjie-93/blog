@@ -548,6 +548,3 @@ smoothstep(lowerBound, upperBound, value)
 [WebGL 三维点光源](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-3d-lighting-point.html)<br>
 [WebGL 三维方向光源](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-3d-lighting-directional.html)<br>
 [WebGL 三维聚光灯](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-3d-lighting-spot.html)<br>
-<Valine></Valine>
-
-

@@ -341,7 +341,3 @@ mvpMatrix.setOrtho(-1, 1, -1, 1, -1, 1);
 `demo`地址为[使用投影矩阵(near<far)](https://github.com/tangjie-93/WebGL/blob/main/%E8%B7%9F%E7%9D%80%E5%AE%98%E7%BD%91%E5%AD%A6WebGL%2BWebGL%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97/%E5%9D%90%E6%A0%87%E7%B3%BB/demo/%E4%BD%BF%E7%94%A8%E6%8A%95%E5%BD%B1%E7%9F%A9%E9%98%B5near%E5%B0%8F%E4%BA%8Efar(z%E5%80%BC%E5%B0%8F%E7%9A%84%E9%A1%B6%E7%82%B9%E5%85%88%E7%BB%98%E5%88%B6).html)
 
 **结论：** 使用正交投影后的坐标，然后根据深度测试，以及左手坐标系，同一个位置的颜色由`z`值最小的顶点决定。
-
-
-
-<Valine></Valine>

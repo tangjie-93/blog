@@ -1,5 +1,5 @@
 <template>
-    <section class="blog-comments" aria-label="评论">
+    <section v-if="page.relativePath.startsWith('articles/')" class="blog-comments" aria-label="评论">
         <h2>评论</h2>
         <p v-if="error" role="status">{{ error }}</p>
         <iframe v-if="documentHtml" :key="commentPath" ref="commentFrame" class="blog-comments__frame" title="文章评论和阅读量" :srcdoc="documentHtml" sandbox="allow-scripts allow-same-origin allow-popups" @load="syncCommentTheme" />

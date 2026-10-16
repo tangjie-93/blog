@@ -71,5 +71,3 @@ console.log("a".__proto__);
 ```
 
 >4、在正则捕获的时候，如果没有捕获到结果，默认也是null。
-
-<Valine></Valine>

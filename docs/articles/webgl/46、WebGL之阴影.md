@@ -327,5 +327,3 @@ void main() {
 **参考文档**
 
 [WebGL 阴影](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-shadows.html)<br>
-
-<Valine></Valine>

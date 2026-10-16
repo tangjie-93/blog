@@ -253,5 +253,3 @@ class Node {
 
 [WebGL 绘制多个物体](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-drawing-multiple-things.html)<br>
 [WebGL - 场景图](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-scene-graph.html)<br>
-
-<Valine></Valine>

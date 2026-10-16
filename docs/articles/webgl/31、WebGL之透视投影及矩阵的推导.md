@@ -178,6 +178,3 @@ $$
 **参考文档**<br>
 [WebGL 三维透视投影](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-3d-perspective.html)<br>
 [透视投影](https://juejin.cn/book/6844733755580481543/section/6844733755941191687)
-
-
-<Valine></Valine>

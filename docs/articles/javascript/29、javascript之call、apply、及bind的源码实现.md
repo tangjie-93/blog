@@ -287,5 +287,3 @@ Function.prototype.bind = function(oThis,...args) {
     return fBound;
 };
 ```
-
-<Valine></Valine>

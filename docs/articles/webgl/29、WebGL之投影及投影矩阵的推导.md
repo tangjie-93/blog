@@ -144,6 +144,3 @@ function createProjectionMatrix(width, height) {
  canvas.width!==canvas.clientWidth&&canvas.height!==canvas.clientHeight
 ```
 那么画面就会按照`canvas`的宽高比进行压缩，物体就会扭曲。
-
-
-<Valine></Valine>

@@ -205,5 +205,3 @@ gl.drawElements(primitiveType, count, indexType, offset);
 
 [WebGL 顶点索引](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-indexed-vertices.html)<br>
 [WebGL性能优化 - 实例化绘制](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-instanced-drawing.html)<br>
-
-<Valine></Valine>

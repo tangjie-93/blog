@@ -242,5 +242,3 @@ for(var i=0,len=items.length;i<len;i++){
 ```
 
 > 3、通过减少循环体来优化性能。
-
-<Valine></Valine>

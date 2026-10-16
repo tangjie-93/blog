@@ -110,5 +110,3 @@ a = b(1, 2, 3);
 console.log(a);//undefined
 //如果c=b(1,2),此时函数b中的arguments为{0:1,1:2,length:2}
 ```
-
-<Valine></Valine>

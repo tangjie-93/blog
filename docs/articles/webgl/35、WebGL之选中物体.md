@@ -532,5 +532,3 @@ gl.readPixels(
 const id = data[0] + (data[1] << 8) + (data[2] << 16) + (data[3] << 24);
 ```
 `demo`地址 [多个物理中选中物体-优化后](https://github.com/tangjie-93/WebGL/blob/main/%E8%B7%9F%E7%9D%80%E5%AE%98%E7%BD%91%E5%AD%A6WebGL%2BWebGL%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97/%E9%AB%98%E7%BA%A7%E6%8A%80%E6%9C%AF/%E9%80%89%E4%B8%AD%E7%89%A9%E4%BD%93/demo/%E5%A4%9A%E4%B8%AA%E7%89%A9%E7%90%86%E4%B8%AD%E9%80%89%E4%B8%AD%E7%89%A9%E4%BD%93-%E4%BC%98%E5%8C%96%E5%89%8D.html)
-
-<Valine></Valine>

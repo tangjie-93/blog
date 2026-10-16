@@ -216,7 +216,6 @@ console.log(instance.constructor===SuperType);//true
     <li>搜索 SuperType.prototype，最后一步才会找到该方法。</li>
 </ol>
 
-<Valine></Valine>
 ​    
 
 

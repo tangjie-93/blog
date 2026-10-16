@@ -467,5 +467,3 @@ y′= rsinϕcosθ - rcosϕsinθ
 x′ = xcosθ + ysinθ
 y′ = -xsinθ + ycosθ
 ```
-
-<Valine></Valine>

@@ -631,4 +631,3 @@ function setGeometry(gl) {
 + 最终呈现的结果
 
 <img src='../../images/webgl/F.png'>
-<Valine></Valine>

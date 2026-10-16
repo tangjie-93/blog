@@ -38,5 +38,3 @@ obj1["c"]=123;
 delete obj.a;
 console.log(obj1);//{a:123,b:2}
 ```
-
-<Valine></Valine>

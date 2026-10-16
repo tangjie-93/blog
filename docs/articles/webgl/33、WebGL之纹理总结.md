@@ -953,5 +953,3 @@ function render(gl, positions) {
   
 }
 ```
-
-<Valine></Valine>

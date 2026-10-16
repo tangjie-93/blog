@@ -183,4 +183,3 @@ function draw(gl, n, u_ModelViewMatrix) {
 <img width=200 src ='../../images/webgl/透明跟不透明共存.png'>
 
 [透明和不透明物体共存demo](https://github.com/tangjie-93/WebGL/blob/main/%E8%B7%9F%E7%9D%80%E5%AE%98%E7%BD%91%E5%AD%A6WebGL%2BWebGL%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97/%E9%AB%98%E7%BA%A7%E6%8A%80%E6%9C%AF/a%E6%B7%B7%E5%90%88/demo/%E9%80%8F%E6%98%8E%E4%B8%8E%E4%B8%8D%E9%80%8F%E6%98%8E%E7%9A%84%E7%89%A9%E4%BD%93%E5%85%B1%E5%AD%98.html)
-<Valine></Valine>

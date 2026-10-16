@@ -93,5 +93,3 @@ m = 0,n = 0,o = 0,p = 1;
 <img src='../../images/webgl/旋转矩阵-推导结果.png'>
 
 具体的`demo` 可以参考 [旋转-矩阵](https://github.com/tangjie-93/WebGL/blob/main/%E8%B7%9F%E7%9D%80%E5%AE%98%E7%BD%91%E5%AD%A6WebGL%2BWebGL%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97/%E6%97%8B%E8%BD%AC%E5%B9%B3%E7%A7%BB%E5%92%8C%E6%97%8B%E8%BD%AC/demo/%E6%97%8B%E8%BD%AC-%E7%9F%A9%E9%98%B5.html) 。
-
-<Valine></Valine>

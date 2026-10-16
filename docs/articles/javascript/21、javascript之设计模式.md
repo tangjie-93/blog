@@ -1634,11 +1634,3 @@ render(addressAdapter(getGuangdongCity));
       } 
   }; 
   ```
-
-  <Valine></Valine>
-
-  
-
-  
-
-  
