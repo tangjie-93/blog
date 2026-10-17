@@ -88,7 +88,7 @@ test('sidebar omits subtitles while preserving complete article URLs', () => {
     mkdirSync(join(root, 'agent'))
     const names = ['01、Hooks — 挂在循环上.md', '02、Task System——目标太大.md']
     for (const name of names) writeFileSync(join(root, 'agent', name), '# Article')
-    const items = createNavigation(root).sidebar['/articles/agent/'][0].items
+    const items = createNavigation(root).sidebar['/articles/agent/'].find(group => group.text === '基础与工具').items
     assert.deepEqual(items.map(item => item.text), ['1、Hooks', '2、Task System'])
     assert.deepEqual(items.map(item => item.link), names.map(name => `/articles/agent/${encodeURIComponent(name.slice(0, -3))}.html`))
   } finally {
