@@ -1,0 +1,3 @@
+{"question":"午餐补贴是多少？","answer_contains":"30 元","evidence_source":"data/hr-policy.md"}
+{"question":"访客进入办公区需要什么？","answer_contains":"陪同","evidence_source":"data/security-policy.md"}
+{"question":"公司是否报销宠物医疗？","answer_contains":"没有足够证据回答","evidence_source":null}
