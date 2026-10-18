@@ -13,7 +13,7 @@ s01 → ... → s18 → s19 → `s20`
 
 > *"机制很多，循环一个"* — 工具、权限、记忆、任务、团队、插件都挂在同一个 while True 上。
 >
-> **Harness 层**: 综合 — 把前 19 章的机制放回同一个可运行系统。
+> **`Harness` 层**: 综合 — 把前 19 章的机制放回同一个可运行系统。
 
 ---
 
@@ -39,7 +39,7 @@ s01 → ... → s18 → s19 → `s20`
 
 ## 2、解决方案
 
-![System Architecture](/image/agent-course/s20_comprehensive/system-architecture.svg)
+![`System` Architecture](/image/agent-course/s20_comprehensive/system-architecture.svg)
 
 S20 不是再发明一个新机制，而是把前面的教学组件合成一个完整 harness：
 
@@ -59,7 +59,7 @@ S20 不是再发明一个新机制，而是把前面的教学组件合成一个�
           → 下一轮
 ```
 
-循环本身仍然是同一个结构：调用模型，检查响应里是否出现 `tool_use` block，执行工具，把结果追加回 `messages`。CC 源码里也不直接信任 `stop_reason == "tool_use"`，而是以实际出现的 tool_use block 作为是否继续工具轮的信号。变化的是循环周围的 harness 变完整了。
+循环本身仍然是同一个结构：调用模型，检查响应里是否出现 `tool_use` block，执行工具，把结果追加回 `messages`。`CC` 源码里也不直接信任 `stop_reason == "tool_use"`，而是以实际出现的 tool_use block 作为是否继续工具轮的信号。变化的是循环周围的 harness 变完整了。
 
 ---
 
@@ -199,7 +199,7 @@ worktree 负责隔离目录：
 |------|-----|-----|
 | 工具池 | 内置 + `MCP` | 内置 + `MCP`，补齐 s01-s18 的工具 |
 | 权限 | 教学主体省略 | `PreToolUse` hook 中执行 |
-| hooks | 省略 | UserPromptSubmit / PreToolUse / PostToolUse / Stop |
+| hooks | 省略 | UserPromptSubmit / `PreToolUse` / `PostToolUse` / Stop |
 | todo | 省略 | `todo_write` + reminder |
 | skill | 省略 | catalog in system prompt + `load_skill` |
 | compact | 省略 | `LLM` 前压缩 + `compact` 工具 + reactive compact |

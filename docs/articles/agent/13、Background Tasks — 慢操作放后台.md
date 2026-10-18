@@ -13,7 +13,7 @@ s01 → ... → s11 → s12 → `s13` → [s14](./14%E3%80%81Cron%20Scheduler%20
 
 > *"慢操作丢后台, agent 继续处理"* — 后台线程跑命令, 完成后注入通知。
 >
-> **Harness 层**: 后台 — 异步执行, 不阻塞主循环。
+> **`Harness` 层**: 后台 — 异步执行, 不阻塞主循环。
 
 ---
 
@@ -68,11 +68,11 @@ def should_run_background(tool_name: str, tool_input: dict) -> bool:
     return is_slow_operation(tool_name, tool_input)
 ```
 
-CC 的 bash 工具 schema 里有 `run_in_background: boolean` 参数（`BashTool.tsx:241`）。模型自己决定哪些命令丢后台，不靠关键词猜。教学版保留启发式作为兜底，但主路径是模型显式请求。
+`CC` 的 bash 工具 schema 里有 `run_in_background: boolean` 参数（`BashTool.tsx:241`）。模型自己决定哪些命令丢后台，不靠关键词猜。教学版保留启发式作为兜底，但主路径是模型显式请求。
 
 ### 3.2 start_background_task: 后台执行与生命周期
 
-把工具调用包装成 worker 函数，扔到 daemon 线程里执行。每个后台任务有唯一 ID，状态存在 `background_tasks` 字典里：
+把工具调用包装成 worker 函数，扔到 daemon 线程里执行。每个后台任务有唯一 `ID`，状态存在 `background_tasks` 字典里：
 
 ```python
 _bg_counter = 0
@@ -103,7 +103,7 @@ def start_background_task(block) -> str:
     return bg_id
 ```
 
-返回 `bg_id` 而不是只返回 `[Running in background...]`。`daemon=True` 确保 `Agent` 进程退出时线程跟着退出。教学版用内存字典追踪状态；真实 CC 有 `LocalShellTaskState`，输出重定向到文件，支持停止任务、读取后续输出等完整生命周期。
+返回 `bg_id` 而不是只返回 `[Running in background...]`。`daemon=True` 确保 `Agent` 进程退出时线程跟着退出。教学版用内存字典追踪状态；真实 `CC` 有 `LocalShellTaskState`，输出重定向到文件，支持停止任务、读取后续输出等完整生命周期。
 
 ### 3.3 collect_background_results: 通知收集
 
@@ -164,7 +164,7 @@ if bg_notifications:
 
 慢操作先回一个带 `bg_id` 的占位 `function_call_output`，`LLM` 知道这个命令还在跑，可以先做别的事。后台完成后，通知不会插进同一轮模型请求，而是排队到下一次用户输入前再注入；`function_call_output` 仍然单独按 `Responses API` 约定回填。
 
-教学版在 agent loop 继续运行时轮询后台结果。真实 CC 通过通知队列（`messageQueueManager.ts`）把后台完成事件送入后续 turn，不需要等工具循环。
+教学版在 agent loop 继续运行时轮询后台结果。真实 `CC` 通过通知队列（`messageQueueManager.ts`）把后台完成事件送入后续 turn，不需要等工具循环。
 
 ### 3.5 合起来跑
 
@@ -182,7 +182,7 @@ Turn 2:
   → LLM sees: config file + install notification in one message
 ```
 
-`Agent` 没干等，npm install 跑后台的时候，它去读了配置文件。
+`Agent` 没干等，`npm` install 跑后台的时候，它去读了配置文件。
 
 ---
 
@@ -225,27 +225,27 @@ python s13_background_tasks/code.py
 s14 Cron Scheduler → 给 `Agent` 装一个闹钟。
 
 <details>
-<summary>深入 CC 源码</summary>
+<summary>深入 `CC` 源码</summary>
 
-> 以下基于 CC 源码 `query.ts`（211, 1054-1060, 1411-1482 行）、`services/toolUseSummary/toolUseSummaryGenerator.ts`（L15 prompt 文本）、`LocalShellTask.tsx`（L24-25 常量, L59-98 看门狗逻辑）、`messageQueueManager.ts`（通知队列）、`utils/task/framework.ts`（L267 `enqueueTaskNotification`）的完整分析。
+> 以下基于 `CC` 源码 `query.ts`（211, 1054-1060, 1411-1482 行）、`services/toolUseSummary/toolUseSummaryGenerator.ts`（L15 prompt 文本）、`LocalShellTask.tsx`（L24-25 常量, L59-98 看门狗逻辑）、`messageQueueManager.ts`（通知队列）、`utils/task/framework.ts`（L267 `enqueueTaskNotification`）的完整分析。
 
 ### 一、pendingToolUseSummary：Haiku 后台生成
 
-CC 在每批工具执行完后，启动一个 Haiku side-query 生成工具使用摘要。发起代码在 `query.ts:1411-1482`，prompt 文本定义在 `services/toolUseSummary/toolUseSummaryGenerator.ts:15`（变量名 `TOOL_USE_SUMMARY_SYSTEM_PROMPT`）。提示是 "Write a short summary label... think git-commit-subject, not sentence"，过去时态，约 30 字符。
+`CC` 在每批工具执行完后，启动一个 Haiku side-query 生成工具使用摘要。发起代码在 `query.ts:1411-1482`，prompt 文本定义在 `services/toolUseSummary/toolUseSummaryGenerator.ts:15`（变量名 `TOOL_USE_SUMMARY_SYSTEM_PROMPT`）。提示是 "Write a short summary label... think git-commit-subject, not sentence"，过去时态，约 30 字符。
 
 Haiku 摘要（~1s）在主模型流式生成（5-30s）期间完成。下一轮开始前，把摘要 yield 出去。`SDK` 消费这些摘要做移动端进度展示。
 
 ### 二、线程模型：没有真正的线程
 
-CC 运行在 `Node.js`/Bun 单线程事件循环中。"后台"只是 "不 await"。`ShellCommand.background(taskId)` 把 stdout/stderr 重定向到文件，让进程独立运行。
+`CC` 运行在 `Node.js`/Bun 单线程事件循环中。"后台"只是 "不 await"。`ShellCommand.background(taskId)` 把 stdout/stderr 重定向到文件，让进程独立运行。
 
 ### 三、七种后台任务类型
 
-CC 定义了 7 种后台任务（`Task.ts:7-13`）：`local_bash`、`local_agent`、`remote_agent`、`in_process_teammate`、`local_workflow`、`monitor_mcp`、`dream`。每种有自己的注册、生命周期和通知机制。
+`CC` 定义了 7 种后台任务（`Task.ts:7-13`）：`local_bash`、`local_agent`、`remote_agent`、`in_process_teammate`、`local_workflow`、`monitor_mcp`、`dream`。每种有自己的注册、生命周期和通知机制。
 
 ### 四、通知注入：命令队列
 
-后台任务完成后通过 `enqueueTaskNotification`（`utils/task/framework.ts:267`）或 `enqueuePendingNotification`（`messageQueueManager.ts`）入队到共享命令队列。通知格式是结构化的 XML：
+后台任务完成后通过 `enqueueTaskNotification`（`utils/task/framework.ts:267`）或 `enqueuePendingNotification`（`messageQueueManager.ts`）入队到共享命令队列。通知格式是结构化的 `XML`：
 
 ```xml
 <task_notification>

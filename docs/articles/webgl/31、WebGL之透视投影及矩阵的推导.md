@@ -176,5 +176,5 @@ $$
 [透视投影demo地址](https://github.com/tangjie-93/WebGL/blob/main/%E8%B7%9F%E7%9D%80%E5%AE%98%E7%BD%91%E5%AD%A6WebGL%2BWebGL%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97/%E6%8A%95%E5%BD%B1/demo/%E9%80%8F%E8%A7%86%E6%8A%95%E5%BD%B1.html)
 
 **参考文档**<br>
-[WebGL 三维透视投影](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-3d-perspective.html)<br>
+[`WebGL` 三维透视投影](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-3d-perspective.html)<br>
 [透视投影](https://juejin.cn/book/6844733755580481543/section/6844733755941191687)

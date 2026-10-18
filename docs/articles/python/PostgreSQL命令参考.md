@@ -6,9 +6,9 @@ tags: "Python"
 note: "数据库管理、权限、查询、备份恢复和故障排查命令速查。"
 ---
 
-# PostgreSQL 命令参考
+# `PostgreSQL` 命令参考
 
-本文档整理了使用 PostgreSQL 数据库时常用的命令，包括服务器管理、数据库操作、用户管理、权限设置、数据操作、备份恢复和监控维护等方面。
+本文档整理了使用 `PostgreSQL` 数据库时常用的命令，包括服务器管理、数据库操作、用户管理、权限设置、数据操作、备份恢复和监控维护等方面。
 
 ## 1、前言
 
@@ -16,11 +16,11 @@ note: "数据库管理、权限、查询、备份恢复和故障排查命令速�
 
 1. **命令类型**：
    - **系统命令**：直接在终端执行的命令（如 `pg_ctl`、`createdb`、`psql` 等）
-   - **`SQL` 命令**：在 PostgreSQL 交互式终端中执行的命令（如 `CREATE TABLE`、`SELECT` 等）
-   - **元命令**：PostgreSQL 交互式终端中的特殊命令，以反斜杠开头（如 `\dt`、`\du` 等）
+   - **`SQL` 命令**：在 `PostgreSQL` 交互式终端中执行的命令（如 `CREATE TABLE`、`SELECT` 等）
+   - **元命令**：`PostgreSQL` 交互式终端中的特殊命令，以反斜杠开头（如 `\dt`、`\du` 等）
 
 2. **前置条件**：
-   - 部分命令需要先启动 PostgreSQL 服务器
+   - 部分命令需要先启动 `PostgreSQL` 服务器
    - 部分命令需要先连接到数据库
    - 命令执行需要相应的权限
 
@@ -29,7 +29,7 @@ note: "数据库管理、权限、查询、备份恢复和故障排查命令速�
    - 例如：`\d table_name` 中的 `table_name` 需要替换为实际的表名
 
 4. **环境配置**：
-   - 建议将 PostgreSQL 的 `bin` 目录添加到系统 PATH 中
+   - 建议将 `PostgreSQL` 的 `bin` 目录添加到系统 PATH 中
    - 可以设置环境变量简化命令执行
 
 5. **注意事项**：
@@ -504,7 +504,7 @@ tail -n 100 $HOME/postgresql/data/log/postgresql-$(date +%Y-%m-%d).log | grep -i
 
 ## 10. 环境变量配置
 
-为了方便使用 PostgreSQL 命令，可以将以下配置添加到 `~/.zshrc` 文件中：
+为了方便使用 `PostgreSQL` 命令，可以将以下配置添加到 `~/.zshrc` 文件中：
 
 ```bash
 # PostgreSQL 路径

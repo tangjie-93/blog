@@ -47,12 +47,12 @@ alert(typeof age);         // "undefined"
 
 >1、手动设置变量的值或者对象某一个属性值为null（在初始化对象时，手动设置对象为null。在作用域中不再需要使用某个对象时，把null赋值给那个变量解除引用，以释放内存）  
 
->2、在javascript的DOM元素获取中，如果没有获取到指定的元素对象，结果一般是null。    
+>2、在javascript的`DOM`元素获取中，如果没有获取到指定的元素对象，结果一般是null。    
 ```js       
 var d=document.getElementById("d");
 console.log(d);//当没有id为"d"的标签时返回null
 ```
->3、Object.prototype._proto_的值也是null。（每一个对象都有__proto__属性，指向对应的构造函数的prototype属性,但是因为Object是所有类的基类,其没有对应的构造函数，所有Object.prototype._proto_值为空）；
+>3、`Object`.prototype._proto_的值也是null。（每一个对象都有__proto__属性，指向对应的构造函数的prototype属性,但是因为`Object`是所有类的基类,其没有对应的构造函数，所有`Object`.prototype._proto_值为空）；
 
 ```js           
 console.log("a".__proto__);
@@ -76,8 +76,8 @@ alert(Number(null))//0
 | 数据类型        | 转换为true的值           | 转换为false的值  |
 | :-------------: |:-------------:| :-------------:|
 | String        | 任何非空字符串 | 空字符串("") |
-| Number        | 任何非零数值(包括无穷大)      |   0和NAN |
-| Object        | 任何对象      |    null |
+| `Number`        | 任何非零数值(包括无穷大)      |   0和NAN |
+| `Object`        | 任何对象      |    null |
 | undefined     | 没有为true的情况      |    undefined |
 
 **注意：**  
@@ -86,9 +86,9 @@ alert(Number(null))//0
 + +true返回的是1。一元加号会尝试将 `boolean` 类型转换为数字类型。 true被转换为1，false被转换为0。 
 + `+"1"`返回的是NAN。
 
-## 4、Number
+## 4、`Number`
 
-**注意点1：** Number的浮点数值在进行算术计算时精确度远远不如正数，所以不要去计算两个浮点数相加的结果是否等于另一个浮点数。
+**注意点1：** `Number`的浮点数值在进行算术计算时精确度远远不如正数，所以不要去计算两个浮点数相加的结果是否等于另一个浮点数。
 ```js        
 if(0.1+0.2==0.3){
     alert("相等")
@@ -96,10 +96,10 @@ if(0.1+0.2==0.3){
 ```
 &#8195;&#8195;这种情况永远都不会弹出"相等"的。因为浮点数的精度太高，`0.1`+0.2的值不一定精确的等于0.3。
 
-**注意点2：** NaN,即非数值（Not a Number）是一个特殊的数值，这个数值用于表示一个本来要返回数值的操作数未返回数值的情况（这样就不会抛出错误了）。
+**注意点2：** `NaN`,即非数值（Not a `Number`）是一个特殊的数值，这个数值用于表示一个本来要返回数值的操作数未返回数值的情况（这样就不会抛出错误了）。
 
-**NaN 本身有两个非同寻常的特点。**
-+ 1、任何涉及 NaN 的操作（例如 NaN/10）都会返回 NaN，这个特点在多步计算中有可能导致问题。
+**`NaN` 本身有两个非同寻常的特点。**
++ 1、任何涉及 `NaN` 的操作（例如 `NaN`/10）都会返回 `NaN`，这个特点在多步计算中有可能导致问题。
 
 + 2、`NaN` 与任何值都不相等，包括 `NaN` 本身。
 
@@ -112,7 +112,7 @@ isNAN("12px") //true 先Number(null)在判断
 **注意点3：** 数值转换
 &#8195;&#8195;有三个函数可以将非数值转换为数值：`Number()`、`parseInt()`、`parseFloat()`。`Number`()可以用于转换任何数据类型，而另外两个只能将字符串转换为数值。
 
-#### `4.1` Number()函数的转换规则如下所示
+#### `4.1` `Number`()函数的转换规则如下所示
 
 * 如果是 `Boolean` 类型，`true` 和 `false` 分别转换为1和0.
     ```js        
@@ -183,7 +183,7 @@ parseInt("23",5) // 13
 parseInt(77,6) //NaN
 ```
 **`Number`和`parseInt`转换对比。**
-| 特殊情况 | Number | parseInt |
+| 特殊情况 | `Number` | parseInt |
 | :-----:| :----: | :----: |
 | 空字符串 | `Number("")=>0` | `parseInt("")=>NaN` |
 | 不包含数字的字符串 | `Number("dddd")=>NaN` | `parseInt("gsdg")=>NaN` |
@@ -332,7 +332,7 @@ alert(str.localeCompare("cca"));//-1
 alert(str.localeCompare("aca"));//1
 alert(str.localeCompare("bbc"));//0
 ```
-+ 8、HTML方法    
++ 8、`HTML`方法    
 但是尽量不去使用这些方法，因为他们创建的标记通常无法表达语义。
 ![](https://user-gold-cdn.xitu.io/2019/4/6/169f042487817cc8?w=614&h=264&f=png&s=52206)
 
@@ -408,20 +408,20 @@ typeof function(){} //function
 #### 2、+ 运算符
 但是`+`是个例外，执行`+` 操作符时：
 
-> 当一侧为**String/Object类型**，被识别为**字符串拼接**，并会优先将另一侧转换为字符串类型。
+> 当一侧为**String/`Object`类型**，被识别为**字符串拼接**，并会优先将另一侧转换为字符串类型。
 ```js
 ![]+[] //->"false" 等价于false+[] ->"false"+[].toString()
 {}+{} //[object Object][object Object]
 123 + {}  // 123[object Object]    （规则3） 
 [1,2,3]+[4,5,6]  //->1,2,34,5,6 等价于 [1,2,3].toString()+[4,5,6].toString()
 ```
-> 当一侧为**Number类型**，另一侧为原始类型，则**将原始类型转换为Number类型**。
+> 当一侧为**`Number`类型**，另一侧为原始类型，则**将原始类型转换为`Number`类型**。
 ```js
 123 + '123' // 123123   （规则1）
 123 + null  // 123    （规则2）
 123 + true // 124    （规则2）
 ```
-> 当一侧为**Number类型，另一侧为引用类型，将引用类型和Number类型转换成字符串后拼接**。
+> 当一侧为**`Number`类型，另一侧为引用类型，将引用类型和`Number`类型转换成字符串后拼接**。
 ```js        
 {}+0 //0 {}会被看成一个代码块
 ({}+0) //[object Object]0

@@ -357,4 +357,4 @@ drawObjects(gl, mat, solidColorProgramInfo, clipspaceCubeBufferInfo);
 
 **参考文档**
 
-[WebGL 可视化相机](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-visualizing-the-camera.html)<br>
+[`WebGL` 可视化相机](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-visualizing-the-camera.html)<br>

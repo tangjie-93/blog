@@ -38,15 +38,15 @@ note: "从基础接口、数据库到认证、测试和部署的六周行动计�
 
 - [ ] **创建第一个 `FastAPI` 应用**
   - 创建 `main.py`
-  - 实现基本的 GET/POST 路由
+  - 实现基本的 `GET`/`POST` 路由
   - 运行并访问 `/docs` 查看自动文档
 
 - [ ] **掌握路由定义和请求参数处理**
   - 路径参数：`@app.get("/items/{item_id}")`
   - 查询参数：`def read_item(q: str = None)`
-  - 请求体：使用 Pydantic 模型
+  - 请求体：使用 `Pydantic` 模型
 
-- [ ] **学习 Pydantic 模型定义**
+- [ ] **学习 `Pydantic` 模型定义**
   - BaseModel 基础使用
   - 字段验证（Field）
   - 嵌套模型
@@ -62,7 +62,7 @@ note: "从基础接口、数据库到认证、测试和部署的六周行动计�
 - 包含 CRUD 操作的基础 `API`
 
 ### 1.4 常见问题
-- **Q: Pydantic v1 和 v2 有什么区别？**
+- **Q: `Pydantic` v1 和 v2 有什么区别？**
   - A: v2 性能更好，`API` 有变化（如 `dict()` → `model_dump()`）
   
 - **Q: 同步和异步路由怎么选择？**
@@ -73,11 +73,11 @@ note: "从基础接口、数据库到认证、测试和部署的六周行动计�
 ## 2、第二周：数据库与 ORM
 
 ### 2.1 学习目标
-掌握使用 SQLModel 进行数据库操作，实现完整的数据持久化。
+掌握使用 `SQLModel` 进行数据库操作，实现完整的数据持久化。
 
 ### 2.2 任务清单
 
-- [ ] **学习 SQLModel 基础**
+- [ ] **学习 `SQLModel` 基础**
   - 阅读 `/FastAPI/doc/SQLModel详解.md`
   - 模型定义（`table=True`）
   - 字段类型和约束
@@ -88,8 +88,8 @@ note: "从基础接口、数据库到认证、测试和部署的六周行动计�
   - 依赖注入获取会话
 
 - [ ] **实现完整的 CRUD `API`**
-  - Create: POST 创建资源
-  - Read: GET 查询（单条/列表）
+  - Create: `POST` 创建资源
+  - Read: `GET` 查询（单条/列表）
   - Update: PUT/PATCH 更新
   - Delete: DELETE 删除
 
@@ -135,16 +135,16 @@ note: "从基础接口、数据库到认证、测试和部署的六周行动计�
   - bcrypt 算法
   - 验证密码
 
-- [ ] **JWT 认证**
+- [ ] **`JWT` 认证**
   - 安装：`pip install python-jose`
-  - Token 生成与验证
+  - `Token` 生成与验证
   - 登录接口实现
   - 受保护路由
 
 - [ ] **OAuth2 密码流程**
   - `OAuth2PasswordBearer`
   - `OAuth2PasswordRequestForm`
-  - 集成 Swagger UI 认证
+  - 集成 Swagger `UI` 认证
 
 - [ ] **权限控制**
   - 基于角色的权限（RBAC）
@@ -153,13 +153,13 @@ note: "从基础接口、数据库到认证、测试和部署的六周行动计�
 
 ### 3.3 本周产出
 - 带用户认证的 `API`
-- JWT Token 机制
+- `JWT` `Token` 机制
 - 权限控制实现
 
 ### 3.4 实践项目
 为第二周的博客系统添加：
 - 用户注册/登录
-- JWT Token 认证
+- `JWT` `Token` 认证
 - 只有作者能编辑/删除自己的文章
 - 管理员可以删除任何文章
 
@@ -188,7 +188,7 @@ note: "从基础接口、数据库到认证、测试和部署的六周行动计�
   - 依赖覆盖（`dependency_overrides`）
 
 - [ ] **`Docker` 部署**
-  - 编写 Dockerfile
+  - 编写 `Dockerfile`
   - docker-compose 配置
   - 多阶段构建优化
 
@@ -218,7 +218,7 @@ note: "从基础接口、数据库到认证、测试和部署的六周行动计�
 
 - [ ] **中间件**
   - 请求日志中间件
-  - CORS 配置
+  - `CORS` 配置
   - 自定义中间件
 
 - [ ] **后台任务**
@@ -233,7 +233,7 @@ note: "从基础接口、数据库到认证、测试和部署的六周行动计�
 
 - [ ] **性能优化**
   - 异步数据库查询
-  - 缓存（Redis）
+  - 缓存（`Redis`）
   - 连接池配置
   - GZip 压缩
 
@@ -250,7 +250,7 @@ note: "从基础接口、数据库到认证、测试和部署的六周行动计�
 为博客系统添加：
 - 请求日志记录
 - `WebSocket` 实时通知（新评论提醒）
-- Redis 缓存热门文章
+- `Redis` 缓存热门文章
 - `API` 版本控制（v1/v2）
 
 ---
@@ -264,7 +264,7 @@ note: "从基础接口、数据库到认证、测试和部署的六周行动计�
 
 #### 项目一：任务管理系统（Todo App）
 **功能需求：**
-- 用户注册/登录（JWT 认证）
+- 用户注册/登录（`JWT` 认证）
 - 创建/编辑/删除任务
 - 任务分类和标签
 - 任务优先级和截止日期
@@ -272,9 +272,9 @@ note: "从基础接口、数据库到认证、测试和部署的六周行动计�
 - 邮件通知（后台任务）
 
 **技术栈：**
-- `FastAPI` + SQLModel
-- PostgreSQL
-- Redis（缓存）
+- `FastAPI` + `SQLModel`
+- `PostgreSQL`
+- `Redis`（缓存）
 - Celery（后台任务）
 - `Docker`
 
@@ -288,9 +288,9 @@ note: "从基础接口、数据库到认证、测试和部署的六周行动计�
 - 用户权限（买家/卖家/管理员）
 
 **技术栈：**
-- `FastAPI` + SQLModel
-- PostgreSQL
-- JWT 认证
+- `FastAPI` + `SQLModel`
+- `PostgreSQL`
+- `JWT` 认证
 - 事务处理
 - 单元测试
 
@@ -307,13 +307,13 @@ note: "从基础接口、数据库到认证、测试和部署的六周行动计�
 
 ### 7.1 官方文档
 - [`FastAPI` 官方文档](https://fastapi.tiangolo.com/)
-- [Pydantic 文档](https://docs.pydantic.dev/)
-- [SQLModel 文档](https://sqlmodel.tiangolo.com/)
+- [`Pydantic` 文档](https://docs.pydantic.dev/)
+- [`SQLModel` 文档](https://sqlmodel.tiangolo.com/)
 - [Uvicorn 文档](https://www.uvicorn.org/)
 
 ### 7.2 推荐教程
 - [`FastAPI` 官方教程](https://fastapi.tiangolo.com/tutorial/)
-- [SQLModel 教程](https://sqlmodel.tiangolo.com/tutorial/)
+- [`SQLModel` 教程](https://sqlmodel.tiangolo.com/tutorial/)
 - [Test-Driven Development with `FastAPI`](https://testdriven.io/courses/tdd-fastapi/)
 
 ### 7.3 参考项目

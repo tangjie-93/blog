@@ -315,7 +315,7 @@ gl.bufferData(
       gl.STATIC_DRAW)
 ```
 一旦数据存到缓冲中，还需要告诉 `WebGL` 怎么**从缓冲中提取数据传给顶点着色器的属性**。这一步一般也是在初始化部分完成。
-> 询问顶点数据应该放在哪里，是数据通过属性传到GPU的一个桥梁，获取属性的地址
+> 询问顶点数据应该放在哪里，是数据通过属性传到`GPU`的一个桥梁，获取属性的地址
 ```js
 // 询问顶点数据应该放在哪里
 const positionLocation = gl.getAttribLocation(program, "a_position");
@@ -384,4 +384,4 @@ function setColors(gl) {
       gl.STATIC_DRAW);
 }
 ```
-[WebGL的执行流程图](https://webglfundamentals.org/webgl/lessons/resources/webgl-state-diagram.html#no-help)
+[`WebGL`的执行流程图](https://webglfundamentals.org/webgl/lessons/resources/webgl-state-diagram.html#no-help)

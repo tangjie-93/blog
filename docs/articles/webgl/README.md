@@ -11,7 +11,7 @@ note: WebGL基础知识总结
 
 #### 1、着色器程序
 
-着色器程序是在显卡（GPU）上运行的简短程序，代替 **`GPU`固定渲染管线** 的一部分，使 GPU 渲染过程中的某些部分允许开发者通过编程进行控制。**着色器程序允许我们通过编程来控制 `GPU` 的渲染。**
+着色器程序是在显卡（`GPU`）上运行的简短程序，代替 **`GPU`固定渲染管线** 的一部分，使 `GPU` 渲染过程中的某些部分允许开发者通过编程进行控制。**着色器程序允许我们通过编程来控制 `GPU` 的渲染。**
 
 
 ## 2、内置变量
@@ -133,7 +133,7 @@ void main(){
 <img src="../../images/webgl/gl_FragCoord.png" width='400' />
 
 ## 3、attribute和uniform以及varying的区别
-`attribute` 和 `uniform` 关键字的目的主要是为了 `javascript` 语言可以通过相关的WebGL API把一些数据传递给着色器。而`varying` 主要是将顶点着色器中的数据传递给片元着色器。
+`attribute` 和 `uniform` 关键字的目的主要是为了 `javascript` 语言可以通过相关的`WebGL` `API`把一些数据传递给着色器。而`varying` 主要是将顶点着色器中的数据传递给片元着色器。
 | 变量类型 | 数据传递方向 | 作用
 | ---- | ---- | ----
 | attribute  | 从js脚本中传递到顶点着色器 | 在顶点着色器中声明跟**顶点相关的数据**
@@ -215,7 +215,7 @@ R3 = B1 x A1 + B2 x (1 - A1)
 + 如果立方体开启深度测试的同时还开启了α融合的话，如果想要α融合起作用的话，需要关闭深度测试(调用`gl.blendFunc()`)， α融合会在深度测试之后进行。 **深度测试单元是比较先后绘制两个片元的深度值决定取舍，α融合单元是把先后绘制的两个片元RGB值分别乘以一个系数得到新的`RGB`值**，覆盖替换原来颜色缓冲区中同屏幕坐标的RGB值。<br>
 <img src='../../images/webgl/立方体-开始深度测试和α融合.png' alt='暂无图片' width='300'><br>
 
-## 5、WebGL坐标系
+## 5、`WebGL`坐标系
 `WebGL` 采用右手坐标系，`X`轴向右为正，`Y` 轴向上为正，`Z` 轴沿着屏幕往往为正。
 
 `WebGL`坐标系分为如下几类：
@@ -239,7 +239,7 @@ R3 = B1 x A1 + B2 x (1 - A1)
   + 进行投影变换，将物体从观察坐标系转换到裁剪坐标系。(投影变换)
 + `GPU`接收`CPU`传递过来的裁剪坐标。
   + 接收裁剪坐标，通过透视除法，将裁剪坐标转换成 `NDC` 坐标。(透视除法)
-  + `GPU` 将 `NDC` 坐标通过视口变换，渲染到屏幕上。将 3D 坐标转变成 2D 坐标，在 GPU 中执行，我们无法通过编程干预。(视口变换)
+  + `GPU` 将 `NDC` 坐标通过视口变换，渲染到屏幕上。将 3D 坐标转变成 2D 坐标，在 `GPU` 中执行，我们无法通过编程干预。(视口变换)
   ```js
   //设置视口 宽500 高300
   gl.viewport(0, 0,  500, 300);
@@ -433,7 +433,7 @@ vec3 lightDirection = u_LightPosition - v_Position;
     + 坐标范围是
         + X轴：【-1, 1】。
         + Y轴：【-1, 1】。
-#### 2、WebGL `API`
+#### 2、`WebGL` `API`
 + shader：着色器对象
     + gl.createShader：创建着色器。
     + gl.shaderSource：指定着色器源码。
@@ -502,7 +502,7 @@ vec3 lightDirection = u_LightPosition - v_Position;
     + gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true); 设置图片的翻转
     + gl.activeTexture：激活纹理单元。
     + gl.bindTexture：绑定纹理对象到当前纹理。
-    + gl.texImage2D：将图片数据传递给 GPU。
+    + gl.texImage2D：将图片数据传递给 `GPU`。
     + gl.texParameterf：设置图片放大缩小时的过滤算法。
 + 常用方法总结
   - precision：精度设置限定符，使用此限定符设置完精度后，之后所有该数据类型都将沿用该精度，除非单独设置。

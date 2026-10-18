@@ -56,9 +56,9 @@ prompt = ChatPromptTemplate.from_messages([
 4. 用 human message 放动态输入。
 5. 确认变量名和调用参数一致。
 
-## 4. Runnable
+## 4. `Runnable`
 
-Runnable 是 `LangChain` 里的统一执行接口。很多对象都支持 `.invoke()`、`.stream()`、`.batch()`。
+`Runnable` 是 `LangChain` 里的统一执行接口。很多对象都支持 `.invoke()`、`.stream()`、`.batch()`。
 
 ```python
 chain = prompt | llm
@@ -74,11 +74,11 @@ Runnable 就像流水线里的一个机器：输入进去，处理一下，输�
 
 1. 前一步输出字符串，后一步需要字典。
 2. 链太长，出错不知道错在哪一步。
-3. 没有单独测试每个 Runnable。
+3. 没有单独测试每个 `Runnable`。
 
-## 5. Tool
+## 5. `Tool`
 
-Tool 是把普通函数包装成模型可以调用的工具。
+`Tool` 是把普通函数包装成模型可以调用的工具。
 
 ```python
 from langchain_core.tools import tool
@@ -118,13 +118,13 @@ OutputParser 用来把模型输出解析成结构化数据。
 
 ## 7. 可运行 Demo
 
-下面代码用于离线理解基础对象；要运行实际调用 `OpenAI` ChatGPT 的完整版本，请使用本节末尾链接的 `02_core_chain.py`。先安装依赖：
+下面代码用于离线理解基础对象；要运行实际调用 `OpenAI` `ChatGPT` 的完整版本，请使用本节末尾链接的 `02_core_chain.py`。先安装依赖：
 
 ```bash
 pip install langchain-core
 ```
 
-将下面代码保存为 `langchain_core_demo.py` 后执行 `python langchain_core_demo.py`。它覆盖 Message、`Prompt`、Runnable、Tool 和 OutputParser 五个核心对象。
+将下面代码保存为 `langchain_core_demo.py` 后执行 `python langchain_core_demo.py`。它覆盖 Message、`Prompt`、`Runnable`、`Tool` 和 OutputParser 五个核心对象。
 
 ```python
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage, ToolMessage
@@ -241,8 +241,8 @@ python docs/public/langchain-examples/02_core/output_parsers.py
 python docs/public/langchain-examples/02_core_chain.py
 ~~~
 
-该脚本以 `ChatOpenAI` 调用 ChatGPT，展示 `SystemMessage`、`HumanMessage`、
-`ChatPromptTemplate | ChatOpenAI` 管道，以及 Pydantic 结构化输出。
+该脚本以 `ChatOpenAI` 调用 `ChatGPT`，展示 `SystemMessage`、`HumanMessage`、
+`ChatPromptTemplate | ChatOpenAI` 管道，以及 `Pydantic` 结构化输出。
 
 接入真实模型的最小写法如下：
 
@@ -263,11 +263,11 @@ python docs/public/langchain-examples/02_core_chain.py
 2. PromptTemplate 解决什么问题？
     + 格式化消息，将变量插入到模板中。
     + 不调用模型，只格式化消息。
-3. Runnable 的 `.invoke()`、`.stream()`、`.batch()` 有什么区别？
+3. `Runnable` 的 `.invoke()`、`.stream()`、`.batch()` 有什么区别？
     + `.invoke()`：同步调用，返回一个结果。
     + `.stream()`：异步调用，返回一个可迭代对象，每次迭代返回一个结果。
     + `.batch()`：批量调用，返回一个列表，每个元素对应一个输入。
-4. Tool 的描述为什么重要？
+4. `Tool` 的描述为什么重要？
     + 用于模型决定怎样调用工具。
     + 说明了工具的功能、参数和返回值。
 5. OutputParser 失败时应该怎么处理？

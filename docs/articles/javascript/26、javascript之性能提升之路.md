@@ -153,7 +153,7 @@ var dom=document.getElementById("test");
 ```js
 格式：Expires: Mon, 28 Jul 2014 23:30:00 GM）。
 ```
->13、使用内容传递网络（CDN——通过地理位置上最近的位置向用户提供服务，减少网络延迟）提供javascript文件，在提高性能的同时，还可以管理压缩和缓存。
+>13、使用内容传递网络（`CDN`——通过地理位置上最近的位置向用户提供服务，减少网络延迟）提供javascript文件，在提高性能的同时，还可以管理压缩和缓存。
 
 
 ## 2、Dom操作 {#a2}
@@ -161,7 +161,7 @@ var dom=document.getElementById("test");
 
 &#8195;&#8195;Dom（文档对象模型）是一个独立于语言的，使用xml和html文档操作的应用程序接口。在浏览器中的接口却是以javascript来实现的。Dom和javascript看成两座岛，两者之间通过一座收费的桥连接。一般建议尽量留在javascript岛上。
 
-> 1、用innerHTML代替DOM操作，减少DOM操作次数，优化javascript性能。
+> 1、用innerHTML代替`DOM`操作，减少`DOM`操作次数，优化javascript性能。
 
 ```js
 //dom方式
@@ -193,7 +193,7 @@ console.log("innerHTML方式:"+(end-start));//innerHTML方式:35
 
 >4、使用element.cloneNode(bool)复制节点，bool为false表示浅复制，只复制当前节点，bool为true时，表示深复制，还会复制其子节点。这种方式比document.createElement()速度要快一些。  
 
->5、使用document.querySelector和document.querySelectorAll("div.warning,div.notice")来快速查找。因为它们返回一个NodeList——由符合条件的节点构成的类数组对象，而不是HTML集合（总是表现出存在性），避免了它所固有的性能问题（以及存在的逻辑问题）。querySelectorAll("div.warning,div.notice")还可以进行联合查询。  
+>5、使用document.querySelector和document.querySelectorAll("div.warning,div.notice")来快速查找。因为它们返回一个NodeList——由符合条件的节点构成的类数组对象，而不是`HTML`集合（总是表现出存在性），避免了它所固有的性能问题（以及存在的逻辑问题）。querySelectorAll("div.warning,div.notice")还可以进行联合查询。  
 
 >6、修改样式时，可以使用div.style.cssText来一起修改样式，或者使用类来修改（便于维护）。    
 
@@ -208,7 +208,7 @@ el.style.padding = '5px'；
 el.style.cssText = 'border-left: 1px; border-right: 2px; padding: 5px;'  
 ```
 
->7、尽量避免在HTML标签中写Style属性，使用外联样式便于维护和修改。  
+>7、尽量避免在`HTML`标签中写Style属性，使用外联样式便于维护和修改。  
 
 >8、避免图片和iFrame等的空Src。空Src会重新加载当前页面，影响速度和效率。  
 

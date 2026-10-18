@@ -56,13 +56,13 @@ alert(typeof age);         // "undefined"
 
 >1、手动设置变量的值或者对象某一个属性值为null（在初始化对象时，手动设置对象为null。在作用域中不再需要使用某个对象时，把null赋值给那个变量解除引用，以释放内存）    
 
->2、在javascript的DOM元素获取中，如果没有获取到指定的元素对象，结果一般是null。    
+>2、在javascript的`DOM`元素获取中，如果没有获取到指定的元素对象，结果一般是null。    
 
 ```js
 var d=document.getElementById("d");
 console.log(d);//当没有id为"d"的标签时返回null
 ```
->3、Object.prototype._proto_的值也是null。（每一个对象都有__proto__属性，指向对应的构造函数的prototype属性,但是因为Object是所有类的基类,其没有对应的构造函数，所有Object.prototype._proto_值为空）；
+>3、`Object`.prototype._proto_的值也是null。（每一个对象都有__proto__属性，指向对应的构造函数的prototype属性,但是因为`Object`是所有类的基类,其没有对应的构造函数，所有`Object`.prototype._proto_值为空）；
 
 ```js
 console.log("a".__proto__);

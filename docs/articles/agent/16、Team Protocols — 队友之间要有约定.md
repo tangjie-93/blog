@@ -12,7 +12,7 @@ note: "通过消息、计划提交和审批约定协调队友，避免重复认�
 s01 → ... → s14 → s15 → `s16` → [s17](./17%E3%80%81Autonomous%20Agents%20%E2%80%94%20%E8%87%AA%E5%B7%B1%E7%9C%8B%E6%9D%BF%EF%BC%8C%E8%87%AA%E5%B7%B1%E8%AE%A4%E9%A2%86.md) → s18 → s19 → s20
 > *"队友之间要有约定"* — request-response 模式驱动协商。
 >
-> **Harness 层**: 协议 — `Agent` 之间的结构化握手。
+> **`Harness` 层**: 协议 — `Agent` 之间的结构化握手。
 
 ---
 
@@ -24,7 +24,7 @@ s15 的队友能干活了，但协调是松散的：Lead 发消息，队友回�
 
 **计划审批**：Bob 想重构认证模块，属于高风险操作。应该先让 Lead 看 Bob 的计划，审批通过后再动手。
 
-这两个场景结构完全一样：一方发请求，另一方给回复，请求和回复通过同一个 ID 关联。有状态机追踪：pending → approved / rejected。
+这两个场景结构完全一样：一方发请求，另一方给回复，请求和回复通过同一个 `ID` 关联。有状态机追踪：pending → approved / rejected。
 
 ---
 
@@ -41,7 +41,7 @@ s15 的队友能干活了，但协调是松散的：Lead 发消息，队友回�
 | shutdown_request / response | Lead → 队友 | 体面关机握手 |
 | plan_approval_request / response | 队友 → Lead | 计划审批协议示例 |
 
-> 教学版演示了计划审批的请求-响应消息流程，没有实现执行门控（未 approved 时拦截 bash/write_file）。真实 CC 的队友有 permission gating 机制。
+> 教学版演示了计划审批的请求-响应消息流程，没有实现执行门控（未 approved 时拦截 bash/write_file）。真实 `CC` 的队友有 permission gating 机制。
 
 ---
 
@@ -168,7 +168,7 @@ LLM 返回非 tool_use
   → 收到新消息 → 注入 messages → 继续 LLM turn
 ```
 
-教学版省略了 idle_notification 给 Lead 的通知。真实 CC 在 idle 时发 `idle_notification`，Lead 收到后知道队友空闲，可以分配新任务。
+教学版省略了 idle_notification 给 Lead 的通知。真实 `CC` 在 idle 时发 `idle_notification`，Lead 收到后知道队友空闲，可以分配新任务。
 
 ### 3.7 合起来跑
 
@@ -231,19 +231,19 @@ s15-s16 中，Lead 必须给每个队友分配任务。"Alice 做这个，Bob �
 s17 Autonomous Agents → 队友自组织，不需要领导分配。
 
 <details>
-<summary>深入 CC 源码</summary>
+<summary>深入 `CC` 源码</summary>
 
-CC 的团队协议实现（`teammateMailbox.ts`，1184 行）和教学版在核心结构上一致：request_id + approve/reject 的请求-响应模式。差异在于：
+`CC` 的团队协议实现（`teammateMailbox.ts`，1184 行）和教学版在核心结构上一致：request_id + approve/reject 的请求-响应模式。差异在于：
 
-**关机协议**：CC 的 shutdown 是三向通信（`teammateMailbox.ts:720-763`、`SendMessageTool.ts:268-430`）。Lead 发 `shutdown_request`，队友回复 `shutdown_approved`（或 `shutdown_rejected` 附原因），系统发送 `teammate_terminated` 通知所有相关方。关机确认后系统自动清理 pane（tmux/iTerm2）、unassign 任务、从 team config 移除成员（`useInboxPoller.ts:677-800`）。教学版用 `shutdown_response` 统一命名，真实源码拆成 approved/rejected 两种独立消息。
+**关机协议**：`CC` 的 shutdown 是三向通信（`teammateMailbox.ts:720-763`、`SendMessageTool.ts:268-430`）。Lead 发 `shutdown_request`，队友回复 `shutdown_approved`（或 `shutdown_rejected` 附原因），系统发送 `teammate_terminated` 通知所有相关方。关机确认后系统自动清理 pane（tmux/iTerm2）、unassign 任务、从 team config 移除成员（`useInboxPoller.ts:677-800`）。教学版用 `shutdown_response` 统一命名，真实源码拆成 approved/rejected 两种独立消息。
 
 **计划审批**：真实源码里 plan approval request 由 `ExitPlanModeV2Tool.ts:263-312` 在 plan-mode-required 队友退出 plan mode 时产生。`useInboxPoller.ts:599-661` 当前会自动回写 approval，并把请求交给 Lead 作为上下文（regular message）。`SendMessageTool.ts:434-518` 仍保留显式 approve/reject response 能力，审批时可同时设置 `permissionMode`（如"批准但以 plan mode 运行"），响应中可包含 `feedback` 字符串供队友修正后重新提交。不是简单的"Lead 手动 review_plan 工具"流程。
 
-**消息格式**：CC 的协议消息是结构化的 `JSON`（有 Zod schema 验证），教学版用简单的 type + metadata 字典。字段名也不统一：permission 用 `request_id`（`teammateMailbox.ts:453-462`），shutdown 和 plan approval 用 `requestId`（`teammateMailbox.ts:684-763`）。
+**消息格式**：`CC` 的协议消息是结构化的 `JSON`（有 Zod schema 验证），教学版用简单的 type + metadata 字典。字段名也不统一：permission 用 `request_id`（`teammateMailbox.ts:453-462`），shutdown 和 plan approval 用 `requestId`（`teammateMailbox.ts:684-763`）。
 
-**执行门控**：CC 的队友有完整的 permission gating。未获批准的高风险操作会被拦截，不是可选的。教学版只演示了消息流程，没有实现执行拦截。
+**执行门控**：`CC` 的队友有完整的 permission gating。未获批准的高风险操作会被拦截，不是可选的。教学版只演示了消息流程，没有实现执行拦截。
 
-**通用性**：教学版的一个 FSM（pending → approved | rejected）对应两种协议，这个简化完全正确。CC 的所有协议消息共用同一个 request id 关联机制。
+**通用性**：教学版的一个 FSM（pending → approved | rejected）对应两种协议，这个简化完全正确。`CC` 的所有协议消息共用同一个 request id 关联机制。
 
 </details>
 

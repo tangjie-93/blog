@@ -25,16 +25,16 @@ note: 基于 2026-10-17 GitHub 检索快照，按学习目标选择开源项目�
 |---|---|---|
 | [vLLM](https://github.com/vllm-project/vllm) | 高吞吐 `LLM` 服务 | 显存、模型许可和 `API` 兼容性 |
 | [SGLang](https://github.com/sgl-project/sglang) | 结构化生成、推理优化 | 关注硬件和版本支持 |
-| [llama.cpp](https://github.com/ggml-org/llama.cpp) | 本地 `CPU`/GPU、量化模型 | GGUF 模型来源要可信 |
+| [llama.cpp](https://github.com/ggml-org/llama.cpp) | 本地 `CPU`/`GPU`、量化模型 | GGUF 模型来源要可信 |
 | [Ollama](https://github.com/ollama/ollama) | 本地模型快速试验 | 教学方便，生产能力需单独评估 |
-| [TensorRT-`LLM`](https://github.com/NVIDIA/TensorRT-LLM) | NVIDIA GPU 推理 | CUDA 和硬件耦合明显 |
+| [TensorRT-`LLM`](https://github.com/NVIDIA/TensorRT-LLM) | NVIDIA `GPU` 推理 | CUDA 和硬件耦合明显 |
 
 ## 3、`RAG`、数据和向量
 
 | 项目 | 用途 | 练习 |
 |---|---|---|
 | [RAGFlow](https://github.com/infiniflow/ragflow) | 文档解析与企业 `RAG` | 追踪解析、切分和引用链 |
-| [LlamaIndex](https://github.com/run-llama/llama_index) | 数据连接和 `RAG` 编排 | 写一个自定义 retriever |
+| [`LlamaIndex`](https://github.com/run-llama/llama_index) | 数据连接和 `RAG` 编排 | 写一个自定义 retriever |
 | [`LangChain`](https://github.com/langchain-ai/langchain) | 模型、工具、检索组件 | 对比 LCEL 与普通 `Python` |
 | [Qdrant](https://github.com/qdrant/qdrant) | 向量搜索与过滤 | 测试 payload ACL 和删除 |
 | [Milvus](https://github.com/milvus-io/milvus) | 大规模向量数据库 | 观察分片和索引类型 |

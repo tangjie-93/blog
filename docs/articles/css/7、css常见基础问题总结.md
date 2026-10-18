@@ -7,9 +7,9 @@ note: css常见基础问题总结
 ---
 ### 1、link和@import的区别？
 
-+ link属于HTML标签，而@import是CSS提供的。
-+ 页面被加载时，link会同时被加载，而@import引用的CSS会等到引用它的CSS文件被加载完再加载。
-+ @import只在IE5以上才能识别，而link是HTML标签，无兼容问题。
++ link属于`HTML`标签，而@import是`CSS`提供的。
++ 页面被加载时，link会同时被加载，而@import引用的`CSS`会等到引用它的`CSS`文件被加载完再加载。
++ @import只在IE5以上才能识别，而link是`HTML`标签，无兼容问题。
 + link方式的样式权重高于@import的权重。
 + 当使用javascript控制dom去改变样式的时候，只能使用link标签，因为@import不是dom可以控制的。
 

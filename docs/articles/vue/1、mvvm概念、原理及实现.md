@@ -9,7 +9,7 @@ note: mvvm概念、原理及实现
 
 ​&#8195;&#8195;**model-view-viewModel，通过数据劫持+发布订阅模式来实现。**
 
-&#8195;&#8195;mvvm是一种设计思想。Model代表数据模型，可以在model中定义数据修改和操作的业务逻辑;view表示ui组件，负责将数据模型转换为ui展现出来，它做的是指令的声明、 数据绑定的声明、 事件绑定的声明。而viewModel是view和model的桥梁。数据会绑定到viewModel层并自动将数据渲染到页面中，视图变化的时候会通知viewModel层更新数据。在mvvm框架中，view和model之间没有直接的关系，它们是通过viewModel来进行交互的。mvvm不需要手动操作dom，只需要关注业务逻辑就可以了。
+&#8195;&#8195;mvvm是一种设计思想。`Model`代表数据模型，可以在model中定义数据修改和操作的业务逻辑;view表示ui组件，负责将数据模型转换为ui展现出来，它做的是指令的声明、 数据绑定的声明、 事件绑定的声明。而viewModel是view和model的桥梁。数据会绑定到viewModel层并自动将数据渲染到页面中，视图变化的时候会通知viewModel层更新数据。在mvvm框架中，view和model之间没有直接的关系，它们是通过viewModel来进行交互的。mvvm不需要手动操作dom，只需要关注业务逻辑就可以了。
 &#8195;&#8195;mvvm和mvc的区别在于：mvvm是数据驱动的，而MVC是dom驱动的。mvvm的优点在于不用操作大量的dom，不需要关注model和view之间的关系，而MVC需要在model发生改变时，需要手动的去更新view。大量操作dom使页面渲染性能降低，使加载速度变慢，影响用户体验。
 
 ###  2、mvvm的优点
@@ -30,7 +30,7 @@ note: mvvm概念、原理及实现
 
 **1、数据劫持——就是给对象属性添加get,set钩子函数。**
 
-+ 1、观察对象，给对象增加Object.defineProperty
++ 1、观察对象，给对象增加`Object`.defineProperty
 + 2、vue的特点就是新增不存在的属性时,不会给该属性添加get、set钩子函数。
 + 3、深度响应。循环递归遍历data的属性，给属性添加get，set钩子函数。
 + 4、每次赋予一个新对象时（即调用set钩子函数时），会给这个新对象进行数据劫持(defineProperty)。

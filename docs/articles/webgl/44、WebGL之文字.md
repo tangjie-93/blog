@@ -7,7 +7,7 @@ tags: WebGL
 note: WebGL之文字
 ---
 
-## 1. WebGL之文字-`HTML`
+## 1. `WebGL`之文字-`HTML`
 
 这里的核心就是如何将`html`的位置跟三维场景中的东西关联。
 
@@ -47,10 +47,10 @@ textNode.nodeValue = clock.toFixed(2);
 
 <img width = 300 src='../../images/webgl/webgl文字-html.png'>
 
-`demo`地址 [WebGL之文字-`HTML`](https://github.com/tangjie-93/WebGL/blob/main/fundmantalExamples/%E6%96%87%E5%AD%97/html%E6%96%87%E5%AD%97.html)
+`demo`地址 [`WebGL`之文字-`HTML`](https://github.com/tangjie-93/WebGL/blob/main/fundmantalExamples/%E6%96%87%E5%AD%97/html%E6%96%87%E5%AD%97.html)
 
 
-## 2. WebGL之文字-二维Canvas
+## 2. `WebGL`之文字-二维Canvas
 
 除了使用 `HTML`元素显示文字，还可以使用一个新画布，但是使用的是二维上下文。少一些灵活性， 比如不能使用好用的 `CSS` 样式了，但是也不需要创建并保持 `HTML`元素了。
 核心代买如下所示
@@ -142,9 +142,9 @@ function drawScene(clock) {
 }
 ```
 
-`demo`地址 [WebGL之文字-二位canvas](https://github.com/tangjie-93/WebGL/blob/main/fundmantalExamples/%E6%96%87%E5%AD%97/%E4%BA%8C%E7%BB%B4Canvas.html)
+`demo`地址 [`WebGL`之文字-二位canvas](https://github.com/tangjie-93/WebGL/blob/main/fundmantalExamples/%E6%96%87%E5%AD%97/%E4%BA%8C%E7%BB%B4Canvas.html)
 
-## 3. WebGL之文字-使用纹理
+## 3. `WebGL`之文字-使用纹理
 
 这种方式我们需要使用`WebGL` 绘制两个不同的物体。物体和文字需要用到单独的着色器。
 #### 1.物体的着色器
@@ -327,7 +327,7 @@ const textMatrix = m4.translate(projectionMatrix, viewX, viewY, viewZ);
 但是还是可能还会发现文字边缘的问题。
 这个问题是 `Canvas 2D API` 只生成预乘阿尔法通道的值，当我们上传画布内容为`WebGL` 纹理时， `WebGL` 视图获取没有预乘阿尔法的值，但是由于预乘阿尔法的值缺失阿尔法，所以很难完美转换成非预乘值。
 
-解决这个问题需要告诉WebGL不用做反预乘。
+解决这个问题需要告诉`WebGL`不用做反预乘。
 ```js
 gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
 ```
@@ -362,6 +362,6 @@ textMatrix = m4.scale(textMatrix, textWidth * scale, textHeight * scale, 1);
 
 **参考文档**
 
-[WebGL文字 - `HTML`](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-text-html.html)<br>
-[WebGL 文字 - 二维Canvas](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-text-canvas2d.html)<br>
-[WebGL 文字 - 使用纹理](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-text-texture.html)<br>
+[`WebGL`文字 - `HTML`](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-text-html.html)<br>
+[`WebGL` 文字 - 二维Canvas](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-text-canvas2d.html)<br>
+[`WebGL` 文字 - 使用纹理](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-text-texture.html)<br>

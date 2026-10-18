@@ -315,7 +315,7 @@ countSort(arr);
 遍历对象时，有以下几个特性
 >1、首先遍历所有**数值键**，按照**数值**升序排列。  
 >2、其次遍历所有**字符串键**，按照**加入时间**升序排列。    
->3、最后遍历所有 Symbol 键，按照**加入时间**升序排列。 
+>3、最后遍历所有 `Symbol` 键，按照**加入时间**升序排列。 
 ```js
 function countSort (arr) {
     const obj = {};
@@ -440,8 +440,8 @@ bucketSort(array);
 ```
 **参考文献**
 
-[1、图文详解Heap Sort堆排序算法及JavaScript的代码实现](https://www.jb51.net/article/83529.htm)   
+[1、图文详解Heap Sort堆排序算法及`JavaScript`的代码实现](https://www.jb51.net/article/83529.htm)   
 [2、js实现堆排序](https://www.cnblogs.com/helloMySir/p/8057701.html)  
 3、大话数据结构     
-4、数据结构与算法JavaScript描述     
+4、数据结构与算法`JavaScript`描述     
 [5、`JavaScript` 数据结构与算法之美 - 桶排序、计数排序、基数排序](https://juejin.im/post/5d3da990f265da1ba84ada22#heading-1)

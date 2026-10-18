@@ -67,7 +67,7 @@ alert(person2.name); //"Nicholas"—— 来自原型
 alert(Person.prototype.isPrototypeOf(person1)); //true
 alert(Person.prototype.isPrototypeOf(person2)); //true
 ```
->**Object.getPrototypeOf():** 在所有支持的实现中，这个方法返回__proto__的值。例如：
+>**`Object`.getPrototypeOf():** 在所有支持的实现中，这个方法返回__proto__的值。例如：
 
 ```js
 //这里的person1是下面实例
@@ -125,8 +125,8 @@ console.log(Object.keys(Person.prototype));//["sayName"]
 console.log(Object.getOwnPropertyNames(Person.prototype))
 // ["constructor", "sayName"] 
 ```
-> **Object.keys()：** 取得实例对象上所有**可枚举的属性**。
-> **Object.getOwnPropertyNames():** 获取实例对象所有属性，**无论它是否可枚举。**
+> **`Object`.keys()：** 取得实例对象上所有**可枚举的属性**。
+> **`Object`.getOwnPropertyNames():** 获取实例对象所有属性，**无论它是否可枚举。**
 
 ```js
 function Person() {}
@@ -151,7 +151,7 @@ console.log(friend instanceof Person); //true
 console.log(friend.constructor == Person); //false
 console.log(friend.constructor == Object); //true
 ```
-注意：**使用对象字面量来重写整个原型对象时**，本质上完全重写了默认的 prototype 对象，因此 constructor 属性也就变成了新对象的 constructor 属性（**指向 Object 构造函数**），不再指向 Person。但是可以通过在重写原型对象时指定constructor属性，使之还是指向原来的constructor。此时，尽管 instanceof
+注意：**使用对象字面量来重写整个原型对象时**，本质上完全重写了默认的 prototype 对象，因此 constructor 属性也就变成了新对象的 constructor 属性（**指向 `Object` 构造函数**），不再指向 Person。但是可以通过在重写原型对象时指定constructor属性，使之还是指向原来的constructor。此时，尽管 instanceof
 操作符还能返回正确的结果，但通过 constructor 已经无法确定对象的类型了。
 
 **object instanceof constructor:** 检测 constructor.prototype 是否存在于参数 object 的原型链上。

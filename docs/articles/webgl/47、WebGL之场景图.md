@@ -10,7 +10,7 @@ note: WebGL之场景图
 在 `WebGL`中，场景图（`Scene Graph`）是一种用于组织和管理 `3D` 场景中对象层次结构的结构。这种结构通常以树形结构的形式表示，其中每个节点代表一个对象或一组对象，并且这些节点可以有子节点。场景图有助于简化变换、渲染和其他与场景管理相关的操作。
 
 ## 1.场景图的基本概念
-+ **节点（Node）**：场景图中的每个节点代表一个对象或一组对象。节点可以包含几何数据、材质、变换信息（如平移、旋转、缩放）等。
++ **节点（`Node`）**：场景图中的每个节点代表一个对象或一组对象。节点可以包含几何数据、材质、变换信息（如平移、旋转、缩放）等。
 + **层次结构（Hierarchy）**：节点可以有子节点，形成树形结构。子节点继承其父节点的变换，从而实现层次化的变换管理。
 + **变换（Transform）**：每个节点都有自己的变换信息，这些变换信息影响节点及其所有子节点的位置、方向和大小。
 + **遍历（Traversal）**：渲染时，通常会从根节点开始遍历整个场景图，应用变换并渲染每个节点。
@@ -251,5 +251,5 @@ class Node {
 
 **参考文档**
 
-[WebGL 绘制多个物体](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-drawing-multiple-things.html)<br>
-[WebGL - 场景图](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-scene-graph.html)<br>
+[`WebGL` 绘制多个物体](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-drawing-multiple-things.html)<br>
+[`WebGL` - 场景图](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-scene-graph.html)<br>

@@ -35,7 +35,7 @@ note: <该思维导图是根据`<<深入浅出webpack>>`章节大纲总结出来
 
 **`3.1` Entry**
 
-&#8195;&#8195;构建的入口，`Webpack` 执行构建的第一步将从 Entry 开始，可抽象成输入。通过搜寻及递归找出所有入口所依赖的模块。**Entry 主要有 String、Array 和 Object 三种类型**。如果为 Array 类型时，搭配 output.library 配置项使用时，只有数组里的最后一个入口文件的模块会被导出。
+&#8195;&#8195;构建的入口，`Webpack` 执行构建的第一步将从 Entry 开始，可抽象成输入。通过搜寻及递归找出所有入口所依赖的模块。**Entry 主要有 String、Array 和 `Object` 三种类型**。如果为 Array 类型时，搭配 output.library 配置项使用时，只有数组里的最后一个入口文件的模块会被导出。
 - 如果 entry 是一个 string或者array，就只会生成一个 Chunk，这时 Chunk 的名称是 main 。
 - 如果 entry 是一个 object ，就可能会出现多个 Chunk，这时 Chunk 的名称是 object 键值对中键的名称。
 ```javascript
@@ -74,7 +74,7 @@ note: <该思维导图是根据`<<深入浅出webpack>>`章节大纲总结出来
 + filename:输出文件的名称，为string 类型。 
 + chunkFilename: 配置无入口的 Chunk 在输出时的文件名称。chunkFilename 只用于指定在运行过程中生成的 Chunk 在输出时的文件名称.常见的会在运行时生成 Chunk 场景有在使用 **CommonChunkPlugin、使用 import('path/to/module')** 动态加载等时。 
 + path:输出文件存放在本地的目录，必须是 string 类型的绝对路径。通常通过 `Node.js` 的 path 模块去获取绝对路径。
-+ publicPath:加载异步资源对应的 `URL` 地址。一般为CDN地址。通常用于配置发布到线上资源的 `URL` 前缀，为string 类型。 默认值是空字符串 ''，即使用相对路径。**output.path 和 output.publicPath 都支持字符串模版，内置变量只有一个：hash 代表一次编译操作的 Hash 值。**
++ publicPath:加载异步资源对应的 `URL` 地址。一般为`CDN`地址。通常用于配置发布到线上资源的 `URL` 前缀，为string 类型。 默认值是空字符串 ''，即使用相对路径。**output.path 和 output.publicPath 都支持字符串模版，内置变量只有一个：hash 代表一次编译操作的 Hash 值。**
 + libraryTarget：配置以何种方式导出库。是字符串的枚举类型。通常搭配target使用。通常有var、commonjs、commonjs2、this、window和global等值。
 + target：配置导出库的名称。
 ```javascript
@@ -760,7 +760,7 @@ note: <该思维导图是根据`<<深入浅出webpack>>`章节大纲总结出来
 
 **`3.9` 多种配置类型**
 
-&#8195;&#8195;配置文件除了以Object的形式输出以外，还可以以function或者promise的形式输出,同时还可以导出多个配置对象。
+&#8195;&#8195;配置文件除了以`Object`的形式输出以外，还可以以function或者promise的形式输出,同时还可以导出多个配置对象。
 ```javascript
     //以对象的形式,需要写多个配置文件以适应"开发和生产"模式
     module.exports={
@@ -811,7 +811,7 @@ note: <该思维导图是根据`<<深入浅出webpack>>`章节大纲总结出来
     
 ```
 以函数的形式导出配置文件时。
-+ env：当前运行时的 `Webpack` **专属环境变量**，env 是一个 Object。设置它需要在启动 `Webpack` 时带上参数。例如启动命令是 webpack --env.production --env.bao=foo时，则 env 的值是 {"production":"true","bao":"foo"}。
++ env：当前运行时的 `Webpack` **专属环境变量**，env 是一个 `Object`。设置它需要在启动 `Webpack` 时带上参数。例如启动命令是 webpack --env.production --env.bao=foo时，则 env 的值是 {"production":"true","bao":"foo"}。
 + args：代表在启动 `Webpack` 时所有通过命令行传入的参数。例如 --config、--env、--devtool、--progress、---watch，可以通过 webpack -h 列出所有 `Webpack` 支持的命令行参数。
 
 

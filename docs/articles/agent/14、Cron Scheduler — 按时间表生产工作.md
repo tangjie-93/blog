@@ -12,7 +12,7 @@ note: "用持久化定时任务按计划生成提示并唤醒 Agent 执行工作
 s01 → ... → s12 → s13 → `s14` → [s15](./15%E3%80%81Agent%20Teams%20%E2%80%94%20%E4%B8%80%E4%B8%AA%E6%90%9E%E4%B8%8D%E5%AE%9A%EF%BC%8C%E7%BB%84%E9%98%9F%E6%9D%A5.md) → s16 → ... → s20
 > *"按时间表生产工作, 调度与执行解耦"* — cron 调度, 持久化或会话级。
 >
-> **Harness 层**: 调度 — 独立线程判断时间, 队列传递触发。
+> **`Harness` 层**: 调度 — 独立线程判断时间, 队列传递触发。
 
 ---
 
@@ -49,10 +49,10 @@ Cron 调度分四层：
 
 1. **Scheduler**：daemon 线程，每秒轮询，判断时间到了没有
 2. **Queue**：`cron_queue`，调度线程写入已触发任务
-3. **Queue Processor**：发现队列非空且 `Agent` 空闲，启动一轮 agent_loop
-4. **Consumer**：agent_loop 从队列消费，注入到 messages
+3. **Queue Processor**：发现队列非空且 `Agent` 空闲，启动一轮 `agent_loop`
+4. **Consumer**：`agent_loop` 从队列消费，注入到 messages
 
-教学版实现的是最小 queue processor：用 `agent_lock` 判断 `Agent` 是否空闲，空闲时自动交付定时任务。真实 CC 的 `useQueueProcessor.ts` 还会处理 UI 阻塞、队列优先级和不同消息模式。
+教学版实现的是最小 queue processor：用 `agent_lock` 判断 `Agent` 是否空闲，空闲时自动交付定时任务。真实 `CC` 的 `useQueueProcessor.ts` 还会处理 `UI` 阻塞、队列优先级和不同消息模式。
 
 ### 3.2 CronJob: 数据结构
 
@@ -82,7 +82,7 @@ Cron 表达式，五段式，Unix 用了 50 年：
 
 ### 3.3 cron_matches: 五段式匹配
 
-标准 cron 语义：分钟、小时、月必须全部匹配；日（DOM）和星期（DOW）同时被约束时任一匹配即可（OR）：
+标准 cron 语义：分钟、小时、月必须全部匹配；日（`DOM`）和星期（DOW）同时被约束时任一匹配即可（OR）：
 
 ```python
 def cron_matches(cron_expr: str, dt: datetime) -> bool:
@@ -114,7 +114,7 @@ def cron_matches(cron_expr: str, dt: datetime) -> bool:
 
 ### 3.4 独立调度线程: 每秒轮询
 
-调度器跑在独立的 daemon 线程里，不依赖 agent_loop 是否在执行。单个 job 异常不会杀掉整个线程：
+调度器跑在独立的 daemon 线程里，不依赖 `agent_loop` 是否在执行。单个 job 异常不会杀掉整个线程：
 
 ```python
 def cron_scheduler_loop():
@@ -138,12 +138,12 @@ def cron_scheduler_loop():
 ```
 
 关键设计：
-- **独立于 agent_loop**：即使 agent_loop 没在跑，调度器也在后台检查时间
+- **独立于 `agent_loop`**：即使 `agent_loop` 没在跑，调度器也在后台检查时间
 - **date-aware minute_marker**：用 `"YYYY-MM-DD HH:MM"` 防止同一分钟重复触发，同时不会在第二天跳过
 - **单 job try/except**：一个坏 job 不会拖垮整个调度线程
 - **一次性任务**：触发后自动从 scheduled_jobs 里删除
 
-### 3.5 Queue Processor + agent_loop: 交付端
+### 3.5 Queue Processor + `agent_loop`: 交付端
 
 queue processor 不检查时间，只负责在队列有任务且 `Agent` 空闲时拉起一轮执行：
 
@@ -162,7 +162,7 @@ def queue_processor_loop():
             agent_lock.release()
 ```
 
-agent_loop 也不负责检查时间，它只从 `cron_queue` 里拿已触发的任务，注入到 messages 里：
+`agent_loop` 也不负责检查时间，它只从 `cron_queue` 里拿已触发的任务，注入到 messages 里：
 
 ```python
 fired = consume_cron_queue()
@@ -171,7 +171,7 @@ for job in fired:
                      "content": f"[Scheduled] {job.prompt}"})
 ```
 
-生产者（调度线程）、交付者（queue processor）和消费者（agent_loop）通过 `cron_queue`、`cron_lock`、`agent_lock` 解耦。
+生产者（调度线程）、交付者（queue processor）和消费者（`agent_loop`）通过 `cron_queue`、`cron_lock`、`agent_lock` 解耦。
 
 ### 3.6 校验：防止坏 cron 杀掉调度器
 
@@ -229,7 +229,7 @@ def schedule_job(cron, prompt, recurring=True, durable=True):
 | 新函数 | — | cron_matches, validate_cron, schedule_job, cancel_job, cron_scheduler_loop, queue_processor_loop |
 | 新存储 | — | .scheduled_tasks.json (durable) + 内存 (session-only) |
 | 线程 | 后台执行线程 | + 调度线程 (daemon, 1s 轮询) + queue processor 线程 |
-| 队列 | background_results | + cron_queue (调度线程写, queue processor 交付, agent_loop 消费) |
+| 队列 | background_results | + cron_queue (调度线程写, queue processor 交付, `agent_loop` 消费) |
 | 工具 | 8 (s12/s13) | + schedule_cron, list_crons, cancel_cron (11) |
 
 ---
@@ -261,13 +261,13 @@ python s14_cron_scheduler/code.py
 s15 `Agent Teams` → 一个 `Agent` 不够，组队吧。持久队友 + 异步收件箱。
 
 <details>
-<summary>深入 CC 源码</summary>
+<summary>深入 `CC` 源码</summary>
 
-> 以下基于 CC 源码 `CronCreateTool.ts`、`cronScheduler.ts`、`cron.ts`、`cronTasks.ts`、`cronTasksLock.ts`、`useScheduledTasks.ts`（139 行）的完整分析。
+> 以下基于 `CC` 源码 `CronCreateTool.ts`、`cronScheduler.ts`、`cron.ts`、`cronTasks.ts`、`cronTasksLock.ts`、`useScheduledTasks.ts`（139 行）的完整分析。
 
 ### 一、三个 Cron 工具
 
-CC 暴露了三个 cron 工具给模型：`CronCreate`、`CronDelete`、`CronList`。全部由编译时门控 `feature('AGENT_TRIGGERS')` 和运行时 GrowthBook 标志 `tengu_kairos_cron` 控制。还有一个 `CLAUDE_CODE_DISABLE_CRON` 环境变量做本地覆盖。
+`CC` 暴露了三个 cron 工具给模型：`CronCreate`、`CronDelete`、`CronList`。全部由编译时门控 `feature('AGENT_TRIGGERS')` 和运行时 GrowthBook 标志 `tengu_kairos_cron` 控制。还有一个 `CLAUDE_CODE_DISABLE_CRON` 环境变量做本地覆盖。
 
 ### 二、存储：`.claude/scheduled_tasks.json`
 
@@ -287,7 +287,7 @@ Durable 任务写磁盘；session-only 任务存于 `STATE.sessionCronTasks` 内
 
 ### 五、抖动（防惊群效应）
 
-- 重复性任务：触发延迟最多可达期间的 10%（上限 15 分钟），基于任务 ID 的确定性哈希
+- 重复性任务：触发延迟最多可达期间的 10%（上限 15 分钟），基于任务 `ID` 的确定性哈希
 - 一次性任务：当触发时间落在 `:00` 或 `:30` 时，最多提前 90 秒触发
 - 抖动配置可通过 GrowthBook 实时调整，60 秒刷新一次
 
@@ -305,7 +305,7 @@ Durable 任务写磁盘；session-only 任务存于 `STATE.sessionCronTasks` 内
 
 ### 九、Queue Processor：自动交付
 
-真实 CC 通过 `useQueueProcessor.ts:48-60` 在无 query、无阻塞 UI、队列非空时自动触发处理。`queueProcessor.ts:52-87` 按队列优先级把命令交给 `handlePromptSubmit()`。教学版用 `queue_processor_loop` 保留核心行为：队列有任务且 `Agent` 空闲时，自动启动一轮 agent_loop。
+真实 `CC` 通过 `useQueueProcessor.ts:48-60` 在无 query、无阻塞 `UI`、队列非空时自动触发处理。`queueProcessor.ts:52-87` 按队列优先级把命令交给 `handlePromptSubmit()`。教学版用 `queue_processor_loop` 保留核心行为：队列有任务且 `Agent` 空闲时，自动启动一轮 `agent_loop`。
 
 </details>
 

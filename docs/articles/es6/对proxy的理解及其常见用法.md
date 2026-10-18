@@ -7,10 +7,10 @@ note: 对proxy的理解及其常见用法
 ---
 &#8195;&#8195;虽然以前看过`proxy`的相关文章，但是最近在看到某为大神用`proxy`实现了单例及数据双向绑定，所以决定再次好好的来了解一下`proxy`的用法，谨以此文来记录我对它的理解及用法。
 
-## 1、什么是Proxy?
+## 1、什么是`Proxy`?
 
 
-&#8195;&#8195;Proxy 用于修改某些操作的默认行为,可以理解成，在**目标对象之前架设一层“拦截”，外界对该对象的访问，都必须先通过这层拦截**，因此提供了一种机制，可以对外界的访问进行过滤和改写。
+&#8195;&#8195;`Proxy` 用于修改某些操作的默认行为,可以理解成，在**目标对象之前架设一层“拦截”，外界对该对象的访问，都必须先通过这层拦截**，因此提供了一种机制，可以对外界的访问进行过滤和改写。
 
 &#8195;&#8195;换句话说就是——`Proxy`对象就是可以让你去对`JavaScript`中的一切合法对象的基本操作进行自定义，然后用你自定义的操作去覆盖其对象的基本操作。说白了就是**重写其所属类或构造函数中的基本操作**。  
 
@@ -70,16 +70,16 @@ console.log(object.a);//35
 &#8195;&#8195;上面的代码中`object`对象中有`b`属性，所以直接返回该属性的值，但是`object`对象中没有`a`属性，所以会去访问`object`的原型，此时`object`的原型是`proxy`对象，所以`object.a`实际上相当于`proxy.a`,所以返回的是35。
 
 
-## 2、Proxy 支持的拦截操作
+## 2、`Proxy` 支持的拦截操作
 
 
-&#8195;&#8195;proxy一共支持13中拦截类型，基本上是对于Object的方法进行拦截。个人觉得proxy拦截的好处主要有： 
+&#8195;&#8195;proxy一共支持13中拦截类型，基本上是对于`Object`的方法进行拦截。个人觉得proxy拦截的好处主要有： 
 
 >1、通过对某一操作进行拦截，能实现自己想要的效果，而且这种拦截属于一种不公开的操作，具备很好的安全性。      
 
 >2、通过对`proxy`对象的操作,来达到对目标对象的操作,很好的隐藏了目标对象，降低目标对象的曝光度,实现了对目标对象的保护效果。
 
->3、相比较Object.defineProperty()而言，proxy功能更强大,不仅能拦截对象的属性，还能对整个对象，如数组和函数进行拦截。而且proxy的拦截种类更多。    
+>3、相比较`Object`.defineProperty()而言，proxy功能更强大,不仅能拦截对象的属性，还能对整个对象，如数组和函数进行拦截。而且proxy的拦截种类更多。    
 
 **proxy主要有以下拦截方法。**
 
@@ -210,12 +210,12 @@ proxy.test="test";
     console.log(obj);//{a:1,b:2}
     delete proxy.c;//'deleteProperty' on proxy: trap returned truish for property 'c' which is non-configurable in the proxy target
 ```
-+ **ownKeys(target)：** 拦截Object.getOwnPropertyNames(proxy)、Object.getOwnPropertySymbols(proxy)、Object.keys(proxy)、for...in循环等操作。该方法返回目标对象所有自身的属性的属性名。  
++ **ownKeys(target)：** 拦截`Object`.getOwnPropertyNames(proxy)、`Object`.getOwnPropertySymbols(proxy)、`Object`.keys(proxy)、for...in循环等操作。该方法返回目标对象所有自身的属性的属性名。  
 **注意：**  
-1、使用Object.keys方法时，有三类属性会被ownKeys方法自动过滤目标对象上不存在的属性、属性名为 Symbol 值和不可遍历（enumerable）的属性。   
-2、ownKeys()的返回必须是一个数组，不然会报错。且返回的数组成员必须是字符串或者Symbol值（**即可以为对象属性的值**）。  
+1、使用`Object`.keys方法时，有三类属性会被ownKeys方法自动过滤目标对象上不存在的属性、属性名为 `Symbol` 值和不可遍历（enumerable）的属性。   
+2、ownKeys()的返回必须是一个数组，不然会报错。且返回的数组成员必须是字符串或者`Symbol`值（**即可以为对象属性的值**）。  
 3、obj对象的某属性如果不可配置的，这时ownKeys方法返回的数组之中，必须包含该属性，否则会报错。   
-4、如果目标对象是不可扩展的（non-extensible），这时ownKeys方法返回的数组之中，必须包含原对象中所有可被返回的属性（**如Symbol属性、不可枚举属性以及不存在的属性都不能被返回，**），且不能包含多余的属性，否则报错。
+4、如果目标对象是不可扩展的（non-extensible），这时ownKeys方法返回的数组之中，必须包含原对象中所有可被返回的属性（**如`Symbol`属性、不可枚举属性以及不存在的属性都不能被返回，**），且不能包含多余的属性，否则报错。
   
 ```javascript          
     let obj={
@@ -249,9 +249,9 @@ proxy.test="test";
     Object.keys(proxy);//a 只会返回对象中存在的，且可枚举的，非symbol属性
 ```
 
-+ **getOwnPropertyDescriptor(target, propKey)：** 拦截Object.getOwnPropertyDescriptor(proxy, propKey)，返回属性的描述对象。
++ **getOwnPropertyDescriptor(target, propKey)：** 拦截`Object`.getOwnPropertyDescriptor(proxy, propKey)，返回属性的描述对象。
 
-+ **defineProperty(target, propKey, propDesc)：**   拦截Object.defineProperty(proxy, propKey, propDesc）、Object.defineProperties(proxy, propDescs)以及set操作，返回一个布尔值。**该方法的作用在于拦截这些操作，然后自定义操作，被拦截的操作并不能生效**。
++ **defineProperty(target, propKey, propDesc)：**   拦截`Object`.defineProperty(proxy, propKey, propDesc）、`Object`.defineProperties(proxy, propDescs)以及set操作，返回一个布尔值。**该方法的作用在于拦截这些操作，然后自定义操作，被拦截的操作并不能生效**。
 
 ```javascript     
     let obj = {
@@ -273,7 +273,7 @@ proxy.test="test";
     console.log(proxy);proxy{a:1,b:2}
 ```
 + **preventExtensions(target)：**   
-拦截Object.preventExtensions(proxy)，返回一个布尔值。**该方法必须返回一个布尔值，否则会被自动转为布尔值。该方法有一个强制，只有目标对象不可扩展时，才能返回true,否则会报错**
+拦截`Object`.preventExtensions(proxy)，返回一个布尔值。**该方法必须返回一个布尔值，否则会被自动转为布尔值。该方法有一个强制，只有目标对象不可扩展时，才能返回true,否则会报错**
 + **getPrototypeOf(target)：**  
 拦截获取对象原型的操作。具体来说，拦截下面这些操作。    
 **注意:**   
@@ -304,9 +304,9 @@ proxy.test="test";
     Object.getPrototypeOf(proxy);//getPrototypeOf' on proxy: proxy target is non-extensible but the trap did not return its actual prototype
 ```
 
-+ **isExtensible(target)：**    拦截Object.isExtensible(proxy)，返回一个布尔值。**该方法只能返回布尔值，跟前面那些只能返回布尔值方法一样，否则返回值会被自动转为布尔值。同时它的返回值必须与目标对象的isExtensible属性保持一致，否则就会抛出错误。**
++ **isExtensible(target)：**    拦截`Object`.isExtensible(proxy)，返回一个布尔值。**该方法只能返回布尔值，跟前面那些只能返回布尔值方法一样，否则返回值会被自动转为布尔值。同时它的返回值必须与目标对象的isExtensible属性保持一致，否则就会抛出错误。**
 
-+ **setPrototypeOf(target, proto)：** 拦截Object.setPrototypeOf(proxy, proto)，返回一个布尔值。如果目标对象是函数，那么还有两种额外操作可以拦截。
++ **setPrototypeOf(target, proto)：** 拦截`Object`.setPrototypeOf(proxy, proto)，返回一个布尔值。如果目标对象是函数，那么还有两种额外操作可以拦截。
 + **apply(target, object, args)：** 拦截函数的调用、以及call、apply和bind操作，比如proxy(...args)、proxy.call(object, ...args)、proxy.apply(...),proxy.bind(...)()。
   
 ```javascript          
@@ -334,7 +334,7 @@ proxy.test="test";
     console.log(proxy.bind(window,20)(10));//200 apply中的ctx为window
     console.log(proxy.toString(10));//不会被拦截
 ```
-+ **construct(target, args)：** 拦截 Proxy 实例作为构造函数调用的操作，比如new proxy(...args)。**construct方法返回的必须是一个对象，否则会报错。同时拦截对象target也必须是一个可以被new的对象**
++ **construct(target, args)：** 拦截 `Proxy` 实例作为构造函数调用的操作，比如new proxy(...args)。**construct方法返回的必须是一个对象，否则会报错。同时拦截对象target也必须是一个可以被new的对象**
 
 ```javascript     
     function Foo(x,y){
@@ -349,7 +349,7 @@ proxy.test="test";
     console.log(new proxy(10,20));//200
 ```
 参考链接：  
-[1、ES6中的代理模式-----Proxy](https://juejin.im/post/5a5227ce6fb9a01c927e85c4)  
+[1、`ES6`中的代理模式-----`Proxy`](https://juejin.im/post/5a5227ce6fb9a01c927e85c4)  
 [2、ECMAScript6 入门](http://es6.ruanyifeng.com/#docs/proxy)    
-[3、ES6 系列之 defineProperty 与 proxy](https://juejin.im/post/5be4f7cfe51d453339084530#heading-4)   
-[4、快来围观一下JavaScript的Proxy](https://juejin.im/post/5b09234d6fb9a07acf569905)
+[3、`ES6` 系列之 defineProperty 与 proxy](https://juejin.im/post/5be4f7cfe51d453339084530#heading-4)   
+[4、快来围观一下`JavaScript`的`Proxy`](https://juejin.im/post/5b09234d6fb9a07acf569905)

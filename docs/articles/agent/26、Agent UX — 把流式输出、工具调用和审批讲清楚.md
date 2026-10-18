@@ -35,4 +35,4 @@ run.started → message.delta → tool.started → tool.progress
 
 ## 4、练习
 
-为一个搜索 `Agent` 做最小 Chat UI：支持流式文本、工具状态卡片、审批弹窗和停止按钮；断开网络后重新连接，确认不会重复显示事件。
+为一个搜索 `Agent` 做最小 Chat `UI`：支持流式文本、工具状态卡片、审批弹窗和停止按钮；断开网络后重新连接，确认不会重复显示事件。

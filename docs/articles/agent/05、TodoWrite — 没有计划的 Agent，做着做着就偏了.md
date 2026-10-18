@@ -6,14 +6,14 @@ tags: "Agent|AI Coding"
 note: "用轻量任务清单记录当前目标、进度与下一步，避免 Agent 执行漂移。"
 ---
 
-# s05: TodoWrite — 没有计划的 `Agent`，做着做着就偏了
+# s05: `TodoWrite` — 没有计划的 `Agent`，做着做着就偏了
 
 
 s01 → s02 → s03 → s04 → `s05` → [s06](./06%E3%80%81Subagent%20%E2%80%94%20%E5%A4%A7%E4%BB%BB%E5%8A%A1%E6%8B%86%E5%B0%8F%EF%BC%8C%E6%AF%8F%E4%B8%AA%E6%8B%BF%E5%88%B0%E7%9A%84%E9%83%BD%E6%98%AF%E5%B9%B2%E5%87%80%E4%B8%8A%E4%B8%8B%E6%96%87.md) → s07 → ... → s20
 
 > *"没有计划的 agent 走哪算哪"* — 先列步骤再动手，长任务更不容易漏项。
 >
-> **Harness 层**: 规划 — 让 `Agent` 在动手之前先想清楚。
+> **`Harness` 层**: 规划 — 让 `Agent` 在动手之前先想清楚。
 
 ---
 
@@ -88,7 +88,7 @@ TOOLS = [
 TOOL_HANDLERS["todo_write"] = run_todo_write
 ```
 
-**Nag reminder**，模型连续 3 轮没调 `todo_write` 时，自动注入一条提醒（教学版机制，CC 源码中没有这个固定轮数逻辑）：
+**Nag reminder**，模型连续 3 轮没调 `todo_write` 时，自动注入一条提醒（教学版机制，`CC` 源码中没有这个固定轮数逻辑）：
 
 ```python
 if rounds_since_todo >= 3 and messages:
@@ -141,20 +141,20 @@ python s05_todo_write/code_openai.py
 s06 Subagent → 把大任务拆成子任务，每个子任务派一个独立的 `Agent`。它们有自己的干净上下文，不会互相污染。
 
 <details>
-<summary>深入 CC 源码</summary>
+<summary>深入 `CC` 源码</summary>
 
-CC 中有两套任务系统并存（`tasks.ts:133-139`）：
+`CC` 中有两套任务系统并存（`tasks.ts:133-139`）：
 
-- **TodoWrite（V1）**：一个简单的列表工具，数据在内存 AppState 中维护（`TodoWriteTool.ts:65-103`）。教学版也保存在进程内存里，退出后清空
-- **Task System（V2 = s12）**：文件持久化、依赖图、并发锁、ownership
+- **`TodoWrite`（V1）**：一个简单的列表工具，数据在内存 AppState 中维护（`TodoWriteTool.ts:65-103`）。教学版也保存在进程内存里，退出后清空
+- **`Task` `System`（`V2` = s12）**：文件持久化、依赖图、并发锁、ownership
 
-切换由 `isTodoV2Enabled()` 控制。当前源码的实现逻辑：交互式会话中 V2 默认启用，非交互式会话（`SDK`）中 V1 默认启用；设置 `CLAUDE_CODE_ENABLE_TASKS` 环境变量可强制启用 V2。注意源码注释 "Force-enable tasks in non-interactive mode" 描述的是 env var 路径的用途，和默认分支的返回值语义不同，阅读时需区分。
+切换由 `isTodoV2Enabled()` 控制。当前源码的实现逻辑：交互式会话中 `V2` 默认启用，非交互式会话（`SDK`）中 V1 默认启用；设置 `CLAUDE_CODE_ENABLE_TASKS` 环境变量可强制启用 `V2`。注意源码注释 "Force-enable tasks in non-interactive mode" 描述的是 env var 路径的用途，和默认分支的返回值语义不同，阅读时需区分。
 
-教学版省略了真实源码中的 `activeForm` 字段（`utils/todo/types.ts:8-15`）。CC 用它给 UI spinner 展示"正在做什么"，教学版只有终端输出，不需要这个字段。
+教学版省略了真实源码中的 `activeForm` 字段（`utils/todo/types.ts:8-15`）。`CC` 用它给 `UI` spinner 展示"正在做什么"，教学版只有终端输出，不需要这个字段。
 
-教学版的 nag reminder（3 轮未更新就注入提醒）是教学机制。CC 源码中没有固定的"3 轮"逻辑，更接近的是 `TodoWriteTool.ts:72-107` 中当 3 个以上 todo 全部完成但没有 verification 项时，追加 verification nudge。
+教学版的 nag reminder（3 轮未更新就注入提醒）是教学机制。`CC` 源码中没有固定的"3 轮"逻辑，更接近的是 `TodoWriteTool.ts:72-107` 中当 3 个以上 todo 全部完成但没有 verification 项时，追加 verification nudge。
 
-Task System 相比 TodoWrite 的核心增量：
+`Task` `System` 相比 `TodoWrite` 的核心增量：
 - 文件持久化（Claude 配置目录下 `tasks/{taskListId}/{taskId}.json`）而非内存列表
 - `blockedBy` 依赖图而非平铺列表
 - `proper-lockfile` 并发安全而非无锁

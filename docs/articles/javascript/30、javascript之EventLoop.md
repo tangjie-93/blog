@@ -15,7 +15,7 @@ js中常见的异步操作有以下：
 + setTimeout/setInterval
 + 事件绑定/事件监听
 + ajax/fetch请求数据
-+ Promise的异步操作
++ `Promise`的异步操作
 + async/await的异步操作
 + nodejs中的异步操作()
 + ....
@@ -229,10 +229,10 @@ setTimeout(function() {
 &#8195; &#8195;1、expired timers and intervals，即到期的setTimeout/setInterval   
 &#8195; &#8195;2、I/O events，包含文件，网络等等    
 &#8195; &#8195;3、immediates，通过setImmediate注册的函数    
-&#8195; &#8195;4、close handlers，close事件的回调，比如TCP连接断开
+&#8195; &#8195;4、close handlers，close事件的回调，比如`TCP`连接断开
 + 同步任务及每个阶段之后都会清空microTask队列  
 &#8195; &#8195;1、优先清空nextTick  queue，即通过process.nextTick注册的函数     
-&#8195; &#8195;2、再清空other queue，常见的如Promise
+&#8195; &#8195;2、再清空other queue，常见的如`Promise`
 + 而和浏览器规范的区别，在于node会清空当前所处阶段的队列，即执行所有macroTask
 
 **&#8195;&#8195;而在node环境中的输出结果是这样的，两次执行结果还不一样**
@@ -250,7 +250,7 @@ setTimeout(function() {
 参考文档    
 [1、这一次，彻底弄懂 `JavaScript` 执行机制](https://juejin.im/post/59e85eebf265da430d571f89)  
 [2、`JavaScript` 运行机制详解：再谈Event Loop](http://www.ruanyifeng.com/blog/2014/10/event-loop.html)   
-[3、Eventloop不可怕，可怕的是遇上Promise](https://juejin.im/post/5c9a43175188252d876e5903)    
+[3、Eventloop不可怕，可怕的是遇上`Promise`](https://juejin.im/post/5c9a43175188252d876e5903)    
 [4、浏览器说：虽然都叫event loop，但是我和node不一样](https://juejin.im/post/5b0ab722f265da0dbd7a646f)
 
 <!-- <Valine></Valine> -->

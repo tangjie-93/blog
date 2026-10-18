@@ -73,7 +73,7 @@ jQuery.Callbacks = function (options) {
 + `memory`: 保持以前的值，将添加到这个列表的后面的最新的值立即执行调用任何回调 (像一个递延 Deferred).
 + `unique`: 确保一次只能添加一个回调(所以在列表中没有重复的回调).
 + `stopOnFalse`: 当一个回调返回 `false` 时中断调用。
-## 3、jquery.CallBacks()暴露给外界的API
+## 3、jquery.CallBacks()暴露给外界的`API`
 &#8195;&#8195;`jquery.CallBacks()`主要提供了一下`API`。
 ```js
 callbacks.add()        回调列表中添加一个回调或回调的集合。
@@ -88,7 +88,7 @@ callbacks.lock()       锁定当前状态的回调列表。
 callbacks.locked()     确定回调列表是否已被锁定。
 callbacks.remove()     从回调列表中的删除一个回调或回调集合。
 ```
-## 3、暴露给外界的API详解
+## 3、暴露给外界的`API`详解
 #### 1、add
 &#8195;&#8195;将回调函数添加到回调函数列表。如果存在缓存的情况下，则会在添加之后，立马执行该回调函数。
 ```js

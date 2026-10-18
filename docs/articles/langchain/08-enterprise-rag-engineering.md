@@ -56,7 +56,7 @@ Demo 能跑，不代表企业 `RAG` 能上线。
 要会什么：
 
 1. 文档版本号。
-2. chunk ID。
+2. chunk `ID`。
 3. 增量入库。
 4. 删除旧 chunk。
 5. 重建索引。
@@ -79,7 +79,7 @@ Demo 能跑，不代表企业 `RAG` 能上线。
 
 1. 文档名。
 2. 章节。
-3. 页码或片段 ID。
+3. 页码或片段 `ID`。
 4. 原文片段。
 5. 答案和引用的对应关系。
 
@@ -151,7 +151,7 @@ python docs/public/langchain-examples/08_enterprise_rag.py
 ~~~
 
 该脚本先按角色过滤可访问文档，再使用 `OpenAI` `Embeddings` 检索，最后由
-`ChatOpenAI` 调用 ChatGPT 回答，并保留文档来源标签。
+`ChatOpenAI` 调用 `ChatGPT` 回答，并保留文档来源标签。
 
 ## 8. 本模块自测
 

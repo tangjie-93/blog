@@ -9,36 +9,36 @@ note: docker学习总结
 
 ​		docker是一个能够将开发的应用程序部署到容器的`开源引擎`。docker在虚拟化的容器执行环境中，增加了一个`应用程序部署引擎`。该引擎的目标就是提供一个轻量、快速的环境，能够运行开发者的程序，并方便高效的将程序从开发者的笔记本部署到测试环境，然后再部署到开发环境。
 
-### 2、Docker组件
+### 2、`Docker`组件
 
-+ Docker客户端和服务器
-+ Docker镜像
++ `Docker`客户端和服务器
++ `Docker`镜像
 + Registry
-+ Docker容器
++ `Docker`容器
 
-**1、Docker客户端和服务器**
+**1、`Docker`客户端和服务器**
 
-​		`Docker`是一个客户-服务器（C/S）架构的程序。Docker客户端只需向Docker服务器或守护进程发出请求，服务器或守护进程将完成所有工作并返回结果。
+​		`Docker`是一个客户-服务器（C/S）架构的程序。`Docker`客户端只需向`Docker`服务器或守护进程发出请求，服务器或守护进程将完成所有工作并返回结果。
 
-**2、Docker镜像**
+**2、`Docker`镜像**
 
-​		镜像是构建Docker世界的基石。用户基于镜像来运行自己的容器。镜像也是Docker生命周期中的“构建”部分。镜像是基于联合文件系统的一种层式的结构，由一系列指令一步一步构建出来。
+​		镜像是构建`Docker`世界的基石。用户基于镜像来运行自己的容器。镜像也是`Docker`生命周期中的“构建”部分。镜像是基于联合文件系统的一种层式的结构，由一系列指令一步一步构建出来。
 
 ​		也可以把镜像当做容器的“源代码”。镜像体积很小，非常“便携”，易于分享、存储和更新。
 
 **3、Registry**
 
-​		Docker用Registry来保存用户构建的镜像。Registry分为公共和私有两种。
+​		`Docker`用Registry来保存用户构建的镜像。Registry分为公共和私有两种。
 
 **4、容器**
 
-​		容器是基于镜像启动起来的，容器中可以运行一个或多个进程。镜像是Docker生命周期中的构建或打包阶段，而容器则是启动或执行阶段。
+​		容器是基于镜像启动起来的，容器中可以运行一个或多个进程。镜像是`Docker`生命周期中的构建或打包阶段，而容器则是启动或执行阶段。
 
-总的来说，Docker容器就是`一个镜像格式、一系列标准的操作、一个执行环境。`
+总的来说，`Docker`容器就是`一个镜像格式、一系列标准的操作、一个执行环境。`
 
 ### 3、docker能够用来做什么？
 
-+ 加速本地开发和构建流程，使其更加高效、更加轻量化。本地开发人员可以构建、运行并分享Docker容器。容器可以在开发环境中构建，然后轻松的提交到测试环境中，并最终进入生产环境。
++ 加速本地开发和构建流程，使其更加高效、更加轻量化。本地开发人员可以构建、运行并分享`Docker`容器。容器可以在开发环境中构建，然后轻松的提交到测试环境中，并最终进入生产环境。
 + 能够让独立服务或应用程序在不同的环境中，得到相同的运行结果。
 + 用docker创建隔离的环境来进行测试。
 + docker可以让开发者先于本机是哪个构建一个复杂的程序或者架构来进行测试，而不是一开始就在生产环境部署、测试。
@@ -159,7 +159,7 @@ docker restart helloworld
   docker rm [OPTIONS] CONTAINER [CONTAINER...]
   ```
 
-  OPTIONS说明：
+  `OPTIONS`说明：
 
   + -f ：通过SIGKILL信号强制删除一个运行中的容器。
   + -l：移除容器间的网络连接，而非容器本身。
@@ -193,7 +193,7 @@ docker restart helloworld
   docker exec [OPTIONS] CONTAINER COMMAND 
   ```
 
-  OPTIONS说明
+  `OPTIONS`说明
 
   + -d：分离模式，在后台运行。
   + -i：即使没有附加也保持STDIN打开。
@@ -219,7 +219,7 @@ docker restart helloworld
   docker ps [OPTIONS]
   ```
 
-  OPTIONS说明
+  `OPTIONS`说明
 
   + -a：显示所有的容器，包括未运行的。
   + -f：根据条件过滤显示的内容。
@@ -232,7 +232,7 @@ docker restart helloworld
 
   ps命令的输出详情介绍：
 
-  **CONTAINER ID：容器ID**
+  **CONTAINER `ID`：容器`ID`**
 
   **IMAGE：使用的镜像。**
 
@@ -270,7 +270,7 @@ docker restart helloworld
   docker events [OPTIONS]
   ```
 
-  OPTIONS说明：
+  `OPTIONS`说明：
 
   + -f：根据条件过滤事件。
   + --since：从指定的时间戳后显示所有事件。
@@ -287,7 +287,7 @@ docker restart helloworld
   docker logs [OPTIONS] CONTAINER
   ```
 
-  OPTIONS说明:
+  `OPTIONS`说明:
 
   + -f：跟踪日志输出。
   + --since：显示某个开始时间的所有日志。
@@ -313,7 +313,7 @@ docker restart helloworld
   docker commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]]
   ```
 
-  OPTIONS说明：
+  `OPTIONS`说明：
 
   + -a：提交的镜像作者。
   + -c：使用dockerfile指令来创建镜像。
@@ -345,7 +345,7 @@ docker restart helloworld
   docker pull [OPTIONS] NAME[:TAG|@DIGEST]
   ```
 
-  OPTIONS说明：
+  `OPTIONS`说明：
 
   + -a：拉取所有的tagged镜像
   + --disable-content-trust：忽略镜像的校验，默认开启。
@@ -362,7 +362,7 @@ docker restart helloworld
   docker search [OPTIONS] TERM
   ```
 
-  OPTIONS说明:
+  `OPTIONS`说明:
 
   + --automated：只列出automated build类型的镜像。
   + --no-trunc：显示完整的镜像描述。
@@ -376,14 +376,14 @@ docker restart helloworld
   docker images [OPTIONS] [REPOSITOPY[:TAG]]
   ```
 
-  OPTIONS说明:
+  `OPTIONS`说明:
 
   + -a：列出本地所有的镜像。
   + --digests:显示镜像的摘要信息。
   + -f：显示满足条件的镜像。
   + --format：指定返回值的模板文件。
   + --no-trunc：显示完整的镜像信息。
-  + -q：只显示镜像ID。
+  + -q：只显示镜像`ID`。
 
   ```bash
   docker images ubuntu //
@@ -397,12 +397,12 @@ docker restart helloworld
   docker rmi [OPTIONS] IMAGE [IMAGE...]
   ```
 
-  OPTIONS说明:
+  `OPTIONS`说明:
 
   + -f：强制删除。
   + --no-prune：不移除该镜像的过程镜像，默认移除。
 
-+ **docker build：用于使用Dockerfile创建镜像。**
++ **docker build：用于使用`Dockerfile`创建镜像。**
 
   ```bash
   docker build [OPTIONS] PATH|URL|-
@@ -441,18 +441,18 @@ docker restart helloworld
 
 
 
-### 4、docker之Dockerfile详解
+### 4、docker之`Dockerfile`详解
 
-​		Dockfile是一种被Docker程序解释的脚本，Dockerfile由一条一条的指令组成，每条指令对应Linux下面的一条命令。Docker程序将这些Dockerfile指令翻译真正的Linux命令。Dockerfile有自己书写格式和支持的命令，Docker程序解决这些命令间的依赖关系，类似于Makefile。**Docker程序将读取Dockerfile，根据指令生成定制的image（镜像）。**
+​		Dockfile是一种被`Docker`程序解释的脚本，`Dockerfile`由一条一条的指令组成，每条指令对应`Linux`下面的一条命令。`Docker`程序将这些`Dockerfile`指令翻译真正的`Linux`命令。`Dockerfile`有自己书写格式和支持的命令，`Docker`程序解决这些命令间的依赖关系，类似于Makefile。**`Docker`程序将读取`Dockerfile`，根据指令生成定制的image（镜像）。**
 
 **注意：**指令越多，构建的镜像越大，所以尽可能使用`&&`来将多条指令连接成一条指令。
 
 **1、FROM**
 
-+ `FROM`指定一个基础镜像，一般情况下一个可用的Dockerfile一定是FROM为第一条指令。
++ `FROM`指定一个基础镜像，一般情况下一个可用的`Dockerfile`一定是FROM为第一条指令。
 
-+ FROM一定是首个非注释指令Dockerfile。
-+ FROM可以在一个Dockerfile中出现多次，以便于创建混合的images。
++ FROM一定是首个非注释指令`Dockerfile`。
++ FROM可以在一个`Dockerfile`中出现多次，以便于创建混合的images。
 + 如果没有指定tag，latest将会被指定为要使用的基础镜像版本。
 
 **2、COPY**
@@ -499,7 +499,7 @@ CMD ["<可执行文件或命令>","<param1>","<param2>",...] //默认可执行�
 
 **5、ENTRYPOINT**
 
-​		类似于 CMD 指令，但其不会被 docker run 的命令行参数指定的指令所覆盖，而且这些命令行参数会被当作参数送给 ENTRYPOINT 指令指定的程序。Dockerfile 中如果存在多个 ENTRYPOINT 指令，仅最后一个生效。
+​		类似于 CMD 指令，但其不会被 docker run 的命令行参数指定的指令所覆盖，而且这些命令行参数会被当作参数送给 ENTRYPOINT 指令指定的程序。`Dockerfile` 中如果存在多个 ENTRYPOINT 指令，仅最后一个生效。
 
 ```bash
 ENTRYPOINT ["<executeable>","<param1>","<param2>",...]
@@ -513,7 +513,7 @@ ENTRYPOINT ["nginx", "-c"] # 定参
 CMD ["/etc/nginx/nginx.conf"] # 变参 
 ```
 
-1、假如已经通过Dockerfile(`docker build -t nginx:v1 .`)构建了镜像，此时不传参运行时。
+1、假如已经通过`Dockerfile`(`docker build -t nginx:v1 .`)构建了镜像，此时不传参运行时。
 
 ```
 docker run nginx:v1
@@ -541,7 +541,7 @@ ENV <key> <value>
 
 **7、ARG**
 
-​		构建参数，与 ENV 作用一至。ARG 设置的环境变量仅对 Dockerfile 内有效，也就是说只有 docker build 的过程中有效，构建好的镜像内不存在此环境变量。
+​		构建参数，与 ENV 作用一至。ARG 设置的环境变量仅对 `Dockerfile` 内有效，也就是说只有 docker build 的过程中有效，构建好的镜像内不存在此环境变量。
 
 ```bash
 ARG <参数名>[=<默认值>]
@@ -557,6 +557,6 @@ ARG <参数名>[=<默认值>]
 
 Compose使用的三个步骤：
 
-- 使用 Dockerfile 定义应用程序的环境。
+- 使用 `Dockerfile` 定义应用程序的环境。
 - 使用 docker-compose.yml 定义构成应用程序的服务，这样它们可以在隔离环境中一起运行。
 - 最后，执行 docker-compose up 命令来启动并运行整个应用程序。

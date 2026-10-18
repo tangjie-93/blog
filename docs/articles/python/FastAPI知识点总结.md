@@ -16,7 +16,7 @@ note: "系统整理路由、参数、依赖注入、安全、数据库、异步�
 
 1. [基础入门](#_1-基础入门)
 2. [路由与请求处理](#_2-路由与请求处理)
-3. [Pydantic 数据模型](#_3-pydantic-数据模型)
+3. [`Pydantic` 数据模型](#_3-pydantic-数据模型)
 4. [响应处理](#_4-响应处理)
 5. [依赖注入系统](#_5-依赖注入系统)
 6. [中间件](#_6-中间件)
@@ -50,7 +50,7 @@ pip install "uvicorn[standard]"
 pip install "fastapi[all]"
 ```
 
-### 2.2 `1.2` Poetry 项目配置
+### 2.2 `1.2` `Poetry` 项目配置
 
 ```bash
 # 初始化 Poetry 项目
@@ -122,9 +122,9 @@ uvicorn main:app --ssl-keyfile=key.pem --ssl-certfile=cert.pem
 
 ### 2.5 `1.5` 自动文档
 
-- **Swagger UI**: `http://localhost:8000/docs`
+- **Swagger `UI`**: `http://localhost:8000/docs`
 - **ReDoc**: `http://localhost:8000/redoc`
-- **OpenAPI `JSON`**: `http://localhost:8000/openapi.json`
+- **`OpenAPI` `JSON`**: `http://localhost:8000/openapi.json`
 
 ### 2.6 `1.6` `FastAPI` 应用配置
 
@@ -461,7 +461,7 @@ async def get_request_info(request: Request):
 
 ---
 
-## 3. Pydantic 数据模型
+## 3. `Pydantic` 数据模型
 
 ### 4.1 `3.1` 基础模型
 
@@ -1746,7 +1746,7 @@ async def auth_middleware(request: Request, call_next):
     return await call_next(request)
 ```
 
-### 7.2 `6.2` CORS 中间件
+### 7.2 `6.2` `CORS` 中间件
 
 ```python
 from fastapi import FastAPI
@@ -1980,7 +1980,7 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
     return {"access_token": "valid-token", "token_type": "bearer"}
 ```
 
-### 9.3 `8.3` JWT 认证
+### 9.3 `8.3` `JWT` 认证
 
 ```python
 from fastapi import FastAPI, Depends, HTTPException, status
@@ -2079,7 +2079,7 @@ async def protected_route(token: str = Depends(verify_credentials)):
 
 ## 9. 数据库集成
 
-### 10.1 `9.1` SQLModel 基础
+### 10.1 `9.1` `SQLModel` 基础
 
 ```python
 from fastapi import FastAPI, HTTPException
@@ -2816,7 +2816,7 @@ poetry update
 | `pydantic` | 数据验证 |
 | `pydantic-settings` | 配置管理 |
 | `sqlmodel` | ORM |
-| `python-jose` | JWT 编码 |
+| `python-jose` | `JWT` 编码 |
 | `passlib` | 密码哈希 |
 | `python-multipart` | 表单数据解析 |
 | `aiofiles` | 异步文件操作 |
@@ -2824,7 +2824,7 @@ poetry update
 | `pytest` | 测试框架 |
 | `pytest-asyncio` | 异步测试 |
 
-### 17.3 Poetry 项目配置模板 (pyproject.toml)
+### 17.3 `Poetry` 项目配置模板 (pyproject.toml)
 
 ```toml
 [tool.poetry]

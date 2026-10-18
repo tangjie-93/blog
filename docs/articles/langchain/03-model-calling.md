@@ -19,9 +19,9 @@ note: 统一理解 Chat Model、Embedding、流式与批量调用。
 - `langchain_ollama`
 - 其他模型厂商集成包
 
-## 2. Chat Model
+## 2. Chat `Model`
 
-Chat Model 是聊天模型封装：
+Chat `Model` 是聊天模型封装：
 
 ```python
 from langchain_openai import ChatOpenAI
@@ -44,7 +44,7 @@ messages -> chat model -> AIMessage
 5. 使用流式输出。
 6. 理解模型返回的消息结构。
 
-## 3. `Embedding` Model
+## 3. `Embedding` `Model`
 
 `Embedding` 模型把文本变成向量。
 
@@ -111,13 +111,13 @@ python docs/public/langchain-examples/03_models/model_selection.py
 python docs/public/langchain-examples/03_model_calling.py
 ~~~
 
-该脚本通过 `ChatOpenAI` 调用 `OpenAI` ChatGPT，并依次演示 `.invoke()`、`.stream()`、
+该脚本通过 `ChatOpenAI` 调用 `OpenAI` `ChatGPT`，并依次演示 `.invoke()`、`.stream()`、
 `.batch()` 和 `OpenAIEmbeddings.embed_query()`。
 
 ## 8. 本模块自测
 
-1. Chat Model 和 `Embedding` Model 有什么区别？
-    + Chat Model 是聊天模型封装，`Embedding` Model 是文本向量模型封装。
+1. Chat `Model` 和 `Embedding` `Model` 有什么区别？
+    + Chat `Model` 是聊天模型封装，`Embedding` `Model` 是文本向量模型封装。
 2. 为什么 `RAG` 入库和查询最好使用同一个 embedding 模型？
     + 不同的 embedding 模型会生成不同的向量，导致检索结果不准确。
 3. temperature 对回答有什么影响？

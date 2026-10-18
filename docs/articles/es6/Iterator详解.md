@@ -6,17 +6,17 @@ tags: es6
 note: Iterator详解
 ---
 
-## 1、Iterator
+## 1、`Iterator`
 
 
 &#8195;&#8195;`Iterator`是一种接口，为各种不同的数据结构提供统一的访问机制。任何数据结构只要部署 `Iterator`接口，就可以完成遍历操作（即依次处理该数据结构的所有成员）。
-Iterator 的作用有三个：
+`Iterator` 的作用有三个：
 
 >1)	为各种数据结构，提供一个统一的、简便的访问接口；    
 >2)	使得数据结构的成员能够按某种次序排列；
->3)	ES6 创造了一种新的遍历命令`for...of`循环，**Iterator 接口主要供for...of消费。**
+>3)	`ES6` 创造了一种新的遍历命令`for...of`循环，**`Iterator` 接口主要供for...of消费。**
 
-&#8195;&#8195;ES6 规定，默认的 `Iterator`接口部署在数据结构的`Symbol.iterator`属性上，或者说，一个数据结构只要具有`Symbol.iterator`属性，就可以认为是“可遍历”的。
+&#8195;&#8195;`ES6` 规定，默认的 `Iterator`接口部署在数据结构的`Symbol.iterator`属性上，或者说，一个数据结构只要具有`Symbol.iterator`属性，就可以认为是“可遍历”的。
 ```js
 const obj = {
 	[Symbol.iterator] : function () {
@@ -31,7 +31,7 @@ const obj = {
 	}
 };
 ```        
-&#8195;&#8195;原生具备 Iterator 接口的数据结构如下。
+&#8195;&#8195;原生具备 `Iterator` 接口的数据结构如下。
 
 &#8195;&#8195;1、Array  
 &#8195;&#8195;2、Map    
@@ -41,7 +41,7 @@ const obj = {
 &#8195;&#8195;6、函数的 arguments 对象  
 &#8195;&#8195;7、NodeList 对象
 
-&#8195;&#8195;下面是两个通过调用`[Symbol.iterator]()`方法来Iterator接口的例子。
+&#8195;&#8195;下面是两个通过调用`[Symbol.iterator]()`方法来`Iterator`接口的例子。
 ```js
 //数组的遍历 部署 Iterator 接口 let iter = arr[Symbol.iterator]();
 let arr = ['a', 'b', 'c'];
@@ -99,7 +99,7 @@ iterator.next() // { value: undefined, done: true }
 ```
 >（4）	其他一些场合（for…of、Array.form()）
 
-&#8195;&#8195;`JavaScript` 原有的**for...in循环，只能获得对象的键名**，不能直接获取键值。ES6 提供**for...of循环，允许遍历获得键值**。数组的遍历器接口只返回具有数字索引的属性。
+&#8195;&#8195;`JavaScript` 原有的**for...in循环，只能获得对象的键名**，不能直接获取键值。`ES6` 提供**for...of循环，允许遍历获得键值**。数组的遍历器接口只返回具有数字索引的属性。
 ```js
 var arr = ['a', 'b', 'c', 'd'];
 arr.foo = 'hello';
@@ -122,7 +122,7 @@ for (let [key, value] of map) {
 	console.log(key + ' : ' + value); // a : 1   // b : 2
 }
 ```       
-&#8195;&#8195;并不是所有类似数组的对象都具有 Iterator 接口，一个简便的解决方法，就是使用`Array.from`方法将其转为数组。
+&#8195;&#8195;并不是所有类似数组的对象都具有 `Iterator` 接口，一个简便的解决方法，就是使用`Array.from`方法将其转为数组。
 ```js
 let arrayLike = { length: 2, 0: 'a', 1: 'b' };
 // 报错
@@ -147,4 +147,4 @@ for (let x of Array.from(arrayLike)) {
 &#8195;&#8195;1、有着同`for...in`一样的简洁语法，但是没有`for...in`那些缺点。   
 &#8195;&#8195;2、不同于`forEach`方法，它可以与`break、continue`和`return`配合使用。    
 &#8195;&#8195;3、提供了遍历所有数据结构的统一操作接口(`具有[Symbol.iterator]`属性)。
-&#8195;&#8195;4、`for...in`循环，只能获得对象的键名，不能直接获取键值。ES6 提供`for...of`循环，允许遍历获得键值。
+&#8195;&#8195;4、`for...in`循环，只能获得对象的键名，不能直接获取键值。`ES6` 提供`for...of`循环，允许遍历获得键值。

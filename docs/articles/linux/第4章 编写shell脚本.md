@@ -261,11 +261,11 @@ test expression
 | -d file         | **file 存在并且是一个目录。**                                |
 | -e file         | **file 存在。**                                              |
 | -f file         | **file 存在并且是一个普通文件。**                            |
-| -g file         | file 存在并且设置了组 ID。                                   |
-| -G file         | file 存在并且由有效组 ID 拥有。                              |
+| -g file         | file 存在并且设置了组 `ID`。                                   |
+| -G file         | file 存在并且由有效组 `ID` 拥有。                              |
 | -k file         | file 存在并且设置了它的“sticky bit”。                        |
 | -L file         | file 存在并且是一个符号链接。                                |
-| -O file         | file 存在并且由有效用户 ID 拥有。                            |
+| -O file         | file 存在并且由有效用户 `ID` 拥有。                            |
 | -p file         | file 存在并且是一个命名管道。                                |
 | -r file         | **file 存在并且可读（有效用户有可读权限）。**                |
 | -s file         | file 存在且其长度大于零。                                    |

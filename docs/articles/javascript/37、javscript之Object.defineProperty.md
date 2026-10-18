@@ -8,7 +8,7 @@ note: 自己在使用vue的过程中经常会用到听到`数据双向绑定`这
 &#8195;&#8195;自己在使用vue的过程中经常会用到听到`数据双向绑定`这个词，而且我们还可以直接通过调用`this.msg`(this表示vue实例),来获取data上的数据，以前一直不太明白为什么可以这样获取，直到有一天我在论坛里看到了`寻找海蓝96`这位大佬写的文章,才明白其原理，所以在此记录一下。
 
 
-## 1、Object.defineProperty(obj,key,descriptor) {#a1}
+## 1、`Object`.defineProperty(obj,key,descriptor) {#a1}
 
 &#8195;&#8195;`Object.defineProperty`主要是通过Get和Set这两个访问器属性来实现数据双向绑定的。说到这里必须先介绍以下js对象的两种特性。
 `ECMAScript`中有两种属性:数据属性和访问器属性。这是js中任何对象都拥有的特性。      
@@ -51,7 +51,7 @@ console.log(obj.name);//test 还是可以对属性进行修改
 
 >4、Set:在写入属性时调用的函数。的默认值为`undefined`。   
 
-注意：**不能使用Object.defineProperty()方法同时修改默认数据属性和访问器属性。即set和get访问器属性不能与writable以及value特性共存。**
+注意：**不能使用`Object`.defineProperty()方法同时修改默认数据属性和访问器属性。即set和get访问器属性不能与writable以及value特性共存。**
 
 ```javascript             
 Object.defineProperty(obj,"name",{
@@ -70,7 +70,7 @@ Object.defineProperty(obj,"name",{
 ```
 &#8195;&#8195;个人觉得数据属性和访问器属性的`Configurable`和 `Enumerable`没什么区别。访问器属性主要用的是 `Get` 和 `Set` 这两个。
 
-**可以通过Object.defineProperty（）实现简单的数据双向绑定**。实现代码如下：
+**可以通过`Object`.defineProperty（）实现简单的数据双向绑定**。实现代码如下：
 
 ```javascript          
 <input id="test1"/>

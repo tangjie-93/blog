@@ -33,9 +33,9 @@ Agent：模型参与决策
 
 没有这些，`Agent` 很容易变成不可控的黑盒。
 
-## 3. Tool
+## 3. `Tool`
 
-Tool 是模型可以调用的外部能力。
+`Tool` 是模型可以调用的外部能力。
 
 例子：
 
@@ -116,9 +116,9 @@ process
 - 超时时间
 - 失败返回策略
 
-## 6. Agentic `RAG`
+## 6. `Agentic` `RAG`
 
-Agentic `RAG` 是让模型参与 `RAG` 决策。
+`Agentic` `RAG` 是让模型参与 `RAG` 决策。
 
 普通 `RAG`：
 
@@ -126,7 +126,7 @@ Agentic `RAG` 是让模型参与 `RAG` 决策。
 问题 -> 检索 -> 回答
 ```
 
-Agentic `RAG`：
+`Agentic` `RAG`：
 
 ```text
 问题
@@ -181,19 +181,19 @@ python docs/public/langchain-examples/05_agents/agentic_rag.py
 python docs/public/langchain-examples/05_agent_tools.py
 ~~~
 
-该脚本以 `create_agent` 创建 `Agent`，由 `OpenAI` ChatGPT 自主选择
+该脚本以 `create_agent` 创建 `Agent`，由 `OpenAI` `ChatGPT` 自主选择
 `search_policy`，读取工具结果后生成最终回答。
 
 ## 9. 本模块自测
 
-1. 普通 `RAG` 和 Agentic `RAG` 有什么区别？
+1. 普通 `RAG` 和 `Agentic` `RAG` 有什么区别？
     + 普通 `RAG` 只是根据检索结果回答。
-    + Agentic `RAG` 模型会根据任务目标，选择工具、观察结果、继续行动，直到完成任务。
+    + `Agentic` `RAG` 模型会根据任务目标，选择工具、观察结果、继续行动，直到完成任务。
     + 普通 `RAG`：
     ```text
     问题 -> 检索 -> 回答
     ```
-    + Agentic `RAG`：
+    + `Agentic` `RAG`：
 
     ```text
     问题
@@ -205,7 +205,7 @@ python docs/public/langchain-examples/05_agent_tools.py
       -> 生成答案
       -> 自检
 ```
-2. Tool 的名称和描述为什么重要？
+2. `Tool` 的名称和描述为什么重要？
     + 用于模型判断是否调用工具。
     + 好的工具描述可以避免模型调用错误工具。
 3. 为什么 `Agent` 必须限制最大步骤？

@@ -81,7 +81,7 @@ def attention(q, k, v, causal=False):
     return F.softmax(score, dim=-1) @ v
 ```
 
-## 5. 一个完整的 Transformer Block
+## 5. 一个完整的 `Transformer` Block
 
 典型 Decoder block 的数据流是：
 
@@ -128,6 +128,6 @@ Next-token prediction 让模型在每个位置预测下一个 token。训练时�
 ## 10. 延伸资料
 
 - [Attention Is All You Need](https://arxiv.org/abs/1706.03762)
-- [The Illustrated Transformer](https://jalammar.github.io/illustrated-transformer/)
-- [PyTorch Transformer Tutorial](https://pytorch.org/tutorials/intermediate/transformer_building_blocks.html)
+- [The Illustrated `Transformer`](https://jalammar.github.io/illustrated-transformer/)
+- [PyTorch `Transformer` Tutorial](https://pytorch.org/tutorials/intermediate/transformer_building_blocks.html)
 - [Hugging Face Transformers](https://github.com/huggingface/transformers)

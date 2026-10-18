@@ -85,6 +85,6 @@ function render(gl, positions) {
 
 ## 5、参考资料
 
-[WebGL零基础入门教程(郭隆邦)](http://www.yanhuangxueyuan.com/WebGL/)<br>
-[WebGL 入门与实践](https://juejin.cn/book/6844733755580481543/section/6844733755916025869)<br>
-[WebGL官方文档](https://developer.mozilla.org/zh-CN/docs/Web/API/WebGLRenderingContext/vertexAttribPointer)<br>
+[`WebGL`零基础入门教程(郭隆邦)](http://www.yanhuangxueyuan.com/WebGL/)<br>
+[`WebGL` 入门与实践](https://juejin.cn/book/6844733755580481543/section/6844733755916025869)<br>
+[`WebGL`官方文档](https://developer.mozilla.org/zh-CN/docs/Web/API/WebGLRenderingContext/vertexAttribPointer)<br>

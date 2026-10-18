@@ -12,7 +12,7 @@ note: "按基础概念、核心机制、工程化、前端结合与项目实践�
 
 - [x] `LLM` 基本能力与限制
 - [x] `Prompt Engineering`（见 [`LLM` 与 `Agent` 基础](./01-LLM%E4%B8%8EAgent%E5%9F%BA%E7%A1%80.md)）
-- [x] `Tool Calling` / `Function Calling`（见 [Tool Use](./02%E3%80%81Tool%20Use%20%E2%80%94%20%E5%A4%9A%E5%8A%A0%E4%B8%80%E4%B8%AA%E5%B7%A5%E5%85%B7%EF%BC%8C%E5%8F%AA%E5%8A%A0%E4%B8%80%E8%A1%8C.md)）
+- [x] `Tool Calling` / `Function Calling`（见 [`Tool` Use](./02%E3%80%81Tool%20Use%20%E2%80%94%20%E5%A4%9A%E5%8A%A0%E4%B8%80%E4%B8%AA%E5%B7%A5%E5%85%B7%EF%BC%8C%E5%8F%AA%E5%8A%A0%E4%B8%80%E8%A1%8C.md)）
 - [x] `Structured Output`（见 [`LLM` 与 `Agent` 基础](./01-LLM%E4%B8%8EAgent%E5%9F%BA%E7%A1%80.md)）
 - [x] `Embeddings` / `RAG`（见 [`AI` 知识图谱](/articles/ai/)）
 
@@ -55,6 +55,6 @@ note: "按基础概念、核心机制、工程化、前端结合与项目实践�
 
 ## 6、扩展生态
 
-Skill、Rule、Plugin 和 `MCP` 的边界、生命周期与学习入口见：[`Agent` 扩展生态知识图谱](../ai/12-Agent%E6%89%A9%E5%B1%95%E7%94%9F%E6%80%81%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1.md)。
+`Skill`、Rule、Plugin 和 `MCP` 的边界、生命周期与学习入口见：[`Agent` 扩展生态知识图谱](../ai/12-Agent%E6%89%A9%E5%B1%95%E7%94%9F%E6%80%81%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1.md)。
 
 对应文章：[`Agent` Patterns](./21%E3%80%81Agent%20Patterns%20%E2%80%94%20%E4%B8%8D%E5%90%8C%E4%BB%BB%E5%8A%A1%E7%94%A8%E4%B8%8D%E5%90%8C%E6%A8%A1%E5%BC%8F.md)、[`Agent` Evals](./22%E3%80%81Agent%20Evals%20%E2%80%94%20先把轨迹看懂，再谈效果.md)、[`Agent` Security](./23%E3%80%81Agent%20Security%20%E2%80%94%20从提示注入到沙箱隔离.md)、[`Durable Execution`](./24%E3%80%81Durable%20Execution%20—%20让长任务可暂停、可恢复.md)、[Cost and Reliability](./25%E3%80%81Cost%20and%20Reliability%20—%20让%20Agent%20跑得稳、算得清.md)、[`Agent` UX](./26%E3%80%81Agent%20UX%20—%20把流式输出、工具调用和审批讲清楚.md)

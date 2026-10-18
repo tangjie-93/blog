@@ -6,9 +6,9 @@ tags: "Python"
 note: "详解 pyproject.toml 的项目元数据、依赖组、构建与工具配置。"
 ---
 
-# Poetry pyproject.toml 配置文件详解
+# `Poetry` pyproject.toml 配置文件详解
 
-`pyproject.toml` 是 `Python` 项目的核心配置文件，采用 TOML 格式。它定义了项目的元数据、依赖管理、构建系统配置等信息。Poetry 使用这个文件来管理项目的依赖和发布。
+`pyproject.toml` 是 `Python` 项目的核心配置文件，采用 TOML 格式。它定义了项目的元数据、依赖管理、构建系统配置等信息。`Poetry` 使用这个文件来管理项目的依赖和发布。
 
 ---
 
@@ -237,7 +237,7 @@ build-backend = "poetry.core.masonry.api"  # 构建后端
 
 | 构建后端 | 说明 |
 |----------|------|
-| `poetry.core.masonry.api` | Poetry（推荐） |
+| `poetry.core.masonry.api` | `Poetry`（推荐） |
 | `setuptools.build_meta` | Setuptools |
 | `hatchling.build` | Hatch |
 | `flit_core.buildapi` | Flit |
@@ -246,7 +246,7 @@ build-backend = "poetry.core.masonry.api"  # 构建后端
 
 ## 4. tool.poetry 区域详解
 
-`[tool.poetry]` 是 Poetry 特定的配置文件，定义项目打包和依赖管理的详细行为。
+`[tool.poetry]` 是 `Poetry` 特定的配置文件，定义项目打包和依赖管理的详细行为。
 
 ### 5.1 `4.1` 基本配置
 
@@ -867,7 +867,7 @@ poetry config virtualenvs.in-project true  # 在项目目录创建 .venv
 
 ### 9.2 版本号规范
 
-Poetry 使用 [Semantic Versioning](https://semver.org/) (语义化版本)：
+`Poetry` 使用 [Semantic Versioning](https://semver.org/) (语义化版本)：
 
 - **MAJOR** (主版本): 不兼容的 `API` 变更
 - **MINOR** (次版本): 向后兼容的新功能

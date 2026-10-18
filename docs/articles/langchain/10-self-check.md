@@ -24,10 +24,10 @@ note: 用问题和动手验收检查 LangChain 生态知识掌握情况。
 完成 [示例统一准备](./examples/)，然后逐一运行 examples/01 至
 examples/08 的脚本。验收时至少确认：
 
-1. 01_chat_basics.py 输出一段 ChatGPT 中文回答。
+1. 01_chat_basics.py 输出一段 `ChatGPT` 中文回答。
 2. 04_rag_pipeline.py 先打印检索到的来源文本，再打印带 [source] 的回答。
 3. 05_agent_tools.py 能得到基于工具返回的年假答案。
-4. 06_langgraph.py 能从 `LangGraph` 的最终 State 取到模型回答。
+4. 06_langgraph.py 能从 `LangGraph` 的最终 `State` 取到模型回答。
 5. 设置 `LangSmith` 配置后，07_langsmith.py 的调用可在 `LangSmith` 项目中查询到。
 
 ## 2. 生态分层
@@ -49,7 +49,7 @@ examples/08 的脚本。验收时至少确认：
 
 ## 4. 模型调用
 
-1. Chat Model 和 `Embedding` Model 有什么区别？
+1. Chat `Model` 和 `Embedding` `Model` 有什么区别？
 2. 为什么 `RAG` 入库和查询最好使用同一个 embedding 模型？
 3. 换 embedding 模型后为什么通常要重建索引？
 4. temperature 对回答有什么影响？
@@ -62,14 +62,14 @@ examples/08 的脚本。验收时至少确认：
 2. `Document.page_content` 和 `Document.metadata` 分别放什么？
 3. chunk size 和 chunk overlap 会影响什么？
 4. Loader 阶段最容易出什么问题？
-5. Retriever 和 Vector Store 是什么关系？
+5. `Retriever` 和 Vector Store 是什么关系？
 6. top_k 太大或太小分别有什么问题？
 7. 为什么答案必须带引用来源？
 8. 检索不到资料时系统应该怎么回答？
 
 ## 6. `Agent` 和工具
 
-1. 普通 `RAG` 和 Agentic `RAG` 的区别是什么？
+1. 普通 `RAG` 和 `Agentic` `RAG` 的区别是什么？
 2. `Agent` 为什么不是越自由越好？
 3. 什么样的工具描述更容易让模型正确调用？
 4. 为什么 `Agent` 必须限制最大步骤？
@@ -78,13 +78,13 @@ examples/08 的脚本。验收时至少确认：
 
 ## 7. `LangGraph`
 
-1. State、Node、Edge 分别是什么？
-2. Conditional Edge 解决什么问题？
+1. `State`、`Node`、`Edge` 分别是什么？
+2. Conditional `Edge` 解决什么问题？
 3. 什么情况下需要循环？
 4. 为什么循环必须有结束条件？
 5. 什么场景需要 Checkpointer？
 6. `Human-in-the-loop` 解决什么问题？
-7. 一个好的 Node 应该满足什么标准？
+7. 一个好的 `Node` 应该满足什么标准？
 
 ## 8. `LangSmith`
 
@@ -111,6 +111,6 @@ examples/08 的脚本。验收时至少确认：
 
 1. 画出 `LangChain`、`LangGraph`、`LangSmith`、langchain_core 的关系图。
 2. 写出一个最小 `RAG` 链路。
-3. 把一个函数封装成 Tool。
+3. 把一个函数封装成 `Tool`。
 4. 用 `LangGraph` 设计一个带条件分支的流程。
 5. 用 `LangSmith` 分析一次错误回答的原因。

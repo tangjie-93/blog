@@ -13,7 +13,7 @@ s01 → ... → s15 → s16 → `s17` → [s18](./18%E3%80%81Worktree%20Isolatio
 
 > *"自己看板，自己认领"* — 空闲时轮询，有活就干。
 >
-> **Harness 层**: 自治 — 队友自组织，不依赖 Lead 分配。
+> **`Harness` 层**: 自治 — 队友自组织，不依赖 Lead 分配。
 
 ---
 
@@ -95,7 +95,7 @@ def scan_unclaimed_tasks() -> list[dict]:
     return unclaimed
 ```
 
-三个条件：必须是 pending、没有 owner、所有 blockedBy 依赖已完成。`can_start` 检查依赖任务的状态——有依赖不代表不能做，只有被未完成的任务阻塞才不能做。教学版按文件名排序取第一个；CC 用文件锁防止多个队友同时认领同一个任务。
+三个条件：必须是 pending、没有 owner、所有 blockedBy 依赖已完成。`can_start` 检查依赖任务的状态——有依赖不代表不能做，只有被未完成的任务阻塞才不能做。教学版按文件名排序取第一个；`CC` 用文件锁防止多个队友同时认领同一个任务。
 
 ### 3.3 claim_task: owner 检查
 
@@ -116,7 +116,7 @@ def claim_task(task_id: str, owner: str = "agent") -> str:
     return f"Claimed {task.id} ({task.subject})"
 ```
 
-教学版没有文件锁，并发认领可能出现竞争。但至少 `task.owner` 检查避免了最明显的"后写覆盖"问题。CC 用 `proper-lockfile` 保护任务文件，`claimTask` 在文件锁内完成读-改-写（`utils/tasks.ts:541-612`）。
+教学版没有文件锁，并发认领可能出现竞争。但至少 `task.owner` 检查避免了最明显的"后写覆盖"问题。`CC` 用 `proper-lockfile` 保护任务文件，`claimTask` 在文件锁内完成读-改-写（`utils/tasks.ts:541-612`）。
 
 ### 3.4 队友生命周期: WORK → IDLE → SHUTDOWN
 
@@ -160,7 +160,7 @@ if len(messages) <= 3:
                    f"Continue your work.</identity>"})
 ```
 
-消息过短说明发生了压缩，此时重新注入身份信息。真实 CC 中 context compaction 会保留 system prompt，教学版的简化实现需要手动处理。
+消息过短说明发生了压缩，此时重新注入身份信息。真实 `CC` 中 context compaction 会保留 system prompt，教学版的简化实现需要手动处理。
 
 ### 3.6 consume_lead_inbox: 统一 inbox 消费
 
@@ -236,13 +236,13 @@ python s17_autonomous_agents/code.py
 s18 `Worktree Isolation` → 每个任务有自己的工作目录，互不干扰。
 
 <details>
-<summary>深入 CC 源码</summary>
+<summary>深入 `CC` 源码</summary>
 
-> 教学说明：本章的 idle_poll + auto-claim 机制是教学设计，用统一的轮询函数演示"空闲后找活干"。CC 的实际实现是多个机制的组合，但目标一致——减少 Lead 的手动分配负担。
+> 教学说明：本章的 idle_poll + auto-claim 机制是教学设计，用统一的轮询函数演示"空闲后找活干"。`CC` 的实际实现是多个机制的组合，但目标一致——减少 Lead 的手动分配负担。
 
-### 一、CC 的空闲机制：组合路径，不是单一轮询
+### 一、`CC` 的空闲机制：组合路径，不是单一轮询
 
-教学版用一个 `idle_poll()` 统一处理空闲时的 inbox 检查和任务认领。CC 的实际实现是四个机制的组合：
+教学版用一个 `idle_poll()` 统一处理空闲时的 inbox 检查和任务认领。`CC` 的实际实现是四个机制的组合：
 
 **idle_notification**：队友完成一轮工作后，`sendIdleNotification()`（`inProcessRunner.ts:569-589`）向 Lead 发送空闲通知。Lead 知道队友可用了，可以分配新任务或请求关机。
 
@@ -250,17 +250,17 @@ s18 `Worktree Isolation` → 每个任务有自己的工作目录，互不干扰
 
 **task watcher**：`useTaskListWatcher`（`hooks/useTaskListWatcher.ts:34-189`）用 `fs.watch()` 监听 `.claude/tasks/` 目录变化，1 秒 debounce，当新任务创建或依赖解锁时触发检查。依赖判断（`L197-207`）是"blockedBy 中没有未完成的任务"，不是"blockedBy 为空"。
 
-**主动 claim**：轮询循环内部也会调用 `tryClaimNextTask()`（`inProcessRunner.ts:853-860`）——在等待期间主动从 task list 领取任务。所以"队友不主动轮询任务"不准确，CC 同时有被动通知和主动认领。
+**主动 claim**：轮询循环内部也会调用 `tryClaimNextTask()`（`inProcessRunner.ts:853-860`）——在等待期间主动从 task list 领取任务。所以"队友不主动轮询任务"不准确，`CC` 同时有被动通知和主动认领。
 
 ### 二、任务认领：文件锁 + 原子操作
 
 `claimTask()`（`utils/tasks.ts:541-612`）用 `proper-lockfile` 的任务文件锁，在锁内完成读-检查-改-写。检查项：owner 是否已存在（`L575-576`）、是否已完成（`L580-581`）、blockedBy 中是否有未完成任务（`L585-594`）。`claimTaskWithBusyCheck()`（`utils/tasks.ts:614-692`）用 task-list 级别锁，把 busy check 和 claim 做成原子操作，避免 TOCTOU。
 
-`findAvailableTask()`（`inProcessRunner.ts:595-604`）的依赖判断也是"所有 blockedBy 已完成"，用 `task.blockedBy.every(id => !unresolvedTaskIds.has(id))` 实现。`tryClaimNextTask()`（`inProcessRunner.ts:624-657`）在认领后把状态更新为 `in_progress`，让 UI 立即反映变化。
+`findAvailableTask()`（`inProcessRunner.ts:595-604`）的依赖判断也是"所有 blockedBy 已完成"，用 `task.blockedBy.every(id => !unresolvedTaskIds.has(id))` 实现。`tryClaimNextTask()`（`inProcessRunner.ts:624-657`）在认领后把状态更新为 `in_progress`，让 `UI` 立即反映变化。
 
-### 三、教学版 vs CC 对比
+### 三、教学版 vs `CC` 对比
 
-| 维度 | 教学版 (s17) | CC |
+| 维度 | 教学版 (s17) | `CC` |
 |------|-------------|-----|
 | 空闲机制 | idle_poll 统一轮询（5s） | idle_notification + 500ms mailbox 轮询 + task watcher |
 | 任务发现 | scan_unclaimed_tasks（轮询） | useTaskListWatcher（文件监听）+ tryClaimNextTask（主动轮询） |
@@ -271,7 +271,7 @@ s18 `Worktree Isolation` → 每个任务有自己的工作目录，互不干扰
 | 身份保持 | messages 长度检测 | context compaction 保留 system prompt |
 | claim 失败处理 | 检查返回值，失败不注入 | 文件锁保证原子性 |
 
-教学版的 `idle_poll()` 把 CC 的四个机制合并成一个轮询函数——简化合理，因为核心语义（空闲时找活干、依赖解锁后可认领、shutdown 优先）是一致的。
+教学版的 `idle_poll()` 把 `CC` 的四个机制合并成一个轮询函数——简化合理，因为核心语义（空闲时找活干、依赖解锁后可认领、shutdown 优先）是一致的。
 
 </details>
 

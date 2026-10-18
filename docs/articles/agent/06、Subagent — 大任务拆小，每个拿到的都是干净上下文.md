@@ -13,7 +13,7 @@ s01 → s02 → s03 → s04 → s05 → `s06` → [s07](./07%E3%80%81Skill%20Loa
 
 > *"大任务拆小, 每个小任务干净的上下文"* — Subagent 用独立 messages[], 不污染主对话。
 >
-> **Harness 层**: 子 `Agent` — 上下文隔离, 注意力不漂移。
+> **`Harness` 层**: 子 `Agent` — 上下文隔离, 注意力不漂移。
 
 ---
 
@@ -102,7 +102,7 @@ TOOL_HANDLERS["task"] = spawn_subagent
 | 上下文隔离 | 全新 `messages[]` | 子 `Agent` 的中间过程不污染主 `Agent` 的上下文 |
 | 只回传结论 | `extract_text(last_message)` | 不是回传整个 messages 列表 |
 | 禁止递归 | 子 `Agent` 无 task 工具 | 防止子 `Agent` 再 spawn 新的子 `Agent` |
-| 安全策略不跳过 | 子 `Agent` 工具调用也走 PreToolUse hook | 上下文隔离不代表权限隔离 |
+| 安全策略不跳过 | 子 `Agent` 工具调用也走 `PreToolUse` hook | 上下文隔离不代表权限隔离 |
 
 dispatch 机制不变，task 工具通过 `TOOL_HANDLERS[block.name]` 分发。子 `Agent` 有独立的 `SUB_SYSTEM` 提示，明确要求"直接完成任务，不要再委派"。
 
@@ -141,16 +141,16 @@ python s06_subagent/code_openai.py
 
 `Agent` 现在能拆任务了。但每个任务需要的知识不一样：改前端组件需要知道 `React` 规范，写 `SQL` 需要知道表结构。这些知识全塞进 system prompt，上下文直接爆了。
 
-s07 Skill Loading → 技能按需注入，不在 system prompt 里堆文档。用到的时候才加载，和读文件一样自然。
+s07 `Skill` Loading → 技能按需注入，不在 system prompt 里堆文档。用到的时候才加载，和读文件一样自然。
 
 <details>
-<summary>深入 CC 源码</summary>
+<summary>深入 `CC` 源码</summary>
 
-> 以下基于 CC 源码 `AgentTool.tsx`、`runAgent.ts`、`forkSubagent.ts`、`forkedAgent.ts` 的完整分析。
+> 以下基于 `CC` 源码 `AgentTool.tsx`、`runAgent.ts`、`forkSubagent.ts`、`forkedAgent.ts` 的完整分析。
 
 ### 一、不是一种模式，是三种
 
-教学版只讲了"全新的 messages[]"。CC 实际有三种执行模式：
+教学版只讲了"全新的 messages[]"。`CC` 实际有三种执行模式：
 
 | 模式 | 触发条件 | 上下文 |
 |------|---------|--------|
@@ -164,7 +164,7 @@ s07 Skill Loading → 技能按需注入，不在 system prompt 里堆文档。�
 
 缓存命中的五个关键组件（`forkedAgent.ts:57-68`）：system prompt、tools、model、messages 前缀、thinking config，必须字节级一致。
 
-### 三、Context Isolation 的精确粒度
+### 三、`Context` Isolation 的精确粒度
 
 `createSubagentContext()`（`forkedAgent.ts:345-462`）创建子 `Agent` 的 `ToolUseContext`：
 
@@ -175,7 +175,7 @@ s07 Skill Loading → 技能按需注入，不在 system prompt 里堆文档。�
 | `readFileState` | **从父克隆**（避免重复读相同文件） |
 | `queryTracking` | 新 chainId，`depth = parentDepth + 1` |
 
-子 `Agent` 不是完全隔离的：文件读取状态是共享的。UI 和通知的隔离程度取决于执行路径（sync/async/fork/teammate 各不同）。
+子 `Agent` 不是完全隔离的：文件读取状态是共享的。`UI` 和通知的隔离程度取决于执行路径（sync/async/fork/teammate 各不同）。
 
 ### 四、递归 Fork 防护
 
@@ -187,7 +187,7 @@ Fork `Agent` 的 `permissionMode: 'bubble'`（`forkSubagent.ts:67`）意味着�
 
 ### 六、Async vs Sync
 
-教学版只展示了同步子 `Agent`（父等着子跑完）。CC 还支持异步路径（`AgentTool.tsx:686-764`）：`run_in_background: true` 时异步启动，返回 `{ status: 'async_launched' }` 立即给父 `Agent`，子 `Agent` 完成后通过通知机制告知父 `Agent`。实际触发条件不止 `run_in_background`，还有 auto-background、assistant force async、coordinator/proactive 等路径。
+教学版只展示了同步子 `Agent`（父等着子跑完）。`CC` 还支持异步路径（`AgentTool.tsx:686-764`）：`run_in_background: true` 时异步启动，返回 `{ status: 'async_launched' }` 立即给父 `Agent`，子 `Agent` 完成后通过通知机制告知父 `Agent`。实际触发条件不止 `run_in_background`，还有 auto-background、assistant force async、coordinator/proactive 等路径。
 
 ### 6.7 教学版的简化是刻意的
 

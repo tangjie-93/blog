@@ -42,7 +42,7 @@ export function emit(event: string){
     }
 }
 ```
-## 2、@Emit在Vue中的使用
+## 2、@Emit在`Vue`中的使用
 ```js
 import { Component, Prop, Vue} from 'vue-property-decorator';
 import {emit} from "@/decorators/emit"

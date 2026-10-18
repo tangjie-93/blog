@@ -12,7 +12,7 @@ note: "用一个稳定的模型—工具—结果循环驱动 Agent 持续完成
 `s01` → [s02](./02%E3%80%81Tool%20Use%20%E2%80%94%20%E5%A4%9A%E5%8A%A0%E4%B8%80%E4%B8%AA%E5%B7%A5%E5%85%B7%EF%BC%8C%E5%8F%AA%E5%8A%A0%E4%B8%80%E8%A1%8C.md) → s03 → s04 → ... → s20
 > *"One loop & `Bash` is all you need"* — 一个工具 + 一个循环 = 一个 `Agent`。
 >
-> **Harness 层**: 循环 — 模型与真实世界的第一道连接。
+> **`Harness` 层**: 循环 — 模型与真实世界的第一道连接。
 ---
 
 ## 1、问题
@@ -156,19 +156,19 @@ python s01_agent_loop/code_openai.py
 
 现在模型手里只有 bash 一个工具，读文件要 `cat`，写文件要 `echo ... >`，找个文件要 `find`，又丑又容易出错。
 
-s02 Tool Use → 给它 5 个真正的工具，会发生什么？模型会不会一次调用多个工具？几个工具同时跑会不会互相踩？
+s02 `Tool` Use → 给它 5 个真正的工具，会发生什么？模型会不会一次调用多个工具？几个工具同时跑会不会互相踩？
 
 <details>
-<summary>深入 CC 源码</summary>
+<summary>深入 `CC` 源码</summary>
 
-> 以下内容基于 CC 源码 `src/query.ts`（1729 行）的核查。核心差异就两个：CC 不看 `stop_reason` 字段而是检查内容里有没有 tool_use 块（因为流式响应中 stop_reason 不可靠）；CC 有更多的退出路径和恢复策略做生产级保护。
+> 以下内容基于 `CC` 源码 `src/query.ts`（1729 行）的核查。核心差异就两个：`CC` 不看 `stop_reason` 字段而是检查内容里有没有 tool_use 块（因为流式响应中 stop_reason 不可靠）；`CC` 有更多的退出路径和恢复策略做生产级保护。
 
-**教学版的 30 行 `while True` 就是 CC 1729 行的核心。** 下面每一项都是在这个核心上叠加的保护机制。
+**教学版的 30 行 `while True` 就是 `CC` 1729 行的核心。** 下面每一项都是在这个核心上叠加的保护机制。
 
 <details>
 <summary>一、循环结构差异</summary>
 
-教学版检查 `response.stop_reason`。CC 不把它作为循环继续的唯一依据——流式响应中 `stop_reason` 可能还没更新但内容里已经有 `tool_use` 块了。CC 用 `needsFollowUp` 标志：接收到流式消息时（`query.ts:830-834`），只要检测到 `tool_use` 块就设为 `true`；`QueryEngine.ts` 会从 `message_delta` 捕获真实 `stop_reason` 用于其他逻辑，但 query loop 本身靠 `needsFollowUp` 决定是否继续。
+教学版检查 `response.stop_reason`。`CC` 不把它作为循环继续的唯一依据——流式响应中 `stop_reason` 可能还没更新但内容里已经有 `tool_use` 块了。`CC` 用 `needsFollowUp` 标志：接收到流式消息时（`query.ts:830-834`），只要检测到 `tool_use` 块就设为 `true`；`QueryEngine.ts` 会从 `message_delta` 捕获真实 `stop_reason` 用于其他逻辑，但 query loop 本身靠 `needsFollowUp` 决定是否继续。
 
 ```typescript
 // query.ts:554-558
@@ -180,7 +180,7 @@ let needsFollowUp = false
 </details>
 
 <details>
-<summary>二、State 对象 10 字段（教学版只用 messages）</summary>
+<summary>二、`State` 对象 10 字段（教学版只用 messages）</summary>
 
 | # | 字段 | 用途 | 对应章节 |
 |---|------|------|---------|
@@ -195,7 +195,7 @@ let needsFollowUp = false
 | 9 | `turnCount` | 轮次计数（maxTurns 检查） | s01 |
 | 10 | `transition` | 上一次继续原因 | s11 |
 
-> 注：`taskBudgetRemaining`（`query.ts:291`）是 loop-local 局部变量，不在 State 上。源码注释明确写了 "Loop-local (not on State)"。
+> 注：`taskBudgetRemaining`（`query.ts:291`）是 loop-local 局部变量，不在 `State` 上。源码注释明确写了 "Loop-local (not on `State`)"。
 
 </details>
 
@@ -209,7 +209,7 @@ let needsFollowUp = false
 <details>
 <summary>四、流式工具执行和 QueryEngine</summary>
 
-CC 的 `StreamingToolExecutor`（`query.ts:561`）让工具在模型还在生成时就开始并行执行（根据工具是否 concurrency-safe 决定并发或独占）。`QueryEngine.ts` 额外加了费用超限、结构化输出验证失败等保护。教学版不实现这些——目标是概念清晰，不是性能极致。
+`CC` 的 `StreamingToolExecutor`（`query.ts:561`）让工具在模型还在生成时就开始并行执行（根据工具是否 concurrency-safe 决定并发或独占）。`QueryEngine.ts` 额外加了费用超限、结构化输出验证失败等保护。教学版不实现这些——目标是概念清晰，不是性能极致。
 
 </details>
 

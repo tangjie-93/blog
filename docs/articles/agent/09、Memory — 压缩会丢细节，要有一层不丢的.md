@@ -6,14 +6,14 @@ tags: "Agent|AI Coding"
 note: "把长期事实与会话历史分层保存，避免压缩过程丢失关键细节。"
 ---
 
-# s09: Memory — 压缩会丢细节，要有一层不丢的
+# s09: `Memory` — 压缩会丢细节，要有一层不丢的
 
 
 s01 → ... → s07 → s08 → `s09` → [s10](./10%E3%80%81System%20Prompt%20%E2%80%94%20%E8%BF%90%E8%A1%8C%E6%97%B6%E7%BB%84%E8%A3%85%EF%BC%8C%E4%B8%8D%E7%A1%AC%E7%BC%96%E7%A0%81.md) → s11 → ... → s20
 
 > *"压缩会丢细节, 要有一层不丢的"* — 文件仓库 + 索引 + 按需加载，跨压缩、跨会话。
 >
-> **Harness 层**: 记忆 — 跨压缩、跨会话的知识积累。
+> **`Harness` 层**: 记忆 — 跨压缩、跨会话的知识积累。
 
 ***
 
@@ -27,7 +27,7 @@ s08 的 autoCompact 会把当前目标、剩余工作、用户约束写进摘要
 
 ## 2、解决方案
 
-![Memory Overview](/image/agent-course/s09_memory/memory-overview.svg)
+![`Memory` Overview](/image/agent-course/s09_memory/memory-overview.svg)
 
 s08 的压缩管线保留，聚焦记忆。存储选文件系统：`.memory/` 目录下，每个记忆一个 `.md` 文件，带 `YAML` frontmatter（`name` / `description` / `type`）。文件多了需要索引：`MEMORY.md` 一行一个链接，注入 SYSTEM。
 
@@ -46,7 +46,7 @@ s08 的压缩管线保留，聚焦记忆。存储选文件系统：`.memory/` �
 
 ## 3、工作原理
 
-![Memory Subsystems](/image/agent-course/s09_memory/memory-subsystems.svg)
+![`Memory` Subsystems](/image/agent-course/s09_memory/memory-subsystems.svg)
 
 ### 3.1 存储：`Markdown` 文件 + 索引
 
@@ -156,13 +156,13 @@ def consolidate_memories():
     # Replace all files with consolidated results
 ```
 
-CC 把这个过程叫 Dream，实际有四层门控：时间间隔、扫描节流、会话数、文件锁。教学版简化为文件数阈值。
+`CC` 把这个过程叫 Dream，实际有四层门控：时间间隔、扫描节流、会话数、文件锁。教学版简化为文件数阈值。
 
-### 3.5 Memory 适合保存什么
+### 3.5 `Memory` 适合保存什么
 
-Memory 保存跨会话仍然有用的信息：用户偏好、反复出现的反馈、项目背景、常用入口和排查线索。它关注“以后还会用到什么”，并通过索引 + 按需加载把这些信息带回当前对话。
+`Memory` 保存跨会话仍然有用的信息：用户偏好、反复出现的反馈、项目背景、常用入口和排查线索。它关注“以后还会用到什么”，并通过索引 + 按需加载把这些信息带回当前对话。
 
-session memory 关注同一会话内的连续性：compact 之后，当前会话还需要保留哪些上下文。两者配合使用：Memory 管长期知识，session memory 管当前会话的压缩续接。
+session memory 关注同一会话内的连续性：compact 之后，当前会话还需要保留哪些上下文。两者配合使用：`Memory` 管长期知识，session memory 管当前会话的压缩续接。
 
 ***
 
@@ -203,9 +203,9 @@ python s09_memory/code.py
 s10 `System Prompt` → 分段 + 运行时组装。不同项目、不同工具，拼出不同的 prompt。
 
 <details>
-<summary>深入 CC 源码</summary>
+<summary>深入 `CC` 源码</summary>
 
-> 以下基于 CC 源码 `src/` 下 `memdir/`、`services/`、`utils/`、`query/` 的分析，行号已对照核实。
+> 以下基于 `CC` 源码 `src/` 下 `memdir/`、`services/`、`utils/`、`query/` 的分析，行号已对照核实。
 
 ### 6.1 源码路径
 
@@ -225,7 +225,7 @@ s10 `System Prompt` → 分段 + 运行时组装。不同项目、不同工具�
 
 ### 6.2 记忆选择：`LLM` 选，不是 embedding
 
-CC 用 **Sonnet 本身来选**（`findRelevantMemories.ts`），不是 embedding 向量相似度：
+`CC` 用 **Sonnet 本身来选**（`findRelevantMemories.ts`），不是 embedding 向量相似度：
 
 1. `memoryScan.ts` 扫描 `.memory/` 下所有 `.md` 文件（排除 MEMORY.md），最多 200 个，按 mtime 降序
 2. 把 `name` + `description` 列成清单
@@ -239,11 +239,11 @@ CC 用 **Sonnet 本身来选**（`findRelevantMemories.ts`），不是 embedding
 
 触发位置（`stopHooks.ts:141-155`）：在 `handleStopHooks()` 中，fire-and-forget 触发提取和 Dream。教学版把提取放在 `stop_reason != "tool_use"` 分支里，方向一致。
 
-CC 的提取通过 forked agent 执行（`extractMemories.ts:371-427`）：受限权限、`skipTranscript: true`、`maxTurns: 5`。还有重叠保护：如果主 `Agent` 已经写入了记忆文件，跳过提取。
+`CC` 的提取通过 forked agent 执行（`extractMemories.ts:371-427`）：受限权限、`skipTranscript: true`、`maxTurns: 5`。还有重叠保护：如果主 `Agent` 已经写入了记忆文件，跳过提取。
 
 ### 6.4 记忆文件格式
 
-CC 用 `Markdown` + `YAML` frontmatter，和教学版一致。四种类型：`user`、`feedback`、`project`、`reference`。
+`CC` 用 `Markdown` + `YAML` frontmatter，和教学版一致。四种类型：`user`、`feedback`、`project`、`reference`。
 
 `memdir.ts:34-38` 定义索引约束：`MEMORY.md` 最多 200 行 / 25KB。`memdir.ts:199-266` 构建记忆行为指令，明确区分 memory、plan、tasks。存储位置：`~/.claude/projects/<sanitized-git-root>/memory/`。
 
@@ -258,16 +258,16 @@ CC 用 `Markdown` + `YAML` frontmatter，和教学版一致。四种类型：`us
 
 合并本身通过 forked agent 执行（`224-233`）：定位 → 收集近期信号 → 合并写文件 → 剪枝更新索引。锁文件 mtime 就是 lastConsolidatedAt。崩溃恢复：1 小时后锁自动过期。
 
-### 6.6 User Memory vs Session Memory
+### 6.6 User `Memory` vs Session `Memory`
 
-| <br /> | User Memory          | Session Memory                  |
+| <br /> | User `Memory`          | Session `Memory`                  |
 | ------ | -------------------- | ------------------------------- |
 | 持久性    | 跨会话                  | 单会话                             |
 | 存储     | `memory/` 下多个 .md 文件 | `session-memory/<id>/memory.md` |
 | 加载到    | system prompt        | compact 摘要                      |
 | 用途     | 跨会话的知识积累             | 跨 compact 的上下文连续性               |
 
-sessionMemoryCompact（s08 中提到的机制）正是使用了 Session Memory：autoCompact 前先读 session memory 文件，如果内容足够（≥ 10K `token`、≥ 5 条文本消息、≤ 40K `token`，`sessionMemoryCompact.ts:56-61`），就用它做摘要，不调 `LLM`。
+sessionMemoryCompact（s08 中提到的机制）正是使用了 Session `Memory`：autoCompact 前先读 session memory 文件，如果内容足够（≥ 10K `token`、≥ 5 条文本消息、≤ 40K `token`，`sessionMemoryCompact.ts:56-61`），就用它做摘要，不调 `LLM`。
 
 ### 6.7 真实实现比教学版复杂的地方
 
@@ -276,12 +276,12 @@ sessionMemoryCompact（s08 中提到的机制）正是使用了 Session Memory�
 - **KAIROS**：时机感知的记忆提取策略，`loadMemoryPrompt()` 中 daily-log 模式
 - **`Prompt` cache**：记忆注入需要考虑 prompt cache 的 TTL，避免每次都重写 system prompt 的大段内容
 - **文件锁**：多进程并发时的锁机制
-- **Memory prefetch**：异步预取，不阻塞主流程
+- **`Memory` prefetch**：异步预取，不阻塞主流程
 
 ### 6.8 教学版的简化是刻意的
 
 - `LLM` side-query → `LLM` side-query + 关键词降级：教学版保留了 `LLM` 选择，加了降级路径
-- 记忆 `JSON` → `Markdown` + frontmatter：教学版与 CC 一致
+- 记忆 `JSON` → `Markdown` + frontmatter：教学版与 `CC` 一致
 - stop hook 触发 → `stop_reason != "tool_use"` 分支：方向一致
 - 四层门控 → 文件数阈值：教学版没有 transcript 系统和多会话概念
 - forked agent + 受限权限 → 直接调用：教学版没有子进程隔离

@@ -198,4 +198,4 @@ void main() {
 
 **参考文档**
 
-[WebGL 雾](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-fog.html)
+[`WebGL` 雾](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-fog.html)

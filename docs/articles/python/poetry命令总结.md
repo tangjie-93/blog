@@ -6,7 +6,7 @@ tags: "Python"
 note: "整理 Poetry 项目创建、依赖管理、打包发布与常见工作流。"
 ---
 
-# Poetry 命令详解
+# `Poetry` 命令详解
 
 > `Python` 现代依赖管理工具
 
@@ -27,13 +27,13 @@ note: "整理 Poetry 项目创建、依赖管理、打包发布与常见工作�
 
 | 命令 | 作用 | 典型使用场景 | 与 pip/venv 对比 |
 | :--- | :--- | :--- | :--- |
-| `poetry new my-project` | 创建一个**新项目**的标准目录结构 | 当你从零开始一个Python项目时 | 替代手动创建目录和文件 |
-| `poetry init` | 在**现有项目**中**交互式**地生成 `pyproject.toml` 文件 | 当你有一个旧项目，想改用Poetry管理时 | 替代手动编写 `requirements.txt` |
-| `poetry install` | **安装** `pyproject.toml` 中的所有依赖 | 当你刚克隆一个Poetry项目，或需要同步队友添加的依赖时 | 相当于 `pip install -r requirements.txt`，但更智能，会自动创建虚拟环境 |
+| `poetry new my-project` | 创建一个**新项目**的标准目录结构 | 当你从零开始一个`Python`项目时 | 替代手动创建目录和文件 |
+| `poetry init` | 在**现有项目**中**交互式**地生成 `pyproject.toml` 文件 | 当你有一个旧项目，想改用`Poetry`管理时 | 替代手动编写 `requirements.txt` |
+| `poetry install` | **安装** `pyproject.toml` 中的所有依赖 | 当你刚克隆一个`Poetry`项目，或需要同步队友添加的依赖时 | 相当于 `pip install -r requirements.txt`，但更智能，会自动创建虚拟环境 |
 | `poetry update` | **更新所有依赖**到最新版本，并更新 `poetry.lock` 文件 | 定期批量升级项目依赖包 | 相当于 `pip install --upgrade` 批量操作 |
 | `poetry shell` | **激活**当前项目的虚拟环境 | 你想在项目环境下连续运行多个命令 | 相当于 `venv\Scripts\activate` (Windows) 或 `source venv/bin/activate` (`Linux`/macOS) |
 | `poetry run <command>` | 在虚拟环境中**运行单个命令**，无需先激活环境 | 运行脚本 `poetry run python app.py` 或执行测试 `poetry run pytest` | 无需手动激活环境，非常方便 |
-| `poetry env info` | 查看当前项目虚拟环境的**详细信息**（路径、Python版本等） | 当你在IDE（如VSCode）中需要手动指定解释器路径时 | `pip` 无此功能 |
+| `poetry env info` | 查看当前项目虚拟环境的**详细信息**（路径、`Python`版本等） | 当你在IDE（如VSCode）中需要手动指定解释器路径时 | `pip` 无此功能 |
 
 ---
 
@@ -66,13 +66,13 @@ note: "整理 Poetry 项目创建、依赖管理、打包发布与常见工作�
 | `poetry config --list` | 查看当前的**配置** | 你想知道虚拟环境被创建在了哪里 | `pip` 无此功能 |
 | `poetry config virtualenvs.in-project true` | **配置**虚拟环境创建在项目目录内（生成 `.venv` 文件夹） | 你喜欢把环境放在项目根目录，方便管理和删除 | `python -m venv .venv` |
 | `poetry check` | **检查** `pyproject.toml` 文件是否有错误 | 手动编辑配置文件后，验证一下格式是否正确 | `pip` 无此功能 |
-| `poetry self update` | **更新** Poetry 自身到最新版本 | 官方发布了新功能，你想体验一下 | `pip install --upgrade poetry` |
+| `poetry self update` | **更新** `Poetry` 自身到最新版本 | 官方发布了新功能，你想体验一下 | `pip install --upgrade poetry` |
 
 ---
 
 ## 6、5️⃣ 核心工作流示例
 
-### 1. 接手一个 Poetry 项目
+### 1. 接手一个 `Poetry` 项目
 
 ```bash
 # 克隆项目

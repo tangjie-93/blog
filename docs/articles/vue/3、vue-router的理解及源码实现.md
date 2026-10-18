@@ -192,7 +192,7 @@ beforeRouteLeave (to, from, next) {
 + 调用全局的 beforeResolve 守卫 (`2.5`+)。
 + 导航被确认。
 + 调用全局的 afterEach 钩子。
-+ 触发 DOM 更新。
++ 触发 `DOM` 更新。
 + 用创建好的实例调用 beforeRouteEnter 守卫中传给 next 的回调函数。
 
 ## 4、vue-router的源码实现

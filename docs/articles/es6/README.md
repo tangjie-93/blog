@@ -26,7 +26,7 @@ p.then(res=>{
 ```
 &#8195;&#8195;`Promise` 是一个构造函数， `new Promise` 返回一个`promise`对象，构造函数接收一个`excutor`执行函数作为参数， `excutor`有两个函数形参`resolve`和`reject`，分别作为异步操作成功和失败的回调函数。但该回调函数并不是立即返回最终执行结果，通过`then` 函数来获取执行结果。
 
-## 2、Promise对象的特点
+## 2、`Promise`对象的特点
 
 ### 1、对象的状态不受外界影响。
 &#8195;&#8195;`Promise`对象有三种状态`fulfilled,rejected,pending）`。只有异步操作的结果，可以决定当前是哪一种状态，任何其他操作都无法改变这个状态。 
@@ -36,12 +36,12 @@ p.then(res=>{
 ### 2、状态一旦发生改变，就不会再变，任何时候都可以得到这个结果。
 &#8195;&#8195; `Promise`对象的状态改变，只有两种可能：从`pending`变为`fulfilled`和从`pending`变为`rejected`。
 
-**Promise的优点：** 
+**`Promise`的优点：** 
 + **将异步操作以同步操作的流程表达出来，避免了层层嵌套的回调函数**。
 + `Promise`对象提供统一的接口，使得控制异步操作更加容易。
-+ 解决了异步并发问题(Promise.all)。
++ 解决了异步并发问题(`Promise`.all)。
 
-**Promise的不足：**
+**`Promise`的不足：**
 + 1、无法取消`Promise`，一旦新建它就会立即执行，无法中途取消。  
 + 2、如果不设置回调函数，`Promise`内部抛出的错误，不会反应到外部。  
 + 3、当处于`pending`状态时，无法得知目前进展到哪一个阶段（刚刚开始还是即将完成）。
@@ -59,9 +59,9 @@ p.then((arg) => {
 });
 //所以上面的输出为7、1、5
 ```
-## 3、Promise的实例方法
+## 3、`Promise`的实例方法
 
-### 1、Promise.prototype.then(onFulfilled, onRejected)
+### 1、`Promise`.prototype.then(onFulfilled, onRejected)
 + `onFulfilled`和`onRejected`分别是`Promise`实例对象成功和失败情况的回调函数。
 + 该方法返回一个新的 `promise`实例对象。
 + **将以回调的返回值（return，只要不报错），作为`then` 函数调用时 `onFulfilled` 回调函数的参数。** 并且`then`方法可以被同一个 `promise` 对象调用多次。
@@ -222,7 +222,7 @@ promise.then((res) => {
     console.log(res, Date.now() - start);//success 1007
 })
 ```
-### 2、Promise.prototype.catch(onRejected)
+### 2、`Promise`.prototype.catch(onRejected)
 &#8195;&#8195;该方法的原码如下所示：
       
 ```javascript       
@@ -270,7 +270,7 @@ p2.catch(function(e) {
 });
 ```
 
->2、在 `resolve()`后面抛出的错误会被忽略(因为 Promise 的状态一旦改变，就永久保持该状态，不会再变了。)
+>2、在 `resolve()`后面抛出的错误会被忽略(因为 `Promise` 的状态一旦改变，就永久保持该状态，不会再变了。)
 
 ```javascript     
 var p3 = new Promise(function(resolve, reject) {
@@ -282,7 +282,7 @@ p3.catch(function(e) {
     console.log(e); // 不会执行
 });
 ```
->3、Promise 对象的错误具有"冒泡"性质，会一直向后传递，直到被捕获(或者被then()捕获)为止。也就是说，错误总是会被下一个catch语句捕获。
+>3、`Promise` 对象的错误具有"冒泡"性质，会一直向后传递，直到被捕获(或者被then()捕获)为止。也就是说，错误总是会被下一个catch语句捕获。
       
 ```javascript       
 Promise.reject(2).then((res) => {
@@ -323,7 +323,7 @@ var p1 = new Promise(function(resolve, reject) {
 })
 ```
 
-> 5、`.then` 或者 `.catch` 中 `return` 一个 `error` 对象并不会抛出错误，所以不会被后续的 `.catch` 捕获。因为返回任意一个非 `promise` 的值都会被包裹成 `promise` 对象**，即 `return new Error('error!!!')` 等价于 return Promise.resolve(new Error('error!!!'))。
+> 5、`.then` 或者 `.catch` 中 `return` 一个 `error` 对象并不会抛出错误，所以不会被后续的 `.catch` 捕获。因为返回任意一个非 `promise` 的值都会被包裹成 `promise` 对象**，即 `return new Error('error!!!')` 等价于 return `Promise`.resolve(new Error('error!!!'))。
         
 ```javascript     
 Promise.resolve()
@@ -360,7 +360,7 @@ new Promise((resolve, reject) => {
     console.log(res);
 })
 ```
-### 3、Promise.prototype.finally(onFinally)
+### 3、`Promise`.prototype.finally(onFinally)
 &#8195;&#8195;该方法返回一个 `Promise`，在`promise`执行结束时，无论结果是`fulfilled`或者是`rejected`，在执行`then()`和`catch()`后，都会执行`finally`指定的回调函数。源码实现如下：
 
 ```javascript          
@@ -377,8 +377,8 @@ Promise.prototype.finally = function (f) {
 };
 ```
 
-## 3、Promise的静态方法
-### 1、Promise.all(iterable)
+## 3、`Promise`的静态方法
+### 1、`Promise`.all(iterable)
 &#8195;&#8195;该方法返回一个新的 `promise` 对象，该 `promise`对象在 `iterable` 参数对象里所有的 `promise`对象都成功的时候才会触发成功，一旦有任何一个 `iterable`里面的 `promise` 对象失败则立即触发该 `promise` 对象的失败。        
 
 源码实现如下：
@@ -403,15 +403,15 @@ Promise.all=function(promises){
 ```
 &#8195;&#8195;**操作成功（Fulfillment）**
 
-&#8195;&#8195;1、如果**传入的可迭代对象为空**，Promise.all **会同步地返回一个已完成（resolved）状态的promise。**
+&#8195;&#8195;1、如果**传入的可迭代对象为空**，`Promise`.all **会同步地返回一个已完成（resolved）状态的promise。**
 
 ```javascript           
 var p = Promise.all([]);
 console.log(p);//Promise {<resolved>: Array(0)}  
 ```
-&#8195;&#8195;2、如果所有传入的 promise 都变为完成状态，或者**传入的可迭代对象内没有 promise，Promise.all 返回的 promise 异步地变为完成。**
+&#8195;&#8195;2、如果所有传入的 promise 都变为完成状态，或者**传入的可迭代对象内没有 promise，`Promise`.all 返回的 promise 异步地变为完成。**
 
-&#8195;&#8195;3、在任何情况下，Promise.all 返回的 promise 的完成状态的**结果都是一个数组**，它包含所有的传入迭代参数对象的值（也包括非 promise 值）。
+&#8195;&#8195;3、在任何情况下，`Promise`.all 返回的 promise 的完成状态的**结果都是一个数组**，它包含所有的传入迭代参数对象的值（也包括非 promise 值）。
 
 ```javascript            
 var p1 = Promise.resolve(3);
@@ -427,7 +427,7 @@ Promise.all([p1, p2, p3]).then(values => {
 
 &#8195;&#8195;**操作失败（Rejection）**
 
-&#8195;&#8195;1、如果传入的 promise 中有一个失败（rejected），Promise.all 异步地将失败的那个结果给失败状态的回调函数，而不管其它 promise 是否完成。
+&#8195;&#8195;1、如果传入的 promise 中有一个失败（rejected），`Promise`.all 异步地将失败的那个结果给失败状态的回调函数，而不管其它 promise 是否完成。
 
 ```javascript           
 var resolvedPromisesArray = [Promise.resolve(33), Promise.reject(44)];
@@ -442,7 +442,7 @@ setTimeout(function(){
 });
 ```
 
-### 4.2 &#8195;2、Promise.race(iterable)
+### 4.2 &#8195;2、`Promise`.race(iterable)
 
 
 &#8195;&#8195;原码实现如下：
@@ -466,9 +466,9 @@ let p=Promise.race([]);
 console.log(p);//Promise {<pending>}
         
 ```
-### 3、Promise.resolve(value)
+### 3、`Promise`.resolve(value)
 
-&#8195;&#8195;**该方法的作用就是将现有对象转为 Promise 实例,并且该实例的状态为resolve。**
+&#8195;&#8195;**该方法的作用就是将现有对象转为 `Promise` 实例,并且该实例的状态为resolve。**
 该方法的源码实现如下：
 
   ```javascript          
@@ -478,7 +478,7 @@ Promise.resolve (value) {
     return new MyPromise(resolve => resolve(value))
 }
   ```
-​		参数value可以是一个Promise对象，或者是一个thenable，也可以就是一个字符串等常量，还可以为空。该方法返回一个以给定值解析后的Promise 对象。   
+​		参数value可以是一个`Promise`对象，或者是一个thenable，也可以就是一个字符串等常量，还可以为空。该方法返回一个以给定值解析后的`Promise` 对象。   
 ```javascript     
 Promise.resolve('foo')
 // 等价于
@@ -490,7 +490,7 @@ if (value instanceof MyPromise) {
 }
 ```
 
-&#8195;&#8195;1、如果这个值是个thenable（即带有then方法），返回的promise会"跟随"这个thenable的对象（**从它们的运行结果来看，返回的就好像是这个thenable对象一样。但实际上返回的是一个Promise对象**），采用它的最终状态（指resolved/rejected/pending/settled）。
+&#8195;&#8195;1、如果这个值是个thenable（即带有then方法），返回的promise会"跟随"这个thenable的对象（**从它们的运行结果来看，返回的就好像是这个thenable对象一样。但实际上返回的是一个`Promise`对象**），采用它的最终状态（指resolved/rejected/pending/settled）。
 
 ```javascript             
 let thenable = {
@@ -515,7 +515,7 @@ p1.then(function(value) {
 });
 ```
 
-&#8195;&#8195;2、如果传入的value本身就是promise对象，那么Promise.resolve将不做任何修改、原封不动地返回这个实例。
+&#8195;&#8195;2、如果传入的value本身就是promise对象，那么`Promise`.resolve将不做任何修改、原封不动地返回这个实例。
 ```javascript     
 var original = Promise.resolve('我在第二行');
 original.then(function(value) {
@@ -529,7 +529,7 @@ console.log('original === cast ? ' + (original === cast));//true
 ```
 
 
-&#8195;&#8195;3、参数不是具有then方法的对象，或根本就不是对象，则Promise.resolve方法返回一个新的 Promise 对象，状态为resolved。
+&#8195;&#8195;3、参数不是具有then方法的对象，或根本就不是对象，则`Promise`.resolve方法返回一个新的 `Promise` 对象，状态为resolved。
 
  ```javascript            
 const p = Promise.resolve('Hello')；
@@ -541,16 +541,16 @@ p.then(res=>{
     console.log(res) // Hello
 });
  ```
-&#8195;&#8195;4、不带有任何参数。直接返回一个resolved状态的 Promise 对象。         
+&#8195;&#8195;4、不带有任何参数。直接返回一个resolved状态的 `Promise` 对象。         
 ```javascript     
 const p = Promise.resolve()；
 console.log(p);//Promise {<resolved>: undefined}
 ```
 
 
-### 4.4 &#8195;4、Promise.rejected(value)
+### 4.4 &#8195;4、`Promise`.rejected(value)
 
-&#8195;&#8195;返回一个新的 Promise 实例，该实例的状态为rejected。
+&#8195;&#8195;返回一个新的 `Promise` 实例，该实例的状态为rejected。
 
 ```javascript            
 const p = Promise.reject('出错了');
@@ -561,7 +561,7 @@ p.then(null, function (s) {
 });
 ```
 
-## 4、Promise代码实现
+## 4、`Promise`代码实现
 >1、初始版
 
 ```javascript  
@@ -983,7 +983,7 @@ console.log('全局执行栈中同步代码');
 ```
 参考链接    
 [1、ECMAScript入门](http://es6.ruanyifeng.com/#docs/promise)    
-[2、Promise——MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise)   
-[3、Promise原理讲解 && 实现一个Promise对象 (遵循Promise/A+规范)](https://juejin.im/post/5aa7868b6fb9a028dd4de672#heading-9)  
+[2、`Promise`——MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise)   
+[3、`Promise`原理讲解 && 实现一个`Promise`对象 (遵循`Promise`/A+规范)](https://juejin.im/post/5aa7868b6fb9a028dd4de672#heading-9)  
 [4、这一次，彻底弄懂 `JavaScript` 执行机制](https://juejin.im/post/59e85eebf265da430d571f89#heading-4)    
-[5、Promise 必知必会（十道题）](https://juejin.im/post/5a04066351882517c416715d)
+[5、`Promise` 必知必会（十道题）](https://juejin.im/post/5a04066351882517c416715d)

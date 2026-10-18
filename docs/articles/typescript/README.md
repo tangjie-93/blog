@@ -1225,7 +1225,7 @@ let p: required = {
 
 **1、`export=和import = require()`语法**
 
-​		`export=`语法定义一个模块的到处对象。它可以是类，接口，命名空间，函数或枚举。若要**导入一个使用了`export=`的模块时**，必须使用TypeScript提供的特定语法 `import zip=require("module")`
+​		`export=`语法定义一个模块的到处对象。它可以是类，接口，命名空间，函数或枚举。若要**导入一个使用了`export=`的模块时**，必须使用`TypeScript`提供的特定语法 `import zip=require("module")`
 
 ```typescript
     //ZipCodeValidator.ts
@@ -1308,7 +1308,7 @@ let myUrl = URL.parse("http://www.typescriptlang.org");
   /moduleB.d.ts
   ```
 
-  **2、Node.js如何解析模块**
+  **2、`Node`.js如何解析模块**
 
 + 相对路径解析。
 
@@ -1340,7 +1340,7 @@ let myUrl = URL.parse("http://www.typescriptlang.org");
   9、/node_modules/moduleB/index.js
   ```
 
-**3、TypeScript如何解析模块**
+**3、`TypeScript`如何解析模块**
 
 + 相对路径时。
 
@@ -1870,7 +1870,7 @@ class Greeter{
 
 如果访问器装饰器返回一个值，它会被用作方法的**属性描述符**。
 
-**注意**  TypeScript不允许同时装饰一个成员的`get`和`set`访问器。因为，在装饰器应用于一个*属性描述符*时，它联合了`get`和`set`访问器，而不是分开声明的。
+**注意**  `TypeScript`不允许同时装饰一个成员的`get`和`set`访问器。因为，在装饰器应用于一个*属性描述符*时，它联合了`get`和`set`访问器，而不是分开声明的。
 
 ​		访问器装饰器表达式会在运行时当作函数被调用，传入下列3个参数，跟方法装饰器的参数一样。
 

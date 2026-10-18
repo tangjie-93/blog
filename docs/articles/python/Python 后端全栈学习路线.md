@@ -55,14 +55,14 @@ note: "从 Python 后端、数据库到 AI 应用、部署监控的阶段学习�
 
 | 数据库 | 说明 |
 |--------|------|
-| **PostgreSQL**（首选） | 支持向量存储，对 `AI` 应用友好 |
-| **MySQL** | 传统业务场景 |
+| **`PostgreSQL`**（首选） | 支持向量存储，对 `AI` 应用友好 |
+| **`MySQL`** | 传统业务场景 |
 
 #### ORM 选型
 
 | ORM | 说明 |
 |-----|------|
-| **SQLModel** | 结合 `SQLAlchemy` 与 `Pydantic`，类型安全，`FastAPI` 官方推荐 |
+| **`SQLModel`** | 结合 `SQLAlchemy` 与 `Pydantic`，类型安全，`FastAPI` 官方推荐 |
 | **SQLAlchemy** | 成熟稳定，学习曲线较陡 |
 | **Tortoise-ORM** | 专为异步设计，语法类似 `Django` |
 
@@ -70,8 +70,8 @@ note: "从 Python 后端、数据库到 AI 应用、部署监控的阶段学习�
 
 | 数据库 | 说明 |
 |--------|------|
-| **MongoDB** | 文档型数据库，适合非结构化数据 |
-| **Redis** | 缓存、`Session` 存储、消息队列 |
+| **`MongoDB`** | 文档型数据库，适合非结构化数据 |
+| **`Redis`** | 缓存、`Session` 存储、消息队列 |
 
 - 重点：`Motor`（`MongoDB` 异步驱动）、`redis-py` + `aioredis`
 
@@ -101,11 +101,11 @@ note: "从 Python 后端、数据库到 AI 应用、部署监控的阶段学习�
 | **`LangChain`** | 构建 `LLM` 应用的核心框架 |
 | **Chains** | 串联多个 `LLM` 调用 |
 | **Agents** | 让 `LLM` 使用工具 |
-| **Memory** | 对话历史管理 |
+| **`Memory`** | 对话历史管理 |
 | **Retrieval** | `RAG`（检索增强生成）实现 |
-| **LlamaIndex** | 专注数据索引和检索 |
+| **`LlamaIndex`** | 专注数据索引和检索 |
 
-#### LlamaIndex 核心功能
+#### `LlamaIndex` 核心功能
 
 - 文档解析、索引构建
 - 查询引擎、聊天引擎
@@ -160,12 +160,12 @@ async def query(q: str):
 
 | 技能 | 说明 |
 |------|------|
-| **Dockerfile 编写** | 构建镜像 |
+| **`Dockerfile` 编写** | 构建镜像 |
 | **docker-compose** | 编排多服务 |
 | **多阶段构建** | 优化镜像大小 |
 | **.dockerignore** | 最佳实践 |
 
-#### Dockerfile 示例
+#### `Dockerfile` 示例
 
 ```dockerfile
 FROM python:3.11-slim
@@ -232,7 +232,7 @@ CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 
 ### 7.2 项目 2：`MCP` 服务开发
 
-`MCP`（Model Context Protocol）是 `AI` 领域前沿技术，可以让 `AI` 大模型调用你编写的服务：
+`MCP`（`Model` `Context` Protocol）是 `AI` 领域前沿技术，可以让 `AI` 大模型调用你编写的服务：
 
 #### 学习路径
 
@@ -251,16 +251,16 @@ CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 | 官方文档 | `FastAPI` 官方文档 | 权威首选，教程-用户指南章节必读 |
 | 社区 | `FastAPI` 官方 Discord | 实时问题解答，全球开发者社区 |
 | 中文社区 | 知乎 `FastAPI` 专题、掘金专栏 | 本土化教程，贴近国内开发场景 |
-| 实战项目 | Full Stack `FastAPI` PostgreSQL | 包含前端 `React` 的完整模板 |
+| 实战项目 | Full Stack `FastAPI` `PostgreSQL` | 包含前端 `React` 的完整模板 |
 | 学习路线 | `Python`-100-Days | 骆昊的 `Python` 百天计划 |
 
 ### 8.2 付费课程（有预算可选）
 
 | 平台 | 课程 | 特点 |
 |------|------|------|
-| IBM | `Python` Back-end Development Capstone | 18 小时实战，涵盖 Flask、Django、MongoDB、`Docker`、Kubernetes |
-| Udacity | Backend Developer with `Python` | 67 小时，Flask、`SQL`、`Docker`、安全、部署 |
-| 编程狮 | `AI` 驱动的 `Python` 编程实战 | 73 节视频，涵盖 `DeepSeek`、LlamaIndex、`MCP` 服务 |
+| IBM | `Python` Back-end Development Capstone | 18 小时实战，涵盖 `Flask`、`Django`、`MongoDB`、`Docker`、Kubernetes |
+| Udacity | Backend Developer with `Python` | 67 小时，`Flask`、`SQL`、`Docker`、安全、部署 |
+| 编程狮 | `AI` 驱动的 `Python` 编程实战 | 73 节视频，涵盖 `DeepSeek`、`LlamaIndex`、`MCP` 服务 |
 
 ---
 
@@ -298,7 +298,7 @@ CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 - [ ] 阅读 `FastAPI` 官方文档 "Tutorial - User Guide"
 - [ ] 创建第一个 `FastAPI` 应用
 - [ ] 掌握路由定义和请求参数处理
-- [ ] 学习 Pydantic 模型定义
+- [ ] 学习 `Pydantic` 模型定义
 - [ ] 了解依赖注入系统
 
 ---

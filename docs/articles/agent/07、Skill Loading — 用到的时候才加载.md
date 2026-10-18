@@ -6,13 +6,13 @@ tags: "Agent|AI Coding"
 note: "只在任务需要时加载技能内容，减少系统提示词体积并保持能力可扩展。"
 ---
 
-# s07: Skill Loading — 用到的时候才加载
+# s07: `Skill` Loading — 用到的时候才加载
 
 
 s01 → s02 → s03 → s04 → s05 → s06 → `s07` → [s08](./08%E3%80%81Context%20Compact%20%E2%80%94%20%E4%B8%8A%E4%B8%8B%E6%96%87%E6%80%BB%E4%BC%9A%E6%BB%A1%EF%BC%8C%E8%A6%81%E6%9C%89%E5%8A%9E%E6%B3%95%E8%85%BE%E5%9C%B0%E6%96%B9.md) → s09 → ... → s20
 > *"用到时再加载, 别全塞 prompt 里"* — 通过 tool_result 注入, 不塞 system prompt。
 >
-> **Harness 层**: 知识 — 按需加载, 不堆满上下文。
+> **`Harness` 层**: 知识 — 按需加载, 不堆满上下文。
 
 ---
 
@@ -35,7 +35,7 @@ SYSTEM = (
 
 ## 2、解决方案
 
-![Skill Overview](/image/agent-course/s07_skill_loading/skill-overview.svg)
+![`Skill` Overview](/image/agent-course/s07_skill_loading/skill-overview.svg)
 
 保留上一章的最小 hook 结构、`todo_write` 和子 `Agent`，本章重点转向新增的 `load_skill` 工具。启动时把技能目录注入 SYSTEM prompt，运行时多注册一个工具加载完整内容，用到才花 `token`。
 
@@ -148,17 +148,17 @@ python s07_skill_loading/code_openai.py
 s08 `Context Compact` → 四层压缩策略。便宜的先跑，贵的后跑。
 
 <details>
-<summary>深入 CC 源码</summary>
+<summary>深入 `CC` 源码</summary>
 
-> 以下基于 CC 源码 `loadSkillsDir.ts`、`SkillTool.ts`、`bundledSkills.ts`、`commands.ts` 的分析。
+> 以下基于 `CC` 源码 `loadSkillsDir.ts`、`SkillTool.ts`、`bundledSkills.ts`、`commands.ts` 的分析。
 
 ### 一、技能来源：不是只有一个 skills/ 目录
 
-教学版假设所有技能在 `skills/` 目录下。CC 实际从多个来源加载，分布在多个文件中：`loadSkillsDir.ts` 负责从 user/project/`--add-dir` 目录和 legacy commands（`.claude/commands/`）加载；`bundledSkills.ts` 负责内置技能；`SkillTool.ts` 处理 `MCP` 远程技能；`commands.ts` 负责命令聚合。类型包括 managed/policy skills、user skills（`~/.claude/skills/`）、project skills（`.claude/skills/`）、`--add-dir` skills、legacy commands、dynamic skills、conditional skills（带 `paths` frontmatter，按文件路径激活）、bundled skills、plugin skills、`MCP` skills。
+教学版假设所有技能在 `skills/` 目录下。`CC` 实际从多个来源加载，分布在多个文件中：`loadSkillsDir.ts` 负责从 user/project/`--add-dir` 目录和 legacy commands（`.claude/commands/`）加载；`bundledSkills.ts` 负责内置技能；`SkillTool.ts` 处理 `MCP` 远程技能；`commands.ts` 负责命令聚合。类型包括 managed/policy skills、user skills（`~/.claude/skills/`）、project skills（`.claude/skills/`）、`--add-dir` skills、legacy commands、dynamic skills、conditional skills（带 `paths` frontmatter，按文件路径激活）、bundled skills、plugin skills、`MCP` skills。
 
 ### 二、SKILL.md `Frontmatter` 常见字段
 
-CC 的 SKILL.md `YAML` frontmatter 由 `parseSkillFrontmatterFields()` 解析（`loadSkillsDir.ts`），常见字段包括：
+`CC` 的 SKILL.md `YAML` frontmatter 由 `parseSkillFrontmatterFields()` 解析（`loadSkillsDir.ts`），常见字段包括：
 
 | 字段 | 用途 |
 |------|------|

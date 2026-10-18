@@ -5,7 +5,7 @@ type: 技术
 tags: es6
 note: ES6之generator详解
 ---
-&#8195;&#8195;是 ES6 提供的**一种异步编程解决方案。** 语法上是一个**状态机，封装了多个内部状态** 。执行 `Generator` 函数会**返回一个遍历器对象**。这一点跟`promise`很像，`promise`是一个容器，里面保存着某个未来才会结束的事件（通常是一个异步操作）的结果。  
+&#8195;&#8195;是 `ES6` 提供的**一种异步编程解决方案。** 语法上是一个**状态机，封装了多个内部状态** 。执行 `Generator` 函数会**返回一个遍历器对象**。这一点跟`promise`很像，`promise`是一个容器，里面保存着某个未来才会结束的事件（通常是一个异步操作）的结果。  
 &#8195;&#8195;`Generator` 函数是一个普通函数，但是有两个特征。
 >1、function关键字与函数名之间有一个星号（位置不固定）；    
 ```js
@@ -106,7 +106,7 @@ console.log(b.next()) // { value:6, done:false }
 console.log(b.next(12)) // { value:8, done:false } 此时的y=2*12 
 console.log(b.next(13)) // { value:42, done:true } 5+24+13
 ```        
-&#8195;&#8195;通过next方法的参数，向 Generator 函数内部输入值的例子。
+&#8195;&#8195;通过next方法的参数，向 `Generator` 函数内部输入值的例子。
 ```js
 //例子1
 function* dataConsumer() {
@@ -184,9 +184,9 @@ for (let n of numbers()) {
 }
 // 1,2
 ```       
-## 4、Generator.prototype.throw()
+## 4、`Generator`.prototype.throw()
 
-&#8195;&#8195;在函数体外抛出错误，然后在 Generator 函数体内捕获。**如果是全局throw()命令，只能被函数体外的catch语句捕获。**
+&#8195;&#8195;在函数体外抛出错误，然后在 `Generator` 函数体内捕获。**如果是全局throw()命令，只能被函数体外的catch语句捕获。**
 ```js
 var g = function* () {
     try {
@@ -206,7 +206,7 @@ try {
 // 内部捕获 a
 // 外部捕获 b
 ```
-&#8195;&#8195;如果 Generator 函数内部没有部署try...catch代码块，那么throw方法抛出的错误，将被外部try...catch代码块捕获。
+&#8195;&#8195;如果 `Generator` 函数内部没有部署try...catch代码块，那么throw方法抛出的错误，将被外部try...catch代码块捕获。
 ```js
 var g = function* () {
     while (true) {
@@ -224,7 +224,7 @@ try {
 }
 // 外部捕获 a
 ```        
-&#8195;&#8195;如果 Generator 函数内部和外部，都没有部署try...catch代码块，那么程序将报错，直接中断执行。
+&#8195;&#8195;如果 `Generator` 函数内部和外部，都没有部署try...catch代码块，那么程序将报错，直接中断执行。
 **throw方法抛出的错误要被内部捕获，前提是必须至少执行过一次next方法。**
 ```js
 function* gen() {
@@ -273,7 +273,7 @@ try {
 // hello
 // world
 ```       
-&#8195;&#8195;一旦 Generator 执行过程中抛出错误，且没有被内部捕获，就不会再执行下去了。如果此后还调用next方法，将返回一个value属性等于undefined、done属性等于true的对象，即 `JavaScript` 引擎认为这个 Generator 已经运行结束了。
+&#8195;&#8195;一旦 `Generator` 执行过程中抛出错误，且没有被内部捕获，就不会再执行下去了。如果此后还调用next方法，将返回一个value属性等于undefined、done属性等于true的对象，即 `JavaScript` 引擎认为这个 `Generator` 已经运行结束了。
 ```js
 function* g() {
     yield 1;
@@ -314,7 +314,7 @@ log(g());
 // 第三次运行next方法 { value: undefined, done: true }
 // caller done
 ```       
-## 5、Generator.prototype.return()
+## 5、`Generator`.prototype.return()
 
 &#8195;&#8195;返回给定的值，并且终结遍历 `Generator` 函数。
 ```js
@@ -358,7 +358,7 @@ g.next() // { value: undefined, done: true }
 >`return()`是将`yield`表达式替换成一个`return`语句。 
 
 ## 7、yield* 表达式
-&#8195;&#8195;用到yield*表达式，用来在一个 Generator 函数里面执行另一个 Generator 函数。
+&#8195;&#8195;用到yield*表达式，用来在一个 `Generator` 函数里面执行另一个 `Generator` 函数。
 ```js       
 function* foo() {
     yield 'a';
@@ -404,7 +404,7 @@ console.log(test.next().value) //"hello"
 console.log(test.next().value)// "test"
 console.log(gen.next().value) // "close"
 ```       
-&#8195;&#8195;yield*后面的 Generator 函数（没有return语句时），等同于在 Generator 函数内部，部署一个for...of循环。
+&#8195;&#8195;yield*后面的 `Generator` 函数（没有return语句时），等同于在 `Generator` 函数内部，部署一个for...of循环。
 ```js
 function* concat(iter1, iter2) {
     yield* iter1;
@@ -427,8 +427,8 @@ function* gen(){
 }
 console.log(gen().next()) // { value:"a", done:false }
 ```        
-&#8195;&#8195;实际上，任何数据结构只要有 Iterator 接口，就可以被yield*遍历。
-**如果被代理的 Generator 函数有return语句，那么就可以向代理它的 Generator 函数返回数据。**
+&#8195;&#8195;实际上，任何数据结构只要有 `Iterator` 接口，就可以被yield*遍历。
+**如果被代理的 `Generator` 函数有return语句，那么就可以向代理它的 `Generator` 函数返回数据。**
 ```js
 function* foo() {
     yield 2;
@@ -470,7 +470,7 @@ for(let x of iterTree(tree)) {
 }
 // a  // b   // c   // d   // e
 ```       
-## 8、作为对象的属性的Generator函数
+## 8、作为对象的属性的`Generator`函数
 ```js
 let obj = {
     * myGeneratorMethod() {
@@ -478,9 +478,9 @@ let obj = {
     }
 };
 ```        
-## 9、Generator函数的this
+## 9、`Generator`函数的this
 
-&#8195;&#8195;**Generator 函数总是返回一个遍历器，ES6 规定这个遍历器是 Generator 函数的实例，也继承了 Generator 函数的prototype对象上的方法**。
+&#8195;&#8195;**`Generator` 函数总是返回一个遍历器，`ES6` 规定这个遍历器是 `Generator` 函数的实例，也继承了 `Generator` 函数的prototype对象上的方法**。
 ```js
 function* g() {}
 g.prototype.hello = function () {
@@ -490,7 +490,7 @@ let obj = g();
 obj instanceof g // true
 obj.hello() // 'hi!'
 ```        
-&#8195;&#8195;通过生成一个空对象，使用call方法绑定 Generator 函数内部的this。
+&#8195;&#8195;通过生成一个空对象，使用call方法绑定 `Generator` 函数内部的this。
 ```js
 function* F() {
     this.a = 1;
@@ -529,7 +529,7 @@ f.c // 3
 ## 10、应用
 
 &#8195;&#8195;1、异步操作的同步表达。
-通过 Generator 函数部署 Ajax 操作，可以用同步的方式表达。
+通过 `Generator` 函数部署 Ajax 操作，可以用同步的方式表达。
 ```js        
 function makeAjaxCall(url,callBack){
     var xhr;
@@ -591,7 +591,7 @@ step1(function (value1) {
     });
 });
 ```       
-&#8195;&#8195;使用Promise
+&#8195;&#8195;使用`Promise`
 ```js
 Promise.resolve(step1)
     .then(step2)
@@ -604,7 +604,7 @@ Promise.resolve(step1)
     })
     .done();
 ```          
-&#8195;&#8195;使用Generator
+&#8195;&#8195;使用`Generator`
 ```js
 function* longRunningTask(value1) {
     try {
@@ -666,15 +666,15 @@ function* doStuff() {
 for (task of doStuff()) {}
     // task是一个函数，可以像回调函数那样使用它
 ```         
-## 11、Generator函数的异步调用（**需要好好理解弄懂**）
+## 11、`Generator`函数的异步调用（**需要好好理解弄懂**）
 &#8195;&#8195;异步编程的方法主要有这几种：
 
 >1、回调函数(耦合性太强)    
 >2、事件监听    
 >3、发布/订阅   
->4、Promise 对象    
+>4、`Promise` 对象    
 >5、generator   
-&#8195;&#8195;1.使用Generator来封装异步函数
+&#8195;&#8195;1.使用`Generator`来封装异步函数
 ```js
 var fetch = require('node-fetch');
 function* gen(){
@@ -690,7 +690,7 @@ result.value.then(function(data){
     g.next(data);
 });
 ```       
-&#8195;&#8195;首先执行 Generator 函数，获取遍历器对象，然后使用next方法（第二行），执行异步任务的第一阶段。由于Fetch模块返回的是一个 Promise 对象，因此要用then方法调用下一个next方法。
+&#8195;&#8195;首先执行 `Generator` 函数，获取遍历器对象，然后使用next方法（第二行），执行异步任务的第一阶段。由于Fetch模块返回的是一个 `Promise` 对象，因此要用then方法调用下一个next方法。
 &#8195;&#8195;2.Thunk函数   
 &#8195;&#8195;编译器的“传名调用”实现，往往是将参数放到一个临时函数之中，再将这个临时函数传入函数体。这个临时函数就叫做 Thunk 函数。
 ```js

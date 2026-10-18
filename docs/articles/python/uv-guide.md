@@ -6,10 +6,10 @@ tags: "Python"
 note: "从安装到项目、依赖、虚拟环境和脚本管理的 uv 使用指南。"
 ---
 
-# uv 完全使用指南（详尽版）
+# `uv` 完全使用指南（详尽版）
 
-> [uv](https://docs.astral.sh/uv/) 是由 Astral 团队（ruff 作者）用 Rust 重写的 `Python` 包管理器，替代 pip、pip-tools、virtualenv、poetry 等工具链。
-> **前端类比**：uv ≈ pnpm + nvm + npm scripts 三合一
+> [`uv`](https://docs.astral.sh/uv/) 是由 Astral 团队（ruff 作者）用 Rust 重写的 `Python` 包管理器，替代 pip、pip-tools、virtualenv、poetry 等工具链。
+> **前端类比**：`uv` ≈ `pnpm` + nvm + `npm` scripts 三合一
 
 ---
 
@@ -52,7 +52,7 @@ uv init [OPTIONS] [PATH]
 | `PATH` | 项目路径。**省略**则在当前目录初始化；**指定**则创建新目录 | `npm init` vs `mkdir && cd && npm init` |
 | `--name` | 显式指定项目名（覆盖 PATH 自动推导的名称） | `package.json` 中的 `name` |
 | `--app` | 创建**应用项目**（默认行为），生成带入口脚本的结构 | `npm init` + `src/index.ts` |
-| `--lib` | 创建**库项目**（可被 pip 安装/发布的包），不生成入口脚本 | `npm init` 用于发布 npm 包 |
+| `--lib` | 创建**库项目**（可被 pip 安装/发布的包），不生成入口脚本 | `npm init` 用于发布 `npm` 包 |
 | `--package` | 同 `--lib` 的别名 | — |
 | `--no-readme` | 不生成 README.md | — |
 | `--no-workspace` | 不和已有的 workspace 关联 | — |
@@ -273,7 +273,7 @@ uv remove --optional redis redis
 
 ## 5、`uv sync` - 同步环境（详解）
 
-`uv sync` 是 uv 的核心命令之一，它会：
+`uv sync` 是 `uv` 的核心命令之一，它会：
 1. 如果 `.venv` 不存在，自动创建虚拟环境
 2. 按照 `uv.lock` 文件精确安装所有依赖
 3. 安装当前项目自身（editable 模式）
@@ -394,7 +394,7 @@ uvx ruff check .   # 如果全局已装过，直接用全局版
 
 ## 8、`uv python` - `Python` 版本管理（详解）
 
-uv 内置了 `Python` 版本管理，无需额外安装 pyenv 或 nvm 类比工具。
+`uv` 内置了 `Python` 版本管理，无需额外安装 pyenv 或 nvm 类比工具。
 
 ### 8.1 子命令一览
 
@@ -468,7 +468,7 @@ source .venv/bin/activate
 deactivate
 ```
 
-> **提示**：使用 `uv run` 时不需要手动激活 venv，uv 会自动管理。
+> **提示**：使用 `uv run` 时不需要手动激活 venv，`uv` 会自动管理。
 
 ---
 
@@ -571,7 +571,7 @@ uv cache clean fastapi
 
 ## 14、`uv pip` - pip 兼容层
 
-uv 提供了完整的 `pip` 兼容接口，适合渐进式迁移。
+`uv` 提供了完整的 `pip` 兼容接口，适合渐进式迁移。
 
 ```bash
 # 从 requirements.txt 安装
@@ -622,7 +622,7 @@ uv add --dev pytest httpx ruff mypy
 uv run uvicorn app:app --reload
 ```
 
-### 16.2 场景 2：克隆已有 uv 项目
+### 16.2 场景 2：克隆已有 `uv` 项目
 
 ```bash
 git clone <repo>
@@ -686,6 +686,6 @@ uvx cookiecutter gh:user/template
 
 ## 18、更多资源
 
-- 官方文档：[docs.astral.sh/uv](https://docs.astral.sh/uv/)
-- `GitHub`：[astral-sh/uv](https://github.com/astral-sh/uv)
-- 迁移指南：[docs.astral.sh/uv/guides](https://docs.astral.sh/uv/guides/)
+- 官方文档：[docs.astral.sh/`uv`](https://docs.astral.sh/uv/)
+- `GitHub`：[astral-sh/`uv`](https://github.com/astral-sh/uv)
+- 迁移指南：[docs.astral.sh/`uv`/guides](https://docs.astral.sh/uv/guides/)

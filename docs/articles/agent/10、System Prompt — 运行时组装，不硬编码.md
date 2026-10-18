@@ -12,7 +12,7 @@ note: "按工作区、技能、记忆和运行状态动态组装系统提示词�
 s01 → ... → s08 → s09 → `s10` → [s11](./11%E3%80%81Error%20Recovery%20%E2%80%94%20%E9%94%99%E8%AF%AF%E4%B8%8D%E6%98%AF%E7%BB%93%E6%9D%9F%EF%BC%8C%E6%98%AF%E9%87%8D%E8%AF%95%E7%9A%84%E5%BC%80%E5%A7%8B.md) → s12 → ... → s20
 > *"prompt 是组装出来的, 不是写死的"* — 分段 + 按需拼接 + 缓存。
 >
-> **Harness 层**: 提示 — 运行时组装, 不硬编码。
+> **`Harness` 层**: 提示 — 运行时组装, 不硬编码。
 
 ---
 
@@ -43,7 +43,7 @@ SYSTEM = (
 2. **修改一处可能影响全局**，加一段工具描述可能跟前面的指令冲突
 3. **每次请求都带全部内容**，即使当前对话用不到某些段落也浪费 `token`
 
-System prompt 应该是运行时根据当前状态组装的配置：哪些工具启用、哪些上下文可见、哪些记忆相关、哪些内容必须保持稳定以命中 prompt cache。
+`System` prompt 应该是运行时根据当前状态组装的配置：哪些工具启用、哪些上下文可见、哪些记忆相关、哪些内容必须保持稳定以命中 prompt cache。
 
 ---
 
@@ -125,7 +125,7 @@ def get_system_prompt(context: dict) -> str:
 
 用 `json.dumps` 而不是 `hash()`：`Python` 内置 `hash()` 有进程随机化，不适合做稳定 cache key，而且遇到 list/dict 会报 `unhashable type`。
 
-注意：这里的缓存只是"避免重复拼接字符串"，和 CC 的 `API` prompt cache 不是一回事。CC 的 prompt cache 通过 `SYSTEM_PROMPT_DYNAMIC_BOUNDARY` 分隔静态和动态部分，静态部分命中 global cache，不因动态内容变化而失效。
+注意：这里的缓存只是"避免重复拼接字符串"，和 `CC` 的 `API` prompt cache 不是一回事。`CC` 的 prompt cache 通过 `SYSTEM_PROMPT_DYNAMIC_BOUNDARY` 分隔静态和动态部分，静态部分命中 global cache，不因动态内容变化而失效。
 
 ### 3.4 context: 真实状态，不是关键词猜测
 
@@ -200,16 +200,16 @@ python s10_system_prompt/code.py
 
 ## 6、接下来
 
-System prompt 可以运行时组装了，但 `Agent` 碰到错误还是会崩。网络抖动、`API` 限流、输出被截断、上下文超限，这些不是 bug，是常态。
+`System` prompt 可以运行时组装了，但 `Agent` 碰到错误还是会崩。网络抖动、`API` 限流、输出被截断、上下文超限，这些不是 bug，是常态。
 
 s11 Error Recovery → 四条恢复路径。升级 `token`、压缩上下文、指数退避、切换模型。
 
 <details>
-<summary>深入 CC 源码</summary>
+<summary>深入 `CC` 源码</summary>
 
-> 以下基于 CC 源码 `constants/prompts.ts`（914 行）、`constants/systemPromptSections.ts`（68 行）、`context.ts`（189 行）、`utils/api.ts`（718 行）、`utils/systemPrompt.ts`（123 行）、`bootstrap/state.ts` 的分析。
+> 以下基于 `CC` 源码 `constants/prompts.ts`（914 行）、`constants/systemPromptSections.ts`（68 行）、`context.ts`（189 行）、`utils/api.ts`（718 行）、`utils/systemPrompt.ts`（123 行）、`bootstrap/state.ts` 的分析。
 
-### 6.1 CC 的 system prompt 有多少 section？
+### 6.1 `CC` 的 system prompt 有多少 section？
 
 数量不固定，受 feature flag、output style、KAIROS/Proactive 模式、用户类型、`token` 预算等影响。大致分两类：
 
@@ -231,7 +231,7 @@ getSystemPrompt(tools, model, additionalWorkingDirs?, mcpClients?): Promise<stri
 
 启用 global cache boundary 时，静态 section 合并成一个 global cache block，动态 section 不使用 global cache（`cacheScope: null`）。没有 boundary 或跳过 global cache 的路径才会走 org scope。
 
-教学版的缓存只避免重复拼接字符串。CC 的三层缓存：
+教学版的缓存只避免重复拼接字符串。`CC` 的三层缓存：
 
 1. **lodash memoize**：`getSystemContext` 和 `getUserContext` 在会话中缓存（`context.ts`）
 2. **section 注册缓存**：`STATE.systemPromptSectionCache` 缓存动态 section 结果，`/clear` 或 `/compact` 时清除

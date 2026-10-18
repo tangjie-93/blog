@@ -12,7 +12,7 @@ note: "在上下文接近上限时压缩历史与工具输出，保留继续执�
 s01 → s02 → s03 → s04 → s05 → s06 → s07 → `s08` → [s09](./09%E3%80%81Memory%20%E2%80%94%20%E5%8E%8B%E7%BC%A9%E4%BC%9A%E4%B8%A2%E7%BB%86%E8%8A%82%EF%BC%8C%E8%A6%81%E6%9C%89%E4%B8%80%E5%B1%82%E4%B8%8D%E4%B8%A2%E7%9A%84.md) → s10 → ... → s20
 > *"上下文总会满, 要有办法腾地方"* — 四层压缩策略, 便宜的先跑贵的后跑。
 >
-> **Harness 层**: 压缩 — 干净的记忆, 无限的会话。
+> **`Harness` 层**: 压缩 — 干净的记忆, 无限的会话。
 
 ---
 
@@ -194,7 +194,7 @@ def agent_loop(messages):
             break  # 结束当前 turn，用压缩后的上下文开始新一轮
 ```
 
-**顺序不能换。** L3（budget）在 L2（micro）前面，因为 micro 会把旧的大 tool_result 替换成一行占位符，budget 必须在那之前把完整内容落盘。这也是为什么 CC 源码把 `applyToolResultBudget` 放在最前面。
+**顺序不能换。** L3（budget）在 L2（micro）前面，因为 micro 会把旧的大 tool_result 替换成一行占位符，budget 必须在那之前把完整内容落盘。这也是为什么 `CC` 源码把 `applyToolResultBudget` 放在最前面。
 
 ---
 
@@ -232,12 +232,12 @@ python s08_context_compact/code_openai.py
 
 上下文压缩让 `Agent` 能跑很久不会崩。但每次压缩后，用户之前告诉它的偏好、约束也跟着丢了。能不能让 `Agent` 有选择地记住重要的事？
 
-s09 Memory → 三个子系统：选择记什么、提取关键信息、整理巩固。跨压缩、跨会话。
+s09 `Memory` → 三个子系统：选择记什么、提取关键信息、整理巩固。跨压缩、跨会话。
 
 <details>
-<summary>深入 CC 源码</summary>
+<summary>深入 `CC` 源码</summary>
 
-> 以下基于 CC 源码 `compact.ts`、`autoCompact.ts`、`microCompact.ts`、`query.ts` 的分析。
+> 以下基于 `CC` 源码 `compact.ts`、`autoCompact.ts`、`microCompact.ts`、`query.ts` 的分析。
 
 ### 6.1 执行顺序对照
 
@@ -246,7 +246,7 @@ s09 Memory → 三个子系统：选择记什么、提取关键信息、整理�
 | 维度 | 教学版 | Claude Code |
 |------|--------|-------------|
 | 执行顺序 | budget → snip → micro → auto | budget → snip → micro → collapse → auto（`query.ts:379-468`） |
-| snip_compact | 保留头 3 + 尾 47 | CC 仅主线程启用；实现不在开源仓库中（`HISTORY_SNIP` feature gate），但接口可见：`snipCompactIfNeeded(messages)` → `{ messages, tokensFreed, boundaryMessage? }`，还暴露了 `SnipTool` 工具让模型主动调用。教学版的 3/47 是简化参数 |
+| snip_compact | 保留头 3 + 尾 47 | `CC` 仅主线程启用；实现不在开源仓库中（`HISTORY_SNIP` feature gate），但接口可见：`snipCompactIfNeeded(messages)` → `{ messages, tokensFreed, boundaryMessage? }`，还暴露了 `SnipTool` 工具让模型主动调用。教学版的 3/47 是简化参数 |
 | micro_compact | 文本占位符替换 | 两条路径：time-based 直接清内容，cached 走 `API` `cache_edits`（legacy path 已移除） |
 | micro_compact 白名单 | 按位置（最近 3 条） | time-based 按时间阈值触发；cached 按计数触发（`microCompact.ts`） |
 | tool_result_budget | 200KB 字符 | 200,000 字符（`toolLimits.ts:49`） |
@@ -256,11 +256,11 @@ s09 Memory → 三个子系统：选择记什么、提取关键信息、整理�
 | PTL retry | 有（简化） | `truncateHeadForPTLRetry()` 按消息组回退（`compact.ts:243-290`） |
 | 后压缩恢复 | 无（教学版只保留摘要） | 自动重新读取最近文件、计划、agent/skill/tool 等 |
 | 熔断器 | 3 次 | 3 次（`autoCompact.ts:70`） |
-| reactive 重试 | 1 次 | CC 有更精细的分级重试 |
+| reactive 重试 | 1 次 | `CC` 有更精细的分级重试 |
 
 ### 6.2 执行顺序详解
 
-CC 源码 `query.ts` 中的真实顺序：
+`CC` 源码 `query.ts` 中的真实顺序：
 
 1. `applyToolResultBudget`（L379）：先处理大结果，确保完整内容落盘
 2. `snipCompact`（L403）：裁中间消息
@@ -291,14 +291,14 @@ Claude Code 没有用教学版这种简单规则解决这个问题。它把 `Rea
 
 ### 6.5 contextCollapse 和 sessionMemoryCompact
 
-CC 源码中还有两个机制本教学版没有展开：
+`CC` 源码中还有两个机制本教学版没有展开：
 
 - **contextCollapse**：独立的上下文管理系统，启用时抑制 proactive autocompact（`autoCompact.ts:215-222`），由 collapse 的 commit/blocking 流程接管上下文管理。但 manual `/compact` 和 reactive fallback 仍是独立路径，不受 contextCollapse 影响。
-- **sessionMemoryCompact**：compact_history 之前，CC 会先尝试用已有的 session memory（s09 会讲到）做轻量摘要，不调 `LLM`。这个机制等学完 s09 之后回头看会更清楚。
+- **sessionMemoryCompact**：compact_history 之前，`CC` 会先尝试用已有的 session memory（s09 会讲到）做轻量摘要，不调 `LLM`。这个机制等学完 s09 之后回头看会更清楚。
 
 ### 6.6 压缩 prompt 长什么样？
 
-CC 的压缩 prompt 有两个硬性要求：
+`CC` 的压缩 prompt 有两个硬性要求：
 
 1. **绝对禁止调用工具**：开头就是 `CRITICAL: Respond with TEXT ONLY. Do NOT call any tools.`，末尾还会再 REMINDER 一次
 2. **先分析再总结**：模型需要先在 `<analysis>` 标签里理清思路，然后在 `<summary>` 标签里输出正式摘要。analysis 在格式化时被剥离

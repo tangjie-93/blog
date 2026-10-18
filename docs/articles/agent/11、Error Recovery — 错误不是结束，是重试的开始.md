@@ -12,7 +12,7 @@ note: "针对限流、服务过载和超长上下文分类重试、升级参数�
 s01 → ... → s09 → s10 → `s11` → [s12](./12%E3%80%81Task%20System%20%E2%80%94%20%E7%9B%AE%E6%A0%87%E5%A4%AA%E5%A4%A7%EF%BC%8C%E6%8B%86%E6%88%90%E5%B0%8F%E4%BB%BB%E5%8A%A1.md) → s13 → ... → s20
 > *"错误不是终点, 是重试的起点"* — 升级 `token`、压缩上下文、切换模型。
 >
-> **Harness 层**: 韧性 — 主循环遇到错误时分类并恢复。
+> **`Harness` 层**: 韧性 — 主循环遇到错误时分类并恢复。
 
 ---
 
@@ -36,7 +36,7 @@ Error: 529 overloaded
 
 s10 的循环、prompt 组装全部保留。唯一的变动：`LLM` 调用包裹在 try/except 里，根据错误类型走不同的恢复路径。恢复后 `continue` 回到循环开头重新调用 `LLM`。
 
-三种最常见的恢复模式（教学版只处理 429/529；真实系统还覆盖连接错误、超时、云厂商认证缓存等。CC 实际有 13+ reason code，其余见 Deep dive）：
+三种最常见的恢复模式（教学版只处理 429/529；真实系统还覆盖连接错误、超时、云厂商认证缓存等。`CC` 实际有 13+ reason code，其余见 Deep dive）：
 
 | 模式 | 触发 | 恢复动作 |
 |------|------|---------|
@@ -201,18 +201,18 @@ python s11_error_recovery/code.py
 
 能不能让 `Agent` 管理一个**任务列表**——有依赖关系、持久化到磁盘、跨会话能恢复？TODO 列表不是任务系统。
 
-s12 Task System → 任务是有依赖、有状态、持久化的图。这是多 `Agent` 协作的基础。
+s12 `Task` `System` → 任务是有依赖、有状态、持久化的图。这是多 `Agent` 协作的基础。
 
 <details>
-<summary>深入 CC 源码</summary>
+<summary>深入 `CC` 源码</summary>
 
-> 以下基于 CC 源码 `query.ts`（1729 行）、`services/api/withRetry.ts`（822 行）、`query/tokenBudget.ts`（93 行）、`utils/tokenBudget.ts`（73 行）的分析。
+> 以下基于 `CC` 源码 `query.ts`（1729 行）、`services/api/withRetry.ts`（822 行）、`query/tokenBudget.ts`（93 行）、`utils/tokenBudget.ts`（73 行）的分析。
 
 ### 一、十几种 reason/transition（不只是 3 条）
 
-教学版讲了 3 种最常见的恢复模式。CC 实际有十几种 reason/transition，每轮 `LLM` 调用后都会判断：
+教学版讲了 3 种最常见的恢复模式。`CC` 实际有十几种 reason/transition，每轮 `LLM` 调用后都会判断：
 
-| reason/transition | 教学版对应 | CC 行为 |
+| reason/transition | 教学版对应 | `CC` 行为 |
 |---|---|---|
 | `completed` | 正常完成 | 返回结果 |
 | `next_turn` | 正常工具调用 | 继续下一轮工具执行 |
@@ -236,7 +236,7 @@ s12 Task System → 任务是有依赖、有状态、持久化的图。这是多
 
 ### 二、指数退避的精确公式
 
-CC 的退避延迟（`withRetry.ts:530-548`）：
+`CC` 的退避延迟（`withRetry.ts:530-548`）：
 
 ```
 delay = min(500 × 2^(attempt-1), 32000) + random(0~25%)
@@ -253,7 +253,7 @@ delay = min(500 × 2^(attempt-1), 32000) + random(0~25%)
 
 ### 三、CONTINUATION 提示原文
 
-CC 的续写提示（`query.ts:1225-1227`）：
+`CC` 的续写提示（`query.ts:1225-1227`）：
 
 ```
 Output token limit hit. Resume directly — no apology, no recap of what
@@ -261,7 +261,7 @@ you were doing. Pick up mid-thought if that is where the cut happened.
 Break remaining work into smaller pieces.
 ```
 
-Token budget 的 nudge 提示（`tokenBudget.ts:72`）：
+`Token` budget 的 nudge 提示（`tokenBudget.ts:72`）：
 
 ```
 Stopped at {pct}% of token target. Keep working — do not summarize.
@@ -269,15 +269,15 @@ Stopped at {pct}% of token target. Keep working — do not summarize.
 
 ### 四、流式错误处理
 
-CC 的流式路径中，可恢复的错误（413、max_tokens、media error）在 streaming 期间**被暂扣不展示**（`query.ts:788-822`）——`SDK` 消费者看不到，只有恢复逻辑能看到。等 streaming 结束后才判断是否需要恢复。
+`CC` 的流式路径中，可恢复的错误（413、max_tokens、media error）在 streaming 期间**被暂扣不展示**（`query.ts:788-822`）——`SDK` 消费者看不到，只有恢复逻辑能看到。等 streaming 结束后才判断是否需要恢复。
 
-### 五、529 → Fallback Model 切换
+### 五、529 → Fallback `Model` 切换
 
-连续 3 次 529 过载错误后（`MAX_529_RETRIES = 3`），CC 自动切换到 fallback model（如 Opus → Sonnet）。切换时清除所有 pending 消息和 tool 结果，给用户展示 "Switched to {model} due to high demand"。
+连续 3 次 529 过载错误后（`MAX_529_RETRIES = 3`），`CC` 自动切换到 fallback model（如 Opus → Sonnet）。切换时清除所有 pending 消息和 tool 结果，给用户展示 "Switched to {model} due to high demand"。
 
 ### 六、Diminishing Returns 检测
 
-Token budget 的"继续"不是无限的。当连续 3 次 continuation 且 `token` 增量 < 500 时，系统判断"继续也没有实质性产出"，停止 continuation（`tokenBudget.ts:60-62`）。
+`Token` budget 的"继续"不是无限的。当连续 3 次 continuation 且 `token` 增量 < 500 时，系统判断"继续也没有实质性产出"，停止 continuation（`tokenBudget.ts:60-62`）。
 
 </details>
 

@@ -119,7 +119,7 @@ def agent_loop(messages: list):
 
 ---
 
-## 2. s02: Tool Use
+## 2. s02: `Tool` Use
 
 ### 4.1 `2.1` 简介
 
@@ -269,7 +269,7 @@ trigger_hooks("PostToolUse", {"block": block, "output": output})
 
 ---
 
-## 5. s05: TodoWrite
+## 5. s05: `TodoWrite`
 
 ### 7.1 `5.1` 简介
 
@@ -363,7 +363,7 @@ def spawn_subagent(description: str) -> str:
 
 ---
 
-## 7. s07: Skill Loading
+## 7. s07: `Skill` Loading
 
 ### 9.1 `7.1` 简介
 
@@ -450,7 +450,7 @@ def reactive_compact(messages):
 
 ---
 
-## 9. s09: Memory
+## 9. s09: `Memory`
 
 ### 11.1 `9.1` 简介
 
@@ -575,7 +575,7 @@ def with_retry(operation):
 
 ---
 
-## 12. s12: Task System
+## 12. s12: `Task` `System`
 
 ### 14.1 `12.1` 简介
 

@@ -6,14 +6,14 @@ tags: node
 note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台。 专为数据密集型实时程序设计的。 node中的模块一旦被加载以后，就会被系统缓存。第二次加载该模块时，是从缓存中加载的。如果希望模块执行多次，则可以让函数返回一个函数，然后多次调用该函数。
 ---
 ## 1、第一节  node概述
-&#8195;&#8195;Node为服务端JavaScript提供了一个事件驱动的、异步的平台。 专为数据密集型实时程序设计的。 node中的模块一旦被加载以后，就会被系统缓存。第二次加载该模块时，是从缓存中加载的。如果希望模块执行多次，则可以让函数返回一个函数，然后多次调用该函数。<br>
+&#8195;&#8195;`Node`为服务端`JavaScript`提供了一个事件驱动的、异步的平台。 专为数据密集型实时程序设计的。 node中的模块一旦被加载以后，就会被系统缓存。第二次加载该模块时，是从缓存中加载的。如果希望模块执行多次，则可以让函数返回一个函数，然后多次调用该函数。<br>
 
 ​**node的优势?**
 + 1、对于文件读写，采用的是`非阻塞异步IO`（input、output）。
 + 2、传统IO在读写文件的时候采用CPU处理，代码执行也处于等待中，浪费性能。
 + 3、非阻塞IO将读写操作交给CPU，而代码正常执行，减少等待浪费的性能。
 + 4、事件驱动，用事件驱动来完成服务器的任务调度。
-+ 5、跨平台 能够在linux和window平台上有运行。Node是基于`libuv`实现跨平台的。
++ 5、跨平台 能够在linux和window平台上有运行。`Node`是基于`libuv`实现跨平台的。
 
 **node的不足**
 + 1、无法利用多核cpu<br>
@@ -36,7 +36,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
 + 1、实际应用：`webpack、gulp、npm、http-server、json-server`
 + 2、服务器中负责`IO`读写的中间层服务器。
 
-**Node特点**
+**`Node`特点**
 + 1、移植了`chromeV8`引擎，解析和执行代码机制和浏览器js相同。
 + 2、沿用了js语法，另外扩展了自己需要的功能。
 + 3、nodejs是后台语言，其具备操作文件的能力，可以具备服务器的创建和操作能力。
@@ -56,7 +56,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
 + http：提供http服务器功能。
 + url：解析url。
 + fs：文本系统交互。
-+ querystring：解析URL的查询字符串。
++ querystring：解析`URL`的查询字符串。
 + child_process：新建子进程。
 + util：提供的一系列使用小工具。
 + path：处理文件路径。
@@ -64,12 +64,12 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
 
 **4、异常处理**
 
-&#8195;&#8195;Node有三种方法来传递一个错误。
+&#8195;&#8195;`Node`有三种方法来传递一个错误。
 >1、使用throw语句来抛出一个错误对象。   
 >2、将错误对象传递给回调函数。  
 >3、通过EventEmitter接口，来发出一个事件。
 + 1、try...catch:
-        无法捕获异步运行的代码抛出的错误。解决方法：将错误捕获代码，也放到异步执行。（如解析JSON.parse）
+        无法捕获异步运行的代码抛出的错误。解决方法：将错误捕获代码，也放到异步执行。（如解析`JSON`.parse）
 + 2、回调函数
 
 &#8195;&#8195;node采用的方法，是将错误对象作为第一个参数传入回调函数。这样能避免捕获代码与发生错误的代码不在同一个时间段的问题。
@@ -89,7 +89,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
         console.error('出错：' + err.message);
     });
 ```
-&#8195;&#8195;当一个异常违未被捕获，会触发uncaughtException事件。异常的上下文已经丢失，异常可能导致Node不能正常进行内存回收，出现内存泄露并记录错误日志，然后结束node进程。
+&#8195;&#8195;当一个异常违未被捕获，会触发uncaughtException事件。异常的上下文已经丢失，异常可能导致`Node`不能正常进行内存回收，出现内存泄露并记录错误日志，然后结束node进程。
 ```javascript
     var logger = require('tracer').console();
     process.on('uncaughtException', function(err) {
@@ -112,7 +112,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
         console.error(err.stack);
     })
 ```
-## 2、第二节  Node模块介绍
+## 2、第二节  `Node`模块介绍
 ### 2.1 **1、assert()**
 
 &#8195;&#8195;主要用于断言。如果表达式不符合预期，就抛出一个错误。
@@ -130,11 +130,11 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
     assert.ifError()<br>
     assert.fail()<br>
 ```
-### 2.2 **2、Buffer**
+### 2.2 **2、`Buffer`**
 
-&#8195;&#8195;Buffer对象是Node处理二进制数据(如TCP数据流)的一个接口。它是Node原生提供的全局对象，可以直接使用，不需要require('buffer')。它是一个构造函数，生成的实例代表了V8引擎分配的一段内存，是一个类似数组的对象，成员都为0到255的整数值，即一个8位的字节。
+&#8195;&#8195;`Buffer`对象是`Node`处理二进制数据(如`TCP`数据流)的一个接口。它是`Node`原生提供的全局对象，可以直接使用，不需要require('buffer')。它是一个构造函数，生成的实例代表了V8引擎分配的一段内存，是一个类似数组的对象，成员都为0到255的整数值，即一个8位的字节。
 
-**&#8195;`2.1`、Buffer对象的直接赋值和取值**
+**&#8195;`2.1`、`Buffer`对象的直接赋值和取值**
 ```javascript
     // 生成一个256字节的Buffer实例
     var bytes = new Buffer(256);
@@ -149,7 +149,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
     end[0] = 0;
     end[0] // 0
 ```
-**&#8195;`2.2`、Buffer实例的拷贝生成**
+**&#8195;`2.2`、`Buffer`实例的拷贝生成**
 ```javascript
     var bytes = new Buffer(8);
     for (var i = 0; i < bytes.length; i++) {
@@ -160,7 +160,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
     more[0] // 4
     copy方法将bytes实例的4号成员到7号成员的这一段，都拷贝到了more实例从0号成员开始的区域。
 ```
-**&#8195;`2.3`、Buffer构造函数**
+**&#8195;`2.3`、`Buffer`构造函数**
 
 &#8195;&#8195;用new命令生成一个实例，它可以接受多种形式的参数。
 ```javascript
@@ -183,7 +183,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
     var hello1 = new Buffer('Hello');
     var hello2 = new Buffer(hello1);  
 ```
-**&#8195;`2.4`、Buffer类的方法**
+**&#8195;`2.4`、`Buffer`类的方法**
 ```javascript
     Buffer.isEncoding()：返回一个布尔值，表示Buffer实例是否为指定编码。
     Buffer.isBuffer()：接受一个对象作为参数，返回一个布尔值，表示该对象是否为Buffer实例。
@@ -198,7 +198,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
 ```
 **&#8195;`2.5`、实例属性**
 
- &#8195; &#8195;length：返回Buffer对象所占据的内存长度。注意，这个值与Buffer对象的内容无关。
+ &#8195; &#8195;length：返回`Buffer`对象所占据的内存长度。注意，这个值与`Buffer`对象的内容无关。
 ```javascript
     buf = new Buffer(1234);
     buf.length // 1234
@@ -207,15 +207,15 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
 ```
 **&#8195;`2.6`、实例方法**
 
-&#8195;&#8195;write():可以向指定的Buffer对象写入数据。它的第一个参数是所写入的内容，第二个参数（可省略）是所写入的起始位置（默认从0开始），第三个参数（可省略）是编码方式，默认为utf8。<br>
-&#8195;&#8195;slice():返回一个按照指定位置、从原对象切割出来的Buffer实例。它的两个参数分别为切割的起始位置和终止位置。<br>
-&#8195;&#8195;toString()：将Buffer实例，按照指定编码（默认为utf8）转为字符串。toString方法可以只返回指定位置内存的内容，它的第二个参数表示起始位置，第三个参数表示终止位置，两者都是从0开始计算。
+&#8195;&#8195;write():可以向指定的`Buffer`对象写入数据。它的第一个参数是所写入的内容，第二个参数（可省略）是所写入的起始位置（默认从0开始），第三个参数（可省略）是编码方式，默认为utf8。<br>
+&#8195;&#8195;slice():返回一个按照指定位置、从原对象切割出来的`Buffer`实例。它的两个参数分别为切割的起始位置和终止位置。<br>
+&#8195;&#8195;toString()：将`Buffer`实例，按照指定编码（默认为utf8）转为字符串。toString方法可以只返回指定位置内存的内容，它的第二个参数表示起始位置，第三个参数表示终止位置，两者都是从0开始计算。
 ```javascript
     var buf = new Buffer('just some data');
     console.log(buf.toString('ascii', 5, 9));
     // "some"
 ```
-&#8195;&#8195;toJSON():将Buffer实例转为JSON对象。如果JSON.stringify方法调用Buffer实例，默认会先调用toJSON方法。
+&#8195;&#8195;toJSON():将`Buffer`实例转为`JSON`对象。如果`JSON`.stringify方法调用`Buffer`实例，默认会先调用toJSON方法。
 ```javascript
     var buf = new Buffer('test');
     var json = JSON.stringify(buf);
@@ -296,7 +296,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
 ```
 + 5、fork()
 
-&#8195;&#8195;直接创建一个子进程，执行Node脚本，fork('./child.js') 相当于 spawn('node', ['./child.js']) 。与spawn方法不同的是，fork会在父进程与子进程之间，建立一个通信管道，用于进程之间的通信。<br>
+&#8195;&#8195;直接创建一个子进程，执行`Node`脚本，fork('./child.js') 相当于 spawn('node', ['./child.js']) 。与spawn方法不同的是，fork会在父进程与子进程之间，建立一个通信管道，用于进程之间的通信。<br>
 &#8195;&#8195;fork方法返回一个代表进程间通信管道的对象，对该对象可以监听message事件，用来获取子进程返回的信息，也可以向子进程发送信息。
 ```javascript
     var n = child_process.fork('./child.js');
@@ -315,7 +315,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
 &#8195;&#8195;使用 child_process.fork() 生成新进程之后，就可以用 child.send(message, [sendHandle]) 向新进程发送消息。新进程中通过监听message事件，来获取消息。
     
 ### 2.4 **4、cluster**
-&#8195;&#8195;集群模块允许设立一个主进程和若干个工人进程，由主进程监控和协调工人进程的运行。worker之间采用进程间通信交换消息，集群模块内置一个负载均衡器，采用循环赛算法协调各个工人进程之间的负载运行。所有新建立的链接都由主进程完成，然后主进程再把TCP连接分配给指定的工人进程。
+&#8195;&#8195;集群模块允许设立一个主进程和若干个工人进程，由主进程监控和协调工人进程的运行。worker之间采用进程间通信交换消息，集群模块内置一个负载均衡器，采用循环赛算法协调各个工人进程之间的负载运行。所有新建立的链接都由主进程完成，然后主进程再把`TCP`连接分配给指定的工人进程。
 
 **&#8195;`4.1`、worker对象**
 
@@ -353,7 +353,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
 
 &#8195;&#8195;worker进程调用listening方法以后，“listening”事件就传向该进程的服务器，然后传向主进程。
 
-&#8195;&#8195;该事件的回调函数接受两个参数，一个是当前worker对象，另一个是地址对象，包含网址、端口、地址类型（IPv4、IPv6、Unix socket、UDP）等信息。这对于那些服务多个网址的Node应用程序非常有用。
+&#8195;&#8195;该事件的回调函数接受两个参数，一个是当前worker对象，另一个是地址对象，包含网址、端口、地址类型（IPv4、IPv6、Unix socket、`UDP`）等信息。这对于那些服务多个网址的`Node`应用程序非常有用。
 ```javascript
     cluster.on('listening', function (worker, address) {
         console.log("A worker is now connected to " + address.address + ":" + address.port);
@@ -362,12 +362,12 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
 
 **&#8195;`4.4`、PM2**
 
-&#8195;&#8195;PM2模块是cluster模块的一个包装层。它的作用是尽量将cluster模块抽象掉，让用户像使用单进程一样，部署多进程Node应用。
+&#8195;&#8195;PM2模块是cluster模块的一个包装层。它的作用是尽量将cluster模块抽象掉，让用户像使用单进程一样，部署多进程`Node`应用。
 
 **&#8195;`4.5`、nodemon**
 &#8195;&#8195;是一个node自动重启工具。通过`nodemon app.js`来启动程序。程序改变后，不用重启程序，直接刷新浏览器就可以看到更新的内容。 
 ### 2.5 **5、Event**
-&#8195;&#8195;Node 提供 Event Emitter 接口。通过事件，解决多状态异步操作的响应问题。events模块的EventEmitter是一个构造函数，可以用来生成事件发生器的实例emitter。
+&#8195;&#8195;`Node` 提供 Event Emitter 接口。通过事件，解决多状态异步操作的响应问题。events模块的EventEmitter是一个构造函数，可以用来生成事件发生器的实例emitter。
 ```javascript
     var EventEmitter = require('events').EventEmitter;
     var emitter = new EventEmitter();
@@ -439,7 +439,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
 &#8195;&#8195;该方法用于移除回调函数。它接受两个参数，第一个是事件名称，第二个是回调函数名称。这就是说，不能用于移除匿名函数。
 + `2.4`、setMaxListeners()
 
-&#8195;&#8195;Node默认允许同一个事件最多可以指定10个回调函数。
+&#8195;&#8195;`Node`默认允许同一个事件最多可以指定10个回调函数。
 + `2.5`、removeAllListeners()
 
 &#8195;&#8195;该方法用于移除某个事件的所有回调函数。
@@ -459,7 +459,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
 
 ### 2.6 **6、express**
 
-&#8195;&#8195;Express是目前最流行的基于Node.js的Web开发框架，可以快速地搭建一个完整功能的网站。
+&#8195;&#8195;Express是目前最流行的基于`Node.js`的Web开发框架，可以快速地搭建一个完整功能的网站。
 
 **&#8195;1、运行原理**
 
@@ -483,8 +483,8 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
 ```
 + `1.2`、中间件
 
-&#8195;&#8195;中间件（middleware）就是处理HTTP请求的函数。它最大的特点就是，一个中间件处理完，再传递给下一个中间件。
-&#8195;&#8195;每个中间件可以接收三个参数，依次为request对象（代表HTTP请求）、response对象（代表HTTP回应），next回调函数（代表下一个中间件）。每个中间件都可以对HTTP请求（request对象）进行加工，并且决定是否调用next方法，将request对象再传给下一个中间件。中间件可以分为:
+&#8195;&#8195;中间件（middleware）就是处理`HTTP`请求的函数。它最大的特点就是，一个中间件处理完，再传递给下一个中间件。
+&#8195;&#8195;每个中间件可以接收三个参数，依次为request对象（代表`HTTP`请求）、response对象（代表`HTTP`回应），next回调函数（代表下一个中间件）。每个中间件都可以对`HTTP`请求（request对象）进行加工，并且决定是否调用next方法，将request对象再传给下一个中间件。中间件可以分为:
 
 + 1)应用中间件
 + 2)路由中间件
@@ -546,7 +546,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
     app.use('/path', someMiddleware);
 ```
 **&#8195;2、Express的方法**
-+ `2.1`、all方法和HTTP动词方法
++ `2.1`、all方法和`HTTP`动词方法
 
 &#8195;&#8195;针对不同的请求，Express提供了use方法的一些别名。比如，上面代码也可以用别名的形式来写。
 ```javascript
@@ -627,7 +627,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
 ```
 + `2.4`、request对象<br>
     1）request.ip:
-        request.ip属性用于获得HTTP请求的IP地址。<br>
+        request.ip属性用于获得`HTTP`请求的`IP`地址。<br>
     2）request.files:
         request.files用于获取上传的文件。
 
@@ -706,7 +706,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
 
 + `4.1`、基本用法
 
-&#8195;&#8195;Express.Router是一个构造函数，调用后返回一个路由器实例。然后，使用该实例的HTTP动词方法，为不同的访问路径，指定回调函数；最后，挂载到某个路径。
+&#8195;&#8195;Express.Router是一个构造函数，调用后返回一个路由器实例。然后，使用该实例的`HTTP`动词方法，为不同的访问路径，指定回调函数；最后，挂载到某个路径。
 ```javascript
     var router = express.Router();
     //为不同的路径，指定回调函数
@@ -800,16 +800,16 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
 &#8195;&#8195;os.tmpdir方法返回操作系统默认的临时文件目录。
 
 ### 2.8 **10、process对象**
-&#8195;&#8195;process对象是 Node 的一个全局对象，提供当前 Node 进程的信息。它可以在脚本的任意位置使用，不必通过require命令加载。该对象部署了EventEmitter接口。
+&#8195;&#8195;process对象是 `Node` 的一个全局对象，提供当前 `Node` 进程的信息。它可以在脚本的任意位置使用，不必通过require命令加载。该对象部署了EventEmitter接口。
 
 **&#8195;`10.1`、属性**
 + 1、process.argv：返回一个数组，成员是当前进程的所有命令行参数。
-+ 2、process.env：返回一个对象，成员为当前Shell的环境变量，比如process.env.HOME。
-+ 3、process.installPrefix：返回一个字符串，表示 Node 安装路径的前缀，比如/usr/local。相应地，Node 的执行文件目录为/usr/local/bin/node。
++ 2、process.env：返回一个对象，成员为当前`Shell`的环境变量，比如process.env.HOME。
++ 3、process.installPrefix：返回一个字符串，表示 `Node` 安装路径的前缀，比如/usr/local。相应地，`Node` 的执行文件目录为/usr/local/bin/node。
 + 4、process.pid：返回一个数字，表示当前进程的进程号。
-+ 5、process.platform：返回一个字符串，表示当前的操作系统，比如Linux。
++ 5、process.platform：返回一个字符串，表示当前的操作系统，比如`Linux`。
 + 6、process.title：返回一个字符串，默认值为node，可以自定义该值。
-+ 7、process.version：返回一个字符串，表示当前使用的 Node 版本，比如v7.`10.0`。
++ 7、process.version：返回一个字符串，表示当前使用的 `Node` 版本，比如v7.`10.0`。
 
 **&#8195;`10.2`、process对象还有一些属性，用来指向 `Shell` 提供的接口**。
 
@@ -855,12 +855,12 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
     $ node argv.js a b c
     [ 'node', '/path/to/argv.js', 'a', 'b', 'c' ]
 ```
-+ 2）process.execPath属性返回执行当前脚本的Node二进制文件的绝对路径。
-+ 3）process.execArgv属性返回一个数组，成员是命令行下执行脚本时，在 Node 可执行文件与脚本文件之间的命令行参数。
++ 2）process.execPath属性返回执行当前脚本的`Node`二进制文件的绝对路径。
++ 3）process.execArgv属性返回一个数组，成员是命令行下执行脚本时，在 `Node` 可执行文件与脚本文件之间的命令行参数。
 
 + **5、process.env**
 
-&#8195;&#8195;process.env属性返回一个对象，包含了当前Shell的所有环境变量。比如，process.env.HOME返回用户的主目录。
+&#8195;&#8195;process.env属性返回一个对象，包含了当前`Shell`的所有环境变量。比如，process.env.HOME返回用户的主目录。
 &#8195;&#8195;通常的做法是，新建一个环境变量NODE_ENV，用它确定当前所处的开发阶段，生产阶段设为production，开发阶段设为develop或staging，然后在脚本中读取process.env.NODE_ENV即可。
 &#8195;&#8195;运行脚本时，改变环境变量，可以采用下面的写法。
 ```javascript
@@ -921,19 +921,19 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
 
 + **5、process.kill()**
 
-&#8195;&#8195;process.kill方法用来对指定ID的线程发送信号，默认为SIGINT信号。
+&#8195;&#8195;process.kill方法用来对指定`ID`的线程发送信号，默认为SIGINT信号。
 
 &#8195;&#8195;process.kill(process.pid, 'SIGTERM');
             上面代码用于杀死当前进程。
 
 + **6、beforeExit事件**
 
-&#8195;&#8195;beforeExit事件在Node清空了Event Loop以后，再没有任何待处理的任务时触发。正常情况下，如果没有任何待处理的任务，Node进程会自动退出，设置beforeExit事件的监听函数以后，就可以提供一个机会，再部署一些任务，使得Node进程不退出。<br>
+&#8195;&#8195;beforeExit事件在`Node`清空了Event Loop以后，再没有任何待处理的任务时触发。正常情况下，如果没有任何待处理的任务，`Node`进程会自动退出，设置beforeExit事件的监听函数以后，就可以提供一个机会，再部署一些任务，使得`Node`进程不退出。<br>
 &#8195;&#8195;beforeExit事件与exit事件的主要区别是，beforeExit的监听函数可以部署异步任务，而exit不行。
 
 + **7、信号事件**
 
-&#8195;&#8195;主要对SIGTERM和SIGINT信号部署监听函数，这两个信号在非Windows平台会导致进程退出，但是只要部署了监听函数，Node进程收到信号后就不会退出。
+&#8195;&#8195;主要对SIGTERM和SIGINT信号部署监听函数，这两个信号在非Windows平台会导致进程退出，但是只要部署了监听函数，`Node`进程收到信号后就不会退出。
 + **8、进程的退出码**
 ```javascript
     0，正常退出
@@ -943,7 +943,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
     128 + 信号值，如果Node接受到退出信号（比如SIGKILL或SIGHUP），它的退出码就是128加上信号值。由于128的二进制形式是10000000, 所以退出码的后七位就是信号值。
 ```
 ### 2.9 **11、url**
-&#8195;&#8195;url模块用于生成和解析URL。该模块使用前，必须加载。
+&#8195;&#8195;url模块用于生成和解析`URL`。该模块使用前，必须加载。
 
 **&#8195;`11.1`、url.resolve(from, to)**
 ```javascript
@@ -983,7 +983,7 @@ parse方法也可以用来解析一般的字符串。
 ### 2.11 **13、stream**
 **&#8195;1、概念**
 
-&#8195;&#8195;"数据流"（stream）是处理系统缓存的一种方式。操作系统采用数据块（chunk）的方式读取数据，每收到一次数据，就存入缓存。Node应用程序有两种缓存的处理方式，第一种是等到所有数据接收完毕，一次性从缓存读取，这就是传统的读取文件的方式；第二种是采用"数据流"的方式，收到一块数据，就读取一块，即在数据还没有接收完成时，就开始处理它。<br>
+&#8195;&#8195;"数据流"（stream）是处理系统缓存的一种方式。操作系统采用数据块（chunk）的方式读取数据，每收到一次数据，就存入缓存。`Node`应用程序有两种缓存的处理方式，第一种是等到所有数据接收完毕，一次性从缓存读取，这就是传统的读取文件的方式；第二种是采用"数据流"的方式，收到一块数据，就读取一块，即在数据还没有接收完成时，就开始处理它。<br>
 &#8195;&#8195;第一种方式先将数据全部读入内存，然后处理，优点是符合直觉，流程非常自然，缺点是如果遇到大文件，要花很长时间，才能进入数据处理的步骤。第二种方式每次只读入数据的一小块，像"流水"一样，每当系统读入了一小块数据，就会触发一个事件，发出"新数据块"的信号。应用程序只要监听这个事件，就能掌握数据读取的进展，做出相应处理，这样就提高了程序的性能。
 
 &#8195;&#8195;**数据流接口最大特点就是通过事件通信**，具有readable、writable、drain、data、end、close等事件，既可以读取数据，也可以写入数据。读写数据时，每读入（或写入）一段数据，就会触发一次data事件，全部读取（或写入）完毕，触发end事件。如果发生错误，则触发error事件。
@@ -1333,7 +1333,7 @@ parse方法也可以用来解析一般的字符串。
         })
     })  
 ```
-### 2.12 **14、Net模块和DNS模块**
+### 2.12 **14、Net模块和`DNS`模块**
 &#8195;&#8195;net模块用于底层的网络通信。
     下面是一段简单的监听2000端口的代码。
 ```javascript
@@ -1354,18 +1354,18 @@ parse方法也可以用来解析一般的字符串。
 ```
 **&#8195;1、isIP()**
 
-&#8195;&#8195;isIP方法用于判断某个字符串是否为IP地址。
+&#8195;&#8195;isIP方法用于判断某个字符串是否为`IP`地址。
 
-**&#8195;2、DNS模块用于解析域名**
+**&#8195;2、`DNS`模块用于解析域名**
 
-&#8195;&#8195;resolve4方法用于IPv4环境，resolve6方法用于IPv6环境，lookup方法在以上两种环境都可以使用，返回IP地址（address）和当前环境（IPv4或IPv6）
+&#8195;&#8195;resolve4方法用于IPv4环境，resolve6方法用于IPv6环境，lookup方法在以上两种环境都可以使用，返回`IP`地址（address）和当前环境（IPv4或IPv6）
     
-### 2.13 **15、CommonJS规范**
+### 2.13 **15、`CommonJS`规范**
 **&#8195;1、概述**
 
-&#8195;&#8195;Node 应用由模块组成，采用 CommonJS 模块规范。
+&#8195;&#8195;`Node` 应用由模块组成，采用 `CommonJS` 模块规范。
         **每个文件就是一个模块，有自己的作用域。在一个文件里面定义的变量、函数、类，都是私有的，对其他文件不可见。**
-        CommonJS规范规定，每个模块内部，**module变量代表当前模块**。这个变量是一个对象，它的exports属性（即module.exports）是对外的接口。加载某个模块，其实是加载该模块的module.exports属性。
+        `CommonJS`规范规定，每个模块内部，**module变量代表当前模块**。这个变量是一个对象，它的exports属性（即module.exports）是对外的接口。加载某个模块，其实是加载该模块的module.exports属性。
 ```javascript
     var x = 5;
     var addX = function (value) {
@@ -1374,13 +1374,13 @@ parse方法也可以用来解析一般的字符串。
     module.exports.x = x;
     module.exports.addX = addX;
 ```
-        CommonJS模块的特点如下。
+        `CommonJS`模块的特点如下。
             1、所有代码都运行在模块作用域，不会污染全局作用域。
             2、模块可以多次加载，但是只会在第一次加载时运行一次，然后运行结果就被缓存了，以后再加载，就直接读取缓存结果。要想让模块再次运行，必须清除缓存。
             3、模块加载的顺序，按照其在代码中出现的顺序。
 **&#8195;2、module对象**
 
-&#8195;&#8195;Node内部提供一个Module构建函数。所有模块都是Module的实例。每个模块内部，都有一个module对象，代表当前模块。它有以下属性。
+&#8195;&#8195;`Node`内部提供一个Module构建函数。所有模块都是Module的实例。每个模块内部，都有一个module对象，代表当前模块。它有以下属性。
 + 1)module.id 模块的识别符，通常是带有绝对路径的模块文件名。
 + 2)module.filename 模块的文件名，带有绝对路径。
 + 3)module.loaded 返回一个布尔值，表示模块是否已经完成加载。
@@ -1394,7 +1394,7 @@ parse方法也可以用来解析一般的字符串。
 
 + **2、2 exports变量**
 
-&#8195;&#8195;Node为每个模块提供一个exports变量，指向module.exports。这等同在每个模块头部，有一行这样的命令。
+&#8195;&#8195;`Node`为每个模块提供一个exports变量，指向module.exports。这等同在每个模块头部，有一行这样的命令。
 ```javascript
     var exports = module.exports;
 ```
@@ -1403,25 +1403,25 @@ parse方法也可以用来解析一般的字符串。
 ```javascript
     module.exports = function (x){ console.log(x);};
 ```
-**&#8195;3、AMD规范与CommonJS规范的兼容性**
+**&#8195;3、AMD规范与`CommonJS`规范的兼容性**
 
-&#8195;&#8195;CommonJS规范加载模块是同步的，也就是说，只有加载完成，才能执行后面的操作。AMD规范则是非同步加载模块，允许指定回调函数。由于Node.js主要用于服务器编程，模块文件一般都已经存在于本地硬盘，所以加载起来比较快，不用考虑非同步加载的方式，所以CommonJS规范比较适用。但是，如果是浏览器环境，要从服务器端加载模块，这时就必须采用非同步模式，因此浏览器端一般采用AMD规范。
-### 2.14 **16、npm包管理器**
-**&#8195;1、npm安装模块时，对应的版本可以加上各种限定，主要有以下几种：**
+&#8195;&#8195;`CommonJS`规范加载模块是同步的，也就是说，只有加载完成，才能执行后面的操作。AMD规范则是非同步加载模块，允许指定回调函数。由于`Node.js`主要用于服务器编程，模块文件一般都已经存在于本地硬盘，所以加载起来比较快，不用考虑非同步加载的方式，所以`CommonJS`规范比较适用。但是，如果是浏览器环境，要从服务器端加载模块，这时就必须采用非同步模式，因此浏览器端一般采用AMD规范。
+### 2.14 **16、`npm`包管理器**
+**&#8195;1、`npm`安装模块时，对应的版本可以加上各种限定，主要有以下几种：**
 + 1)指定版本：比如1.`2.2`，遵循“大版本.次要版本.小版本”的格式规定，安装时只安装指定版本。
 + 2)波浪号（tilde）+指定版本：比如~`1.2.2`，表示安装1.2.x的最新版本（不低于1.`2.2`），但是不安装1.3.x，也就是说安装时不改变大版本号和次要版本号。
 + 3)插入号（caret）+指定版本：比如ˆ1.`2.2`，表示安装1.x.x的最新版本（不低于1.`2.2`），但是不安装2.x.x，也就是说安装时不改变大版本号。需要注意的是，如果大版本号为0，则插入号的行为与波浪号相同，这是因为此时处于开发阶段，即使是次要版本号变动，也可能带来程序的不兼容。
 + 4)latest：安装最新版本。  
 
-**&#8195;2、npm安装：**
+**&#8195;2、`npm`安装：**
 ```javascript
     $ npm install npm@latest -g
 ```
-**&#8195;3、npm init**
+**&#8195;3、`npm` init**
 ```javascript
     npm init用来初始化生成一个新的package.json文件。
 ```
-**&#8195;4、npm set**
+**&#8195;4、`npm` set**
 ```javascript
     npm set用来设置环境变量。
     $ npm set init-author-name 'Your name'
@@ -1432,7 +1432,7 @@ parse方法也可以用来解析一般的字符串。
     $ npm set save-exact true
     上面命令设置加入模块时，package.json将记录模块的确切版本，而不是一个可选的版本范围。
 ```
-**&#8195;5、npm config**
+**&#8195;5、`npm` config**
 ```javascript
     npm config set prefix $dir
     //上面的命令将指定的$dir目录，设为模块的全局安装目录。
@@ -1442,25 +1442,25 @@ parse方法也可以用来解析一般的字符串。
     $ npm config set init.author.email $email
     //上面命令指定使用npm init时，生成的package.json文件的字段默认值。
 ```
-**&#8195;6、npm info**
+**&#8195;6、`npm` info**
 ```javascript
     //npm info命令可以查看每个模块的具体信息。比如，查看underscore模块的信息。
     npm info underscore
     //上面命令返回一个JavaScript对象，包含了underscore模块的详细信息。这个对象的每个成员，都可以直接从info命令查询。
     npm info underscore description
 ```
-**&#8195;7、npm search**
+**&#8195;7、`npm` search**
 ```javascript
     npm search命令用于搜索npm仓库，它后面可以跟字符串，也可以跟正则表达式。
     npm search webpack
 ```
-**&#8195;8、npm list**
+**&#8195;8、`npm` list**
 ```javascript
     npm list命令以树型结构列出当前项目安装的所有模块，以及它们依赖的模块。
     加上global参数，会列出全局安装的模块。
     npm list -global
 ```
-**&#8195;9、npm install**
+**&#8195;9、`npm` install**
 ```javascript
     //npm install也支持直接输入Github代码库地址。
     $ npm install git://github.com/package/path.git
@@ -1479,15 +1479,15 @@ parse方法也可以用来解析一般的字符串。
 ```javascript
     $ npm install readable-stream --save --save-exact
 ```
-+ 3)npm install默认会安装dependencies字段和devDependencies字段中的所有模块，如果使用--production参数，可以只安装dependencies字段的模块。
++ 3)`npm` install默认会安装dependencies字段和devDependencies字段中的所有模块，如果使用--production参数，可以只安装dependencies字段的模块。
 ```javascript
                 $ npm install --production
                 # 或者
                 $ NODE_ENV=production npm install
 ```
-**&#8195;10、npm run** 
-+ 1)npm run命令会自动在环境变量$PATH添加node_modules/.bin目录，所以scripts字段里面调用命令时不用加上路径，这就避免了全局安装NPM模块。
-+ 2)npm run如果不加任何参数，直接运行，会列出package.json里面所有可以执行的脚本命令。
+**&#8195;10、`npm` run** 
++ 1)`npm` run命令会自动在环境变量$PATH添加node_modules/.bin目录，所以scripts字段里面调用命令时不用加上路径，这就避免了全局安装NPM模块。
++ 2)`npm` run如果不加任何参数，直接运行，会列出package.json里面所有可以执行的脚本命令。
 ```javascript
     "build": "npm run build-js && npm run build-css"
     //上面的写法是先运行npm run build-js，然后再运行npm run build-css，两个命令中间用&&连接。如果希望两个命令同时平行执行，它们中间可以用&连接。
@@ -1508,7 +1508,7 @@ parse方法也可以用来解析一般的字符串。
     // 不输出npm命令头
     $ npm run -s test
 ```
-&#8195;&#8195;2) npm-run-all
+&#8195;&#8195;2) `npm`-run-all
 ```javascript
     $ npm install npm-run-all --save-dev
     //继发执行
@@ -1531,7 +1531,7 @@ parse方法也可以用来解析一般的字符串。
     $ npm-run-all --parallel watch:*
 ```
 + 3)start命令
-&#8195;&#8195;如果start脚本没有配置，npm start命令默认执行下面的脚本，前提是模块的根目录存在一个server.js文件。
+&#8195;&#8195;如果start脚本没有配置，`npm` start命令默认执行下面的脚本，前提是模块的根目录存在一个server.js文件。
                 $ node server.js
 + 4)dev脚本命令
 &#8195;&#8195;规定开发阶段所要做的处理，比如构建网页资源。
@@ -1547,7 +1547,7 @@ parse方法也可以用来解析一般的字符串。
 ```
 + 6)pre- 和 post- 脚本
 
-&#8195;&#8195; 以npm run lint为例，执行这条命令之前，npm会先查看有没有定义prelint和postlint两个钩子，如果有的话，就会先执行npm run prelint，然后执行npm run lint，最后执行npm run postlint。
+&#8195;&#8195; 以`npm` run lint为例，执行这条命令之前，`npm`会先查看有没有定义prelint和postlint两个钩子，如果有的话，就会先执行`npm` run prelint，然后执行`npm` run lint，最后执行`npm` run postlint。
 
 **&#8195;11、内部变量**
 
@@ -1581,9 +1581,9 @@ parse方法也可以用来解析一般的字符串。
     @(pattern|pat*|pat?erN) 只匹配给定模式之一
     ** 如果出现在路径部分，表示0个或多个子目录。
 ```
-**&#8195;12、npm link**
+**&#8195;12、`npm` link**
 
-&#8195;&#8195;npm link就能起到这个作用，会自动建立这个符号链接。
+&#8195;&#8195;`npm` link就能起到这个作用，会自动建立这个符号链接。
 ```javascript 
     1、在模块目录（src/myModule）下运行npm link命令。
         npm link 
@@ -1598,17 +1598,17 @@ parse方法也可以用来解析一般的字符串。
         npm unlink studynotes//删除固定模块的符号链接
         npm unlink 删除全局符号链接
 ```
-**&#8195;13、npm bin**
+**&#8195;13、`npm` bin**
 
-&#8195;&#8195;npm bin命令显示相对于当前目录的，Node模块的可执行脚本所在的目录（即.bin目录）。
+&#8195;&#8195;`npm` bin命令显示相对于当前目录的，`Node`模块的可执行脚本所在的目录（即.bin目录）。
 
-**&#8195;14、npm adduser**
+**&#8195;14、`npm` adduser**
 
-&#8195;&#8195;npm adduser用于在npmjs.com注册一个用户。
+&#8195;&#8195;`npm` adduser用于在npmjs.com注册一个用户。
 
-**&#8195;15、npm publish**
+**&#8195;15、`npm` publish**
 
-&#8195;&#8195;npm publish用于将当前模块发布到npmjs.com。执行之前，需要向npmjs.com申请用户名。
+&#8195;&#8195;`npm` publish用于将当前模块发布到npmjs.com。执行之前，需要向npmjs.com申请用户名。
 ```javascript
     $ npm adduser
 ```
@@ -1616,7 +1616,7 @@ parse方法也可以用来解析一般的字符串。
 ```javascript
     $ npm login
 ```
-&#8195;&#8195;登录以后，就可以使用npm publish命令发布。
+&#8195;&#8195;登录以后，就可以使用`npm` publish命令发布。
 ```javascript
     $ npm publish
 ```
@@ -1624,7 +1624,7 @@ parse方法也可以用来解析一般的字符串。
 ```javascript
     $ npm publish --tag beta
 ```
-&#8195;&#8195;如果你的模块是用ES6写的，那么发布的时候，最好转成ES5。首先，需要安装Babel。
+&#8195;&#8195;如果你的模块是用`ES6`写的，那么发布的时候，最好转成`ES5`。首先，需要安装Babel。
 ```javascript
     npm install --save-dev babel-cli@6 babel-preset-es2015@6
     "scripts": {
@@ -1632,7 +1632,7 @@ parse方法也可以用来解析一般的字符串。
         "prepublish": "npm run build"
     } 
 ```
-&#8195;&#8195;运行上面的脚本，会将source目录里面的ES6源码文件，转为distribution目录里面的ES5源码文件。然后，在项目根目录下面创建两个文件.npmignore和.gitignore，分别写入以下内容。
+&#8195;&#8195;运行上面的脚本，会将source目录里面的`ES6`源码文件，转为distribution目录里面的`ES5`源码文件。然后，在项目根目录下面创建两个文件.npmignore和.gitignore，分别写入以下内容。
 ```javascript
     // .npmignore
     source
@@ -1640,16 +1640,16 @@ parse方法也可以用来解析一般的字符串。
     node_modules
     distribution 
 ```
-**&#8195;16、npm deprecate**
+**&#8195;16、`npm` deprecate**
 
 &#8195;&#8195;废弃某个版本的模块。
 ```javascript
     $ npm deprecate my-thing@"< 0.2.3" "critical bug fixed in v0.2.3"
     //运行上面的命令以后，小于0.2.3版本的模块的package.json都会写入一行警告，用户安装这些版本时，这行警告就会在命令行显示。
 ```
-**&#8195;17、npm owner**
+**&#8195;17、`npm` owner**
 
-&#8195;&#8195;模块的维护者可以发布新版本。npm owner命令用于管理模块的维护者。
+&#8195;&#8195;模块的维护者可以发布新版本。`npm` owner命令用于管理模块的维护者。
 ```javascript
     //列出指定模块的维护者
     $ npm owner ls <package name>
@@ -1658,9 +1658,9 @@ parse方法也可以用来解析一般的字符串。
     //删除维护者
     $ npm owner rm <user> <package name>
 ```
-**&#8195;18、npm outdated**
+**&#8195;18、`npm` outdated**
 
-&#8195;&#8195;npm outdated命令检查当前项目所依赖的模块，是否已经有新版本。
+&#8195;&#8195;`npm` outdated命令检查当前项目所依赖的模块，是否已经有新版本。
             它会输出当前版本（current version）、应当安装的版本（wanted version）和最新发布的版本（latest version）。
 
 

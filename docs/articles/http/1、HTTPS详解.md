@@ -11,7 +11,7 @@ note: HTTP 与 HTTPS 的区别;加密算法;HTTPS中间人攻击;客户端和服
 + `HTTP` 的端口号是 80，`HTTPS` 是 443。
 + `HTTPS` 需要到 CA 申请证书，一般免费证书很少，需要交费。
 + `HTTP` 的连接很简单，是无状态的；`HTTPS` 协议是由 SSL+`HTTP` 协议构建的可进行加密传输、身份认证的网络协议，比 `HTTP` 协议安全。
-## 2、为什么要使用HTTPS？
+## 2、为什么要使用`HTTPS`？
 + 对数据进行了加密，建立一个信息安全通道，来保证数据传输的安全
 + 对网站服务器进行真实身份认证
 
@@ -25,7 +25,7 @@ note: HTTP 与 HTTPS 的区别;加密算法;HTTPS中间人攻击;客户端和服
 + 3、client随机生成对称加密的密码，client用server的公钥对随机密码加密后传输给server。
 + 4、服务器通过私钥解密对称加密的密码，然后client和server就可以通过对称加密安全的传输数据了。
 
-## 5、HTTPS中间人攻击
+## 5、`HTTPS`中间人攻击
 
 &#8195;&#8195;中间人攻击过程如下：
 + 1、服务器向客户端发送公钥。
@@ -40,5 +40,5 @@ note: HTTP 与 HTTPS 的区别;加密算法;HTTPS中间人攻击;客户端和服
 防范方法：服务器在发送给浏览器的公钥中加入`CA`证书，浏览器可以验证`CA`证书的有效性。
 
 **参考文档**<br>
-[1、HTTP和HTTPS详解](https://juejin.im/post/5af557a3f265da0b9265a498#heading-29)<br>
+[1、`HTTP`和`HTTPS`详解](https://juejin.im/post/5af557a3f265da0b9265a498#heading-29)<br>
 [2、谈谈 `HTTPS`](https://juejin.im/post/59e4c02151882578d02f4aca)

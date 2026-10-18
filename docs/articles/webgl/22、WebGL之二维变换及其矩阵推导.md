@@ -377,7 +377,7 @@ c= 0,  f = 0,  i =1
 将求出的 `a,b,e,d,e,f,g,h,i` 代入上面定义的矩阵，就得到了我们之前创建的缩放矩阵了。
 
 #### `2.3` 旋转矩阵的推导
-推导过程可以看下官网的这个例子 [WebGL 二维旋转](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-2d-rotation.html)
+推导过程可以看下官网的这个例子 [`WebGL` 二维旋转](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-2d-rotation.html)
 
 
 ```js

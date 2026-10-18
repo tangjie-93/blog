@@ -160,7 +160,7 @@ void main() {
        texture2D(u_image, v_texCoord + vec2(-onePixel.x, 0.0))) / 3.0;
 }
 ```
-> 在JavaScript中传入纹理的大小。
+> 在`JavaScript`中传入纹理的大小。
 ```js
 ...
 const textureSizeLocation = gl.getUniformLocation(program, "u_textureSize");

@@ -9,10 +9,10 @@ note: ES6之Class详解
 ## 1、class的基本语法
 
 
-&#8195;新的class写法只是**让对象原型的写法更加清晰、更像面向对象编程的语法** 而已。ES6 的类，完全可以看作构造函数的另一种写法。
+&#8195;新的class写法只是**让对象原型的写法更加清晰、更像面向对象编程的语法** 而已。`ES6` 的类，完全可以看作构造函数的另一种写法。
 事实上，**类的所有方法都定义在类的prototype属性上面。**
 
->1、ES6 的类，完全可以看作构造函数的另一种写法。类本身就指向构造函数。
+>1、`ES6` 的类，完全可以看作构造函数的另一种写法。类本身就指向构造函数。
 ```js       
 Point === Point.prototype.constructor // true
 ```       
@@ -48,7 +48,7 @@ p1.constructor === Point.prototype.constructor // true
 Point.prototype.constructor === Point // true
 Object.keys(Point.prototype)// []
 ```       
-&#8195;&#8195;上面代码中，**toString方法是Point类内部定义的方法，它是不可枚举的**。这一点与 ES5 的行为不一致。
+&#8195;&#8195;上面代码中，**toString方法是Point类内部定义的方法，它是不可枚举的**。这一点与 `ES5` 的行为不一致。
 
 
 ## 2、	constructor方法
@@ -68,7 +68,7 @@ new Foo() instanceof Foo
 ## 3、	类的实例
 
 
-&#8195;&#8195;与 ES5 一样，实例的属性除非显式定义在其本身（即定义在this对象上），否则都是定义在原型上（即定义在class上）。
+&#8195;&#8195;与 `ES5` 一样，实例的属性除非显式定义在其本身（即定义在this对象上），否则都是定义在原型上（即定义在class上）。
 ```js
 //定义类
 class Point {
@@ -88,7 +88,7 @@ point.hasOwnProperty('toString') // false
 point.__proto__.hasOwnProperty('toString') // true
 //toString是原型上的方法，构造方法中的才是实例属性
 ```       
-&#8195;&#8195;与 ES5 一样，类的所有实例共享一个原型对象。
+&#8195;&#8195;与 `ES5` 一样，类的所有实例共享一个原型对象。
 ```js
 var p1 = new Point(2,3);
 var p2 = new Point(3,2);
@@ -301,7 +301,7 @@ export default class myClass{
 ## 11、new.target()
 
 
-&#8195;&#8195;ES6 为new命令引入了一个new.target属性，该属性一般用在构造函数之中，**返回new命令作用于的那个构造函数** 。如果构造函数不是通过new命令或Reflect.construct()调用的，new.target会返回undefined，因此**这个属性可以用来确定构造函数是怎么调用的。** Class 内部调用new.target，返回当前Class。在函数外部，使用new.target会报错。
+&#8195;&#8195;`ES6` 为new命令引入了一个new.target属性，该属性一般用在构造函数之中，**返回new命令作用于的那个构造函数** 。如果构造函数不是通过new命令或Reflect.construct()调用的，new.target会返回undefined，因此**这个属性可以用来确定构造函数是怎么调用的。** Class 内部调用new.target，返回当前Class。在函数外部，使用new.target会报错。
 ```js
 function Person(name) {
     if (new.target !== undefined) {
@@ -341,7 +341,7 @@ var obj = new Square(3); // 输出 false
 ## 12、 类的继承
 
 
-&#8195;&#8195;Class 可以通过extends关键字实现继承，这比 ES5 的通过修改原型链实现继承，要清晰和方便很多。
+&#8195;&#8195;Class 可以通过extends关键字实现继承，这比 `ES5` 的通过修改原型链实现继承，要清晰和方便很多。
 ```js
 class ColorPoint extends Point {
     constructor(x, y, color) {
@@ -371,18 +371,18 @@ class ColorPoint extends Point {
     }
 }
 ```
->3、	ES5 的继承，实质是先创造子类的实例对象`this`，然后再将父类的方法添加到`this`上面`（Parent.apply(this)`）。ES6 的继承机制完全不同，实质是先将父类实例对象的属性和方法，加到this上面（所以必须先调用super方法），然后再用子类的构造函数修改`this`。   
+>3、	`ES5` 的继承，实质是先创造子类的实例对象`this`，然后再将父类的方法添加到`this`上面`（Parent.apply(this)`）。`ES6` 的继承机制完全不同，实质是先将父类实例对象的属性和方法，加到this上面（所以必须先调用super方法），然后再用子类的构造函数修改`this`。   
 
 >4、	在子类的构造函数中，只有调用super之后，才可以使用this关键字，否则会报错。这是因为子类实例的构建，基于父类实例，只有super方法才能调用父类实例。
 
->5	子类实例对象cp同时是ColorPoint和Point（父类）两个类的实例，这与 ES5 的行为完全一致。
+>5	子类实例对象cp同时是ColorPoint和Point（父类）两个类的实例，这与 `ES5` 的行为完全一致。
 
 >6	父类的静态方法，也会被子类继承。
 
-## 13、	Object.getPrototypeOf()
+## 13、	`Object`.getPrototypeOf()
 
 
-&#8195;&#8195;Object.getPrototypeOf方法可以用来从子类上获取父类。可以使用这个方法判断，一个类是否继承了另一个类。
+&#8195;&#8195;`Object`.getPrototypeOf方法可以用来从子类上获取父类。可以使用这个方法判断，一个类是否继承了另一个类。
 ```js
 Object.getPrototypeOf(ColorPoint) === Point// true
 ```      
@@ -390,7 +390,7 @@ Object.getPrototypeOf(ColorPoint) === Point// true
 ## 14、	Super关键字
 
 
->1、	**super作为函数调用时，代表父类的构造函数** 。ES6 要求，子类的构造函数必须执行一次super函数。
+>1、	**super作为函数调用时，代表父类的构造函数** 。`ES6` 要求，子类的构造函数必须执行一次super函数。
 super虽然代表了父类A的构造函数，但是返回的是子类B的实例。
 **作为函数时，super()只能用在子类的构造函数之中，用在其他地方就会报错。**
 ```js
@@ -490,7 +490,7 @@ B.m() // 3
 ## 15、类的 `prototype` 属性和 `__proto__` 属性
 
 
- &#8195; &#8195;ES5 实现之中，每一个对象都有__proto__属性，指向对应的构造函数的prototype属性。
+ &#8195; &#8195;`ES5` 实现之中，每一个对象都有__proto__属性，指向对应的构造函数的prototype属性。
 ```js
 instance.__proto__===A.prototype//instance是A的实例
 ```   

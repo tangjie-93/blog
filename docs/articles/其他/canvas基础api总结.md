@@ -6,7 +6,7 @@ tags: canvas
 note: canvas基础api总结
 ---
 
-&#8195;&#8195;**canvas是一种基于javascript的绘图api。而是svg和VML是使用XML来进行描述绘图。各有缺点和优势。svg绘图时容易编辑，只要重描述中移除元素就行，而canvas要移除原有的元素进行重新绘制。**
+&#8195;&#8195;**canvas是一种基于javascript的绘图api。而是svg和VML是使用`XML`来进行描述绘图。各有缺点和优势。svg绘图时容易编辑，只要重描述中移除元素就行，而canvas要移除原有的元素进行重新绘制。**
  ### **1、颜色、样式及阴影设置**
 
  属性 | 描述 
@@ -25,7 +25,7 @@ ctx.fillStyle=color|gradient|pattern;
 ctx.strokeStyle=color|gradient|pattern;
 //默认值是白色
 ```
-+ color:指示绘图笔触的[CSS颜色值](https://www.w3school.com.cn/css/css_colors_legal.asp)。默认值是#000000。常见表示方式有"red"、FFFF"、rgb(1-255,1-255,1-255)以及rgba(1-255,1-255,1-255,0-1)
++ color:指示绘图笔触的[`CSS`颜色值](https://www.w3school.com.cn/css/css_colors_legal.asp)。默认值是#000000。常见表示方式有"red"、FFFF"、rgb(1-255,1-255,1-255)以及rgba(1-255,1-255,1-255,0-1)
 
 + gradient：用于填充绘图的[渐变对象](https://www.w3school.com.cn/tags/canvas_createlineargradient.asp)（线性或放射性）
 + pattern：用于创建pattern笔触的pattern对象。与设置样式配合使用的方法是填充绘制和边绘制。

@@ -6,11 +6,11 @@ tags: react
 note: react基本知识点总结
 ---
 
-## 1、Context-组件跨层级通信
+## 1、`Context`-组件跨层级通信
 `Context` 设计的目的是为了共享那些对于一个组件而言是 全局的数据。主要有以下 `API`。
 
 #### 1 `React.createContext`
-创建一个 `Context` 对象。当 `React` 渲染一个订阅了这个 Context 对象的组件，这个组件会从组件树中离自身最近的那个匹配的 `Provider` 中读取到当前的 `context` 值。
+创建一个 `Context` 对象。当 `React` 渲染一个订阅了这个 `Context` 对象的组件，这个组件会从组件树中离自身最近的那个匹配的 `Provider` 中读取到当前的 `context` 值。
 ```jsx
 import React from "react"
 export const ColorContext=React.createContext({color:'red'}) 

@@ -31,8 +31,8 @@ Trace 是一次完整请求的执行记录。
 - 用户输入
 - `Prompt`
 - 模型输入输出
-- Retriever 结果
-- Tool 调用
+- `Retriever` 结果
+- `Tool` 调用
 - `LangGraph` 节点
 - 耗时
 - `token`
@@ -149,7 +149,7 @@ python docs/public/langchain-examples/07_langsmith.py
 ~~~
 
 该脚本用 `@traceable` 包裹一次 `ChatOpenAI` 调用；运行结束后可在 `LangSmith`
-项目中查看这次 ChatGPT 调用的 trace。
+项目中查看这次 `ChatGPT` 调用的 trace。
 
 ## 8. 本模块自测
 
@@ -157,8 +157,8 @@ python docs/public/langchain-examples/07_langsmith.py
    + 用户输入
    + `Prompt`
    + 模型输入输出
-   + Retriever 结果
-   + Tool 调用
+   + `Retriever` 结果
+   + `Tool` 调用
    + `LangGraph` 节点
    + 耗时
    + `token`

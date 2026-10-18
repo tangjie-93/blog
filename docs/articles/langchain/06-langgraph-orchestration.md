@@ -30,9 +30,9 @@ note: 用 State、Node、Edge 和 Checkpointer 编排复杂流程。
 所有节点共享一个状态。
 ```
 
-## 3. State
+## 3. `State`
 
-State 是整个图的共享数据包。
+`State` 是整个图的共享数据包。
 
 大白话：
 
@@ -40,7 +40,7 @@ State 是整个图的共享数据包。
 State 就是这次任务的工作单。
 ```
 
-State 里常放：
+`State` 里常放：
 
 - 用户问题
 - 对话历史
@@ -53,14 +53,14 @@ State 里常放：
 
 常见坑：
 
-1. State 变成大杂烩。
+1. `State` 变成大杂烩。
 2. 字段命名不清楚。
 3. 节点之间隐式依赖太多。
 4. 敏感信息没有控制。
 
-## 4. Node
+## 4. `Node`
 
-Node 是图里的一个处理步骤。
+`Node` 是图里的一个处理步骤。
 
 例子：
 
@@ -70,23 +70,23 @@ Node 是图里的一个处理步骤。
 - `generate_answer`
 - `human_review`
 
-好 Node 的标准：
+好 `Node` 的标准：
 
-1. 一个 Node 做一件事。
-2. 输入来自 State。
-3. 输出更新 State。
+1. 一个 `Node` 做一件事。
+2. 输入来自 `State`。
+3. 输出更新 `State`。
 4. 可以单独测试。
 5. 出错时能暴露清楚原因。
 
-## 5. Edge
+## 5. `Edge`
 
-Edge 决定节点之间怎么走。
+`Edge` 决定节点之间怎么走。
 
 ```text
 retrieve_docs -> generate_answer
 ```
 
-Conditional Edge 根据状态决定下一步。
+Conditional `Edge` 根据状态决定下一步。
 
 例子：
 
@@ -120,7 +120,7 @@ Checkpointer 用来保存执行状态。
 1. 没有会话隔离。
 2. 用户之间状态串了。
 3. 保存敏感信息没有脱敏。
-4. State 结构升级后旧数据不兼容。
+4. `State` 结构升级后旧数据不兼容。
 
 ## 7. `Human-in-the-loop`
 
@@ -140,7 +140,7 @@ Checkpointer 用来保存执行状态。
 1. 展示模型判断依据。
 2. 展示引用来源。
 3. 允许人工修改。
-4. 审批结果写回 State。
+4. 审批结果写回 `State`。
 5. 通过和拒绝走不同分支。
 
 ## 8. 一个企业 `RAG` Graph 示例
@@ -180,16 +180,16 @@ python docs/public/langchain-examples/06_langgraph/enterprise_rag_graph.py
 python docs/public/langchain-examples/06_langgraph.py
 ```
 
-该脚本定义 State、模型 Node 和 `START -> Node -> END` 边，并在 Node 内由
-`ChatOpenAI` 调用 `OpenAI` ChatGPT。
+该脚本定义 `State`、模型 `Node` 和 `START -> Node -> END` 边，并在 `Node` 内由
+`ChatOpenAI` 调用 `OpenAI` `ChatGPT`。
 
 ## 10. 本模块自测
 
-1. State、Node、Edge 分别是什么？
-  + State 是图的共享数据包。
-  + Node 是图里的一个处理步骤。
-  + Edge 决定节点之间怎么走。
-2. Conditional Edge 解决什么问题？
+1. `State`、`Node`、`Edge` 分别是什么？
+  + `State` 是图的共享数据包。
+  + `Node` 是图里的一个处理步骤。
+  + `Edge` 决定节点之间怎么走。
+2. Conditional `Edge` 解决什么问题？
   + 根据状态决定下一步。
   + 可以处理分支、循环、条件判断。
   + 人工审批、工具调用中断等场景。

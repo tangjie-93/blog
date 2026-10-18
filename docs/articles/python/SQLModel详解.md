@@ -6,15 +6,15 @@ tags: "Python"
 note: "学习模型定义、会话管理、CRUD、关系模型与工程实践。"
 ---
 
-# SQLModel 详解
+# `SQLModel` 详解
 
-SQLModel 是一个现代 `Python` 库，它结合了 SQLAlchemy 和 Pydantic 的最佳特性，为数据库操作和数据验证提供了统一的接口。本文档将详细介绍 SQLModel 的使用方法和最佳实践。
+`SQLModel` 是一个现代 `Python` 库，它结合了 SQLAlchemy 和 `Pydantic` 的最佳特性，为数据库操作和数据验证提供了统一的接口。本文档将详细介绍 `SQLModel` 的使用方法和最佳实践。
 
 ---
 
 ## 1、目录
 
-1. [什么是 SQLModel](#_1-什么是-sqlmodel)
+1. [什么是 `SQLModel`](#_1-什么是-sqlmodel)
 2. [安装与环境配置](#_2-安装与环境配置)
 3. [基本概念](#_3-基本概念)
 4. [模型定义](#_4-模型定义)
@@ -26,9 +26,9 @@ SQLModel 是一个现代 `Python` 库，它结合了 SQLAlchemy 和 Pydantic 的
 
 ---
 
-## 1. 什么是 SQLModel
+## 1. 什么是 `SQLModel`
 
-SQLModel 是由 `FastAPI` 的创建者 Sebastián Ramírez 开发的一个 `Python` 库，它的核心思想是将 SQLAlchemy（用于数据库 ORM）和 Pydantic（用于数据验证）的功能结合起来，提供一个统一的接口。
+`SQLModel` 是由 `FastAPI` 的创建者 Sebastián Ramírez 开发的一个 `Python` 库，它的核心思想是将 SQLAlchemy（用于数据库 ORM）和 `Pydantic`（用于数据验证）的功能结合起来，提供一个统一的接口。
 
 ### 2.1 主要特点：
 
@@ -42,7 +42,7 @@ SQLModel 是由 `FastAPI` 的创建者 Sebastián Ramírez 开发的一个 `Pyth
 
 ## 2. 安装与环境配置
 
-### 3.1 `2.1` 安装 SQLModel
+### 3.1 `2.1` 安装 `SQLModel`
 
 ```bash
 # 使用 pip 安装
@@ -61,7 +61,7 @@ pip install "sqlmodel[sqlite]"      # 包含 SQLite 驱动
 
 - `Python` `3.7`+
 - SQLAlchemy `1.4.22`+
-- Pydantic `2.0`+
+- `Pydantic` `2.0`+
 
 ---
 
@@ -71,7 +71,7 @@ pip install "sqlmodel[sqlite]"      # 包含 SQLite 驱动
 
 | 组件 | 描述 |
 |------|------|
-| `SQLModel` | 基础模型类，继承自 Pydantic 的 BaseModel |
+| `SQLModel` | 基础模型类，继承自 `Pydantic` 的 BaseModel |
 | `Field` | 用于定义字段属性的工具 |
 | `create_engine` | 创建数据库引擎 |
 | `Session` | 数据库会话，用于执行数据库操作 |
@@ -79,9 +79,9 @@ pip install "sqlmodel[sqlite]"      # 包含 SQLite 驱动
 
 ### 4.2 `3.2` 工作原理
 
-SQLModel 的工作原理是：
+`SQLModel` 的工作原理是：
 1. 定义继承自 `SQLModel` 的模型类
-2. 模型类同时作为 Pydantic 模型和 SQLAlchemy 模型
+2. 模型类同时作为 `Pydantic` 模型和 SQLAlchemy 模型
 3. 使用 `create_engine` 创建数据库引擎
 4. 使用 `Session` 执行数据库操作
 5. 自动处理数据验证和类型转换
@@ -528,7 +528,7 @@ async def validation_exception_handler(request, exc):
 **问题**：关系模型引用错误
 
 **解决方案**：
-- SQLModel `0.0.14`+ 使用 `model_rebuild()` 解析前向引用（旧版本使用 `update_forward_refs()`）
+- `SQLModel` `0.0.14`+ 使用 `model_rebuild()` 解析前向引用（旧版本使用 `update_forward_refs()`）
 - 确保外键引用正确
 - 检查关系定义是否匹配
 - 确保使用了 `Relationship()` 来定义关系，而不是简单的类型注解
@@ -571,7 +571,7 @@ heroes = session.exec(statement).all()
 
 ## 10. 代码示例
 
-### 11.1 完整的 `FastAPI` + SQLModel 示例
+### 11.1 完整的 `FastAPI` + `SQLModel` 示例
 
 ```python
 from fastapi import FastAPI, Depends, HTTPException, status
@@ -715,7 +715,7 @@ if __name__ == "__main__":
 
 ## 11. 总结
 
-SQLModel 是一个强大的库，它结合了 SQLAlchemy 和 Pydantic 的最佳特性，为 `Python` 开发者提供了一种简洁、类型安全的方式来处理数据库操作。通过本文档的介绍，你应该已经了解了 SQLModel 的基本概念、使用方法和最佳实践。
+`SQLModel` 是一个强大的库，它结合了 SQLAlchemy 和 `Pydantic` 的最佳特性，为 `Python` 开发者提供了一种简洁、类型安全的方式来处理数据库操作。通过本文档的介绍，你应该已经了解了 `SQLModel` 的基本概念、使用方法和最佳实践。
 
 ### 12.1 核心优势：
 
@@ -725,7 +725,7 @@ SQLModel 是一个强大的库，它结合了 SQLAlchemy 和 Pydantic 的最佳�
 4. **易于集成**：与 `FastAPI` 无缝集成
 5. **功能强大**：支持复杂的数据库操作和关系
 
-SQLModel 是构建现代 `Python` 应用的理想选择，特别是当你需要同时处理数据库操作和数据验证时。
+`SQLModel` 是构建现代 `Python` 应用的理想选择，特别是当你需要同时处理数据库操作和数据验证时。
 
 ---
 

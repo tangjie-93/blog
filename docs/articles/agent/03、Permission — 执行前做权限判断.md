@@ -12,7 +12,7 @@ note: "在工具执行前设置拒绝、规则匹配和用户审批，建立安�
 s01 → s02 → `s03` → [s04](./04%E3%80%81Hooks%20%E2%80%94%20%E6%8C%82%E5%9C%A8%E5%BE%AA%E7%8E%AF%E4%B8%8A%EF%BC%8C%E4%B8%8D%E5%86%99%E8%BF%9B%E5%BE%AA%E7%8E%AF%E9%87%8C.md) → s05 → ... → s20
 > *"工具执行前先做权限判断"* — 权限管线决定哪些操作需要审批。
 >
-> **Harness 层**: 权限 — 在工具执行前加一道门。
+> **`Harness` 层**: 权限 — 在工具执行前加一道门。
 
 ---
 
@@ -46,7 +46,7 @@ s02 的循环完全保留。唯一的变动在工具执行前插入 `check_permi
 
 ![Permission Pipeline](/image/agent-course/s03_permission/permission-pipeline.svg)
 
-**闸门 1**：一张硬拒绝表，先查，命中就返回阻止信息。（教学示意：简单字符串匹配不是可靠安全机制，命令变体和 shell 展开可能绕过。CC 的做法见附录。）
+**闸门 1**：一张硬拒绝表，先查，命中就返回阻止信息。（教学示意：简单字符串匹配不是可靠安全机制，命令变体和 shell 展开可能绕过。`CC` 的做法见附录。）
 
 ```python
 DENY_LIST = [
@@ -162,13 +162,13 @@ python s03_permission/code_openai.py
 s04 Hooks → 给循环加钩子，扩展逻辑挂在钩子上，循环保持干净。
 
 <details>
-<summary>深入 CC 源码</summary>
+<summary>深入 `CC` 源码</summary>
 
-> 以下基于 CC 源码 `types/permissions.ts`、`utils/permissions/permissions.ts`、`toolExecution.ts`、`utils/permissions/yoloClassifier.ts`、`tools/AgentTool/forkSubagent.ts` 的核查。
+> 以下基于 `CC` 源码 `types/permissions.ts`、`utils/permissions/permissions.ts`、`toolExecution.ts`、`utils/permissions/yoloClassifier.ts`、`tools/AgentTool/forkSubagent.ts` 的核查。
 
 ### 一、PermissionResult：不是 3 种，是 4 种
 
-教学版的三道闸门（deny → ask → allow）和 CC 不完全对应。CC 的 `PermissionResult` 有 4 个 behavior（`types/permissions.ts:241-266`）：
+教学版的三道闸门（deny → ask → allow）和 `CC` 不完全对应。`CC` 的 `PermissionResult` 有 4 个 behavior（`types/permissions.ts:241-266`）：
 
 | behavior | 含义 | 教学版对应 |
 |----------|------|-----------|
@@ -179,12 +179,12 @@ s04 Hooks → 给循环加钩子，扩展逻辑挂在钩子上，循环保持干
 
 ### 二、生产版的验证阶段
 
-CC 的工具调用不是经过三道闸门，而是经过多个阶段，分布在 `checkPermissionsAndCallTool()`（`toolExecution.ts:599-1745`）、hooks、`hasPermissionsToUseToolInner()`（`utils/permissions/permissions.ts:1158-1310`）和 classifier 逻辑里：
+`CC` 的工具调用不是经过三道闸门，而是经过多个阶段，分布在 `checkPermissionsAndCallTool()`（`toolExecution.ts:599-1745`）、hooks、`hasPermissionsToUseToolInner()`（`utils/permissions/permissions.ts:1158-1310`）和 classifier 逻辑里：
 
 1. **Zod schema 验证**（`toolExecution.ts:614-680`）— 参数类型检查
 2. **validateInput()**（`toolExecution.ts:682-733`）— 工具级语义验证
 3. **backfillObservableInput()**（`toolExecution.ts:784`）— 补全遗留字段
-4. **PreToolUse hooks**（`toolExecution.ts:800-862`）— 钩子可以返回 allow/deny/ask
+4. **`PreToolUse` hooks**（`toolExecution.ts:800-862`）— 钩子可以返回 allow/deny/ask
 5. **resolveHookPermissionDecision()**（`toolExecution.ts:921-931`）— 协调钩子+管线决策
 6. **hasPermissionsToUseToolInner()**（`permissions.ts:1158-1310`）— 多层规则检查：
    - 整个工具被 deny rule 禁用 → `deny`
@@ -200,7 +200,7 @@ CC 的工具调用不是经过三道闸门，而是经过多个阶段，分布�
 
 ### 三、拒绝列表：不是一个文件，是 8 个来源
 
-CC 没有单一的 deny list。权限规则来自 8 个来源（`types/permissions.ts:54-62`）：
+`CC` 没有单一的 deny list。权限规则来自 8 个来源（`types/permissions.ts:54-62`）：
 
 | 来源 | 配置位置 |
 |------|---------|
@@ -217,11 +217,11 @@ CC 没有单一的 deny list。权限规则来自 8 个来源（`types/permissio
 
 ### 四、isDestructive() 是什么
 
-CC 中 `isDestructive`（`Tool.ts:405-406`）**纯粹是 UI 展示用的**——在工具列表里显示 `[destructive]` 标签。它不参与权限决策。默认所有工具都返回 `false`。只有 ExitWorktree（remove 时）和 `MCP` 工具（依赖 `annotations.destructiveHint`）覆写了它。
+`CC` 中 `isDestructive`（`Tool.ts:405-406`）**纯粹是 `UI` 展示用的**——在工具列表里显示 `[destructive]` 标签。它不参与权限决策。默认所有工具都返回 `false`。只有 ExitWorktree（remove 时）和 `MCP` 工具（依赖 `annotations.destructiveHint`）覆写了它。
 
 ### 五、YoloClassifier（自动审批）
 
-CC 的 auto 模式下，不会每次都弹对话框。`classifyYoloAction`（`utils/permissions/yoloClassifier.ts:1012`）把工具调用 + 对话上下文发给一个分类器 `LLM` 判断是否安全。先尝试 acceptEdits 模式模拟（`permissions.ts:620-656`，如果 acceptEdits 允许 → 直接批准），再查安全工具白名单（`permissions.ts:658-686`），最后才调分类器。分类器连续拒绝太多次 → 回退到人工审批。
+`CC` 的 auto 模式下，不会每次都弹对话框。`classifyYoloAction`（`utils/permissions/yoloClassifier.ts:1012`）把工具调用 + 对话上下文发给一个分类器 `LLM` 判断是否安全。先尝试 acceptEdits 模式模拟（`permissions.ts:620-656`，如果 acceptEdits 允许 → 直接批准），再查安全工具白名单（`permissions.ts:658-686`），最后才调分类器。分类器连续拒绝太多次 → 回退到人工审批。
 
 ### 六、权限冒泡
 
@@ -231,7 +231,7 @@ CC 的 auto 模式下，不会每次都弹对话框。`classifyYoloAction`（`ut
 
 - 多阶段管线 → 3 道闸门：理解门槛大幅降低
 - 8 个规则来源 → 1 个本地 DENY_LIST：概念量可控
-- isDestructive → 忽略（教学版没有 UI 层，CC 里它也不参与权限决策）
+- isDestructive → 忽略（教学版没有 `UI` 层，`CC` 里它也不参与权限决策）
 - YoloClassifier → 省略（依赖于额外的 `LLM` 调用和遥测系统）
 - 权限冒泡 → 省略（s15 才涉及多 `Agent`）
 

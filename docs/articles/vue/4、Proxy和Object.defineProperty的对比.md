@@ -8,15 +8,15 @@ note: Proxy和Object.defineProperty的对比
 
 ## 1、`Proxy` 的优势
 
-+ Proxy可以直接监听整个对象而非属性。
-+ Proxy可以直接监听数组的变化。
-+ Proxy有13中拦截方法，如`ownKeys、deleteProperty、has` 等是 `Object.defineProperty` 不具备的。
-+ Proxy返回的是一个新对象，我们可以只操作新的对象达到目的，而`Object.defineProperty`只能遍历对象属性直接修改;
-+ Proxy做为新标准将受到浏览器产商重点持续的性能优化,也就是传说中的新标准的性能红利。
++ `Proxy`可以直接监听整个对象而非属性。
++ `Proxy`可以直接监听数组的变化。
++ `Proxy`有13中拦截方法，如`ownKeys、deleteProperty、has` 等是 `Object.defineProperty` 不具备的。
++ `Proxy`返回的是一个新对象，我们可以只操作新的对象达到目的，而`Object.defineProperty`只能遍历对象属性直接修改;
++ `Proxy`做为新标准将受到浏览器产商重点持续的性能优化,也就是传说中的新标准的性能红利。
 
 ## 2、`Object.defineProperty` 的优势
 
-+ 兼容性好，支持 IE9，而 Proxy 的存在浏览器兼容性问题,而且无法用 polyfill 磨平。
++ 兼容性好，支持 IE9，而 `Proxy` 的存在浏览器兼容性问题,而且无法用 polyfill 磨平。
 
 ## 3、`Object.defineProperty` 的不足
 

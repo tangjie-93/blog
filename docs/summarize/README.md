@@ -9,7 +9,7 @@
 
 [4、令人敬畏的javascript](https://github.com/sorrycc/awesome-javascript)
 
-[5、JavaScript开发者应懂的33个概念 ](https://github.com/stephentian/33-js-concepts)
+[5、`JavaScript`开发者应懂的33个概念 ](https://github.com/stephentian/33-js-concepts)
 
 [6、前端面试之道](https://github.com/InterviewMap/CS-Interview-Knowledge-Map)
 
@@ -45,7 +45,7 @@
 
 [2、CSS3渐变背景代码生成工具](http://www.internetke.com/jsEffects/2014120803/)
 
-[3、CSS阴影快速生成及预览](https://www.html.cn/tool/css3Preview/Text-Shadow.html)
+[3、`CSS`阴影快速生成及预览](https://www.html.cn/tool/css3Preview/Text-Shadow.html)
 
 [4、在线工具，程序员的工具箱](https://tool.lu/)
 
@@ -53,7 +53,7 @@
 
 [6、ScriptOJ-Web 前端开发评测系统](http://scriptoj.mangojuice.top/)
 
-[7、30秒就能理解的JavaScript优秀代码](http://caibaojian.com/30-seconds-of-code.html)
+[7、30秒就能理解的`JavaScript`优秀代码](http://caibaojian.com/30-seconds-of-code.html)
 
 [8、web在线闯关的网站](https://www.freecodecamp.one/)
 

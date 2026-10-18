@@ -28,10 +28,10 @@ Document 是 `LangChain` 里表示文档片段的对象，通常包含：
 metadata 建议包含：
 
 - 文件名
-- 文档 ID
+- 文档 `ID`
 - 页码
 - 章节标题
-- chunk ID
+- chunk `ID`
 - 权限信息
 - 版本号
 
@@ -44,7 +44,7 @@ metadata 建议包含：
 
 ## 3. Loader
 
-Loader 负责把 PDF、Word、`Markdown`、网页、数据库记录等加载成 Document。
+Loader 负责把 `PDF`、Word、`Markdown`、网页、数据库记录等加载成 Document。
 
 重点检查：
 
@@ -52,14 +52,14 @@ Loader 负责把 PDF、Word、`Markdown`、网页、数据库记录等加载成 
 2. 页码是否保留。
 3. 表格是否乱序。
 4. 标题层级是否还在。
-5. 扫描版 PDF 是否需要 OCR。
+5. 扫描版 `PDF` 是否需要 `OCR`。
 
 常见坑：
 
-1. PDF 解析顺序错乱。
+1. `PDF` 解析顺序错乱。
 2. 页眉页脚重复进入知识库。
 3. 表格内容被拆散。
-4. 图片里的文字没有 OCR。
+4. 图片里的文字没有 `OCR`。
 
 ## 4. Text Splitter
 
@@ -109,9 +109,9 @@ Text Splitter 把长文档切成小块，方便向量化和检索。
 3. 没有按权限过滤。
 4. top_k 设置不合理。
 
-## 6. Retriever
+## 6. `Retriever`
 
-Retriever 是“根据问题找资料”的接口。
+`Retriever` 是“根据问题找资料”的接口。
 
 常见检索方式：
 
@@ -130,9 +130,9 @@ Retriever 是“根据问题找资料”的接口。
 3. top_k 太小召回不足。
 4. top_k 太大塞进太多无关内容。
 
-## 7. Context 拼接
+## 7. `Context` 拼接
 
-Context 拼接是把检索到的文档片段整理后放进 `Prompt`。
+`Context` 拼接是把检索到的文档片段整理后放进 `Prompt`。
 
 好的上下文应该包含：
 
@@ -178,12 +178,12 @@ python docs/public/langchain-examples/04_rag_pipeline.py
 ~~~
 
 该脚本会用 `OpenAI` `Embeddings` 构建内存向量库、检索制度片段，再由
-`ChatOpenAI` 调用 ChatGPT 基于上下文生成带来源标记的答案。
+`ChatOpenAI` 调用 `ChatGPT` 基于上下文生成带来源标记的答案。
 
 ## 10. 本模块自测
 
 1. `RAG` 的完整链路是什么？
-    + 文档加载 -> 文本切分 -> `Embedding` -> 向量库 -> Retriever -> `Prompt` -> `LLM` -> Answer
+    + 文档加载 -> 文本切分 -> `Embedding` -> 向量库 -> `Retriever` -> `Prompt` -> `LLM` -> Answer
 2. `Document.metadata` 为什么重要？
     + 用于权限过滤、文档类型分类、检索结果排序。
     + 没有 metadata 会导致检索结果不准确。
@@ -192,10 +192,10 @@ python docs/public/langchain-examples/04_rag_pipeline.py
     + chunk size 太小：语义不完整。
     + overlap 太小：上下文断裂。
     + overlap 太大：重复内容过多。
-4. Retriever 和 Vector Store 是什么关系？
-    + Retriever 从 Vector Store 读取向量。
+4. `Retriever` 和 Vector Store 是什么关系？
+    + `Retriever` 从 Vector Store 读取向量。
     + Vector Store 存储向量，支持相似度搜索。
-    + 没有 Retriever 无法检索。
+    + 没有 `Retriever` 无法检索。
 5. 检索为空时系统应该怎么回答？
     + 可以返回“没有相关文档”或“无法回答”。
     + 也可以根据上下文生成默认答案。

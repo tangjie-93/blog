@@ -52,7 +52,7 @@ note:  纹理贴图
     }
 </script>
 ```
-## 3、JavaScript代码bufen
+## 3、`JavaScript`代码bufen
 + 获取`WebGL`上下文
 ```js
  function init() {
@@ -172,7 +172,7 @@ function render(gl, count) {
         + 坐标范围是
             + X轴：【-1, 1】。
             + Y轴：【-1, 1】。
-+ WebGL `API`
++ `WebGL` `API`
     + shader：着色器对象
         + gl.createShader：创建着色器。
         + gl.shaderSource：指定着色器源码。
@@ -215,11 +215,11 @@ function render(gl, count) {
         + gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true); 设置图片的翻转
         + gl.activeTexture：激活纹理单元。
         + gl.bindTexture：绑定纹理对象到当前纹理。
-        + gl.texImage2D：将图片数据传递给 GPU。
+        + gl.texImage2D：将图片数据传递给 `GPU`。
         + gl.texParameterf：设置图片放大缩小时的过滤算法。
 
 
 **参考**<br>
-[WebGL零基础入门教程(郭隆邦)](http://www.yanhuangxueyuan.com/WebGL/)<br>
-[WebGL 入门与实践](https://juejin.cn/book/6844733755580481543/section/6844733755916025869)<br>
-[WebGL官方文档](https://developer.mozilla.org/zh-CN/docs/Web/API/WebGLRenderingContext/vertexAttribPointer)<br>
+[`WebGL`零基础入门教程(郭隆邦)](http://www.yanhuangxueyuan.com/WebGL/)<br>
+[`WebGL` 入门与实践](https://juejin.cn/book/6844733755580481543/section/6844733755916025869)<br>
+[`WebGL`官方文档](https://developer.mozilla.org/zh-CN/docs/Web/API/WebGLRenderingContext/vertexAttribPointer)<br>

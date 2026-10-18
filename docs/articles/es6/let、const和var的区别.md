@@ -200,11 +200,11 @@ let bar = 2;
 		}
 		console.log(i);//i is not defined
 		```
-## 4、ES6声明变量的6种方式
+## 4、`ES6`声明变量的6种方式
 
 &#8195;&#8195;`var、function、let、const、class、import`。`es5`只有`var`和`function`两种。  
 &#8195;&#8195;**顶层对象的差异：** 在浏览器环境指的是 `window` 对象，在 `Node` 中 指的是 `global` 对象，在 `Web Worker` 里面，`self`也指向顶层对象。   
-&#8195;&#8195;ES5 之中，顶层对象的属性与全局变量是等价的。`ES6`中的`var`命令和`function`命令声明的全局变量，依旧是顶层对象的属性；`let`命令、`const`命令、`class`命令声明的全局变量，不属于顶层对象的属性。
+&#8195;&#8195;`ES5` 之中，顶层对象的属性与全局变量是等价的。`ES6`中的`var`命令和`function`命令声明的全局变量，依旧是顶层对象的属性；`let`命令、`const`命令、`class`命令声明的全局变量，不属于顶层对象的属性。
 ```js       
 var a = 1;
 window.a // 1

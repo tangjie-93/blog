@@ -69,7 +69,7 @@ LangChain 生态 = 核心接口 + 应用框架 + 集成包 + 编排框架 + 观�
 
 | 你遇到的问题 | 该看哪里 |
 |---|---|
-| `Prompt`、Message、Runnable、Tool 是什么 | `langchain_core` |
+| `Prompt`、Message、`Runnable`、`Tool` 是什么 | `langchain_core` |
 | 怎么快速搭一个 `RAG` 或 `Agent` | `langchain` |
 | 怎么接 `OpenAI`、Claude、本地模型 | 对应模型集成包 |
 | 怎么接向量库 | 对应向量库集成包 |
@@ -98,13 +98,13 @@ python docs/public/langchain-examples/01_ecosystem/ecosystem_layers.py
 python docs/public/langchain-examples/01_chat_basics.py
 ~~~
 
-该脚本实际调用 `OpenAI` ChatGPT，并把 `Prompt`、模型适配器和输出解析器连成最小链路。
+该脚本实际调用 `OpenAI` `ChatGPT`，并把 `Prompt`、模型适配器和输出解析器连成最小链路。
 
 ## 9. 自测问题
 
 1. `langchain_core` 和 `langchain` 是什么关系？
 + `langchain_core` 是基础接口，`langchain` 是应用开发框架。
-+ `langchain` 依赖 `langchain_core`，定义了消息、`Prompt`、Runnable 等基础类型。
++ `langchain` 依赖 `langchain_core`，定义了消息、`Prompt`、`Runnable` 等基础类型。
 2. 为什么模型集成包要拆出去？
 + 模型集成包负责对接模型，每个模型都有自己的 `API`。
 + 模型集成包需要维护自己的依赖，不能和主框架混在一起。

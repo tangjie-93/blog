@@ -79,7 +79,7 @@ langchain_core
 
 不要只按顺序读理论。每篇 01-08 文档都有对应的可执行入口，统一说明见
 [examples/README.md](./examples/)。所有生成类示例都用
-`ChatOpenAI` 调用 `OpenAI` ChatGPT，需要先配置 `OPENAI_API_KEY`。
+`ChatOpenAI` 调用 `OpenAI` `ChatGPT`，需要先配置 `OPENAI_API_KEY`。
 
 ## 5. 最常见组合
 
@@ -179,7 +179,7 @@ Trace -> Dataset -> Evaluation -> Feedback -> Monitoring
 
 - `LangChain` `Python` Overview: https://docs.langchain.com/oss/python/langchain/overview
 - `LangGraph` Overview: https://docs.langchain.com/oss/python/langgraph/overview
-- `LangGraph` Agentic `RAG`: https://docs.langchain.com/oss/python/langgraph/agentic-rag
+- `LangGraph` `Agentic` `RAG`: https://docs.langchain.com/oss/python/langgraph/agentic-rag
 - `LangChain` Core Reference: https://reference.langchain.com/python/langchain-core
 - `LangSmith` Observability: https://docs.langchain.com/langsmith/observability
 - `LangSmith` FAQ: https://docs.langchain.com/langsmith/faq

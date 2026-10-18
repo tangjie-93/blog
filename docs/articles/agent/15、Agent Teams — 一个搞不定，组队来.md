@@ -12,7 +12,7 @@ note: "把一次性子 Agent 与持久队友结合，分别解决隔离上下文
 s01 → ... → s13 → s14 → `s15` → [s16](./16%E3%80%81Team%20Protocols%20%E2%80%94%20%E9%98%9F%E5%8F%8B%E4%B9%8B%E9%97%B4%E8%A6%81%E6%9C%89%E7%BA%A6%E5%AE%9A.md) → s17 → s18 → s19 → s20
 > *"一个搞不定, 组队来"* — 文件收件箱 + 队友线程。
 >
-> **Harness 层**: 团队 — 多 `Agent` 协作, 消息总线。
+> **`Harness` 层**: 团队 — 多 `Agent` 协作, 消息总线。
 
 ---
 
@@ -34,7 +34,7 @@ s06 的子 `Agent` 是临时工，叫来干一件事就走了。但有些任务�
 
 | | s06 子 `Agent` | s15 队友 |
 |---|---|---|
-| 生命周期 | 一次性，用完销毁 | 多轮（教学版限 10 轮，真实 CC 用 idle loop） |
+| 生命周期 | 一次性，用完销毁 | 多轮（教学版限 10 轮，真实 `CC` 用 idle loop） |
 | 通信 | 只回传结论 | 异步收件箱，随时通信 |
 | 上下文 | 完全隔离 | 通过消息共享信息 |
 | 数量 | 一个主 `Agent` + 偶尔子 `Agent` | 一个 Lead + 多个队友 |
@@ -69,7 +69,7 @@ class MessageBus:
         return msgs
 ```
 
-为什么用文件而不是内存队列？教学版选文件是因为直观、跨线程可观察。真实 CC 也用文件收件箱（`~/.claude/teams/{team}/inboxes/`），但加了 `proper-lockfile` 防并发写冲突。教学版的 `read_inbox` 有 read + unlink 竞态，多线程同时读可能丢消息，对教学场景可以接受。
+为什么用文件而不是内存队列？教学版选文件是因为直观、跨线程可观察。真实 `CC` 也用文件收件箱（`~/.claude/teams/{team}/inboxes/`），但加了 `proper-lockfile` 防并发写冲突。教学版的 `read_inbox` 有 read + unlink 竞态，多线程同时读可能丢消息，对教学场景可以接受。
 
 ### 3.2 spawn_teammate_thread: 启动队友
 
@@ -98,8 +98,8 @@ def spawn_teammate_thread(name: str, role: str, prompt: str) -> str:
 ```
 
 关键设计：
-- **队友有简化工具集**：bash、read、write、send_message。教学版省略了任务和 cron，聚焦通信机制。真实 CC 的队友也有 TaskCreate、TaskUpdate 等工具，任务系统是团队共享的
-- **教学版限 10 轮**：防止队友无限循环。真实 CC 用 idle loop：跑完一轮后发 `idle_notification`，等 inbox 消息，收到后继续，直到 `shutdown_request` 才退出
+- **队友有简化工具集**：bash、read、write、send_message。教学版省略了任务和 cron，聚焦通信机制。真实 `CC` 的队友也有 TaskCreate、TaskUpdate 等工具，任务系统是团队共享的
+- **教学版限 10 轮**：防止队友无限循环。真实 `CC` 用 idle loop：跑完一轮后发 `idle_notification`，等 inbox 消息，收到后继续，直到 `shutdown_request` 才退出
 - **完成后自动汇报**：`BUS.send(name, "lead", summary)` 把最终结果发到 Lead 的收件箱
 
 ### 3.3 Lead 的 inbox 注入
@@ -116,11 +116,11 @@ if inbox:
                     "content": f"[Inbox]\n{inbox_text}"})
 ```
 
-教学版在用户输入循环外注入。CC 更精细，Lead 的 `useInboxPoller` 每 1 秒检查一次，有消息就提交为新的 turn，不需要等用户输入。
+教学版在用户输入循环外注入。`CC` 更精细，Lead 的 `useInboxPoller` 每 1 秒检查一次，有消息就提交为新的 turn，不需要等用户输入。
 
 ### 3.4 权限冒泡
 
-教学版省略了权限冒泡。真实 CC 的流程（`permissionSync.ts`、`useSwarmPermissionPoller.ts`）：
+教学版省略了权限冒泡。真实 `CC` 的流程（`permissionSync.ts`、`useSwarmPermissionPoller.ts`）：
 
 1. 队友遇到需要审批的操作 → 发 `permission_request` 到 Lead 收件箱
 2. Lead 的 `useInboxPoller` 检测到请求 → 路由到审批队列
@@ -154,7 +154,7 @@ if inbox:
 | 新函数 | — | spawn_teammate_thread, run_send_message, run_check_inbox |
 | Lead 工具 | 11 (s14) | + spawn_teammate, send_message, check_inbox (14) |
 | 队友工具 | — | bash, read_file, write_file, send_message (4) |
-| 权限 | 本地决策 | 教学版省略（真实 CC 有冒泡机制） |
+| 权限 | 本地决策 | 教学版省略（真实 `CC` 有冒泡机制） |
 
 ---
 
@@ -182,13 +182,13 @@ python s15_agent_teams/code.py
 s16 `Team Protocols` → 关机握手与消息约定。
 
 <details>
-<summary>深入 CC 源码</summary>
+<summary>深入 `CC` 源码</summary>
 
-> 以下基于 CC 源码 `spawnMultiAgent.ts`、`useInboxPoller.ts`（969 行）、`useSwarmPermissionPoller.ts`（330 行）、`teammateMailbox.ts`、`teamHelpers.ts` 的完整分析。
+> 以下基于 `CC` 源码 `spawnMultiAgent.ts`、`useInboxPoller.ts`（969 行）、`useSwarmPermissionPoller.ts`（330 行）、`teammateMailbox.ts`、`teamHelpers.ts` 的完整分析。
 
 ### 一、没有中央消息总线，是文件系统
 
-教学版用 `MessageBus` 类收发消息。CC 的做法更直接，每个 `Agent` 直接写其他 `Agent` 的收件箱文件。
+教学版用 `MessageBus` 类收发消息。`CC` 的做法更直接，每个 `Agent` 直接写其他 `Agent` 的收件箱文件。
 
 收件箱路径：`~/.claude/teams/{teamName}/inboxes/{agentName}.json`
 
@@ -196,7 +196,7 @@ s16 `Team Protocols` → 关机握手与消息约定。
 
 ### 二、15 种消息类型
 
-CC 的团队通信有 15 种结构化消息（`teammateMailbox.ts`）：
+`CC` 的团队通信有 15 种结构化消息（`teammateMailbox.ts`）：
 
 | 类型 | 方向 | 用途 |
 |------|------|------|
@@ -215,21 +215,21 @@ CC 的团队通信有 15 种结构化消息（`teammateMailbox.ts`）：
 | `sandbox_permission_*` | 双向 | 网络权限请求/回复 |
 | `teammate_terminated` | 系统 | 队友被移除通知 |
 
-文本消息被包装在 `<teammate-message>` XML 标签中交付给模型。
+文本消息被包装在 `<teammate-message>` `XML` 标签中交付给模型。
 
 ### 三、权限冒泡：双向轮询
 
-教学版省略了权限冒泡。CC 的实际流程（`permissionSync.ts`）：
+教学版省略了权限冒泡。`CC` 的实际流程（`permissionSync.ts`）：
 
 1. **队友**遇到需要审批的操作 → 发 `permission_request` 到 Lead 的收件箱
 2. **Lead** 的 `useInboxPoller`（每 1 秒轮询）检测到请求 → 路由到 `ToolUseConfirmQueue`
-3. Lead 的 UI 显示审批对话框，带队友名字和颜色
+3. Lead 的 `UI` 显示审批对话框，带队友名字和颜色
 4. 用户审批后 → Lead 发 `permission_response` 回队友的收件箱
 5. **队友**的 `useSwarmPermissionPoller`（每 500ms 轮询）收到回复 → 继续或拒绝执行
 
 ### 四、队友生命周期
 
-CC 的队友由 `spawnTeammate()`（`spawnMultiAgent.ts`）创建：
+`CC` 的队友由 `spawnTeammate()`（`spawnMultiAgent.ts`）创建：
 
 1. **Spawn**：创建 tmux 窗格（或进程内），分配颜色，写入 team config
 2. **Work**：`useInboxPoller` 每 1 秒检查收件箱 → 有消息就提交为新的 turn

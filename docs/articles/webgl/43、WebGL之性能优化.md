@@ -13,7 +13,7 @@ note: WebGL之性能优化
 对于每个 `attribute`，你可以让它每次调用顶点着色器时迭代到缓冲区的 下一个值（默认行为），或者是每绘制 `N`（`N`通常为`1`）个实例时才迭代到 下一个值。
 
 
-## 1.WebGL性能优化 - 实例化绘制
+## 1.`WebGL`性能优化 - 实例化绘制
 我们不妨使用 `attribute`来提供`matrix`和`color`的值以取代`uniform` 。 我们会在缓冲区里为每个实例提供矩阵和颜色，设置好从缓冲区里读取数据的 `attribute`，然后告诉`WebGL`只有在绘制下一个实例的时候才迭代到下一个值。
 #### 1.顶点着色器
 ```js
@@ -94,7 +94,7 @@ const colorBuffer = gl.createBuffer();
 gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
 gl.bufferData(gl.ARRAY_BUFFER,colors, gl.STATIC_DRAW);
 ```
-**注意**: `gl.bufferData`最后一个参数是 `gl.DYNAMIC_DRAW`。这是一个给WebGL的指示， 告诉它我们要经常刷新这里的数据。
+**注意**: `gl.bufferData`最后一个参数是 `gl.DYNAMIC_DRAW`。这是一个给`WebGL`的指示， 告诉它我们要经常刷新这里的数据。
 
 ####  5.绘制
 + 更新所有的矩阵
@@ -152,7 +152,7 @@ ext.drawArraysInstancedANGLE(
 `demo`地址 [非实例化绘制](https://github.com/tangjie-93/WebGL/blob/main/fundmantalExamples/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/%E9%9D%9E%E5%AE%9E%E4%BE%8B%E5%8C%96%E7%BB%98%E5%88%B6.html)
 `demo`地址 [实例化绘制](https://github.com/tangjie-93/WebGL/blob/main/fundmantalExamples/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/%E5%AE%9E%E4%BE%8B%E5%8C%96%E7%BB%98%E5%88%B6.html)
 
-## 2.WebGL - 顶点索引
+## 2.`WebGL` - 顶点索引
 
 在 `WebGL` 中有两个基本的绘制函数。 `gl.drawArrays` 和 `gl.drawElements`。 这个网站的文章中，大部分是调用 `gl.drawArrays` 的。
 
@@ -203,5 +203,5 @@ gl.drawElements(primitiveType, count, indexType, offset);
 
 **参考文档**
 
-[WebGL 顶点索引](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-indexed-vertices.html)<br>
-[WebGL性能优化 - 实例化绘制](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-instanced-drawing.html)<br>
+[`WebGL` 顶点索引](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-indexed-vertices.html)<br>
+[`WebGL`性能优化 - 实例化绘制](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-instanced-drawing.html)<br>

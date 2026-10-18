@@ -15,7 +15,7 @@ note: 从普通 RAG 到 Agent 和工程化上线的学习路线。
 ### 1.1 配套可运行 Demo
 
 完成 [示例统一准备](./examples/) 后，按下面顺序运行。所有生成步骤都通过
-ChatOpenAI 调用 `OpenAI` ChatGPT：
+`ChatOpenAI` 调用 `OpenAI` `ChatGPT`：
 
 ~~~powershell
 python docs/public/langchain-examples/01_chat_basics.py
@@ -44,9 +44,9 @@ python docs/public/langchain-examples/08_enterprise_rag.py
 3. 用 Text Splitter 切分文档。
 4. 用 `Embedding` 模型生成向量。
 5. 存入向量库。
-6. 写 Retriever。
+6. 写 `Retriever`。
 7. 写 `Prompt`。
-8. 调用 Chat Model 生成答案。
+8. 调用 Chat `Model` 生成答案。
 9. 输出引用来源。
 
 验收标准：
@@ -65,15 +65,15 @@ python docs/public/langchain-examples/08_enterprise_rag.py
 1. Message。
 2. PromptTemplate。
 3. ChatPromptTemplate。
-4. Runnable。
-5. Tool。
+4. `Runnable`。
+5. `Tool`。
 6. OutputParser。
 
 验收标准：
 
 1. 能解释 `prompt | llm` 是什么。
 2. 能写一个 ChatPromptTemplate。
-3. 能把一个函数包装成 Tool。
+3. 能把一个函数包装成 `Tool`。
 4. 能说清 `.invoke()` 和 `.stream()` 的区别。
 
 ## 4. 阶段三：工具调用和简单 `Agent`
@@ -101,10 +101,10 @@ python docs/public/langchain-examples/08_enterprise_rag.py
 
 要做什么：
 
-1. 定义 State。
-2. 拆分 Node。
-3. 连接 Edge。
-4. 增加 Conditional Edge。
+1. 定义 `State`。
+2. 拆分 `Node`。
+3. 连接 `Edge`。
+4. 增加 Conditional `Edge`。
 5. 设置结束条件。
 6. 必要时增加 Checkpointer。
 7. 必要时增加人工审批。
@@ -149,7 +149,7 @@ python docs/public/langchain-examples/08_enterprise_rag.py
 
 ### 7.2 `7.2` 第 2 天
 
-学 `Prompt`、Runnable、模型调用。
+学 `Prompt`、`Runnable`、模型调用。
 
 交付：
 
@@ -158,7 +158,7 @@ python docs/public/langchain-examples/08_enterprise_rag.py
 
 ### 7.3 `7.3` 第 3 天
 
-学 Tool 和简单 `Agent`。
+学 `Tool` 和简单 `Agent`。
 
 交付：
 
@@ -187,7 +187,7 @@ python docs/public/langchain-examples/08_enterprise_rag.py
 ## 8. 本模块自测
 
 1. 最小 `RAG` Demo 必须包含哪些步骤？
-2. 为什么要先普通 `RAG`，再 Agentic `RAG`？
+2. 为什么要先普通 `RAG`，再 `Agentic` `RAG`？
 3. 什么情况下引入 `LangGraph`？
 4. `LangSmith` 应该在什么时候接入？
 5. 从 Demo 到生产还缺哪些能力？

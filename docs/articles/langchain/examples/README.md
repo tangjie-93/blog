@@ -58,11 +58,11 @@ python docs/public/langchain-examples/02_core/messages.py
 | 脚本 | 对应主题 | 运行条件 | 验证内容 |
 | --- | --- | --- | --- |
 | `01_chat_basics.py` | 生态分层 | 需要 `OpenAI` | `Prompt -> Chat Model -> OutputParser` |
-| `02_core_chain.py` | `langchain_core` | 需要 `OpenAI` | Message、Runnable、结构化输出 |
+| `02_core_chain.py` | `langchain_core` | 需要 `OpenAI` | Message、`Runnable`、结构化输出 |
 | `03_model_calling.py` | 模型调用 | 需要 `OpenAI` | `invoke`、`stream`、`batch`、`Embedding` |
 | `04_rag_pipeline.py` | `RAG` | 需要 `OpenAI` | 文档、切分、向量检索、引用回答 |
 | `05_agent_tools.py` | `Agent` | 需要 `OpenAI` | 模型选择并调用工具 |
-| `06_langgraph.py` | `LangGraph` | 需要 `OpenAI` | State、Node、Edge 与模型节点 |
+| `06_langgraph.py` | `LangGraph` | 需要 `OpenAI` | `State`、`Node`、`Edge` 与模型节点 |
 | `07_langsmith.py` | `LangSmith` | 需要 `OpenAI` 和 `LangSmith` | 包含模型调用的 Trace |
 | `08_enterprise_rag.py` | 企业 `RAG` | 需要 `OpenAI` | 权限过滤、引用和无命中兜底 |
 
@@ -72,23 +72,23 @@ python docs/public/langchain-examples/02_core/messages.py
 
 | 脚本 | 运行条件 | 概念 |
 | --- | --- | --- |
-| `01_ecosystem/ecosystem_layers.py` | 离线 | `Prompt`、Runnable、模型适配层和解析器之间的数据流 |
+| `01_ecosystem/ecosystem_layers.py` | 离线 | `Prompt`、`Runnable`、模型适配层和解析器之间的数据流 |
 
 ### 3.2 `02` `LangChain` Core
 
 | 脚本 | 运行条件 | 概念 |
 | --- | --- | --- |
-| `02_core/messages.py` | 离线 | System、Human、`AI`、Tool Message |
+| `02_core/messages.py` | 离线 | `System`、Human、`AI`、`Tool` Message |
 | `02_core/prompts.py` | 离线 | `PromptTemplate` 与 `ChatPromptTemplate` |
 | `02_core/runnables.py` | 离线 | 组合、`invoke`、`batch`、`stream` |
-| `02_core/tools.py` | 离线 | Tool 名称、描述、参数 Schema 和调用 |
-| `02_core/output_parsers.py` | 离线 | 字符串、`JSON`、Pydantic 解析与失败兜底 |
+| `02_core/tools.py` | 离线 | `Tool` 名称、描述、参数 `Schema` 和调用 |
+| `02_core/output_parsers.py` | 离线 | 字符串、`JSON`、`Pydantic` 解析与失败兜底 |
 
 ### 3.3 `03` 模型调用
 
 | 脚本 | 运行条件 | 概念 |
 | --- | --- | --- |
-| `03_models/chat_model.py` | 需要 `OpenAI` | Chat Model 输入与 `AIMessage` 输出 |
+| `03_models/chat_model.py` | 需要 `OpenAI` | Chat `Model` 输入与 `AIMessage` 输出 |
 | `03_models/stream_and_batch.py` | 需要 `OpenAI` | 流式和批量调用 |
 | `03_models/embeddings.py` | 需要 `OpenAI` | 文档向量与查询向量 |
 | `03_models/model_selection.py` | 离线 | 参数记录与任务模型路由 |
@@ -110,8 +110,8 @@ python docs/public/langchain-examples/02_core/messages.py
 
 | 脚本 | 运行条件 | 概念 |
 | --- | --- | --- |
-| `05_agents/tool_definition.py` | 离线 | Tool 输入、返回和异常兜底 |
-| `05_agents/tool_schema.py` | 离线 | 工具描述与参数 Schema |
+| `05_agents/tool_definition.py` | 离线 | `Tool` 输入、返回和异常兜底 |
+| `05_agents/tool_schema.py` | 离线 | 工具描述与参数 `Schema` |
 | `05_agents/agent_loop.py` | 离线 | 判断、调用、观察、结束和最大步骤 |
 | `05_agents/agentic_rag.py` | 离线 | 查询改写、充分性判断和有限重试 |
 
@@ -121,7 +121,7 @@ python docs/public/langchain-examples/02_core/messages.py
 
 | 脚本 | 运行条件 | 概念 |
 | --- | --- | --- |
-| `06_langgraph/state_node_edge.py` | 离线 | State、Node、Edge |
+| `06_langgraph/state_node_edge.py` | 离线 | `State`、`Node`、`Edge` |
 | `06_langgraph/conditional_edges.py` | 离线 | 显式条件分支 |
 | `06_langgraph/bounded_loop.py` | 离线 | 带结束条件的有限循环 |
 | `06_langgraph/checkpointer.py` | 离线 | Checkpointer 与 `thread_id` 隔离 |
@@ -136,7 +136,7 @@ python docs/public/langchain-examples/02_core/messages.py
 | `07_langsmith/dataset.py` | 默认离线；`--write` 写远端 | Dataset 与批量 Examples |
 | `07_langsmith/evaluation.py` | 离线 | 检索、答案和引用指标 |
 | `07_langsmith/feedback.py` | 默认离线；`--write` 写远端 | 用户反馈闭环 |
-| `07_langsmith/monitoring_metrics.py` | 离线 | 成功率、P95、Token 与空检索比例 |
+| `07_langsmith/monitoring_metrics.py` | 离线 | 成功率、P95、`Token` 与空检索比例 |
 
 运行 `07_langsmith/trace.py` 前，需要配置 `LANGSMITH_API_KEY` 和 `LANGSMITH_TRACING=true`。远端写入示例必须显式追加参数：
 
@@ -150,9 +150,9 @@ python docs/public/langchain-examples/07_langsmith/feedback.py --write --trace-i
 | 脚本 | 运行条件 | 概念 |
 | --- | --- | --- |
 | `08_enterprise/access_control.py` | 离线 | 检索前权限过滤 |
-| `08_enterprise/knowledge_updates.py` | 离线 | 版本、Chunk ID、删除旧 Chunk 和增量更新 |
+| `08_enterprise/knowledge_updates.py` | 离线 | 版本、Chunk `ID`、删除旧 Chunk 和增量更新 |
 | `08_enterprise/citations.py` | 离线 | 文件、章节、页码与 Chunk 引用 |
-| `08_enterprise/cost_and_latency.py` | 离线 | 调用次数、Token、耗时和成本 |
+| `08_enterprise/cost_and_latency.py` | 离线 | 调用次数、`Token`、耗时和成本 |
 | `08_enterprise/fallbacks.py` | 离线 | 权限、超时、工具、解析和空检索兜底 |
 
 ## 4、推荐运行顺序

@@ -545,6 +545,6 @@ smoothstep(lowerBound, upperBound, value)
 完整`demo`地址 [聚光灯](https://github.com/tangjie-93/WebGL/blob/main/fundmantalExamples/%E5%85%89%E7%85%A7/%E4%B8%89%E7%BB%B4%E8%81%9A%E5%85%89%E7%81%AF.html)
 
 **参考文档**<br>
-[WebGL 三维点光源](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-3d-lighting-point.html)<br>
-[WebGL 三维方向光源](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-3d-lighting-directional.html)<br>
-[WebGL 三维聚光灯](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-3d-lighting-spot.html)<br>
+[`WebGL` 三维点光源](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-3d-lighting-point.html)<br>
+[`WebGL` 三维方向光源](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-3d-lighting-directional.html)<br>
+[`WebGL` 三维聚光灯](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-3d-lighting-spot.html)<br>

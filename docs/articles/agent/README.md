@@ -55,9 +55,9 @@ note: 从模型调用、工具使用到状态管理和评测，理解 Agent 系�
 
 ### 5.1 01 基础与工具
 
-- [01-LLM与Agent基础](./01-LLM%E4%B8%8EAgent%E5%9F%BA%E7%A1%80.md)
+- [01-`LLM`与`Agent`基础](./01-LLM%E4%B8%8EAgent%E5%9F%BA%E7%A1%80.md)
 - [01、`Agent Loop` — 一个循环就够了](./01%E3%80%81Agent%20Loop%20%E2%80%94%20%E4%B8%80%E4%B8%AA%E5%BE%AA%E7%8E%AF%E5%B0%B1%E5%A4%9F%E4%BA%86.md)
-- [02、Tool Use — 多加一个工具，只加一行](./02%E3%80%81Tool%20Use%20%E2%80%94%20%E5%A4%9A%E5%8A%A0%E4%B8%80%E4%B8%AA%E5%B7%A5%E5%85%B7%EF%BC%8C%E5%8F%AA%E5%8A%A0%E4%B8%80%E8%A1%8C.md)
+- [02、`Tool` Use — 多加一个工具，只加一行](./02%E3%80%81Tool%20Use%20%E2%80%94%20%E5%A4%9A%E5%8A%A0%E4%B8%80%E4%B8%AA%E5%B7%A5%E5%85%B7%EF%BC%8C%E5%8F%AA%E5%8A%A0%E4%B8%80%E8%A1%8C.md)
 - [21、`Agent` Patterns — 不同任务用不同模式](./21%E3%80%81Agent%20Patterns%20%E2%80%94%20%E4%B8%8D%E5%90%8C%E4%BB%BB%E5%8A%A1%E7%94%A8%E4%B8%8D%E5%90%8C%E6%A8%A1%E5%BC%8F.md)
 
 ### 5.2 02 安全与运行时
@@ -69,11 +69,11 @@ note: 从模型调用、工具使用到状态管理和评测，理解 Agent 系�
 
 ### 5.3 03 状态、任务与可靠性
 
-- [05、TodoWrite — 没有计划的 `Agent`，做着做着就偏了](./05%E3%80%81TodoWrite%20%E2%80%94%20%E6%B2%A1%E6%9C%89%E8%AE%A1%E5%88%92%E7%9A%84%20Agent%EF%BC%8C%E5%81%9A%E7%9D%80%E5%81%9A%E7%9D%80%E5%B0%B1%E5%81%8F%E4%BA%86.md)
+- [05、`TodoWrite` — 没有计划的 `Agent`，做着做着就偏了](./05%E3%80%81TodoWrite%20%E2%80%94%20%E6%B2%A1%E6%9C%89%E8%AE%A1%E5%88%92%E7%9A%84%20Agent%EF%BC%8C%E5%81%9A%E7%9D%80%E5%81%9A%E7%9D%80%E5%B0%B1%E5%81%8F%E4%BA%86.md)
 - [08、`Context Compact` — 上下文总会满，要有办法腾地方](./08%E3%80%81Context%20Compact%20%E2%80%94%20%E4%B8%8A%E4%B8%8B%E6%96%87%E6%80%BB%E4%BC%9A%E6%BB%A1%EF%BC%8C%E8%A6%81%E6%9C%89%E5%8A%9E%E6%B3%95%E8%85%BE%E5%9C%B0%E6%96%B9.md)
-- [09、Memory — 压缩会丢细节，要有一层不丢的](./09%E3%80%81Memory%20%E2%80%94%20%E5%8E%8B%E7%BC%A9%E4%BC%9A%E4%B8%A2%E7%BB%86%E8%8A%82%EF%BC%8C%E8%A6%81%E6%9C%89%E4%B8%80%E5%B1%82%E4%B8%8D%E4%B8%A2%E7%9A%84.md)
+- [09、`Memory` — 压缩会丢细节，要有一层不丢的](./09%E3%80%81Memory%20%E2%80%94%20%E5%8E%8B%E7%BC%A9%E4%BC%9A%E4%B8%A2%E7%BB%86%E8%8A%82%EF%BC%8C%E8%A6%81%E6%9C%89%E4%B8%80%E5%B1%82%E4%B8%8D%E4%B8%A2%E7%9A%84.md)
 - [11、Error Recovery — 错误不是结束，是重试的开始](./11%E3%80%81Error%20Recovery%20%E2%80%94%20%E9%94%99%E8%AF%AF%E4%B8%8D%E6%98%AF%E7%BB%93%E6%9D%9F%EF%BC%8C%E6%98%AF%E9%87%8D%E8%AF%95%E7%9A%84%E5%BC%80%E5%A7%8B.md)
-- [12、Task System — 目标太大，拆成小任务](./12%E3%80%81Task%20System%20%E2%80%94%20%E7%9B%AE%E6%A0%87%E5%A4%AA%E5%A4%A7%EF%BC%8C%E6%8B%86%E6%88%90%E5%B0%8F%E4%BB%BB%E5%8A%A1.md)
+- [12、`Task` `System` — 目标太大，拆成小任务](./12%E3%80%81Task%20System%20%E2%80%94%20%E7%9B%AE%E6%A0%87%E5%A4%AA%E5%A4%A7%EF%BC%8C%E6%8B%86%E6%88%90%E5%B0%8F%E4%BB%BB%E5%8A%A1.md)
 - [24、`Durable Execution` — 让长任务可暂停、可恢复](./24%E3%80%81Durable%20Execution%20%E2%80%94%20%E8%AE%A9%E9%95%BF%E4%BB%BB%E5%8A%A1%E5%8F%AF%E6%9A%82%E5%81%9C%E3%80%81%E5%8F%AF%E6%81%A2%E5%A4%8D.md)
 - [25、Cost and Reliability — 让 `Agent` 跑得稳、算得清](./25%E3%80%81Cost%20and%20Reliability%20%E2%80%94%20%E8%AE%A9%20Agent%20%E8%B7%91%E5%BE%97%E7%A8%B3%E3%80%81%E7%AE%97%E5%BE%97%E6%B8%85.md)
 
@@ -93,7 +93,7 @@ note: 从模型调用、工具使用到状态管理和评测，理解 Agent 系�
 
 ### 5.6 06 调度与综合
 
-- [07、Skill Loading — 用到的时候才加载](./07%E3%80%81Skill%20Loading%20%E2%80%94%20%E7%94%A8%E5%88%B0%E7%9A%84%E6%97%B6%E5%80%99%E6%89%8D%E5%8A%A0%E8%BD%BD.md)
+- [07、`Skill` Loading — 用到的时候才加载](./07%E3%80%81Skill%20Loading%20%E2%80%94%20%E7%94%A8%E5%88%B0%E7%9A%84%E6%97%B6%E5%80%99%E6%89%8D%E5%8A%A0%E8%BD%BD.md)
 - [13、`Background Tasks` — 慢操作放后台](./13%E3%80%81Background%20Tasks%20%E2%80%94%20%E6%85%A2%E6%93%8D%E4%BD%9C%E6%94%BE%E5%90%8E%E5%8F%B0.md)
 - [14、Cron Scheduler — 按时间表生产工作](./14%E3%80%81Cron%20Scheduler%20%E2%80%94%20%E6%8C%89%E6%97%B6%E9%97%B4%E8%A1%A8%E7%94%9F%E4%BA%A7%E5%B7%A5%E4%BD%9C.md)
 - [20、Comprehensive `Agent` — 全部机制归到一个循环](./20%E3%80%81Comprehensive%20Agent%20%E2%80%94%20%E5%85%A8%E9%83%A8%E6%9C%BA%E5%88%B6%E5%BD%92%E5%88%B0%E4%B8%80%E4%B8%AA%E5%BE%AA%E7%8E%AF.md)

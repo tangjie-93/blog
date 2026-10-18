@@ -91,7 +91,7 @@ Person.prototype={
 }
 ```
 **注意：**  
-+ 1、原型模式2这种方式如果不指定constructor属性，constructor将默认指向Object对象。
++ 1、原型模式2这种方式如果不指定constructor属性，constructor将默认指向`Object`对象。
 + 2、这种方式相当于重写了原型对象，会切断构造函数与最初原型之间的联系。（**切记实例对象中的__proto__指针指向的是构造函数的prototype，而不是构造函数本身**）
 
 原型模式的缺点在于：
@@ -220,7 +220,7 @@ console.log(instance);
 
 &#8195;&#8195;从上面的图片可以看出，instance具有了subproperty的实例属性，getSubValue和property以及getSuperValue的原型属性(即instance的__proto__指向SuperType的原型对象，SuperType的__proto__又指向SuperType的原型对象)。并且它的constructor目前指向的是SuperType。
 注意：
-+ 1、instance是SubType、SuperType和Object的实例。使用instanceof来判断都会得到true。
++ 1、instance是SubType、SuperType和`Object`的实例。使用instanceof来判断都会得到true。
 + 2、**子类型在需要覆盖超类中的某个方法时或者说添加超类中不存在的某个方法时，给原型添加的代码一定要放在替换原型(SubType.prototype=new SuperType())的语句之后。**
 + 3、通过原型链是实现继承后，不能使用对象字面量创建原型方法，这样会重写原型链。会导致(SubType.prototype=new SuperType())无效。
 
@@ -271,7 +271,7 @@ SubType.prototype.constructor=SubType;
 
 &#8195;&#8195;基本思想新建一个对象,然后新建一个函数,将该对象作为参数传入函数,在该函数中新建一个构造函数,并将该对象赋值给该构造函数的原型对象，最后返回该构造函数的实例对象。
 
-&#8195;&#8195;该方法的规范式写法就是**Object.create(obj,propObj)**,第一个参数为作为新对象原型的对象；第二个对象为给新对象添加额外属性的对象。**该模式其实就是创建一个对象来作为其他构造函数的原型对象，然后创建一个函数来返回该构造函数的实例对象。** 该模式的缺点就是原型属性会被所有实例对象共享。
+&#8195;&#8195;该方法的规范式写法就是**`Object`.create(obj,propObj)**,第一个参数为作为新对象原型的对象；第二个对象为给新对象添加额外属性的对象。**该模式其实就是创建一个对象来作为其他构造函数的原型对象，然后创建一个函数来返回该构造函数的实例对象。** 该模式的缺点就是原型属性会被所有实例对象共享。
 
 ```js
 function object(o){
@@ -302,7 +302,7 @@ console.log(p3);
 ### 5、寄生式继承
 
 
-&#8195;&#8195;寄生式继承的基本思路跟寄生构造函数和工厂模式类似，即创建一个仅用于封装过程的函数，该函数在内部以某种方式来增强对象。**继承式继承实际是在原型式继承的基础上多包装了一层函数。其实就是对Object.create()的原理的实现。**
+&#8195;&#8195;寄生式继承的基本思路跟寄生构造函数和工厂模式类似，即创建一个仅用于封装过程的函数，该函数在内部以某种方式来增强对象。**继承式继承实际是在原型式继承的基础上多包装了一层函数。其实就是对`Object`.create()的原理的实现。**
 
 ```js
 function object(o){

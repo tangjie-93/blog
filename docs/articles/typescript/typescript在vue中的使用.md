@@ -20,7 +20,7 @@ note: typescript在vue中的使用
 + 1、@Component (完全继承于 `vue-class-component`)
 + 2、@Prop
 &#8195;&#8195;
-+ 3、@Model
++ 3、@`Model`
 + 4、@Watch
 + 5、@Emit
 + 6、@Inject

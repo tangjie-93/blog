@@ -6,11 +6,11 @@ tags: "Python"
 note: "在 macOS 上安装 PostgreSQL，配置数据库并使用 DBeaver 连接。"
 ---
 
-# PostgreSQL 数据库配置与 DBeaver 连接指南
+# `PostgreSQL` 数据库配置与 `DBeaver` 连接指南
 
-## 一、PostgreSQL 安装与配置
+## 一、`PostgreSQL` 安装与配置
 
-### 1. macOS 安装 PostgreSQL
+### 1. macOS 安装 `PostgreSQL`
 
 #### 方法一：使用 Homebrew（推荐）
 ```bash
@@ -63,25 +63,25 @@ psql -U postgres -d fastapi_db -h localhost -p 5432
 
 ---
 
-## 二、DBeaver 连接 PostgreSQL 数据库
+## 二、`DBeaver` 连接 `PostgreSQL` 数据库
 
-### 1. 下载与安装 DBeaver
+### 1. 下载与安装 `DBeaver`
 
 - **官网**: https://dbeaver.io/download/
 - **版本选择**:
-  - DBeaver Community（社区版）：免费，功能强大
-  - DBeaver Enterprise（企业版）：付费，更多功能
+  - `DBeaver` Community（社区版）：免费，功能强大
+  - `DBeaver` Enterprise（企业版）：付费，更多功能
 - **推荐**: 下载 Community 社区版即可
 
 ### 2. 创建新连接
 
 #### 步骤一：打开新建连接向导
-1. 启动 DBeaver
+1. 启动 `DBeaver`
 2. 点击菜单栏 **数据库 (Database)** → **新建连接 (New Connection)**
 3. 或使用快捷键：`Ctrl + N` (Windows/`Linux`) 或 `Cmd + Shift + N` (Mac)
 
 #### 步骤二：选择数据库类型
-1. 在左侧列表中选择 **PostgreSQL**
+1. 在左侧列表中选择 **`PostgreSQL`**
 2. 点击 **下一步 (Next)**
 
 #### 步骤三：配置连接参数
@@ -91,14 +91,14 @@ psql -U postgres -d fastapi_db -h localhost -p 5432
 | 字段 | 值 | 说明 |
 |------|-----|------|
 | **主机 (Host)** | `localhost` | 本地数据库 |
-| **端口 (Port)** | `5432` | PostgreSQL 默认端口 |
+| **端口 (Port)** | `5432` | `PostgreSQL` 默认端口 |
 | **数据库名 (Database)** | `fastapi_db` | 要连接的数据库 |
 | **用户名 (Username)** | `postgres` | 数据库用户 |
 | **密码 (Password)** | `postgres` | 用户密码 |
 
 #### 步骤四：测试连接
 1. 点击左下角的 **测试连接 (Test Connection)** 按钮
-2. 首次连接时，DBeaver 会提示下载 PostgreSQL JDBC 驱动
+2. 首次连接时，`DBeaver` 会提示下载 `PostgreSQL` JDBC 驱动
 3. 点击 **下载 (Download)** 自动安装驱动
 4. 如果连接成功，会显示 "Connected" 提示
 
@@ -106,7 +106,7 @@ psql -U postgres -d fastapi_db -h localhost -p 5432
 1. 点击 **完成 (Finish)** 保存连接
 2. 连接会出现在左侧的 **数据库导航 (Database Navigator)** 面板中
 
-### 3. DBeaver 常用操作
+### 3. `DBeaver` 常用操作
 
 #### 浏览数据库结构
 - 展开连接 → **databases** → **fastapi_db**
@@ -196,7 +196,7 @@ python -c "from app.core.database import create_db_and_tables; create_db_and_tab
 
 ### 1. 连接失败：Connection refused
 
-**原因**: PostgreSQL 服务未启动
+**原因**: `PostgreSQL` 服务未启动
 
 **解决方法**:
 ```bash
@@ -228,13 +228,13 @@ ALTER USER postgres WITH PASSWORD 'postgres';
 createdb -U postgres fastapi_db
 ```
 
-### 4. DBeaver 驱动下载失败
+### 4. `DBeaver` 驱动下载失败
 
 **解决方法**:
-1. 手动下载 PostgreSQL JDBC 驱动
+1. 手动下载 `PostgreSQL` JDBC 驱动
 2. 访问：https://jdbc.postgresql.org/
 3. 下载最新版本的 `.jar` 文件
-4. 在 DBeaver 连接设置中，手动指定驱动路径
+4. 在 `DBeaver` 连接设置中，手动指定驱动路径
 
 ### 5. 权限不足：Permission denied
 
@@ -249,7 +249,7 @@ GRANT ALL PRIVILEGES ON DATABASE fastapi_db TO postgres;
 
 ---
 
-## 五、DBeaver 快捷键参考
+## 五、`DBeaver` 快捷键参考
 
 | 快捷键 | 功能 |
 |--------|------|
@@ -263,7 +263,7 @@ GRANT ALL PRIVILEGES ON DATABASE fastapi_db TO postgres;
 
 ---
 
-## 六、推荐的 DBeaver 设置
+## 六、推荐的 `DBeaver` 设置
 
 ### 1. 编辑器设置
 - **窗口** → **首选项** → **编辑器** → **`SQL` 编辑器**
@@ -314,7 +314,7 @@ GRANT ALL PRIVILEGES ON DATABASE fastapi_db TO postgres;
 
 ## 八、参考资料
 
-- [PostgreSQL 官方文档](https://www.postgresql.org/docs/)
-- [DBeaver 官方文档](https://dbeaver.com/docs/)
-- [SQLModel 文档](https://sqlmodel.tiangolo.com/)
+- [`PostgreSQL` 官方文档](https://www.postgresql.org/docs/)
+- [`DBeaver` 官方文档](https://dbeaver.com/docs/)
+- [`SQLModel` 文档](https://sqlmodel.tiangolo.com/)
 - [`FastAPI` 文档](https://fastapi.tiangolo.com/)

@@ -11,15 +11,15 @@ note: "为并行任务创建独立 worktree 和分支，隔离文件修改并降
 
 s01 → ... → s16 → s17 → `s18` → [s19](./19%E3%80%81MCP%20Tools%20%E2%80%94%20%E5%A4%96%E6%8E%A5%E5%B7%A5%E5%85%B7%EF%BC%8C%E6%A0%87%E5%87%86%E5%8D%8F%E8%AE%AE.md) → s20
 
-> *"各干各的目录, 互不干扰"* — 任务管目标, worktree 管目录, 按 ID 绑定。
+> *"各干各的目录, 互不干扰"* — 任务管目标, worktree 管目录, 按 `ID` 绑定。
 >
-> **Harness 层**: 隔离 — 并行执行的目录隔离。
+> **`Harness` 层**: 隔离 — 并行执行的目录隔离。
 
 ---
 
 ## 1、问题
 
-s17 中，Alice 和 Bob 都在同一个目录下工作。Alice 的任务是"重构认证模块"，Bob 的任务是"重构 UI 登录页"。
+s17 中，Alice 和 Bob 都在同一个目录下工作。Alice 的任务是"重构认证模块"，Bob 的任务是"重构 `UI` 登录页"。
 
 Alice `write_file("config.py", ...)`。Bob 也 `write_file("config.py", ...)`。两个人改同一个文件，互相覆盖。而且无法干净地回滚——分不清哪些改动是谁的。
 
@@ -88,7 +88,7 @@ def _run_bash(command):
     return run_bash(command, cwd=wt_ctx["path"])  # 在 worktree 下执行
 ```
 
-这是教学简化。真实 CC 的 EnterWorktree 用 `process.chdir()` 切换整个进程目录，AgentTool isolation 用 `cwdOverride` 包住子 agent 执行。
+这是教学简化。真实 `CC` 的 EnterWorktree 用 `process.chdir()` 切换整个进程目录，AgentTool isolation 用 `cwdOverride` 包住子 agent 执行。
 
 ### 3.3 收尾：Keep 还是 Remove
 
@@ -144,7 +144,7 @@ def run_git(args: list[str]) -> tuple[bool, str]:
 | 组件 | 之前 (s17) | 之后 (s18) |
 |------|-----------|-----------|
 | 工作目录 | 所有 `Agent` 共享 WORKDIR | 每个任务可绑定独立 git worktree |
-| Task 数据 | id/subject/status/owner/blockedBy | + worktree 字段 |
+| `Task` 数据 | id/subject/status/owner/blockedBy | + worktree 字段 |
 | 队友工具 cwd | 始终 WORKDIR | 认领带 worktree 的任务时自动切换 |
 | 新函数 | — | create_worktree, bind_task_to_worktree, remove_worktree, keep_worktree, validate_worktree_name |
 | worktree 安全 | 无 | name 校验 + 有改动时拒绝删除 |
@@ -178,9 +178,9 @@ python s18_worktree_isolation/code.py
 s19 `MCP` Plugin → 给 `Agent` 装一个插件系统。外部工具通过标准协议接入，`Agent` 不需要知道它们是谁写的。
 
 <details>
-<summary>深入 CC 源码</summary>
+<summary>深入 `CC` 源码</summary>
 
-CC 的 worktree 系统有两条路径：**EnterWorktree**（当前会话切入）和 **AgentTool isolation**（子 agent 隔离）。
+`CC` 的 worktree 系统有两条路径：**EnterWorktree**（当前会话切入）和 **AgentTool isolation**（子 agent 隔离）。
 
 ### 6.1 EnterWorktree：当前会话切换
 
@@ -206,9 +206,9 @@ CC 的 worktree 系统有两条路径：**EnterWorktree**（当前会话切入�
 
 ### 6.5 状态管理
 
-CC 没有 task-worktree 绑定。Worktree 状态通过 `PersistedWorktreeSession`（`worktree.ts:756-768`）管理，字段包括 `originalCwd`、`worktreePath`、`worktreeName`、`worktreeBranch`、`originalBranch`、`originalHeadCommit`、`sessionId` 等——没有 taskId。`saveWorktreeState()`（`sessionStorage.ts:2883-2920`）以 `type: 'worktree-state'` 写入 session transcript。
+`CC` 没有 task-worktree 绑定。Worktree 状态通过 `PersistedWorktreeSession`（`worktree.ts:756-768`）管理，字段包括 `originalCwd`、`worktreePath`、`worktreeName`、`worktreeBranch`、`originalBranch`、`originalHeadCommit`、`sessionId` 等——没有 taskId。`saveWorktreeState()`（`sessionStorage.ts:2883-2920`）以 `type: 'worktree-state'` 写入 session transcript。
 
-教学版用 task 的 `worktree` 字段做绑定，是教学简化。CC 把 worktree 和 task 作为两个独立系统，通过 `Agent` 理解上下文来关联。
+教学版用 task 的 `worktree` 字段做绑定，是教学简化。`CC` 把 worktree 和 task 作为两个独立系统，通过 `Agent` 理解上下文来关联。
 
 </details>
 
