@@ -235,6 +235,6 @@ function work () {
 ```
 **参考文献**
 
-[Web Worker 使用教程](http://www.ruanyifeng.com/blog/2018/07/web-worker.html)   
+[`Web` Worker 使用教程](http://www.ruanyifeng.com/blog/2018/07/web-worker.html)   
 [聊聊webWorker](https://segmentfault.com/a/1190000009313491)    
 [前端er来学习一下webWorker吧](https://juejin.im/post/5bf8fa045188252f170e0dcb)

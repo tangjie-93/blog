@@ -21,14 +21,14 @@ note: 用问题和动手验收检查 LangChain 生态知识掌握情况。
 
 ### 1.1 动手验收
 
-完成 [示例统一准备](./examples/)，然后逐一运行 examples/01 至
-examples/08 的脚本。验收时至少确认：
+完成 [示例统一准备](./examples/)，然后逐一运行 `examples/01` 至
+`examples/08` 的脚本。验收时至少确认：
 
-1. 01_chat_basics.py 输出一段 `ChatGPT` 中文回答。
-2. 04_rag_pipeline.py 先打印检索到的来源文本，再打印带 [source] 的回答。
-3. 05_agent_tools.py 能得到基于工具返回的年假答案。
-4. 06_langgraph.py 能从 `LangGraph` 的最终 `State` 取到模型回答。
-5. 设置 `LangSmith` 配置后，07_langsmith.py 的调用可在 `LangSmith` 项目中查询到。
+1. `01_chat_basics.py` 输出一段 `ChatGPT` 中文回答。
+2. `04_rag_pipeline.py` 先打印检索到的来源文本，再打印带 [source] 的回答。
+3. `05_agent_tools.py` 能得到基于工具返回的年假答案。
+4. `06_langgraph.py` 能从 `LangGraph` 的最终 `State` 取到模型回答。
+5. 设置 `LangSmith` 配置后，`07_langsmith.py` 的调用可在 `LangSmith` 项目中查询到。
 
 ## 2. 生态分层
 
@@ -40,7 +40,7 @@ examples/08 的脚本。验收时至少确认：
 
 ## 3. `langchain_core`
 
-1. Message 里的 system、human、ai、tool 分别代表什么？
+1. Message 里的 `system`、human、ai、`tool` 分别代表什么？
 2. `PromptTemplate` 和 `ChatPromptTemplate` 有什么区别？
 3. `Runnable` 解决什么问题？
 4. `.invoke()`、`.stream()`、`.batch()` 有什么区别？
@@ -50,9 +50,9 @@ examples/08 的脚本。验收时至少确认：
 ## 4. 模型调用
 
 1. Chat `Model` 和 `Embedding` `Model` 有什么区别？
-2. 为什么 `RAG` 入库和查询最好使用同一个 embedding 模型？
-3. 换 embedding 模型后为什么通常要重建索引？
-4. temperature 对回答有什么影响？
+2. 为什么 `RAG` 入库和查询最好使用同一个 `embedding` 模型？
+3. 换 `embedding` 模型后为什么通常要重建索引？
+4. `temperature` 对回答有什么影响？
 5. streaming 适合什么场景？
 6. 为什么要记录模型版本和参数？
 
@@ -60,10 +60,10 @@ examples/08 的脚本。验收时至少确认：
 
 1. `RAG` 的最小链路包含哪些步骤？
 2. `Document.page_content` 和 `Document.metadata` 分别放什么？
-3. chunk size 和 chunk overlap 会影响什么？
+3. `chunk` size 和 `chunk` overlap 会影响什么？
 4. Loader 阶段最容易出什么问题？
 5. `Retriever` 和 Vector Store 是什么关系？
-6. top_k 太大或太小分别有什么问题？
+6. `top_k` 太大或太小分别有什么问题？
 7. 为什么答案必须带引用来源？
 8. 检索不到资料时系统应该怎么回答？
 
@@ -99,7 +99,7 @@ examples/08 的脚本。验收时至少确认：
 
 1. 为什么权限过滤不能只靠前端？
 2. 为什么不能先检索全部文档，再让模型不要说敏感内容？
-3. 文档更新时为什么要处理旧 chunk？
+3. 文档更新时为什么要处理旧 `chunk`？
 4. 什么样的引用才算可追溯？
 5. `RAG` 成本主要来自哪些地方？
 6. 如何判断一次 `Prompt` 修改真的提升了效果？
@@ -109,7 +109,7 @@ examples/08 的脚本。验收时至少确认：
 
 如果你能完成下面 5 件事，说明你已经具备 `LangChain` 生态的基础实战理解：
 
-1. 画出 `LangChain`、`LangGraph`、`LangSmith`、langchain_core 的关系图。
+1. 画出 `LangChain`、`LangGraph`、`LangSmith`、`langchain_core` 的关系图。
 2. 写出一个最小 `RAG` 链路。
 3. 把一个函数封装成 `Tool`。
 4. 用 `LangGraph` 设计一个带条件分支的流程。

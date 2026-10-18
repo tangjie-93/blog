@@ -166,7 +166,7 @@ def get_session():
         yield session
 ```
 
-### 6.3 `5.3` CRUD 操作
+### 6.3 `5.3` `CRUD` 操作
 
 #### 创建（Create）
 

@@ -313,7 +313,7 @@ print(user_json)
 # - 可以直接用于 HTTP 响应
 ```
 
-**选择性地序列化（include/exclude）**
+**选择性地序列化（`include/exclude`）**
 
 ```python
 # 只包含特定字段
@@ -377,7 +377,7 @@ print(user.model_dump())
 | `model_validator` | 模型级验证 | 验证多个字段之间的关系 |
 | `Field` | 字段配置 | 定义字段的约束条件 |
 
-### 4.2 `3.2` 字段验证器（field_validator）
+### 4.2 `3.2` 字段验证器（`field_validator`）
 
 字段验证器用于验证单个字段的值。
 
@@ -577,7 +577,7 @@ class User(BaseModel):
 #   适合做业务逻辑验证
 ```
 
-### 4.3 `3.3` 模型验证器（model_validator）
+### 4.3 `3.3` 模型验证器（`model_validator`）
 
 模型验证器用于验证多个字段之间的关系，或者进行跨字段的验证。
 
@@ -792,7 +792,7 @@ print(user.model_dump(by_alias=True))
 # - 适合处理前后端字段名不一致的情况
 ```
 
-**实战示例：使用 default_factory**
+**实战示例：使用 `default_factory`**
 
 ```python
 from pydantic import BaseModel, Field
@@ -1465,7 +1465,7 @@ print(user_create.model_dump())
 #  'password': '123456', 'created_at': datetime.datetime(...)}
 ```
 
-### 7.2 `6.2` 计算属性（computed_field）
+### 7.2 `6.2` 计算属性（`computed_field`）
 
 计算属性是根据其他字段动态计算的属性：
 
@@ -2349,8 +2349,8 @@ user = User.from_orm(orm_object)
 ### 11.3 学习路径建议
 
 1. **入门**：掌握 BaseModel、字段类型、模型实例化
-2. **进阶**：学习 field_validator、model_validator、Field
+2. **进阶**：学习 `field_validator`、`model_validator`、Field
 3. **深入**：理解泛型、继承、序列化器
 4. **实战**：结合 `FastAPI` 开发 `REST` `API`
 
-掌握 `Pydantic` 是现代 `Python` 后端开发的必备技能，特别是在构建类型安全、高性能的 Web 应用时。希望这份详解文档能帮助你更好地理解和使用 `Pydantic`！
+掌握 `Pydantic` 是现代 `Python` 后端开发的必备技能，特别是在构建类型安全、高性能的 `Web` 应用时。希望这份详解文档能帮助你更好地理解和使用 `Pydantic`！

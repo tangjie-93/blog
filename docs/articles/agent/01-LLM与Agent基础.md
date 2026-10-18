@@ -42,12 +42,12 @@ note: "理解 Token、上下文、结构化输出、工具调用与 Agent 最小
 
 `Context` window 是模型一次请求能看到的最大上下文。它包括：
 
-- system message
+- `system` message
 - developer instruction
 - user message
 - assistant history
-- tool schema
-- tool result
+- `tool` `schema`
+- `tool` result
 - `RAG` 检索片段
 
 关键理解：
@@ -55,7 +55,7 @@ note: "理解 Token、上下文、结构化输出、工具调用与 Agent 最小
 - 模型只能基于当前上下文生成，不会自动记住数据库里的内容
 - 对话历史过长时需要摘要或裁剪
 - 工具结果太长会挤占用户真实问题
-- 上下文设计比单纯写 prompt 更重要
+- 上下文设计比单纯写 `prompt` 更重要
 
 练习：
 
@@ -67,15 +67,15 @@ note: "理解 Token、上下文、结构化输出、工具调用与 Agent 最小
 
 Temperature 控制输出随机性。一般来说：
 
-- 事实问答、工具参数生成：低 temperature
-- 头脑风暴、文案生成：中高 temperature
-- 结构化输出、代码生成：低 temperature
+- 事实问答、工具参数生成：低 `temperature`
+- 头脑风暴、文案生成：中高 `temperature`
+- 结构化输出、代码生成：低 `temperature`
 
-Top P 是 nucleus sampling 参数，通常不要和 temperature 一起大幅调整。
+Top P 是 nucleus sampling 参数，通常不要和 `temperature` 一起大幅调整。
 
 练习：
 
-- 同一 prompt 分别用不同 temperature 运行 10 次
+- 同一 `prompt` 分别用不同 `temperature` 运行 10 次
 - 观察工具调用参数是否稳定
 - 观察 `JSON` 格式是否更容易出错
 
@@ -83,21 +83,21 @@ Top P 是 nucleus sampling 参数，通常不要和 temperature 一起大幅调�
 
 常见角色：
 
-- system：定义模型整体行为边界
+- `system`：定义模型整体行为边界
 - developer：定义应用开发者规则
 - user：用户输入
 - assistant：模型输出
-- tool：工具执行结果
+- `tool`：工具执行结果
 
 设计原则：
 
-- 规则放 system / developer，不要混在用户输入里
+- 规则放 `system` / developer，不要混在用户输入里
 - 用户输入永远不应该覆盖系统规则
 - 工具结果需要清晰标记来源和含义
 
 ## 5. `Structured Output`
 
-Structured output 是让模型按照固定 schema 输出，例如 `JSON`。
+Structured output 是让模型按照固定 `schema` 输出，例如 `JSON`。
 
 为什么重要：
 
@@ -136,9 +136,9 @@ Structured output 是让模型按照固定 schema 输出，例如 `JSON`。
 
 - name
 - description
-- input schema
+- input `schema`
 - handler
-- permission policy
+- `permission` policy
 - timeout
 - error handling
 
@@ -146,7 +146,7 @@ Structured output 是让模型按照固定 schema 输出，例如 `JSON`。
 
 - 工具名要清晰，例如 `search_customer_orders`
 - description 要说明什么时候用、什么时候不用
-- 参数 schema 要严格
+- 参数 `schema` 要严格
 - 工具返回要短而结构化
 - 高风险工具必须加入确认步骤
 

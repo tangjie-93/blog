@@ -52,7 +52,7 @@ prompt = ChatPromptTemplate.from_messages([
 
 1. 用 `{question}` 放用户问题。
 2. 用 `{context}` 放检索上下文。
-3. 用 system message 放固定规则。
+3. 用 `system` message 放固定规则。
 4. 用 human message 放动态输入。
 5. 确认变量名和调用参数一致。
 
@@ -205,7 +205,7 @@ if __name__ == "__main__":
     main()
 ```
 
-关键输出如下（不同版本中参数 schema 的字段顺序可能不同）：
+关键输出如下（不同版本中参数 `schema` 的字段顺序可能不同）：
 
 ```text
 === Message ===
@@ -238,7 +238,7 @@ python docs/public/langchain-examples/02_core/output_parsers.py
 随后运行联网综合 Demo：
 
 ~~~powershell
-python docs/public/langchain-examples/02_core_chain.py
+python `docs/public/langchain-examples/02_core_chain.py`
 ~~~
 
 该脚本以 `ChatOpenAI` 调用 `ChatGPT`，展示 `SystemMessage`、`HumanMessage`、
@@ -255,11 +255,11 @@ python docs/public/langchain-examples/02_core_chain.py
 
 ## 8. 本模块自测
 
-1. Message 里的 system、human、ai、tool 分别代表什么？
-    + system：系统消息，用于设置上下文。
+1. Message 里的 `system`、human、ai、`tool` 分别代表什么？
+    + `system`：系统消息，用于设置上下文。
     + human：用户消息，用于输入用户问题。
     + ai：模型消息，用于输出模型回答。
-    + tool：工具调用消息，用于调用外部工具。
+    + `tool`：工具调用消息，用于调用外部工具。
 2. PromptTemplate 解决什么问题？
     + 格式化消息，将变量插入到模板中。
     + 不调用模型，只格式化消息。

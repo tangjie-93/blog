@@ -6,7 +6,7 @@ tags: "Agent|AI Coding"
 note: "针对限流、服务过载和超长上下文分类重试、升级参数或触发压缩。"
 ---
 
-# s11: Error Recovery — 错误不是结束，是重试的开始
+# s11: `Error Recovery` — 错误不是结束，是重试的开始
 
 
 s01 → ... → s09 → s10 → `s11` → [s12](./12%E3%80%81Task%20System%20%E2%80%94%20%E7%9B%AE%E6%A0%87%E5%A4%AA%E5%A4%A7%EF%BC%8C%E6%8B%86%E6%88%90%E5%B0%8F%E4%BB%BB%E5%8A%A1.md) → s13 → ... → s20
@@ -32,16 +32,16 @@ Error: 529 overloaded
 
 ## 2、解决方案
 
-![Error Recovery Overview](/image/agent-course/s11_error_recovery/error-recovery-overview.svg)
+![`Error Recovery` Overview](/image/agent-course/s11_error_recovery/error-recovery-overview.svg)
 
-s10 的循环、prompt 组装全部保留。唯一的变动：`LLM` 调用包裹在 try/except 里，根据错误类型走不同的恢复路径。恢复后 `continue` 回到循环开头重新调用 `LLM`。
+s10 的循环、`prompt` 组装全部保留。唯一的变动：`LLM` 调用包裹在 `try/except` 里，根据错误类型走不同的恢复路径。恢复后 `continue` 回到循环开头重新调用 `LLM`。
 
-三种最常见的恢复模式（教学版只处理 429/529；真实系统还覆盖连接错误、超时、云厂商认证缓存等。`CC` 实际有 13+ reason code，其余见 Deep dive）：
+三种最常见的恢复模式（教学版只处理 `429/529`；真实系统还覆盖连接错误、超时、云厂商认证缓存等。`CC` 实际有 13+ reason code，其余见 Deep dive）：
 
 | 模式 | 触发 | 恢复动作 |
 |------|------|---------|
 | 输出截断 | `max_tokens` | 升级 8K→64K / 续写提示 |
-| 上下文超限 | `prompt_too_long` | reactive compact → 重试 |
+| 上下文超限 | `prompt_too_long` | reactive `compact` → 重试 |
 | 临时故障 | 429 / 529 | 指数退避 + 抖动，连续 529 可切换备用模型 |
 
 ---
@@ -52,7 +52,7 @@ s10 的循环、prompt 组装全部保留。唯一的变动：`LLM` 调用包裹
 
 模型话说一半，`max_tokens` 用完了。默认 8000 `token` 不够它输出完整回答。
 
-第一次发生时，直接把 `max_tokens` 从 8K 升级到 64K（8 倍空间），重试同一请求——此时不追加截断输出到 messages，保持原始请求不变。如果 64K 还是不够，才保存截断输出并注入续写提示让模型接着刚才的话继续说，最多 3 次：
+第一次发生时，直接把 `max_tokens` 从 8K 升级到 64K（8 倍空间），重试同一请求——此时不追加截断输出到 `messages`，保持原始请求不变。如果 64K 还是不够，才保存截断输出并注入续写提示让模型接着刚才的话继续说，最多 3 次：
 
 ```python
 if response.stop_reason == "max_tokens":
@@ -80,7 +80,7 @@ messages.append({"role": "assistant", "content": response.content})
 
 `LLM` 说"你的上下文太长了"（`prompt_too_long`）。s08 的四层压缩全跑过了，还是超。
 
-触发 reactive compact——比 auto compact 更激进。教学版只保留最后 5 条消息模拟压缩效果；真实实现会调用 `LLM` 生成 compact 摘要再重试。压缩后重试。但如果压缩过一次还是超限，只能退出——再压缩也不会变小：
+触发 reactive `compact`——比 auto `compact` 更激进。教学版只保留最后 5 条消息模拟压缩效果；真实实现会调用 `LLM` 生成 `compact` 摘要再重试。压缩后重试。但如果压缩过一次还是超限，只能退出——再压缩也不会变小：
 
 ```python
 except PromptTooLongError:
@@ -164,7 +164,7 @@ def agent_loop(messages, context):
         # ... tool execution ...
 ```
 
-外层 try/except 捕获 `API` 异常（prompt_too_long 等），`with_retry` 处理瞬态错误（429/529），`stop_reason` 检查处理截断。三种恢复机制各管各的错误类型。
+外层 `try/except` 捕获 `API` 异常（`prompt_too_long` 等），`with_retry` 处理瞬态错误（`429/529`），`stop_reason` 检查处理截断。三种恢复机制各管各的错误类型。
 
 ---
 
@@ -173,10 +173,10 @@ def agent_loop(messages, context):
 | 组件 | 之前 (s10) | 之后 (s11) |
 |------|-----------|-----------|
 | 错误处理 | 无（一碰就崩溃） | 三种恢复模式 + 指数退避 |
-| 新常量 | — | ESCALATED_MAX_TOKENS=64000, MAX_RETRIES=10, BASE_DELAY_MS=500, FALLBACK_MODEL |
-| 新函数 | — | with_retry, retry_delay, reactive_compact, is_prompt_too_long_error, RecoveryState |
-| 工具 | bash, read_file, write_file (3) | bash, read_file, write_file (3) — 不变 |
-| 循环 | 裸调用 `LLM` | try/except 包裹 + continue 重试 |
+| 新常量 | — | `ESCALATED_MAX_TOKENS`=64000, `MAX_RETRIES`=10, `BASE_DELAY_MS`=500, `FALLBACK_MODEL` |
+| 新函数 | — | `with_retry`, `retry_delay`, `reactive_compact`, `is_prompt_too_long_error`, RecoveryState |
+| 工具 | `bash`, `read_file`, `write_file` (3) | `bash`, `read_file`, `write_file` (3) — 不变 |
+| 循环 | 裸调用 `LLM` | `try/except` 包裹 + continue 重试 |
 
 ---
 
@@ -187,11 +187,11 @@ cd learn-claude-code
 python s11_error_recovery/code.py
 ```
 
-试试这些 prompt：
+试试这些 `prompt`：
 
 1. 让 `Agent` 生成一段很长的代码，观察截断后是否自动续写（看 `[max_tokens] escalating` 日志）
-2. 连续读取大量文件撑大上下文，观察 reactive compact
-3. 如果遇到 429/529，观察指数退避的日志输出
+2. 连续读取大量文件撑大上下文，观察 reactive `compact`
+3. 如果遇到 `429/529`，观察指数退避的日志输出
 
 ---
 
@@ -208,26 +208,26 @@ s12 `Task` `System` → 任务是有依赖、有状态、持久化的图。这�
 
 > 以下基于 `CC` 源码 `query.ts`（1729 行）、`services/api/withRetry.ts`（822 行）、`query/tokenBudget.ts`（93 行）、`utils/tokenBudget.ts`（73 行）的分析。
 
-### 一、十几种 reason/transition（不只是 3 条）
+### 一、十几种 `reason/transition`（不只是 3 条）
 
-教学版讲了 3 种最常见的恢复模式。`CC` 实际有十几种 reason/transition，每轮 `LLM` 调用后都会判断：
+教学版讲了 3 种最常见的恢复模式。`CC` 实际有十几种 `reason/transition`，每轮 `LLM` 调用后都会判断：
 
-| reason/transition | 教学版对应 | `CC` 行为 |
+| `reason/transition` | 教学版对应 | `CC` 行为 |
 |---|---|---|
 | `completed` | 正常完成 | 返回结果 |
 | `next_turn` | 正常工具调用 | 继续下一轮工具执行 |
 | `max_output_tokens_escalate` | 路径 1 | 8K→64K 升级 |
 | `max_output_tokens_recovery` | 路径 1 续写 | 续写提示（最多 3 次） |
-| `reactive_compact_retry` | 路径 2 | reactive compact → 重试 |
+| `reactive_compact_retry` | 路径 2 | reactive `compact` → 重试 |
 | `prompt_too_long` | 路径 2 | 同上 |
-| `collapse_drain_retry` | 未展开 | context collapse 先提交暂存 |
+| `collapse_drain_retry` | 未展开 | `context` collapse 先提交暂存 |
 | `model_error` | 未展开 | 重试 |
 | `image_error` | 未展开 | `ImageSizeError` / `ImageResizeError` 专门处理 |
 | `aborted_streaming` | 未展开 | 流式中止恢复 |
 | `aborted_tools` | 未展开 | 工具中止 |
 | `stop_hook_blocking` | 未展开 | 注入 blocking error → 模型自纠 |
-| `stop_hook_prevented` | 未展开 | hooks 阻止 |
-| `hook_stopped` | 未展开 | hook 停止执行 |
+| `stop_hook_prevented` | 未展开 | `hooks` 阻止 |
+| `hook_stopped` | 未展开 | `hook` 停止执行 |
 | `token_budget_continuation` | 未展开 | `token` 用量 < 90% 时继续 |
 | `blocking_limit` | 未展开 | 阻塞限制 |
 | `max_turns` | 未展开 | 达到最大轮次 |
@@ -269,11 +269,11 @@ Stopped at {pct}% of token target. Keep working — do not summarize.
 
 ### 四、流式错误处理
 
-`CC` 的流式路径中，可恢复的错误（413、max_tokens、media error）在 streaming 期间**被暂扣不展示**（`query.ts:788-822`）——`SDK` 消费者看不到，只有恢复逻辑能看到。等 streaming 结束后才判断是否需要恢复。
+`CC` 的流式路径中，可恢复的错误（413、`max_tokens`、media error）在 streaming 期间**被暂扣不展示**（`query.ts:788-822`）——`SDK` 消费者看不到，只有恢复逻辑能看到。等 streaming 结束后才判断是否需要恢复。
 
 ### 五、529 → Fallback `Model` 切换
 
-连续 3 次 529 过载错误后（`MAX_529_RETRIES = 3`），`CC` 自动切换到 fallback model（如 Opus → Sonnet）。切换时清除所有 pending 消息和 tool 结果，给用户展示 "Switched to {model} due to high demand"。
+连续 3 次 529 过载错误后（`MAX_529_RETRIES = 3`），`CC` 自动切换到 fallback model（如 Opus → Sonnet）。切换时清除所有 pending 消息和 `tool` 结果，给用户展示 "Switched to {model} due to high demand"。
 
 ### 六、Diminishing Returns 检测
 

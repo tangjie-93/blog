@@ -18,7 +18,7 @@ note: docker学习总结
 
 **1、`Docker`客户端和服务器**
 
-​		`Docker`是一个客户-服务器（C/S）架构的程序。`Docker`客户端只需向`Docker`服务器或守护进程发出请求，服务器或守护进程将完成所有工作并返回结果。
+​		`Docker`是一个客户-服务器（`C/S`）架构的程序。`Docker`客户端只需向`Docker`服务器或守护进程发出请求，服务器或守护进程将完成所有工作并返回结果。
 
 **2、`Docker`镜像**
 
@@ -108,7 +108,7 @@ docker run -p 80:80 -v /data:/data -d nginx:latest
 docker run -p 127.0.0.1:80:8080/tcp ubuntu bash
 ```
 
-5、使用镜像nginx:latest以交互模式启动一个容器,在容器内执行/bin/bash命令。
+5、使用镜像nginx:latest以交互模式启动一个容器,在容器内执行/`bin/bash`命令。
 
 ```bash
 docker run -it nginx:latest /bin/bash
@@ -127,7 +127,7 @@ docker run -d -p 127.0.0.1:5000:5000/udp training/webapp python app.py
 //默认都是绑定tcp端口，也可以绑定UDP端口。
 ```
 
-+ **docker start/stop/restart 启动、停止、重启容器**
++ **docker `start/stop/restart` 启动、停止、重启容器**
 
   ```bash
   docker start [OPTIONS] CONTAINER [CONTAINER...]
@@ -172,7 +172,7 @@ docker restart helloworld
   docker rm $(docker ps -a -q) //删除所有已经停止的容器
   ```
 
-+ **docker pause/unpause 暂停/恢复容器中所有的进程**
++ **docker `pause/unpause` 暂停/恢复容器中所有的进程**
 
   ```bash
   docker pause hello
@@ -252,7 +252,7 @@ docker restart helloworld
   + exited(停止)
   + dead(死亡)
 
-  **PORTS：容器的端口信息合使用的连接类型（tcp/udp）**
+  **PORTS：容器的端口信息合使用的连接类型（`tcp/udp`）**
 
   **NAMES：自动分配的容器名称。**
 
@@ -298,14 +298,14 @@ docker restart helloworld
   docker logs --since="2020-02-17" --tail=10 hello
   ```
 
-+ **docker export：将文件系统作为一个tar归档文件导出到STDOUT。**
++ **docker `export`：将文件系统作为一个tar归档文件导出到STDOUT。**
 
   ```bash
   docker export [OPTIONS] CONTAINER
   docker export -o hello-`date-%y%m%d`.tar hello //将hello容器按日期保存为tar文件。
   ```
 
-+ **docker port：列出指定的容器的端口映射，或者查找将PRIVATE_PORT NAT到面向公众的端口。**
++ **docker port：列出指定的容器的端口映射，或者查找将`PRIVATE_PORT` NAT到面向公众的端口。**
 
 + **docker commit：从容器创建一个新的镜像。**
 
@@ -332,7 +332,7 @@ docker restart helloworld
   docker cp [OPTIONS]	SRC_PATH|- CONTAINER:DEST_PATH
   ```
 
-+ **docker login/logout：登录到/登出docker镜像仓库，默认为docker hub**
++ **docker `login/logout`：登录到/登出docker镜像仓库，默认为docker hub**
 
   ```bash
   docker login -u 用户名 -p 密码
@@ -432,7 +432,7 @@ docker restart helloworld
   docker load --input fedora.tar
   ```
 
-+ **docker import：从归档文件中创建镜像。**
++ **docker `import`：从归档文件中创建镜像。**
 
   ```bash
   docker import [OPTIONS] file|URL|- [REPOSITORY[:TAG]]
@@ -459,7 +459,7 @@ docker restart helloworld
 
 ​		COPY 将文件从路径 `src` 复制添加到容器内部路径 `dest`。
 
-+ `src`必须是相对源文件夹的一个文件或目录，也可以是一个远程的url。可以使用通配符表达式，其通配符规则要满足 Go 的 filepath.Match 规则。
++ `src`必须是相对源文件夹的一个文件或目录，也可以是一个远程的url。可以使用通配符表达式，其通配符规则要满足 Go 的 `filepath.Match` 规则。
 + `dest`是目标容器中的绝对路径。该路径不用事先建好，路径不存在的话，会自动创建。
 
 ```bash
@@ -469,7 +469,7 @@ COPY [--chown=<user>:<group>] ["<源路径1>",...  "<目标路径>"]
 
 **3、CMD**
 
-​		dockerfile中只能有一个`CMD`指令。如果指定了多个，那么最后的`CMD`命令才会生效。`CMD`指令的主要作用是提供默认的执行程序。这些默认值可以包括可执行文件，也可以省略可执行文件。CMD 指令指定的程序可被 docker run 命令行参数中指定要运行的程序所覆盖。当你使用shell或者exec格式时，cmd会自动执行这个命令。
+​		dockerfile中只能有一个`CMD`指令。如果指定了多个，那么最后的`CMD`命令才会生效。`CMD`指令的主要作用是提供默认的执行程序。这些默认值可以包括可执行文件，也可以省略可执行文件。CMD 指令指定的程序可被 docker run 命令行参数中指定要运行的程序所覆盖。当你使用`shell`或者exec格式时，cmd会自动执行这个命令。
 
 类似于`RUN`指令。但二者运行的时间点不同。
 
@@ -485,7 +485,7 @@ CMD ["<可执行文件或命令>","<param1>","<param2>",...] //默认可执行�
 
 ​		用于执行后面跟着的命令行命令。主要有两种格式。
 
-+ shell格式
++ `shell`格式
 
   ```bash
   RUN <命令行命令>  //命令行命令等同于终端操作的shell命令
@@ -558,5 +558,5 @@ ARG <参数名>[=<默认值>]
 Compose使用的三个步骤：
 
 - 使用 `Dockerfile` 定义应用程序的环境。
-- 使用 docker-compose.yml 定义构成应用程序的服务，这样它们可以在隔离环境中一起运行。
+- 使用 `docker-compose.yml` 定义构成应用程序的服务，这样它们可以在隔离环境中一起运行。
 - 最后，执行 docker-compose up 命令来启动并运行整个应用程序。

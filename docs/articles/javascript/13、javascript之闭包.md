@@ -152,7 +152,7 @@ for(var i=0;i<3;i++){
     },(i+1)*1000)
 }
 ```
-+ 方法1 给setTimeout传第三个参数，作为函数的形参
++ 方法1 给`setTimeout`传第三个参数，作为函数的形参
 ```javascript
 for (var i = 0; i< 10; i++){
     setTimeout((i) => {
@@ -180,7 +180,7 @@ for (var i = 0; i < 10; i++) {
     })(i), 1000)
 }
 ```
-+ 方法3 利用let,构建块级作用域
++ 方法3 利用`let`,构建块级作用域
 ```javascript
 for (let i = 0; i< 10; i++){
     setTimeout(() => {

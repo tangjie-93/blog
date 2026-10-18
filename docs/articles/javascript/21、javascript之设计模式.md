@@ -1354,7 +1354,7 @@ a();//顺序输出1,2,3
 
 **`3.2` 用AOP装饰函数的缺点**
 
-+ 通过 Function.prototype.before 或者 Function.prototype.after 被装 饰之后，返回的实际上是一个新的函数，如果在原函数上保存了一些属性，那么这些属性会丢失。因为原函数所指向的内存地址发生了变化，原函数指向了另一个函数。
++ 通过 `Function.prototype`.before 或者 `Function.prototype`.after 被装 饰之后，返回的实际上是一个新的函数，如果在原函数上保存了一些属性，那么这些属性会丢失。因为原函数所指向的内存地址发生了变化，原函数指向了另一个函数。
 
   ```js
   var func = function () { alert(1); } 

@@ -68,7 +68,7 @@ new Person("黎明",30)=>_New(Person,"黎明",30)
 var p2=Person("李明",24);
 console.log(p2.name);//Cannot read property 'age' of undefined
 ```
-**分析：** 此时相当于只是调用了`Person("李明"，24)`的这样一个普通方法,并不是调用Person构造函数创建一个新的实例对象，并且该方法没有返回值，所以调用Person("李明",24)返回的是默认值undefined。因此P2也没有name和age属性。
+**分析：** 此时相当于只是调用了`Person("李明"，24)`的这样一个普通方法,并不是调用Person构造函数创建一个新的实例对象，并且该方法没有返回值，所以调用Person("李明",24)返回的是默认值`undefined`。因此P2也没有name和age属性。
 
 ```javascript
 var p2=Person("李明",24)

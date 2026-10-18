@@ -12,11 +12,11 @@ note: 我们知道js的最大特点就是单线程，就是同一时间只能做
 `js` 单线程跟它的用途有关。作为浏览器脚本语言，`javascript` 的主要用途是与用户互动，以及操作 `dom`。这决定了它只能是单线程。比如：`javascript`同时有两个线程，一个线程在 `dom` 上触发事件，另一个线程删除了这个  `dom` 元素，这时候会引发混乱。
 
 js中常见的异步操作有以下：
-+ setTimeout/setInterval
++ `setTimeout/setInterval`
 + 事件绑定/事件监听
-+ ajax/fetch请求数据
++ `ajax/fetch`请求数据
 + `Promise`的异步操作
-+ async/await的异步操作
++ `async/await`的异步操作
 + nodejs中的异步操作()
 + ....
 
@@ -174,7 +174,7 @@ body.addEventListener("click",()=>{
 
 
 
-## 3、浏览器环境中和node环境中EventLoop的异同
+## 3、浏览器环境中和node环境中`EventLoop`的异同
 
 &#8195;&#8195;示例代码如下所示；
 
@@ -226,12 +226,12 @@ setTimeout(function() {
 
 &#8195;&#8195;node环境中的eventLoop是按阶段来执行的，主要有6个阶段，这个阶段里的代码执行完毕，才会去执行下一个阶段里的代码。**6个阶段中的代码都执行完毕才算是完成一个事件循环。**
 + 原生的libuv事件循环中的队列主要有4种类型：    
-&#8195; &#8195;1、expired timers and intervals，即到期的setTimeout/setInterval   
-&#8195; &#8195;2、I/O events，包含文件，网络等等    
+&#8195; &#8195;1、expired timers and intervals，即到期的`setTimeout/setInterval`   
+&#8195; &#8195;2、`I/O` events，包含文件，网络等等    
 &#8195; &#8195;3、immediates，通过setImmediate注册的函数    
 &#8195; &#8195;4、close handlers，close事件的回调，比如`TCP`连接断开
 + 同步任务及每个阶段之后都会清空microTask队列  
-&#8195; &#8195;1、优先清空nextTick  queue，即通过process.nextTick注册的函数     
+&#8195; &#8195;1、优先清空nextTick  queue，即通过`process.nextTick`注册的函数     
 &#8195; &#8195;2、再清空other queue，常见的如`Promise`
 + 而和浏览器规范的区别，在于node会清空当前所处阶段的队列，即执行所有macroTask
 
@@ -249,7 +249,7 @@ setTimeout(function() {
 
 参考文档    
 [1、这一次，彻底弄懂 `JavaScript` 执行机制](https://juejin.im/post/59e85eebf265da430d571f89)  
-[2、`JavaScript` 运行机制详解：再谈Event Loop](http://www.ruanyifeng.com/blog/2014/10/event-loop.html)   
+[2、`JavaScript` 运行机制详解：再谈`Event Loop`](http://www.ruanyifeng.com/blog/2014/10/event-loop.html)   
 [3、Eventloop不可怕，可怕的是遇上`Promise`](https://juejin.im/post/5c9a43175188252d876e5903)    
 [4、浏览器说：虽然都叫event loop，但是我和node不一样](https://juejin.im/post/5b0ab722f265da0dbd7a646f)
 

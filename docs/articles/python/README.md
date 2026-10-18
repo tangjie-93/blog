@@ -43,7 +43,7 @@ def chunks(items: Iterable[str], size: int) -> Iterable[list[str]]:
 
 | 方向 | 建议学习内容 |
 | --- | --- |
-| Web 服务 | `FastAPI`、请求校验、数据库、鉴权、异步任务 |
+| `Web` 服务 | `FastAPI`、请求校验、数据库、鉴权、异步任务 |
 | 数据处理 | `NumPy`、`pandas`、文件格式、任务调度 |
 | 自动化 | `pathlib`、`subprocess`、浏览器自动化、定时任务 |
 | `AI` 应用 | `HTTP API`、结构化输出、向量数据库、评测与监控 |

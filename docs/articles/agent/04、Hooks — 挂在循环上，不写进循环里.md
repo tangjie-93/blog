@@ -6,7 +6,7 @@ tags: "Agent|AI Coding"
 note: "用 UserPromptSubmit、PreToolUse、PostToolUse 和 Stop 把扩展逻辑挂到循环外。"
 ---
 
-# s04: Hooks — 挂在循环上，不写进循环里
+# s04: `Hooks` — 挂在循环上，不写进循环里
 
 
 s01 → s02 → s03 → `s04` → [s05](./05%E3%80%81TodoWrite%20%E2%80%94%20%E6%B2%A1%E6%9C%89%E8%AE%A1%E5%88%92%E7%9A%84%20Agent%EF%BC%8C%E5%81%9A%E7%9D%80%E5%81%9A%E7%9D%80%E5%B0%B1%E5%81%8F%E4%BA%86.md) → s06 → ... → s20
@@ -19,7 +19,7 @@ s01 → s02 → s03 → `s04` → [s05](./05%E3%80%81TodoWrite%20%E2%80%94%20%E6
 
 ## 1、问题
 
-s03 的 `Agent` 有权限检查了。但每次加一个新检查，比如"记录每次 bash 调用"、"操作后自动 git add"，都要修改 `agent_loop` 函数。
+s03 的 `Agent` 有权限检查了。但每次加一个新检查，比如"记录每次 `bash` 调用"、"操作后自动 git add"，都要修改 `agent_loop` 函数。
 
 循环很快就变成了这样：
 
@@ -44,9 +44,9 @@ def agent_loop(messages):
 
 ## 2、解决方案
 
-![Hooks Overview](/image/agent-course/s04_hooks/hooks-overview.svg)
+![`Hooks` Overview](/image/agent-course/s04_hooks/hooks-overview.svg)
 
-s03 的循环和权限逻辑完全保留。唯一的变动是把 `check_permission()` 从循环体内移到了 hook 上，循环不再直接调用任何检查函数，改为 `trigger_hooks("PreToolUse", block)`，由注册表决定跑什么。
+s03 的循环和权限逻辑完全保留。唯一的变动是把 `check_permission()` 从循环体内移到了 `hook` 上，循环不再直接调用任何检查函数，改为 `trigger_hooks("PreToolUse", block)`，由注册表决定跑什么。
 
 四个事件，覆盖一个完整的 agent cycle：
 
@@ -63,7 +63,7 @@ s03 的循环和权限逻辑完全保留。唯一的变动是把 `check_permissi
 
 ## 3、工作原理
 
-**hook 注册表**：一个字典，事件名映射到回调列表。
+**`hook` 注册表**：一个字典，事件名映射到回调列表。
 
 ```python
 HOOKS = {
@@ -106,7 +106,7 @@ history.append({"role": "user", "content": query})
 agent_loop(history)
 ```
 
-**`PreToolUse` / `PostToolUse`**，工具执行前后的 hook。s03 的权限检查逻辑现在包装成 `PreToolUse` hook，再加一个日志 hook 和一个大输出提醒：
+**`PreToolUse` / `PostToolUse`**，工具执行前后的 `hook`。s03 的权限检查逻辑现在包装成 `PreToolUse` `hook`，再加一个日志 `hook` 和一个大输出提醒：
 
 ```python
 # PreToolUse: 权限检查（s03 的逻辑，从循环移到 hook）
@@ -187,7 +187,7 @@ for block in response.content:
                     "content": output})
 ```
 
-四个 hook 覆盖了 agent cycle 的关键节点：输入→执行前→执行后→退出。循环只负责调用 trigger_hooks()，具体逻辑全在 hook 回调里。
+四个 `hook` 覆盖了 agent cycle 的关键节点：输入→执行前→执行后→退出。循环只负责调用 `trigger_hooks`()，具体逻辑全在 `hook` 回调里。
 
 ---
 
@@ -195,12 +195,12 @@ for block in response.content:
 
 | 组件 | 之前 (s03) | 之后 (s04) |
 |------|-----------|-----------|
-| 扩展方式 | check_permission() 硬编码在循环里 | HOOKS 注册表 + trigger_hooks() |
-| 新函数 | — | register_hook, trigger_hooks |
-| hook 回调 | — | context_inject_hook, permission_hook, log_hook, large_output_hook, summary_hook |
-| 循环 | 直接调用 check_permission() | 调用 trigger_hooks("`PreToolUse`", ...) |
-| 退出控制 | 无 | trigger_hooks("Stop", ...) 可阻止退出 |
-| 输入拦截 | 无 | trigger_hooks("UserPromptSubmit", ...) 可注入上下文 |
+| 扩展方式 | `check_permission`() 硬编码在循环里 | HOOKS 注册表 + `trigger_hooks`() |
+| 新函数 | — | `register_hook`, `trigger_hooks` |
+| `hook` 回调 | — | `context_inject_hook`, `permission_hook`, `log_hook`, `large_output_hook`, `summary_hook` |
+| 循环 | 直接调用 `check_permission`() | 调用 `trigger_hooks`("`PreToolUse`", ...) |
+| 退出控制 | 无 | `trigger_hooks`("Stop", ...) 可阻止退出 |
+| 输入拦截 | 无 | `trigger_hooks`("UserPromptSubmit", ...) 可注入上下文 |
 
 ---
 
@@ -211,13 +211,13 @@ cd learn-claude-code
 python s04_hooks/code_openai.py
 ```
 
-试试这些 prompt：
+试试这些 `prompt`：
 
-1. `Read the file README.md`（应该直接通过，观察 hook 日志）
+1. `Read the file README.md`（应该直接通过，观察 `hook` 日志）
 2. `Create a file called test.txt`（通过后观察 `PostToolUse` 是否触发）
-3. `Delete all temporary files in /tmp`（bash + rm 触发权限 hook）
+3. `Delete all temporary files in /tmp`（`bash` + rm 触发权限 `hook`）
 
-观察重点：每次工具执行前，是否出现了 `[HOOK]` 日志？权限被拒时，是 hook 拦截的还是循环里硬编码的？
+观察重点：每次工具执行前，是否出现了 `[HOOK]` 日志？权限被拒时，是 `hook` 拦截的还是循环里硬编码的？
 
 ---
 
@@ -234,7 +234,7 @@ s05 `TodoWrite` → 给 `Agent` 一个计划工具。先列清单，再做。
 
 ### 一、Hook 事件：不止这 4 个，而是 27 个
 
-教学版只讲了 `PreToolUse` 和 `PostToolUse`。`CC` 实际有 27 个 hook 事件（`coreTypes.ts:25-53`）：
+教学版只讲了 `PreToolUse` 和 `PostToolUse`。`CC` 实际有 27 个 `hook` 事件（`coreTypes.ts:25-53`）：
 
 | 类别 | 事件 |
 |------|------|
@@ -256,34 +256,34 @@ s05 `TodoWrite` → 给 `Agent` 一个计划工具。先列清单，再做。
 |------|------|------|
 | `message` | Message | 可选 `UI` 消息 |
 | `blockingError` | HookBlockingError | 阻塞错误 → 注入对话让模型自纠 |
-| `outcome` | success/blocking/non_blocking_error/cancelled | 执行结果 |
+| `outcome` | `success/blocking/``non_blocking_error``/cancelled` | 执行结果 |
 | `preventContinuation` | boolean | 阻止后续执行 |
 | `stopReason` | string | 停止原因描述 |
-| `permissionBehavior` | allow/deny/ask/passthrough | hook 返回权限决策 |
+| `permissionBehavior` | `allow/deny/ask/passthrough` | `hook` 返回权限决策 |
 | `updatedInput` | Record | 修改工具输入 |
 | `additionalContext` | string | 附加上下文 |
 | `updatedMCPToolOutput` | unknown | `MCP` 工具输出修改 |
 
-### 三、关键不变式：Hook 'allow' 不能绕过 deny/ask 规则
+### 三、关键不变式：Hook 'allow' 不能绕过 `deny/ask` 规则
 
-这是 `CC` 权限系统最重要的安全设计（`toolHooks.ts:325-331`）：**hook 返回 allow 时，仍然要检查 settings.json 的 deny/ask 规则**。即使用户的 hook 脚本说"允许"，如果在 settings.json 中禁用了这个工具，操作仍然会被阻止。
+这是 `CC` 权限系统最重要的安全设计（`toolHooks.ts:325-331`）：**`hook` 返回 allow 时，仍然要检查 `settings.json` 的 `deny/ask` 规则**。即使用户的 `hook` 脚本说"允许"，如果在 `settings.json` 中禁用了这个工具，操作仍然会被阻止。
 
 教学版没有这个层次，只把 `PreToolUse` 的非 None 返回值解释为阻止本次工具执行。这在教学场景中够了，但在生产环境中会形成安全漏洞。
 
 ### 四、stopHookActive 机制
 
-`CC` 的 Stop hooks 有一个防无限循环机制（`query.ts:212,1300`）：`stopHookActive` 状态字段。当 stop hooks 产生 blockingError 时，循环带 `stopHookActive: true` 重入下一轮。后续迭代中 stop hooks 看到这个标志就不会再次触发。这防止了一个永不停机的 bug：模型自纠后 stop hook 再次报错 → 模型再自纠 → stop hook 再报错...
+`CC` 的 Stop `hooks` 有一个防无限循环机制（`query.ts:212,1300`）：`stopHookActive` 状态字段。当 stop `hooks` 产生 blockingError 时，循环带 `stopHookActive: true` 重入下一轮。后续迭代中 stop `hooks` 看到这个标志就不会再次触发。这防止了一个永不停机的 bug：模型自纠后 stop `hook` 再次报错 → 模型再自纠 → stop `hook` 再报错...
 
-### 五、hook_stopped_continuation
+### 五、`hook_stopped_continuation`
 
-`PostToolUse` hooks 返回 `preventContinuation: true` 时，会产生一个 `hook_stopped_continuation` 附件（`toolHooks.ts:117-130`）。query.ts（L1388-1393）检测到后设置 `shouldPreventContinuation = true`，循环退出。这是 "hook 优雅地让 `Agent` 停机" 的机制，不是崩溃，是完成。
+`PostToolUse` `hooks` 返回 `preventContinuation: true` 时，会产生一个 `hook_stopped_continuation` 附件（`toolHooks.ts:117-130`）。`query.ts`（L1388-1393）检测到后设置 `shouldPreventContinuation = true`，循环退出。这是 "`hook` 优雅地让 `Agent` 停机" 的机制，不是崩溃，是完成。
 
 ### 6.6 教学版的简化是刻意的
 
 - 27 个事件 → 4 个（UserPromptSubmit/`PreToolUse`/`PostToolUse`/Stop）：覆盖 agent cycle 关键节点
 - 14 个字段 → 简单的返回值（None = 继续，非 None = 阻止/续跑）：心智负担降到最低
-- Hook allow vs deny/ask 不变式 → 省略：教学版没有 settings.json 层
-- stopHookActive → 省略：教学版 Stop hook 只做简单续跑，不涉及防无限循环机制
+- Hook allow vs `deny/ask` 不变式 → 省略：教学版没有 `settings.json` 层
+- stopHookActive → 省略：教学版 Stop `hook` 只做简单续跑，不涉及防无限循环机制
 
 </details>
 

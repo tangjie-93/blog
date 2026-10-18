@@ -77,7 +77,7 @@ process
 
 ## 4. 工具描述
 
-模型主要靠工具名、描述、参数 schema 判断是否调用工具。
+模型主要靠工具名、描述、参数 `schema` 判断是否调用工具。
 
 描述写不好，模型就会：
 
@@ -178,7 +178,7 @@ python docs/public/langchain-examples/05_agents/agentic_rag.py
 再观察真实模型的工具选择：
 
 ~~~powershell
-python docs/public/langchain-examples/05_agent_tools.py
+python `docs/public/langchain-examples/05_agent_tools.py`
 ~~~
 
 该脚本以 `create_agent` 创建 `Agent`，由 `OpenAI` `ChatGPT` 自主选择

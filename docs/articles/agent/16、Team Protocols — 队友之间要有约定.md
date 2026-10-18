@@ -32,14 +32,14 @@ s15 的队友能干活了，但协调是松散的：Lead 发消息，队友回�
 
 ![`Team Protocols` Overview](/image/agent-course/s16_team_protocols/team-protocols-overview.svg)
 
-教学代码承接前面章节的 `Agent` 能力脉络，在 S15 团队通信基础上加入结构化协议。为了聚焦协议机制，省略了完整错误恢复、记忆和技能系统。新增三样：**ProtocolState**（请求状态追踪）、**dispatch_message**（按消息类型路由到处理器）、**match_response**（通过 request_id 关联回复与请求，含类型校验）。
+教学代码承接前面章节的 `Agent` 能力脉络，在 S15 团队通信基础上加入结构化协议。为了聚焦协议机制，省略了完整错误恢复、记忆和技能系统。新增三样：**ProtocolState**（请求状态追踪）、**`dispatch_message`**（按消息类型路由到处理器）、**`match_response`**（通过 `request_id` 关联回复与请求，含类型校验）。
 
 两种协议，一套机制：
 
 | 协议 | 方向 | 用途 |
 |------|------|------|
-| shutdown_request / response | Lead → 队友 | 体面关机握手 |
-| plan_approval_request / response | 队友 → Lead | 计划审批协议示例 |
+| `shutdown_request` / `response` | Lead → 队友 | 体面关机握手 |
+| `plan_approval_request` / `response` | 队友 → Lead | 计划审批协议示例 |
 
 > 教学版演示了计划审批的请求-响应消息流程，没有实现执行门控（未 approved 时拦截 bash/write_file）。真实 `CC` 的队友有 permission gating 机制。
 
@@ -95,7 +95,7 @@ pending_requests: dict[str, ProtocolState] = {}
 
 > 教学版用 `shutdown_response` 统一命名（approve 字段区分同意/拒绝）。真实源码拆成 `shutdown_approved` 和 `shutdown_rejected` 两种独立消息类型（`teammateMailbox.ts:720-763`）。
 
-### 3.3 dispatch_message: 按类型路由
+### 3.3 `dispatch_message`: 按类型路由
 
 队友的 inbox 不只收普通消息，还收协议消息。`handle_inbox_message` 按消息类型分发：
 
@@ -118,7 +118,7 @@ def handle_inbox_message(name, msg, messages):
 
 新增协议类型只需加新的 `if` 分支。
 
-### 3.4 match_response: 类型校验
+### 3.4 `match_response`: 类型校验
 
 `match_response` 不只按 `request_id` 找状态，还会校验响应类型是否匹配请求类型：
 
@@ -136,9 +136,9 @@ def match_response(response_type, request_id, approve):
     state.status = "approved" if approve else "rejected"
 ```
 
-一个 shutdown_response 不会意外 approve 一个 plan_approval 请求。
+一个 `shutdown_response` 不会意外 approve 一个 `plan_approval` 请求。
 
-### 3.5 统一 inbox 消费：consume_lead_inbox
+### 3.5 统一 inbox 消费：`consume_lead_inbox`
 
 `check_inbox` 工具和主循环末尾都调用同一个 `consume_lead_inbox()` 函数，先路由协议消息再返回剩余内容，避免消息被读走但协议状态没更新：
 
@@ -159,7 +159,7 @@ def consume_lead_inbox(route_protocol=True) -> list[dict]:
 
 ### 3.6 队友 idle loop：等待而不是退出
 
-s15 的队友跑完 10 轮就退出。s16 的队友在 `LLM` 返回非 tool_use 后进入 idle 等待：轮询 inbox，收到 shutdown_request 就响应退出，收到新消息就继续工作。
+s15 的队友跑完 10 轮就退出。s16 的队友在 `LLM` 返回非 `tool_use` 后进入 idle 等待：轮询 inbox，收到 `shutdown_request` 就响应退出，收到新消息就继续工作。
 
 ```
 LLM 返回非 tool_use
@@ -168,7 +168,7 @@ LLM 返回非 tool_use
   → 收到新消息 → 注入 messages → 继续 LLM turn
 ```
 
-教学版省略了 idle_notification 给 Lead 的通知。真实 `CC` 在 idle 时发 `idle_notification`，Lead 收到后知道队友空闲，可以分配新任务。
+教学版省略了 `idle_notification` 给 Lead 的通知。真实 `CC` 在 idle 时发 `idle_notification`，Lead 收到后知道队友空闲，可以分配新任务。
 
 ### 3.7 合起来跑
 
@@ -194,15 +194,15 @@ LLM 返回非 tool_use
 | 组件 | 之前 (s15) | 之后 (s16) |
 |------|-----------|-----------|
 | 协调方式 | 松散文本消息 | 结构化请求-响应协议 |
-| 请求追踪 | 无 | ProtocolState + pending_requests dict |
-| 消息路由 | 全部当文本处理 | dispatch_message 按类型分发 |
-| 关机 | 自然退出或杀线程 | request_id 握手机制 |
+| 请求追踪 | 无 | ProtocolState + `pending_requests` dict |
+| 消息路由 | 全部当文本处理 | `dispatch_message` 按类型分发 |
+| 关机 | 自然退出或杀线程 | `request_id` 握手机制 |
 | 计划审批 | 无 | 消息流程示例（未实现执行门控） |
-| 新消息类型 | message, result | + shutdown_request/response, plan_approval_request/response |
+| 新消息类型 | message, result | + `shutdown_request/response`, `plan_approval_request/response` |
 | 队友生命周期 | 最多 10 轮 | idle loop（等待 inbox 消息） |
-| Lead inbox | check_inbox 和主循环分别读 | 统一 consume_lead_inbox |
-| Lead 工具 | 14 (s15) | 14（核心工具集加入 request_shutdown, request_plan, review_plan） |
-| 队友工具 | 4 (s15) | + submit_plan (5) |
+| Lead inbox | `check_inbox` 和主循环分别读 | 统一 `consume_lead_inbox` |
+| Lead 工具 | 14 (s15) | 14（核心工具集加入 `request_shutdown`, `request_plan`, `review_plan`） |
+| 队友工具 | 4 (s15) | + `submit_plan` (5) |
 
 ---
 
@@ -213,12 +213,12 @@ cd learn-claude-code
 python s16_team_protocols/code.py
 ```
 
-试试这些 prompt：
+试试这些 `prompt`：
 
 1. `Spawn alice as a backend dev. Ask her to create a file. Then request her shutdown.`
 2. `Spawn bob with a refactoring task. Have him submit a plan first. Then review and approve it.`
 
-观察重点：关机握手是否完整（请求 → 确认 → 关机）？`pending_requests` 的状态是否正确转换？`request_id` 是否在请求和响应之间保持一致？队友 idle 后是否能收到 shutdown_request？
+观察重点：关机握手是否完整（请求 → 确认 → 关机）？`pending_requests` 的状态是否正确转换？`request_id` 是否在请求和响应之间保持一致？队友 idle 后是否能收到 `shutdown_request`？
 
 ---
 
@@ -228,22 +228,22 @@ s15-s16 中，Lead 必须给每个队友分配任务。"Alice 做这个，Bob �
 
 能不能让队友自己看板、自己认领？Lead 只需要创建任务，队友自己发现、自己认领、自己完成。
 
-s17 Autonomous Agents → 队友自组织，不需要领导分配。
+s17 `Autonomous Agents` → 队友自组织，不需要领导分配。
 
 <details>
 <summary>深入 `CC` 源码</summary>
 
-`CC` 的团队协议实现（`teammateMailbox.ts`，1184 行）和教学版在核心结构上一致：request_id + approve/reject 的请求-响应模式。差异在于：
+`CC` 的团队协议实现（`teammateMailbox.ts`，1184 行）和教学版在核心结构上一致：`request_id` + `approve/reject` 的请求-响应模式。差异在于：
 
-**关机协议**：`CC` 的 shutdown 是三向通信（`teammateMailbox.ts:720-763`、`SendMessageTool.ts:268-430`）。Lead 发 `shutdown_request`，队友回复 `shutdown_approved`（或 `shutdown_rejected` 附原因），系统发送 `teammate_terminated` 通知所有相关方。关机确认后系统自动清理 pane（tmux/iTerm2）、unassign 任务、从 team config 移除成员（`useInboxPoller.ts:677-800`）。教学版用 `shutdown_response` 统一命名，真实源码拆成 approved/rejected 两种独立消息。
+**关机协议**：`CC` 的 shutdown 是三向通信（`teammateMailbox.ts:720-763`、`SendMessageTool.ts:268-430`）。Lead 发 `shutdown_request`，队友回复 `shutdown_approved`（或 `shutdown_rejected` 附原因），系统发送 `teammate_terminated` 通知所有相关方。关机确认后系统自动清理 pane（`tmux/iTerm2`）、unassign 任务、从 team config 移除成员（`useInboxPoller.ts:677-800`）。教学版用 `shutdown_response` 统一命名，真实源码拆成 `approved/rejected` 两种独立消息。
 
-**计划审批**：真实源码里 plan approval request 由 `ExitPlanModeV2Tool.ts:263-312` 在 plan-mode-required 队友退出 plan mode 时产生。`useInboxPoller.ts:599-661` 当前会自动回写 approval，并把请求交给 Lead 作为上下文（regular message）。`SendMessageTool.ts:434-518` 仍保留显式 approve/reject response 能力，审批时可同时设置 `permissionMode`（如"批准但以 plan mode 运行"），响应中可包含 `feedback` 字符串供队友修正后重新提交。不是简单的"Lead 手动 review_plan 工具"流程。
+**计划审批**：真实源码里 plan approval `request` 由 `ExitPlanModeV2Tool.ts:263-312` 在 plan-mode-required 队友退出 plan mode 时产生。`useInboxPoller.ts:599-661` 当前会自动回写 approval，并把请求交给 Lead 作为上下文（regular message）。`SendMessageTool.ts:434-518` 仍保留显式 `approve/reject` `response` 能力，审批时可同时设置 `permissionMode`（如"批准但以 plan mode 运行"），响应中可包含 `feedback` 字符串供队友修正后重新提交。不是简单的"Lead 手动 `review_plan` 工具"流程。
 
-**消息格式**：`CC` 的协议消息是结构化的 `JSON`（有 Zod schema 验证），教学版用简单的 type + metadata 字典。字段名也不统一：permission 用 `request_id`（`teammateMailbox.ts:453-462`），shutdown 和 plan approval 用 `requestId`（`teammateMailbox.ts:684-763`）。
+**消息格式**：`CC` 的协议消息是结构化的 `JSON`（有 Zod `schema` 验证），教学版用简单的 type + `metadata` 字典。字段名也不统一：`permission` 用 `request_id`（`teammateMailbox.ts:453-462`），shutdown 和 plan approval 用 `requestId`（`teammateMailbox.ts:684-763`）。
 
-**执行门控**：`CC` 的队友有完整的 permission gating。未获批准的高风险操作会被拦截，不是可选的。教学版只演示了消息流程，没有实现执行拦截。
+**执行门控**：`CC` 的队友有完整的 `permission` gating。未获批准的高风险操作会被拦截，不是可选的。教学版只演示了消息流程，没有实现执行拦截。
 
-**通用性**：教学版的一个 FSM（pending → approved | rejected）对应两种协议，这个简化完全正确。`CC` 的所有协议消息共用同一个 request id 关联机制。
+**通用性**：教学版的一个 FSM（pending → approved | rejected）对应两种协议，这个简化完全正确。`CC` 的所有协议消息共用同一个 `request` id 关联机制。
 
 </details>
 

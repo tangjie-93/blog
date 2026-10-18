@@ -19,13 +19,13 @@ note: 客户端缓存和服务器缓存的区别
 
 &#8195;&#8195;`cookie`的内容包括：名字、值、过期时间、路径和域。路径和域一起构成`cookie`的作用范围。如果不设置过期时间，则表示该`cookie`的生命周期为浏览器会话期间，关闭浏览器窗口，`cookie`就消失，一般保存在内存中（`会话cookie`），如果设置了过期时间，该`cookie`则会被保存到硬盘里(`硬盘cookie`)。
 
-## 2、sessionStorage
-&#8195;&#8195;客户端的存储，基于`html5`，本地存储。可以将数据在当前会话中保存下来。**刷新页面数据依然存在，但是关闭页面后，sessionStorage中的数据就会被清空。**
+## 2、`sessionStorage`
+&#8195;&#8195;客户端的存储，基于`html5`，本地存储。可以将数据在当前会话中保存下来。**刷新页面数据依然存在，但是关闭页面后，`sessionStorage`中的数据就会被清空。**
 
-## 3、localStorage
+## 3、`localStorage`
 &#8195;&#8195;是`HTML5`标准中新添加的技术。本地存储，存储在本地硬盘。除非手动清除，否则永久保存。
 
-## 4、Cookie, localStorage 与 sessionStorage的区别
+## 4、Cookie, `localStorage` 与 `sessionStorage`的区别
 
 + 1、数据的周期生命
 

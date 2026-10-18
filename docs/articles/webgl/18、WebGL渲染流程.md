@@ -11,13 +11,13 @@ note: WebGL渲染流程
 `WebGL`渲染流程可以用下面的流程图来表示。
 <img src="../../images/webgl/webgl-渲染管线.png" alt="暂无数据" />
 
-`WebGL（Web Graphics Library）`是一种用于在Web浏览器中进行3D图形渲染的技术，其渲染管线包括以下步骤：
+`WebGL（Web Graphics Library）`是一种用于在`Web`浏览器中进行3D图形渲染的技术，其渲染管线包括以下步骤：
 
 + 数据准备阶段 (Data Preparation Stage):
   + 在这一阶段，应用程序通过`JavaScript`代码与`WebGL` `API`进行交互。应用程序负责设置渲染状态、创建和管理图形对象、处理用户输入等。
   + 主要操作包括：创建着色器、创建缓冲区对象、上传顶点数据、配置`WebGL`状态、发起绘制调用等。
 
-+ 顶点着色器阶段 (Vertex Shader Stage):
++ 顶点着色器阶段 (Vertex `Shader` Stage):
 
   + 顶点着色器是一个运行在`GPU`上的小程序，用于处理顶点数据。每个顶点都会被传递到顶点着色器中进行处理。
   + 主要功能包括：顶点坐标变换（将顶点坐标从模型空间变换到裁剪空间）、计算顶点的颜色、纹理坐标等属性。
@@ -29,7 +29,7 @@ note: WebGL渲染流程
   + 在这一阶段，顶点着色器的输出会被组装成几何图元（例如点、线、三角形）。
   + 这些图元将用于后续的光栅化阶段。
 
-+ 几何着色器阶段 (可选，Geometry Shader Stage):
++ 几何着色器阶段 (可选，Geometry `Shader` Stage):
 
   + 几何着色器是一个可选的阶段，用于在图元装配后进行额外的几何处理。
   + 可以通过几何着色器生成新的顶点，创建更多的几何图元，或进行其他复杂的几何操作。
@@ -39,7 +39,7 @@ note: WebGL渲染流程
 
   + 光栅化是将几何图元转换为片元（fragments）的过程。片元可以视为覆盖图元的像素样本。
   + 每个片元包含了顶点插值后的属性（如颜色、深度、纹理坐标等）。
-+ 片元着色器阶段 (Fragment Shader Stage):
++ 片元着色器阶段 (Fragment `Shader` Stage):
 
   + 片元着色器是一个运行在`GPU`上的小程序，用于处理每个片元。片元着色器决定了每个片元的最终颜色和其他属性。
   + 主要功能包括：计算光照、应用纹理、处理阴影等。
@@ -113,7 +113,7 @@ const gl = canvas.getContext("webgl");
 ```
 > 4.创建和连接着色器程序
 
-该步骤主要用到的是下面的`API`。**js 程序中的 GLSL 语言——如何连接着色器程序**
+该步骤主要用到的是下面的`API`。**js 程序中的 `GLSL` 语言——如何连接着色器程序**
 ```js
 - createShader：创建着色器对象
 - shaderSource：提供着色器源码
@@ -182,11 +182,11 @@ function initProgram(vertexShader,fragmentShader){
 > 6.数据传输阶段
 
 数据传输过程中主要是通过创建缓冲区，并使用缓冲区来传递数据的，下面是使用缓冲区的一些`API`。
-+ gl.createBuffer：创建缓冲区。
-+ gl.bindBuffer：绑定某个缓冲区对象为当前缓冲区。
-+ gl.bufferData：往缓冲区中复制数据。
-+ gl.enableVertexAttribArray：启用顶点属性。
-+ gl.vertexAttribPointer：设置顶点属性从缓冲区中读取数据的方式。
++ `gl.createBuffer`：创建缓冲区。
++ `gl.bindBuffer`：绑定某个缓冲区对象为当前缓冲区。
++ `gl.bufferData`：往缓冲区中复制数据。
++ `gl.enableVertexAttribArray`：启用顶点属性。
++ `gl.vertexAttribPointer`：设置顶点属性从缓冲区中读取数据的方式。
 **主意：** 下面的4，5，6步，也可以放在渲染阶段进行。
 ```js
 //1.创建缓冲区对象

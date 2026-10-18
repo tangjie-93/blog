@@ -14,8 +14,8 @@ note: Undefined 类型只有一个值，即特殊的undefined。实际上，unde
 ## 1、<span id="a1">1、Undefined</span>
 
 
-&#8195;&#8195;Undefined 类型只有一个值，即特殊的undefined。实际上，undefined值是继承自null值。undefined==null 为true。
-根据工作中总结，只要有这几种情况下会出现undefined。并且undefined===undefined为true 
+&#8195;&#8195;Undefined 类型只有一个值，即特殊的`undefined`。实际上，`undefined`值是继承自`null`值。`undefined`==`null` 为true。
+根据工作中总结，只要有这几种情况下会出现`undefined`。并且`undefined`===`undefined`为true 
 
 >1.定义变量，但是没有初始化时,如var a；
 
@@ -52,7 +52,7 @@ alert(typeof age);         // "undefined"
 ## 2、<span id="a2">2、Null 类型</span>
 
 
-&#8195;&#8195;是第二个只有一个值的数据类型，这个特殊的值是 null。从逻辑角度来看，null值表示一个空对象指针，要意在保存对象的变量还没有真正保存对象。而这也正是使用 typeof 操作符检测 null值时会返回"object"的原因。null===null为true。这几种情况下会出现null的情况
+&#8195;&#8195;是第二个只有一个值的数据类型，这个特殊的值是 `null`。从逻辑角度来看，`null`值表示一个空对象指针，要意在保存对象的变量还没有真正保存对象。而这也正是使用 typeof 操作符检测 `null`值时会返回"object"的原因。`null`===`null`为true。这几种情况下会出现`null`的情况
 
 >1、手动设置变量的值或者对象某一个属性值为null（在初始化对象时，手动设置对象为null。在作用域中不再需要使用某个对象时，把null赋值给那个变量解除引用，以释放内存）    
 

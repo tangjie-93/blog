@@ -21,7 +21,7 @@ s01 → ... → s11 → s12 → `s13` → [s14](./14%E3%80%81Cron%20Scheduler%20
 
 你用过洗衣机吗？把衣服扔进去，按下启动，然后去干别的——做饭、回消息、看论文。30 分钟后洗衣机"滴滴滴"提醒你：好了。你不会站在洗衣机前面干等 30 分钟。
 
-`Agent` 的 bash 工具也一样。`pip install torch` 要 10 分钟，`npm run build` 要 3 分钟。这些命令一跑，`Agent` 就在等 bash 工具返回，没法利用这段时间处理别的任务。
+`Agent` 的 `bash` 工具也一样。`pip install torch` 要 10 分钟，`npm run build` 要 3 分钟。这些命令一跑，`Agent` 就在等 `bash` 工具返回，没法利用这段时间处理别的任务。
 
 读文件是毫秒级，不等。`git status` 一秒内返回，不等。但 `npm install`？分钟级。`Agent` 等 10 分钟什么都不做，而 `LLM` 按 `token` 计费，空转就是浪费。
 
@@ -31,7 +31,7 @@ s01 → ... → s11 → s12 → `s13` → [s14](./14%E3%80%81Cron%20Scheduler%20
 
 ![`Background Tasks` Overview](/image/agent-course/s13_background_tasks/background-tasks-overview.svg)
 
-教学代码沿用 S12 的简化任务系统和 prompt 组装；为了聚焦后台任务，省略完整错误恢复、记忆和技能系统。唯一的变动：慢操作扔到后台线程，`Agent` 继续跑循环，后台完成后把通知注入到对话里。
+教学代码沿用 S12 的简化任务系统和 `prompt` 组装；为了聚焦后台任务，省略完整错误恢复、记忆和技能系统。唯一的变动：慢操作扔到后台线程，`Agent` 继续跑循环，后台完成后把通知注入到对话里。
 
 同步 vs 后台：
 
@@ -46,9 +46,9 @@ s01 → ... → s11 → s12 → `s13` → [s14](./14%E3%80%81Cron%20Scheduler%20
 
 ## 3、工作原理
 
-### 3.1 should_run_background: 显式请求优先，启发式兜底
+### 3.1 `should_run_background`: 显式请求优先，启发式兜底
 
-模型通过 bash 工具的 `run_in_background` 参数显式请求后台执行。如果模型没指定，教学版用关键词启发式兜底：
+模型通过 `bash` 工具的 `run_in_background` 参数显式请求后台执行。如果模型没指定，教学版用关键词启发式兜底：
 
 ```python
 def is_slow_operation(tool_name: str, tool_input: dict) -> bool:
@@ -68,9 +68,9 @@ def should_run_background(tool_name: str, tool_input: dict) -> bool:
     return is_slow_operation(tool_name, tool_input)
 ```
 
-`CC` 的 bash 工具 schema 里有 `run_in_background: boolean` 参数（`BashTool.tsx:241`）。模型自己决定哪些命令丢后台，不靠关键词猜。教学版保留启发式作为兜底，但主路径是模型显式请求。
+`CC` 的 `bash` 工具 `schema` 里有 `run_in_background: boolean` 参数（`BashTool.tsx:241`）。模型自己决定哪些命令丢后台，不靠关键词猜。教学版保留启发式作为兜底，但主路径是模型显式请求。
 
-### 3.2 start_background_task: 后台执行与生命周期
+### 3.2 `start_background_task`: 后台执行与生命周期
 
 把工具调用包装成 worker 函数，扔到 daemon 线程里执行。每个后台任务有唯一 `ID`，状态存在 `background_tasks` 字典里：
 
@@ -105,7 +105,7 @@ def start_background_task(block) -> str:
 
 返回 `bg_id` 而不是只返回 `[Running in background...]`。`daemon=True` 确保 `Agent` 进程退出时线程跟着退出。教学版用内存字典追踪状态；真实 `CC` 有 `LocalShellTaskState`，输出重定向到文件，支持停止任务、读取后续输出等完整生命周期。
 
-### 3.3 collect_background_results: 通知收集
+### 3.3 `collect_background_results`: 通知收集
 
 后台任务完成后，收集结果并格式化为 `<task_notification>` 通知：
 
@@ -130,7 +130,7 @@ def collect_background_results() -> list[str]:
     return notifications
 ```
 
-通知不复用原始 `tool_use_id`。原始 tool call 已经用占位 `tool_result` 回复了，后台完成是独立事件，用 `task_notification` 格式注入。这符合 Messages `API` 的工具配对语义：一个 `tool_use` 只对应一个 `tool_result`。
+通知不复用原始 `tool_use_id`。原始 `tool` call 已经用占位 `tool_result` 回复了，后台完成是独立事件，用 `task_notification` 格式注入。这符合 Messages `API` 的工具配对语义：一个 `tool_use` 只对应一个 `tool_result`。
 
 ### 3.4 循环中的集成
 
@@ -191,7 +191,7 @@ Turn 2:
 | 组件 | 之前 (s12) | 之后 (s13) |
 |------|-----------|-----------|
 | 执行模型 | 全部同步 | 慢操作后台线程 + 通知注入 |
-| bash schema | `command` | `command` + `run_in_background` |
+| `bash` `schema` | `command` | `command` + `run_in_background` |
 | 新函数 | — | `should_run_background`, `is_slow_operation`, `start_background_task`, `collect_background_results` |
 | 新类型 | — | `background_tasks: dict`, `background_results: dict`, `background_lock: Lock` |
 | 通知格式 | — | `<task_notification>`（不复用 tool_use_id） |
@@ -207,7 +207,7 @@ cd learn-claude-code
 python s13_background_tasks/code.py
 ```
 
-试试这些 prompt：
+试试这些 `prompt`：
 
 1. `Run pip list in the background and find all Python files in this directory`
 2. `Run npm install (use run_in_background) and while waiting, read web/package.json`
@@ -231,13 +231,13 @@ s14 Cron Scheduler → 给 `Agent` 装一个闹钟。
 
 ### 一、pendingToolUseSummary：Haiku 后台生成
 
-`CC` 在每批工具执行完后，启动一个 Haiku side-query 生成工具使用摘要。发起代码在 `query.ts:1411-1482`，prompt 文本定义在 `services/toolUseSummary/toolUseSummaryGenerator.ts:15`（变量名 `TOOL_USE_SUMMARY_SYSTEM_PROMPT`）。提示是 "Write a short summary label... think git-commit-subject, not sentence"，过去时态，约 30 字符。
+`CC` 在每批工具执行完后，启动一个 Haiku side-`query` 生成工具使用摘要。发起代码在 `query.ts:1411-1482`，`prompt` 文本定义在 `services/toolUseSummary/toolUseSummaryGenerator.ts:15`（变量名 `TOOL_USE_SUMMARY_SYSTEM_PROMPT`）。提示是 "Write a short summary label... think git-commit-subject, not sentence"，过去时态，约 30 字符。
 
 Haiku 摘要（~1s）在主模型流式生成（5-30s）期间完成。下一轮开始前，把摘要 yield 出去。`SDK` 消费这些摘要做移动端进度展示。
 
 ### 二、线程模型：没有真正的线程
 
-`CC` 运行在 `Node.js`/Bun 单线程事件循环中。"后台"只是 "不 await"。`ShellCommand.background(taskId)` 把 stdout/stderr 重定向到文件，让进程独立运行。
+`CC` 运行在 `Node.js`/Bun 单线程事件循环中。"后台"只是 "不 `await`"。`ShellCommand.background(taskId)` 把 `stdout/stderr` 重定向到文件，让进程独立运行。
 
 ### 三、七种后台任务类型
 
@@ -258,11 +258,11 @@ Haiku 摘要（~1s）在主模型流式生成（5-30s）期间完成。下一轮
 
 ### 五、停滞看门狗
 
-后台 bash 任务有一个看门狗（`LocalShellTask.tsx` L24-25 常量, L59-98 逻辑），定期检查输出是否停滞，45 秒无增长后检测交互式提示（`(y/n)` 等），防止后台任务卡在无人响应的交互式对话框。
+后台 `bash` 任务有一个看门狗（`LocalShellTask.tsx` L24-25 常量, L59-98 逻辑），定期检查输出是否停滞，45 秒无增长后检测交互式提示（`(y/n)` 等），防止后台任务卡在无人响应的交互式对话框。
 
 ### 六、并发限制
 
-前台工具调用：`CLAUDE_CODE_MAX_TOOL_USE_CONCURRENCY`（默认 10 个并发安全工具）。后台 bash 任务：没有硬性限制，它们是独立的子进程。
+前台工具调用：`CLAUDE_CODE_MAX_TOOL_USE_CONCURRENCY`（默认 10 个并发安全工具）。后台 `bash` 任务：没有硬性限制，它们是独立的子进程。
 
 </details>
 

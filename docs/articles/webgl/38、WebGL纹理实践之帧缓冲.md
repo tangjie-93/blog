@@ -221,7 +221,7 @@ function drawScene(time) {
 [渲染到纹理-立方体和立方体](https://github.com/tangjie-93/WebGL/blob/main/%E8%B7%9F%E7%9D%80%E5%AE%98%E7%BD%91%E5%AD%A6WebGL%2BWebGL%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97/%E9%AB%98%E7%BA%A7%E6%8A%80%E6%9C%AF/%E6%B8%B2%E6%9F%93%E5%88%B0%E7%BA%B9%E7%90%86/%E7%AB%8B%E6%96%B9%E4%BD%93%E5%92%8C%E7%AB%8B%E6%96%B9%E4%BD%93.html)
 
 ## 4.问题
-#### `4.1` 上面的代码为什么要执行两遍gl.bindTexture(gl.TEXTURE_2D, null)
+#### `4.1` 上面的代码为什么要执行两遍`gl.bindTexture`(`gl.TEXTURE_2D`, `null`)
 在 `WebGL` 编程中，`gl.bindTexture(gl.TEXTURE_2D, null);` 的作用是解除当前绑定的2D纹理。这么做有几个原因：
 
 + **防止意外修改**： 在很多情况下，你可能会有多个纹理对象，并且不希望对一个纹理的操作影响到其他纹理。因此，在操作一个纹理之后，解除绑定可以确保后续操作不会意外地修改这个纹理。
@@ -283,7 +283,7 @@ gl.bindTexture(gl.TEXTURE_2D, null); // 第二次解除绑定
 ...
 
 ```
-#### `4.2` 上面的代码为什么要执行两遍gl.bindFramebuffer(gl.FRAMEBUFFER, null)
+#### `4.2` 上面的代码为什么要执行两遍`gl.bindFramebuffer`(`gl.FRAMEBUFFER`, `null`)
 在 `WebGL`编程中，`gl.bindFramebuffer(gl.FRAMEBUFFER, null)`;的作用是解除当前绑定的帧缓冲对象 `(Framebuffer Object, FBO)`，恢复默认的帧缓冲（即屏幕）。这样做有几个原因：
 
 + **防止意外修改**：当你绑定一个帧缓冲对象后，所有的绘制操作都会作用于该帧缓冲对象。解除绑定可以确保后续的绘制操作不会意外地影响到这个帧缓冲对象。
@@ -293,7 +293,7 @@ gl.bindTexture(gl.TEXTURE_2D, null); // 第二次解除绑定
 + **恢复默认帧缓冲**：在使用自定义帧缓冲对象进行渲染之后，通常需要将绘制目标切换回默认帧缓冲对象（即屏幕），以进行最终的绘制。
 让我们具体看一下在代码中的两次`gl.bindFramebuffer(gl.FRAMEBUFFER, null)`;：
 
-**第一次 gl.bindFramebuffer(gl.FRAMEBUFFER, null);**
+**第一次 `gl.bindFramebuffer`(`gl.FRAMEBUFFER`, `null`);**
 这个解除绑定出现在你设置并检查帧缓冲对象之后：
 ```js
 // 检查帧缓冲对象是否完整
@@ -303,7 +303,7 @@ if (gl.checkFramebufferStatus(gl.FRAMEBUFFER) !== gl.FRAMEBUFFER_COMPLETE) {
 gl.bindFramebuffer(gl.FRAMEBUFFER, null); // 第一次解除绑定
 ```
 在这里解除绑定是为了确保在接下来的操作中，所有的绘制操作都不会作用于这个帧缓冲对象。你已经完成了帧缓冲对象的设置和检查，可以解除绑定，将绘制目标切换回默认帧缓冲。
-**第二次 gl.bindFramebuffer(gl.FRAMEBUFFER, null);**
+**第二次 `gl.bindFramebuffer`(`gl.FRAMEBUFFER`, `null`);**
 第二个解除绑定出现在你使用帧缓冲对象进行渲染之后：
 ```js
 // 渲染到帧缓冲对象

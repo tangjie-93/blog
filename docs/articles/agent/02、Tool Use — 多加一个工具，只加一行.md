@@ -16,7 +16,7 @@ s01 → `s02` → [s03](./03%E3%80%81Permission%20%E2%80%94%20%E6%89%A7%E8%A1%8C
 
 ---
 
-## 1、只有 bash 一个工具
+## 1、只有 `bash` 一个工具
 
 s01 的 `Agent` 只有一个 bash 工具。读文件要 `cat`，写文件要 `echo "..." > file.py`，改文件要 `sed`。
 
@@ -28,7 +28,7 @@ s01 的 `Agent` 只有一个 bash 工具。读文件要 `cat`，写文件要 `ec
 
 ![`Tool` Dispatch](/image/agent-course/s02_tool_use/tool-dispatch.svg)
 
-s01 的循环完全保留（`LLM` 调用、stop_reason 判断、消息追加）。唯一的变动在工具执行那 1 行：`run_bash()` 替换为 `TOOL_HANDLERS[block.name]()` 查表分发。
+s01 的循环完全保留（`LLM` 调用、`stop_reason` 判断、消息追加）。唯一的变动在工具执行那 1 行：`run_bash()` 替换为 `TOOL_HANDLERS[block.name]()` 查表分发。
 
 给 `Agent` 加一个工具只需要做两件事：
 
@@ -39,7 +39,7 @@ s01 的循环完全保留（`LLM` 调用、stop_reason 判断、消息追加）�
 
 ## 3、从 1 个工具到 5 个工具
 
-s01 只有一个 bash：
+s01 只有一个 `bash`：
 
 ```python
 TOOLS = [{"name": "bash", ...}]
@@ -111,7 +111,7 @@ for block in response.content:
 
 ## 5、多个工具调用
 
-模型经常一次返回多个 tool_use："读一下 a.py 和 b.py，然后列出所有 .py 文件"。
+模型经常一次返回多个 `tool_use`："读一下 `a.py` 和 `b.py`，然后列出所有 .py 文件"。
 
 教学版按 `response.content` 原始顺序逐个执行。`CC` 的做法更复杂：按原始顺序切成连续 batch，batch 内并发安全的工具并行执行，batch 间严格顺序（见附录）。
 
@@ -121,9 +121,9 @@ for block in response.content:
 
 | 概念 | 一句话 |
 |------|--------|
-| TOOL_HANDLERS | 工具名 → 处理函数的字典。加工具 = 加一行映射 |
-| 工具定义 | 告诉模型"我能做什么"的 `JSON` schema |
-| 多工具调用 | 模型可一次返回多个 tool_use，教学版按原始顺序逐个执行 |
+| `TOOL_HANDLERS` | 工具名 → 处理函数的字典。加工具 = 加一行映射 |
+| 工具定义 | 告诉模型"我能做什么"的 `JSON` `schema` |
+| 多工具调用 | 模型可一次返回多个 `tool_use`，教学版按原始顺序逐个执行 |
 | 循环不变 | s01 的 `while True` 循环一行都没改 |
 
 ---
@@ -132,9 +132,9 @@ for block in response.content:
 
 | 组件 | 之前 (s01) | 之后 (s02) |
 |------|-----------|-----------|
-| 工具数量 | 1 (bash) | 5 (+read, write, edit, glob) |
-| 工具执行 | 硬编码 `run_bash()` | TOOL_HANDLERS 查表分发 |
-| 路径安全 | 无 | safe_path 校验（仅 file tools） |
+| 工具数量 | 1 (`bash`) | 5 (+read, write, edit, glob) |
+| 工具执行 | 硬编码 `run_bash()` | `TOOL_HANDLERS` 查表分发 |
+| 路径安全 | 无 | `safe_path` 校验（仅 file `tools`） |
 | 循环 | `while True` + `stop_reason` | 与 s01 完全一致 |
 
 ---
@@ -153,7 +153,7 @@ python s02_tool_use/code.py
 python s02_tool_use/code_openai.py
 ```
 
-试试这些 prompt：
+试试这些 `prompt`：
 
 1. `Read the file README.md and tell me what this project is about`
 2. `Create a file called test.py that prints "hello", then read it back`
@@ -166,9 +166,9 @@ python s02_tool_use/code_openai.py
 
 ## 9、接下来
 
-现在 `Agent` 有 5 个专用工具。file tools 受 `safe_path` 保护，但 bash 不受限制，`rm -rf /` 还是能跑。
+现在 `Agent` 有 5 个专用工具。file `tools` 受 `safe_path` 保护，但 `bash` 不受限制，`rm -rf /` 还是能跑。
 
-s03 Permission → 在工具执行之前加一道门：这个操作安全吗？需要用户批准吗？
+s03 `Permission` → 在工具执行之前加一道门：这个操作安全吗？需要用户批准吗？
 
 <details>
 <summary>深入 `CC` 源码</summary>
@@ -178,7 +178,7 @@ s03 Permission → 在工具执行之前加一道门：这个操作安全吗？�
 ### 一、工具定义方式
 
 **教学版**：`TOOLS` 数组 + `TOOL_HANDLERS` 字典。定义和实现分开。
-**`CC`**：每个工具是 `buildTool()` 创建的独立对象，包含 schema、验证、权限、执行。`getAllBaseTools()` 汇总所有工具。
+**`CC`**：每个工具是 `buildTool()` 创建的独立对象，包含 `schema`、验证、权限、执行。`getAllBaseTools()` 汇总所有工具。
 
 教学版的分离方式对教学更清晰——读者一眼看到"加一个工具 = 两条定义"。
 
@@ -196,7 +196,7 @@ s03 Permission → 在工具执行之前加一道门：这个操作安全吗？�
 | `Bash` `rm` | false | false |
 | TaskCreate | false | **true** ← 改状态但可并发（TaskCreate 在 s12 介绍） |
 
-`CC` 的 `Bash` tool 的 `isConcurrencySafe` 等于 `isReadOnly`——只读命令可并发，写命令不可。TaskCreate 虽然改了任务文件，但每次都写不同的文件，所以可以并发。
+`CC` 的 `Bash` `tool` 的 `isConcurrencySafe` 等于 `isReadOnly`——只读命令可并发，写命令不可。TaskCreate 虽然改了任务文件，但每次都写不同的文件，所以可以并发。
 
 ### 三、分区算法
 
@@ -215,11 +215,11 @@ s03 Permission → 在工具执行之前加一道门：这个操作安全吗？�
 
 `CC` 的每个工具调用经过严格的 5 步验证（`toolExecution.ts`）：
 
-1. **Zod schema 验证**（`614-680`，教学版用 `JSON` `Schema` 替代）：参数类型/结构检查
+1. **Zod `schema` 验证**（`614-680`，教学版用 `JSON` `Schema` 替代）：参数类型/结构检查
 2. **工具级 validateInput()**（`682-733`）：参数值验证（如路径是否在工作区内）
-3. **`PreToolUse` hooks**（`800-862`，s04 详细介绍）：钩子可以返回消息、修改输入、阻止执行
-4. **权限检查**（`921-931`，s03 的核心内容）：canUseTool + checkPermissions → allow/deny/ask
-5. **执行 tool.call()**（`1207-1222`）
+3. **`PreToolUse` `hooks`**（`800-862`，s04 详细介绍）：钩子可以返回消息、修改输入、阻止执行
+4. **权限检查**（`921-931`，s03 的核心内容）：canUseTool + checkPermissions → `allow/deny/ask`
+5. **执行 `tool.call`()**（`1207-1222`）
 
 教学版省略了 Zod（用 `JSON` `Schema`）、省略了 validateInput（用安全函数）、保留了权限检查和钩子概念。
 

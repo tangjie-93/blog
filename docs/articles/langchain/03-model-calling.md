@@ -56,10 +56,10 @@ messages -> chat model -> AIMessage
 
 要会什么：
 
-1. 文档入库时要生成 embedding。
-2. 用户查询时也要生成 embedding。
-3. 入库和查询最好使用同一个 embedding 模型。
-4. 换 embedding 模型后通常需要重建索引。
+1. 文档入库时要生成 `embedding`。
+2. 用户查询时也要生成 `embedding`。
+3. 入库和查询最好使用同一个 `embedding` 模型。
+4. 换 `embedding` 模型后通常需要重建索引。
 5. 向量维度要和向量库配置一致。
 
 ## 4. 模型参数
@@ -89,10 +89,10 @@ messages -> chat model -> AIMessage
 ## 6. 常见坑
 
 1. 开发环境和生产环境模型参数不一致。
-2. temperature 太高导致企业问答不稳定。
+2. `temperature` 太高导致企业问答不稳定。
 3. 没有限制输出长度。
 4. 没有处理限流、超时、网络错误。
-5. 只关注生成模型，不关注 embedding 模型。
+5. 只关注生成模型，不关注 `embedding` 模型。
 
 ## 7. 可运行 Demo
 
@@ -108,7 +108,7 @@ python docs/public/langchain-examples/03_models/model_selection.py
 章节综合 Demo：
 
 ~~~powershell
-python docs/public/langchain-examples/03_model_calling.py
+python `docs/public/langchain-examples/03_model_calling.py`
 ~~~
 
 该脚本通过 `ChatOpenAI` 调用 `OpenAI` `ChatGPT`，并依次演示 `.invoke()`、`.stream()`、
@@ -118,10 +118,10 @@ python docs/public/langchain-examples/03_model_calling.py
 
 1. Chat `Model` 和 `Embedding` `Model` 有什么区别？
     + Chat `Model` 是聊天模型封装，`Embedding` `Model` 是文本向量模型封装。
-2. 为什么 `RAG` 入库和查询最好使用同一个 embedding 模型？
-    + 不同的 embedding 模型会生成不同的向量，导致检索结果不准确。
-3. temperature 对回答有什么影响？
-    + temperature 控制发散程度，低一些回答更确定，高一些回答更开放。
+2. 为什么 `RAG` 入库和查询最好使用同一个 `embedding` 模型？
+    + 不同的 `embedding` 模型会生成不同的向量，导致检索结果不准确。
+3. `temperature` 对回答有什么影响？
+    + `temperature` 控制发散程度，低一些回答更确定，高一些回答更开放。
 4. streaming 适合什么场景？
     + streaming 适合聊天和长答案。
 5. 为什么要记录模型版本和参数？

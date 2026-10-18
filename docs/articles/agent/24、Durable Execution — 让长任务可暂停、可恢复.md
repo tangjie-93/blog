@@ -34,7 +34,7 @@ note: "用检查点、幂等步骤和人工中断让长时间 Agent 在故障后
 
 ## 3、何时需要它
 
-短请求可以使用会话内循环；跨分钟、跨进程、需要审批或包含外部副作用的任务才需要 durable execution。`LangGraph` 将 durable execution、interrupt 和 memory 作为一组基础能力，适合作为进一步学习的参照。[`LangGraph` durable execution](https://docs.langchain.com/oss/python/langgraph/durable-execution)
+短请求可以使用会话内循环；跨分钟、跨进程、需要审批或包含外部副作用的任务才需要 durable execution。`LangGraph` 将 durable execution、interrupt 和 `memory` 作为一组基础能力，适合作为进一步学习的参照。[`LangGraph` durable execution](https://docs.langchain.com/oss/python/langgraph/durable-execution)
 
 ## 4、练习
 

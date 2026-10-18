@@ -10,7 +10,7 @@ note: "在 macOS 上安装 PostgreSQL，配置数据库并使用 DBeaver 连接�
 
 ## 一、`PostgreSQL` 安装与配置
 
-### 1. macOS 安装 `PostgreSQL`
+### 1. `macOS` 安装 `PostgreSQL`
 
 #### 方法一：使用 Homebrew（推荐）
 ```bash
@@ -27,10 +27,10 @@ brew services list
 brew services stop postgresql
 ```
 
-#### 方法二：使用 Postgres.app
+#### 方法二：使用 `Postgres.app`
 1. 访问 https://postgresapp.com/
 2. 下载并安装
-3. 打开 Postgres.app 应用
+3. 打开 `Postgres.app` 应用
 4. 点击 "+" 创建新服务器
 
 ### 2. 创建数据库和用户
@@ -78,7 +78,7 @@ psql -U postgres -d fastapi_db -h localhost -p 5432
 #### 步骤一：打开新建连接向导
 1. 启动 `DBeaver`
 2. 点击菜单栏 **数据库 (Database)** → **新建连接 (New Connection)**
-3. 或使用快捷键：`Ctrl + N` (Windows/`Linux`) 或 `Cmd + Shift + N` (Mac)
+3. 或使用快捷键：`Ctrl + N` (`Windows`/`Linux`) 或 `Cmd + Shift + N` (Mac)
 
 #### 步骤二：选择数据库类型
 1. 在左侧列表中选择 **`PostgreSQL`**
@@ -109,7 +109,7 @@ psql -U postgres -d fastapi_db -h localhost -p 5432
 ### 3. `DBeaver` 常用操作
 
 #### 浏览数据库结构
-- 展开连接 → **databases** → **fastapi_db**
+- 展开连接 → **databases** → **`fastapi_db`**
   - **public** 模式
     - **Tables**: 查看所有表
     - **Views**: 查看视图
@@ -157,7 +157,7 @@ SELECT version();
 
 ## 三、项目配置
 
-### 1. 创建 .env 文件
+### 1. 创建 `.env` 文件
 
 在 `FastAPI/backend` 目录下创建 `.env` 文件：
 
@@ -219,7 +219,7 @@ ALTER USER postgres WITH PASSWORD 'postgres';
 \q
 ```
 
-### 3. 数据库不存在：Database "fastapi_db" does not exist
+### 3. 数据库不存在：Database "`fastapi_db`" does not exist
 
 **原因**: 数据库未创建
 
@@ -236,7 +236,7 @@ createdb -U postgres fastapi_db
 3. 下载最新版本的 `.jar` 文件
 4. 在 `DBeaver` 连接设置中，手动指定驱动路径
 
-### 5. 权限不足：Permission denied
+### 5. 权限不足：`Permission` denied
 
 **原因**: 用户没有数据库权限
 
@@ -278,7 +278,7 @@ GRANT ALL PRIVILEGES ON DATABASE fastapi_db TO postgres;
 
 ### 3. 外观设置
 - **窗口** → **首选项** → **外观**
-  - 选择喜欢的主题（Dark/Light）
+  - 选择喜欢的主题（`Dark/Light`）
   - 调整字体大小
 
 ---

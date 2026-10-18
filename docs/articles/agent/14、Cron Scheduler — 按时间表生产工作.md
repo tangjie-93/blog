@@ -28,14 +28,14 @@ s13 让 `Agent` 能后台执行慢操作，但所有操作仍然是你手动触�
 
 ![Cron Scheduler Overview](/image/agent-course/s14_cron_scheduler/cron-scheduler-overview.svg)
 
-教学代码沿用 S13 的简化任务系统、后台执行和 prompt 组装；为了聚焦调度器，省略完整错误恢复、记忆和技能系统。新增：独立的 cron 调度线程，每秒检查一次，时间到了把任务塞进 `cron_queue`；再由 queue processor 在 `Agent` 空闲时自动交付。
+教学代码沿用 S13 的简化任务系统、后台执行和 `prompt` 组装；为了聚焦调度器，省略完整错误恢复、记忆和技能系统。新增：独立的 `cron` 调度线程，每秒检查一次，时间到了把任务塞进 `cron_queue`；再由 queue processor 在 `Agent` 空闲时自动交付。
 
 手动 vs 定时：
 
 | | 手动触发 (s13) | 定时触发 (s14) |
 |---|---|---|
 | 触发者 | 用户输入 | 调度线程 |
-| 触发时机 | 随时 | cron 表达式指定 |
+| 触发时机 | 随时 | `cron` 表达式指定 |
 | 需要人参与 | 是 | 否（调度器自动入队，空闲时自动交付） |
 | 持久性 | — | durable 跨重启 |
 
@@ -50,13 +50,13 @@ Cron 调度分四层：
 1. **Scheduler**：daemon 线程，每秒轮询，判断时间到了没有
 2. **Queue**：`cron_queue`，调度线程写入已触发任务
 3. **Queue Processor**：发现队列非空且 `Agent` 空闲，启动一轮 `agent_loop`
-4. **Consumer**：`agent_loop` 从队列消费，注入到 messages
+4. **Consumer**：`agent_loop` 从队列消费，注入到 `messages`
 
 教学版实现的是最小 queue processor：用 `agent_lock` 判断 `Agent` 是否空闲，空闲时自动交付定时任务。真实 `CC` 的 `useQueueProcessor.ts` 还会处理 `UI` 阻塞、队列优先级和不同消息模式。
 
 ### 3.2 CronJob: 数据结构
 
-每个 cron 任务是一个 `CronJob` 对象：
+每个 `cron` 任务是一个 `CronJob` 对象：
 
 ```python
 @dataclass
@@ -80,9 +80,9 @@ Cron 表达式，五段式，Unix 用了 50 年：
 
 支持 `*`、`*/N`、`N`、`N-M`、`N,M,...`。
 
-### 3.3 cron_matches: 五段式匹配
+### 3.3 `cron_matches`: 五段式匹配
 
-标准 cron 语义：分钟、小时、月必须全部匹配；日（`DOM`）和星期（DOW）同时被约束时任一匹配即可（OR）：
+标准 `cron` 语义：分钟、小时、月必须全部匹配；日（`DOM`）和星期（DOW）同时被约束时任一匹配即可（OR）：
 
 ```python
 def cron_matches(cron_expr: str, dt: datetime) -> bool:
@@ -139,9 +139,9 @@ def cron_scheduler_loop():
 
 关键设计：
 - **独立于 `agent_loop`**：即使 `agent_loop` 没在跑，调度器也在后台检查时间
-- **date-aware minute_marker**：用 `"YYYY-MM-DD HH:MM"` 防止同一分钟重复触发，同时不会在第二天跳过
-- **单 job try/except**：一个坏 job 不会拖垮整个调度线程
-- **一次性任务**：触发后自动从 scheduled_jobs 里删除
+- **date-aware `minute_marker`**：用 `"YYYY-MM-DD HH:MM"` 防止同一分钟重复触发，同时不会在第二天跳过
+- **单 job `try/except`**：一个坏 job 不会拖垮整个调度线程
+- **一次性任务**：触发后自动从 `scheduled_jobs` 里删除
 
 ### 3.5 Queue Processor + `agent_loop`: 交付端
 
@@ -162,7 +162,7 @@ def queue_processor_loop():
             agent_lock.release()
 ```
 
-`agent_loop` 也不负责检查时间，它只从 `cron_queue` 里拿已触发的任务，注入到 messages 里：
+`agent_loop` 也不负责检查时间，它只从 `cron_queue` 里拿已触发的任务，注入到 `messages` 里：
 
 ```python
 fired = consume_cron_queue()
@@ -173,9 +173,9 @@ for job in fired:
 
 生产者（调度线程）、交付者（queue processor）和消费者（`agent_loop`）通过 `cron_queue`、`cron_lock`、`agent_lock` 解耦。
 
-### 3.6 校验：防止坏 cron 杀掉调度器
+### 3.6 校验：防止坏 `cron` 杀掉调度器
 
-`schedule_job` 在注册前校验 cron 表达式，非法的直接返回错误：
+`schedule_job` 在注册前校验 `cron` 表达式，非法的直接返回错误：
 
 ```python
 def schedule_job(cron, prompt, recurring=True, durable=True):
@@ -225,12 +225,12 @@ def schedule_job(cron, prompt, recurring=True, durable=True):
 | 组件 | 之前 (s13) | 之后 (s14) |
 |------|-----------|-----------|
 | 触发方式 | 用户手动触发 | 调度线程自动入队 |
-| 新类型 | — | CronJob dataclass (id, cron, prompt, recurring, durable) |
-| 新函数 | — | cron_matches, validate_cron, schedule_job, cancel_job, cron_scheduler_loop, queue_processor_loop |
-| 新存储 | — | .scheduled_tasks.json (durable) + 内存 (session-only) |
+| 新类型 | — | CronJob dataclass (id, `cron`, `prompt`, recurring, durable) |
+| 新函数 | — | `cron_matches`, `validate_cron`, `schedule_job`, `cancel_job`, `cron_scheduler_loop`, `queue_processor_loop` |
+| 新存储 | — | `.``scheduled_tasks``.json` (durable) + 内存 (session-only) |
 | 线程 | 后台执行线程 | + 调度线程 (daemon, 1s 轮询) + queue processor 线程 |
-| 队列 | background_results | + cron_queue (调度线程写, queue processor 交付, `agent_loop` 消费) |
-| 工具 | 8 (s12/s13) | + schedule_cron, list_crons, cancel_cron (11) |
+| 队列 | `background_results` | + `cron_queue` (调度线程写, queue processor 交付, `agent_loop` 消费) |
+| 工具 | 8 (`s12/s13`) | + `schedule_cron`, `list_crons`, `cancel_cron` (11) |
 
 ---
 
@@ -241,14 +241,14 @@ cd learn-claude-code
 python s14_cron_scheduler/code.py
 ```
 
-试试这些 prompt：
+试试这些 `prompt`：
 
 1. `Schedule a task to print the current date every 2 minutes`
 2. `List all cron jobs`
 3. `Create a one-shot reminder in 1 minute to check the build status`
 4. `Cancel the recurring job and verify with list_crons`
 
-观察重点：调度线程是否在独立运行？cron 任务是否在正确的时间点触发？不输入新 prompt 时，是否也出现 `[queue processor]` 并自动执行？durable job 是否写入了 `.scheduled_tasks.json`？
+观察重点：调度线程是否在独立运行？`cron` 任务是否在正确的时间点触发？不输入新 `prompt` 时，是否也出现 `[queue processor]` 并自动执行？durable job 是否写入了 `.scheduled_tasks.json`？
 
 ---
 
@@ -267,7 +267,7 @@ s15 `Agent Teams` → 一个 `Agent` 不够，组队吧。持久队友 + 异步�
 
 ### 一、三个 Cron 工具
 
-`CC` 暴露了三个 cron 工具给模型：`CronCreate`、`CronDelete`、`CronList`。全部由编译时门控 `feature('AGENT_TRIGGERS')` 和运行时 GrowthBook 标志 `tengu_kairos_cron` 控制。还有一个 `CLAUDE_CODE_DISABLE_CRON` 环境变量做本地覆盖。
+`CC` 暴露了三个 `cron` 工具给模型：`CronCreate`、`CronDelete`、`CronList`。全部由编译时门控 `feature('AGENT_TRIGGERS')` 和运行时 GrowthBook 标志 `tengu_kairos_cron` 控制。还有一个 `CLAUDE_CODE_DISABLE_CRON` 环境变量做本地覆盖。
 
 ### 二、存储：`.claude/scheduled_tasks.json`
 
@@ -301,11 +301,11 @@ Durable 任务写磁盘；session-only 任务存于 `STATE.sessionCronTasks` 内
 
 ### 八、触发注入
 
-触发后通过 `enqueuePendingNotification()` 以 `priority: 'later'` 入队命令队列。标记 `workload: WORKLOAD_CRON`，`API` 在容量紧张时以更低的 QoS 为 cron 发起的请求服务。
+触发后通过 `enqueuePendingNotification()` 以 `priority: 'later'` 入队命令队列。标记 `workload: WORKLOAD_CRON`，`API` 在容量紧张时以更低的 QoS 为 `cron` 发起的请求服务。
 
 ### 九、Queue Processor：自动交付
 
-真实 `CC` 通过 `useQueueProcessor.ts:48-60` 在无 query、无阻塞 `UI`、队列非空时自动触发处理。`queueProcessor.ts:52-87` 按队列优先级把命令交给 `handlePromptSubmit()`。教学版用 `queue_processor_loop` 保留核心行为：队列有任务且 `Agent` 空闲时，自动启动一轮 `agent_loop`。
+真实 `CC` 通过 `useQueueProcessor.ts:48-60` 在无 `query`、无阻塞 `UI`、队列非空时自动触发处理。`queueProcessor.ts:52-87` 按队列优先级把命令交给 `handlePromptSubmit()`。教学版用 `queue_processor_loop` 保留核心行为：队列有任务且 `Agent` 空闲时，自动启动一轮 `agent_loop`。
 
 </details>
 

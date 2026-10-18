@@ -6,23 +6,23 @@ tags: es6
 note: async函数详解
 ---
 
-&#8195;&#8195;**async函数是`Generator` 函数的语法糖。async函数就是将 `Generator` 函数的星号（*）替换成async，将yield替换成await**，仅此而已。
+&#8195;&#8195;**`async`函数是`Generator` 函数的语法糖。`async`函数就是将 `Generator` 函数的星号（*）替换成`async`，将yield替换成`await`**，仅此而已。
 `async`函数对 `Generator` 函数的改进，体现在以下四点。
 
 >1)	**内置执行器。**
-调用了asyncReadFile函数，然后它就会自动执行，输出最后结果。也就是说，async函数的执行，与普通函数一模一样，只要一行。
+调用了asyncReadFile函数，然后它就会自动执行，输出最后结果。也就是说，`async`函数的执行，与普通函数一模一样，只要一行。
 >2)	**更好的语义。**
-async表示函数里有异步操作，await表示紧跟在后面的表达式需要等待结果。
+`async`表示函数里有异步操作，`await`表示紧跟在后面的表达式需要等待结果。
 >3)	**更广的适用性。**
-await命令后面，可以是 `Promise` 对象和原始类型的值（数值、字符串和布尔值，但这时会自动转成立即 resolved 的 `Promise` 对象）。
+`await`命令后面，可以是 `Promise` 对象和原始类型的值（数值、字符串和布尔值，但这时会自动转成立即 resolved 的 `Promise` 对象）。
 >4)	**返回值是 `Promise`。**
-async函数的返回值是 `Promise` 对象，进一步说，**async函数完全可以看作多个异步操作，包装成的一个 `Promise` 对象，而await命令就是内部then命令的语法糖**。
+`async`函数的返回值是 `Promise` 对象，进一步说，**`async`函数完全可以看作多个异步操作，包装成的一个 `Promise` 对象，而`await`命令就是内部then命令的语法糖**。
 
 ## 1、Async的语法
 
 >1、async函数返回一个 `Promise` 对象。
 
-&#8195;&#8195;async函数内部return语句返回的值，会成为then方法回调函数的参数。async函数内部抛出错误，会导致返回的 `Promise` 对象变为reject状态。抛出的错误对象会被catch方法回调函数接收到。
+&#8195;&#8195;`async`函数内部return语句返回的值，会成为then方法回调函数的参数。`async`函数内部抛出错误，会导致返回的 `Promise` 对象变为reject状态。抛出的错误对象会被catch方法回调函数接收到。
 ```js
 async function f() {
     return 'hello world';
@@ -53,11 +53,11 @@ async function f() {
 f().then(v => console.log(v))
 // 123
 ```       
-&#8195;&#8195;另一种情况是，await命令后面是一个thenable对象（即定义then方法的对象），那么await会将其等同于 `Promise` 对象。
+&#8195;&#8195;另一种情况是，`await`命令后面是一个thenable对象（即定义then方法的对象），那么`await`会将其等同于 `Promise` 对象。
 
 ## 3、错误处理
 
-&#8195;&#8195;如果await后面的异步操作出错，那么等同于async函数返回的 `Promise` 对象被reject。
+&#8195;&#8195;如果`await`后面的异步操作出错，那么等同于`async`函数返回的 `Promise` 对象被reject。
 ```js
 async function f() {
     await new Promise(function (resolve, reject) {
@@ -71,7 +71,7 @@ f()
 ```
 ## 4、使用注意点
 
-&#8195;&#8195;1)	await命令后面的`Promise`对象，运行结果可能是rejected，所以最好把await命令放在try...catch代码块中。	
+&#8195;&#8195;1)	`await`命令后面的`Promise`对象，运行结果可能是rejected，所以最好把`await`命令放在try...catch代码块中。	
 ```js
 async function myFunction() {
     try {
@@ -88,7 +88,7 @@ async function myFunction() {
     });
 }
 ```
-&#8195;&#8195;2)	多个await命令后面的异步操作，如果不存在继发关系，最好让它们同时触发。
+&#8195;&#8195;2)	多个`await`命令后面的异步操作，如果不存在继发关系，最好让它们同时触发。
 ```js
 // 写法一
 let [foo, bar] = await Promise.all([getFoo(), getBar()]);
@@ -98,7 +98,7 @@ let barPromise = getBar();
 let foo = await fooPromise;//直接返回
 let bar = await barPromise;
 ```
-&#8195;&#8195;3)	await命令只能用在async函数之中，如果用在普通函数，就会报错。
+&#8195;&#8195;3)	`await`命令只能用在`async`函数之中，如果用在普通函数，就会报错。
 ```js
 async function dbFuc(db) {
     let docs = [{}, {}, {}];
@@ -117,7 +117,7 @@ async function dbFuc(db) {
     console.log(results);
 }
 ```
-&#8195;&#8195;4)	async 函数可以保留运行堆栈。
+&#8195;&#8195;4)	`async` 函数可以保留运行堆栈。
 ```js
 const a = () => {
     b().then(() => c());
@@ -156,7 +156,7 @@ async function logInOrder(urls) {
     }
 }
 ```
-&#8195;&#8195;**虽然map方法的参数是async函数，但它是并发执行的，因为只有async函数内部是继发执行，外部不受影响。**
+&#8195;&#8195;**虽然map方法的参数是`async`函数，但它是并发执行的，因为只有`async`函数内部是继发执行，外部不受影响。**
 
 ## 6、异步遍历器
 
@@ -170,7 +170,7 @@ asyncIterator
 ```
 ## 7、异步 `Generator` 函数
 
-&#8195;&#8195;语法上，异步 `Generator` 函数就是async函数与 `Generator` 函数的结合。
+&#8195;&#8195;语法上，异步 `Generator` 函数就是`async`函数与 `Generator` 函数的结合。
 ```js
 async function* gen() {
     yield 'hello';

@@ -120,7 +120,7 @@ genObj.next();// Started。执行了 console.log('Started');和`1. ${yield}`这�
 genObj.next('a') // 1. a。执行了 console.log(`1. ${yield}`);和`2. ${yield}`这两句
 console.log(genObj.next('b') )   //2.b    {value: "result", done: true}。执行了console.log(`2. ${yield}`);和return 'result';这两句
 ```        
-&#8195;&#8195;上面的console.log(`1. ${yield}`);分两步执行，首先执行yield，等到执行next()时再执行console.log();
+&#8195;&#8195;上面的`console.log`(`1. ${yield}`);分两步执行，首先执行yield，等到执行next()时再执行`console.log`();
 ```js        
 //例子2
 function* dataConsumer() {
@@ -184,7 +184,7 @@ for (let n of numbers()) {
 }
 // 1,2
 ```       
-## 4、`Generator`.prototype.throw()
+## 4、`Generator`.`prototype.throw`()
 
 &#8195;&#8195;在函数体外抛出错误，然后在 `Generator` 函数体内捕获。**如果是全局throw()命令，只能被函数体外的catch语句捕获。**
 ```js
@@ -255,7 +255,7 @@ g.next() // a
 g.throw() // b
 g.next() // c
 ```       
-&#8195;&#8195;另外，throw命令与g.throw方法是无关的，两者互不影响。
+&#8195;&#8195;另外，throw命令与`g.throw`方法是无关的，两者互不影响。
 ```js       
 var gen = function* gen(){
     yield console.log('hello');
@@ -273,7 +273,7 @@ try {
 // hello
 // world
 ```       
-&#8195;&#8195;一旦 `Generator` 执行过程中抛出错误，且没有被内部捕获，就不会再执行下去了。如果此后还调用next方法，将返回一个value属性等于undefined、done属性等于true的对象，即 `JavaScript` 引擎认为这个 `Generator` 已经运行结束了。
+&#8195;&#8195;一旦 `Generator` 执行过程中抛出错误，且没有被内部捕获，就不会再执行下去了。如果此后还调用next方法，将返回一个value属性等于`undefined`、done属性等于true的对象，即 `JavaScript` 引擎认为这个 `Generator` 已经运行结束了。
 ```js
 function* g() {
     yield 1;
@@ -314,7 +314,7 @@ log(g());
 // 第三次运行next方法 { value: undefined, done: true }
 // caller done
 ```       
-## 5、`Generator`.prototype.return()
+## 5、`Generator`.`prototype.return`()
 
 &#8195;&#8195;返回给定的值，并且终结遍历 `Generator` 函数。
 ```js
@@ -480,7 +480,7 @@ let obj = {
 ```        
 ## 9、`Generator`函数的this
 
-&#8195;&#8195;**`Generator` 函数总是返回一个遍历器，`ES6` 规定这个遍历器是 `Generator` 函数的实例，也继承了 `Generator` 函数的prototype对象上的方法**。
+&#8195;&#8195;**`Generator` 函数总是返回一个遍历器，`ES6` 规定这个遍历器是 `Generator` 函数的实例，也继承了 `Generator` 函数的`prototype`对象上的方法**。
 ```js
 function* g() {}
 g.prototype.hello = function () {
@@ -506,7 +506,7 @@ console.log(obj.a) // 1
 console.log(obj.b) // 2
 console.log(obj.c) // 3
 ```       
-&#8195;&#8195;将obj换成F.prototype。将这两个对象统一起来。再将F改成构造函数，就可以对它执行new命令了。
+&#8195;&#8195;将obj换成`F.prototype`。将这两个对象统一起来。再将F改成构造函数，就可以对它执行new命令了。
 ```js
 function* gen() {
     this.a = 1;
@@ -690,7 +690,7 @@ result.value.then(function(data){
     g.next(data);
 });
 ```       
-&#8195;&#8195;首先执行 `Generator` 函数，获取遍历器对象，然后使用next方法（第二行），执行异步任务的第一阶段。由于Fetch模块返回的是一个 `Promise` 对象，因此要用then方法调用下一个next方法。
+&#8195;&#8195;首先执行 `Generator` 函数，获取遍历器对象，然后使用next方法（第二行），执行异步任务的第一阶段。由于`Fetch`模块返回的是一个 `Promise` 对象，因此要用then方法调用下一个next方法。
 &#8195;&#8195;2.Thunk函数   
 &#8195;&#8195;编译器的“传名调用”实现，往往是将参数放到一个临时函数之中，再将这个临时函数传入函数体。这个临时函数就叫做 Thunk 函数。
 ```js

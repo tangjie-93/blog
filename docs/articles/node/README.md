@@ -24,7 +24,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
 
 + 2、错误会引起整个应用退出无法继续调用异步`I/O`<br>
     **解决方案**
-    + 1、Nginx反向代理、负载均衡，开启多个进程，绑定多个端口。
+    + 1、`Nginx`反向代理、负载均衡，开启多个进程，绑定多个端口。
     + 2、`pm2、forever`等进程管理工具可以实现进程监控，错误自动重启。
     + 3、开多个进程监听同一端口，使用node提供的`cluster`或者`child_process`模块。
     + 4、使用`try catch`,抓取错误。
@@ -50,14 +50,14 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
 **2、全局变量**<br>
 
 + __filename: `指向当前运行的脚本文件名`。<br>
-+ __dirname: `指向当前运行的脚本所在的目录`。
++ `__dirname`: `指向当前运行的脚本所在的目录`。
 
 **3、核心模块**
 + http：提供http服务器功能。
 + url：解析url。
 + fs：文本系统交互。
 + querystring：解析`URL`的查询字符串。
-+ child_process：新建子进程。
++ `child_process`：新建子进程。
 + util：提供的一系列使用小工具。
 + path：处理文件路径。
 + crypto：提供加密和解密功能，基本上是对OpenSSL的包装。
@@ -132,7 +132,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
 ```
 ### 2.2 **2、`Buffer`**
 
-&#8195;&#8195;`Buffer`对象是`Node`处理二进制数据(如`TCP`数据流)的一个接口。它是`Node`原生提供的全局对象，可以直接使用，不需要require('buffer')。它是一个构造函数，生成的实例代表了V8引擎分配的一段内存，是一个类似数组的对象，成员都为0到255的整数值，即一个8位的字节。
+&#8195;&#8195;`Buffer`对象是`Node`处理二进制数据(如`TCP`数据流)的一个接口。它是`Node`原生提供的全局对象，可以直接使用，不需要`require`('buffer')。它是一个构造函数，生成的实例代表了V8引擎分配的一段内存，是一个类似数组的对象，成员都为0到255的整数值，即一个8位的字节。
 
 **&#8195;`2.1`、`Buffer`对象的直接赋值和取值**
 ```javascript
@@ -231,7 +231,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
 
 + 1、exec()
 
-&#8195;&#8195;用于执行bash命令，它的参数是一个命令字符串。最多可以接受两个参数，第一个参数是所要执行的shell命令，第二个参数是回调函数，该函数接受三个参数，分别是发生的错误、标准输出的显示结果、标准错误的显示结果。exec方法会直接调用bash（/bin/sh程序）来解释命令，所以如果有用户输入的参数，exec方法是不安全的。
+&#8195;&#8195;用于执行`bash`命令，它的参数是一个命令字符串。最多可以接受两个参数，第一个参数是所要执行的`shell`命令，第二个参数是回调函数，该函数接受三个参数，分别是发生的错误、标准输出的显示结果、标准错误的显示结果。exec方法会直接调用`bash`（/`bin/sh`程序）来解释命令，所以如果有用户输入的参数，exec方法是不安全的。
 ```javascript
     var exec = require('child_process').exec;
     var ls = exec('ls -l', function (error, stdout, stderr) {
@@ -261,7 +261,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
 &#8195;&#8195;是exec的同步执行版本。它可以接受两个参数，第一个参数是所要执行的命令，第二个参数用来配置执行环境。
 + 3、execFile()
 
-&#8195;&#8195;直接执行特定的程序，参数作为数组传入，不会被bash解释，因此具有较高的安全性。
+&#8195;&#8195;直接执行特定的程序，参数作为数组传入，不会被`bash`解释，因此具有较高的安全性。
 ```javascript
     var child_process = require('child_process');
     var path = ".";
@@ -312,18 +312,18 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
 ```
 + 6、send()
 
-&#8195;&#8195;使用 child_process.fork() 生成新进程之后，就可以用 child.send(message, [sendHandle]) 向新进程发送消息。新进程中通过监听message事件，来获取消息。
+&#8195;&#8195;使用 `child_process`.fork() 生成新进程之后，就可以用 `child.send`(message, [sendHandle]) 向新进程发送消息。新进程中通过监听message事件，来获取消息。
     
 ### 2.4 **4、cluster**
 &#8195;&#8195;集群模块允许设立一个主进程和若干个工人进程，由主进程监控和协调工人进程的运行。worker之间采用进程间通信交换消息，集群模块内置一个负载均衡器，采用循环赛算法协调各个工人进程之间的负载运行。所有新建立的链接都由主进程完成，然后主进程再把`TCP`连接分配给指定的工人进程。
 
 **&#8195;`4.1`、worker对象**
 
-&#8195;&#8195;是cluster.fork()的返回值，代表一个worker进程。有如下属性：
+&#8195;&#8195;是`cluster.fork`()的返回值，代表一个worker进程。有如下属性：
 
 &#8195;&#8195;1、workid：是cluster.workers中指向当前进程的索引值。<br>
 &#8195;&#8195;2、worker.process：所有的worker进程都是用child_process.fork()生成的。child_process.fork()返回的对象，被保存在work.process之中。通过这个属性，可以获取worker所在的进程对象。<br>
-&#8195;&#8195;3、work.send()：用于在主进程中，向子进程发送信息。
+&#8195;&#8195;3、`work.send`()：用于在主进程中，向子进程发送信息。
 ```javascript
     if (cluster.isMaster) {
         var worker = cluster.fork();
@@ -335,20 +335,20 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
         });
     }
 ```
-**&#8195;`4.2`、cluster.workers对象**
+**&#8195;`4.2`、`cluster.workers`对象**
 
-&#8195;&#8195;只有主进程才有，包含了所有worker进程。每个成员的键值就是一个worker进程对象，键名就是该worker进程的worker.id属性。
+&#8195;&#8195;只有主进程才有，包含了所有worker进程。每个成员的键值就是一个worker进程对象，键名就是该worker进程的`worker.id`属性。
 
 **&#8195;`4.3`、cluster模块的属性和方法**
 + 1、isWorker、isMaster
 
-&#8195;&#8195;属性由process.env.NODE_UNIQUE_ID决定，如果process.env.NODE_UNIQUE_ID为未定义，就表示该进程是主进程。
+&#8195;&#8195;属性由`process.env`.`NODE_UNIQUE_ID`决定，如果`process.env`.`NODE_UNIQUE_ID`为未定义，就表示该进程是主进程。
 + 2、fork()
 
 &#8195;&#8195;用于创建一个worker进程，上下文都是复制主进程。只有主进程才能调用这个方法。
 + 3、kill()
 
-&#8195;&#8195;终止worker进程。如果当前是主进程，就会终止与worker.process的联络，然后将系统信号法发向worker进程。如果当前是worker进程，就会终止与主进程的通信，然后退出，返回0。
+&#8195;&#8195;终止worker进程。如果当前是主进程，就会终止与`worker.process`的联络，然后将系统信号法发向worker进程。如果当前是worker进程，就会终止与主进程的通信，然后退出，返回0。
 + 4、listening事件
 
 &#8195;&#8195;worker进程调用listening方法以后，“listening”事件就传向该进程的服务器，然后传向主进程。
@@ -459,13 +459,13 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
 
 ### 2.6 **6、express**
 
-&#8195;&#8195;Express是目前最流行的基于`Node.js`的Web开发框架，可以快速地搭建一个完整功能的网站。
+&#8195;&#8195;Express是目前最流行的基于`Node.js`的`Web`开发框架，可以快速地搭建一个完整功能的网站。
 
 **&#8195;1、运行原理**
 
 + **`1.1`、底层:http模块**
 
-&#8195;&#8195;Express框架建立在node.js内置的http模块上。http模块生成服务器的原始代码如下。
+&#8195;&#8195;Express框架建立在`node.js`内置的http模块上。http模块生成服务器的原始代码如下。
 ```javascript
     var http = require("http");
     var app = http.createServer(function(request, response) {
@@ -484,7 +484,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
 + `1.2`、中间件
 
 &#8195;&#8195;中间件（middleware）就是处理`HTTP`请求的函数。它最大的特点就是，一个中间件处理完，再传递给下一个中间件。
-&#8195;&#8195;每个中间件可以接收三个参数，依次为request对象（代表`HTTP`请求）、response对象（代表`HTTP`回应），next回调函数（代表下一个中间件）。每个中间件都可以对`HTTP`请求（request对象）进行加工，并且决定是否调用next方法，将request对象再传给下一个中间件。中间件可以分为:
+&#8195;&#8195;每个中间件可以接收三个参数，依次为`request`对象（代表`HTTP`请求）、`response`对象（代表`HTTP`回应），next回调函数（代表下一个中间件）。每个中间件都可以对`HTTP`请求（`request`对象）进行加工，并且决定是否调用next方法，将`request`对象再传给下一个中间件。中间件可以分为:
 
 + 1)应用中间件
 + 2)路由中间件
@@ -505,7 +505,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
 
 + 5)错误处理中间件
 
-&#8195;&#8195;一个不进行任何操作、只传递request对象的中间件，就是下面这样。
+&#8195;&#8195;一个不进行任何操作、只传递`request`对象的中间件，就是下面这样。
 ```javascript
     function uselessMiddleware(req, res, next) {
         next();
@@ -600,25 +600,25 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
         response.sendFile方法用于发送文件。<br>
 
     3)response.render方法<br>
-         response.render方法用于渲染网页模板。
+         `response.render`方法用于渲染网页模板。
 
     4)response.end方法<br>
-         response.end方法用于将数据返回给客户端。
+         `response.end`方法用于将数据返回给客户端。
 
     5)response.json<br>
-         response.json方法用于将接送数据返回给客户端。
+         `response.json`方法用于将接送数据返回给客户端。
 
     6)response.jsonp<br>
-         response.jsonp方法用于跨域。
+         `response.jsonp`方法用于跨域。
 
     7)response.download<br>
-         response.download方法用于将下载。
+         `response.download`方法用于将下载。
 
     8)response.setHeader("a","234");<br>
           用于写头。
 
     9)response.write("a","234");<br>
-         response.write方法用于将数据返回给客户端。
+         `response.write`方法用于将数据返回给客户端。
 ```javascript
    
     app.get("/", function(request, response) {
@@ -626,10 +626,10 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
     });
 ```
 + `2.4`、request对象<br>
-    1）request.ip:
+    1）`request.ip`:
         request.ip属性用于获得`HTTP`请求的`IP`地址。<br>
-    2）request.files:
-        request.files用于获取上传的文件。
+    2）`request.files`:
+        `request.files`用于获取上传的文件。
 
 **&#8195;3、配置路由**
 
@@ -702,11 +702,11 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
     //使用public指代public目录下的文件
     app.use("public",express.static('public'));
 ```
-**&#8195;4、Express.Router用法**
+**&#8195;4、`Express.Router`用法**
 
 + `4.1`、基本用法
 
-&#8195;&#8195;Express.Router是一个构造函数，调用后返回一个路由器实例。然后，使用该实例的`HTTP`动词方法，为不同的访问路径，指定回调函数；最后，挂载到某个路径。
+&#8195;&#8195;`Express.Router`是一个构造函数，调用后返回一个路由器实例。然后，使用该实例的`HTTP`动词方法，为不同的访问路径，指定回调函数；最后，挂载到某个路径。
 ```javascript
     var router = express.Router();
     //为不同的路径，指定回调函数
@@ -720,7 +720,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
     //将路由挂载到某个路径
     app.use('/app', router);
 ```
-+ `4.2`、router.route方法
++ `4.2`、`router.route`方法
 
 &#8195;&#8195;router实例对象的route方法，可以接受访问路径作为参数。
 ```javascript
@@ -765,9 +765,9 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
     });
     注意，param方法必须放在HTTP动词方法之前。
 ```
-+ `4.5`、app.route
++ `4.5`、`app.route`
 
-&#8195;&#8195;app.route实际上是express.Router()的缩写形式，除了直接挂载到根路径。因此，对同一个路径指定get和post方法的回调函数，可以写成链式形式。
+&#8195;&#8195;`app.route`实际上是`express.Router`()的缩写形式，除了直接挂载到根路径。因此，对同一个路径指定get和post方法的回调函数，可以写成链式形式。
 ```javascript
     app.route('/login')
     .get(function(req, res) {
@@ -784,44 +784,44 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
 
 &#8195;&#8195;os模块提供与操作系统相关的方法。
 
-**&#8195;`9.1`、os.EOL**
+**&#8195;`9.1`、`os.EOL`**
 
-&#8195;&#8195;该属性是一个常量，返回当前操作系统的换行符（Windows系统是\r\n，其他系统是\n）
+&#8195;&#8195;该属性是一个常量，返回当前操作系统的换行符（`Windows`系统是\r\n，其他系统是\n）
 
-**&#8195;`9.2`、os.arch()**
+**&#8195;`9.2`、`os.arch`()**
 
-&#8195;&#8195;os.arch方法返回当前计算机的架构。
+&#8195;&#8195;`os.arch`方法返回当前计算机的架构。
 ```javascript
     require(`os`).arch()
     // "x64"
 ```
-**&#8195;`9.3`、os.tmpdir()**
+**&#8195;`9.3`、`os.tmpdir`()**
 
-&#8195;&#8195;os.tmpdir方法返回操作系统默认的临时文件目录。
+&#8195;&#8195;`os.tmpdir`方法返回操作系统默认的临时文件目录。
 
 ### 2.8 **10、process对象**
-&#8195;&#8195;process对象是 `Node` 的一个全局对象，提供当前 `Node` 进程的信息。它可以在脚本的任意位置使用，不必通过require命令加载。该对象部署了EventEmitter接口。
+&#8195;&#8195;process对象是 `Node` 的一个全局对象，提供当前 `Node` 进程的信息。它可以在脚本的任意位置使用，不必通过`require`命令加载。该对象部署了EventEmitter接口。
 
 **&#8195;`10.1`、属性**
-+ 1、process.argv：返回一个数组，成员是当前进程的所有命令行参数。
-+ 2、process.env：返回一个对象，成员为当前`Shell`的环境变量，比如process.env.HOME。
-+ 3、process.installPrefix：返回一个字符串，表示 `Node` 安装路径的前缀，比如/usr/local。相应地，`Node` 的执行文件目录为/usr/local/bin/node。
-+ 4、process.pid：返回一个数字，表示当前进程的进程号。
-+ 5、process.platform：返回一个字符串，表示当前的操作系统，比如`Linux`。
-+ 6、process.title：返回一个字符串，默认值为node，可以自定义该值。
-+ 7、process.version：返回一个字符串，表示当前使用的 `Node` 版本，比如v7.`10.0`。
++ 1、`process.argv`：返回一个数组，成员是当前进程的所有命令行参数。
++ 2、`process.env`：返回一个对象，成员为当前`Shell`的环境变量，比如`process.env`.HOME。
++ 3、`process.installPrefix`：返回一个字符串，表示 `Node` 安装路径的前缀，比如/`usr/local`。相应地，`Node` 的执行文件目录为/`usr/local/bin/node`。
++ 4、`process.pid`：返回一个数字，表示当前进程的进程号。
++ 5、`process.platform`：返回一个字符串，表示当前的操作系统，比如`Linux`。
++ 6、`process.title`：返回一个字符串，默认值为node，可以自定义该值。
++ 7、`process.version`：返回一个字符串，表示当前使用的 `Node` 版本，比如v7.`10.0`。
 
 **&#8195;`10.2`、process对象还有一些属性，用来指向 `Shell` 提供的接口**。
 
-+ **1、process.stdout**
++ **1、`process.stdout`**
 
-&#8195;&#8195;返回一个对象，表示标准输出。该对象的write方法等同于console.log，可用在标准输出向用户显示内容。
+&#8195;&#8195;返回一个对象，表示标准输出。该对象的write方法等同于`console.log`，可用在标准输出向用户显示内容。
 ```javascript
     console.log = function(d) {
         process.stdout.write(d + '\n');
     };
 ```
-+ **2、process.stdin**
++ **2、`process.stdin`**
 
 &#8195;&#8195;返回一个对象，表示标准输入。
 ```javascript
@@ -842,10 +842,10 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
 ```
 + **3、stderr**
 
-&#8195;&#8195;process.stderr属性指向标准错误。
+&#8195;&#8195;`process.stderr`属性指向标准错误。
 
-+ **4、process.argv，process.execPath，process.execArgv**
-+ 1）process.argv属性返回一个数组，由命令行执行脚本时的各个参数组成。它的第一个成员总是node，第二个成员是脚本文件名，其余成员是脚本文件的参数。
++ **4、`process.argv`，`process.execPath`，`process.execArgv`**
++ 1）`process.argv`属性返回一个数组，由命令行执行脚本时的各个参数组成。它的第一个成员总是node，第二个成员是脚本文件名，其余成员是脚本文件的参数。
 ```javascript
     //node.js
     console.log("argv: ", process.argv);
@@ -855,13 +855,13 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
     $ node argv.js a b c
     [ 'node', '/path/to/argv.js', 'a', 'b', 'c' ]
 ```
-+ 2）process.execPath属性返回执行当前脚本的`Node`二进制文件的绝对路径。
-+ 3）process.execArgv属性返回一个数组，成员是命令行下执行脚本时，在 `Node` 可执行文件与脚本文件之间的命令行参数。
++ 2）`process.execPath`属性返回执行当前脚本的`Node`二进制文件的绝对路径。
++ 3）`process.execArgv`属性返回一个数组，成员是命令行下执行脚本时，在 `Node` 可执行文件与脚本文件之间的命令行参数。
 
-+ **5、process.env**
++ **5、`process.env`**
 
-&#8195;&#8195;process.env属性返回一个对象，包含了当前`Shell`的所有环境变量。比如，process.env.HOME返回用户的主目录。
-&#8195;&#8195;通常的做法是，新建一个环境变量NODE_ENV，用它确定当前所处的开发阶段，生产阶段设为production，开发阶段设为develop或staging，然后在脚本中读取process.env.NODE_ENV即可。
+&#8195;&#8195;`process.env`属性返回一个对象，包含了当前`Shell`的所有环境变量。比如，`process.env`.HOME返回用户的主目录。
+&#8195;&#8195;通常的做法是，新建一个环境变量`NODE_ENV`，用它确定当前所处的开发阶段，生产阶段设为production，开发阶段设为develop或staging，然后在脚本中读取`process.env`.`NODE_ENV`即可。
 &#8195;&#8195;运行脚本时，改变环境变量，可以采用下面的写法。
 ```javascript
     $ export NODE_ENV=production && node app.js
@@ -880,13 +880,13 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
     process.setgid()：指定当前进程的组，可以使用数字ID，也可以使用字符串ID。
     process.setuid()：指定当前进程的用户，可以使用数字ID，也可以使用字符串ID。
 ```
-+ **1、process.cwd()与__dirname的区别。**
++ **1、`process.cwd`()与`__dirname`的区别。**
 
-&#8195;&#8195;前者进程发起时的位置，后者是脚本的位置，两者可能是不一致的。比如，node ./code/program.js，对于process.cwd()来说，返回的是当前目录（.）；对于__dirname来说，返回是脚本所在目录，即./code/program.js。
+&#8195;&#8195;前者进程发起时的位置，后者是脚本的位置，两者可能是不一致的。比如，node ./`code/program.js`，对于`process.cwd`()来说，返回的是当前目录（.）；对于`__dirname`来说，返回是脚本所在目录，即./`code/program.js`。
 
-+ **2、process.nextTick()**
++ **2、`process.nextTick`()**
 
-&#8195;&#8195;process.nextTick将任务放到当前一轮事件循环（Event Loop）的尾部。
+&#8195;&#8195;`process.nextTick`将任务放到当前一轮事件循环（`Event Loop`）的尾部。
 ```javascript
     process.nextTick(function () {
         console.log('下一次Event Loop即将开始!');
@@ -894,9 +894,9 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
     //上面代码可以用setTimeout(f,0)改写，效果接近，但是原理不同。
     setTimeout(f,0)是将任务放到下一轮事件循环的头部，因此nextTick会比它先执行。另外，nextTick的效率更高，因为不用检查是否到了指定时间。
 ```
-+ **3、process.exit()**
++ **3、`process.exit`()**
 
-&#8195;&#8195;process.exit方法用来退出当前进程。它可以接受一个数值参数，如果参数大于0，表示执行失败；如果等于0表示执行成功。
+&#8195;&#8195;`process.exit`方法用来退出当前进程。它可以接受一个数值参数，如果参数大于0，表示执行失败；如果等于0表示执行成功。
 ```javascript
     if (err) {
         process.exit(1);
@@ -908,7 +908,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
     process.exitCode = 1;
     throw new Error("xx condition failed");
 ```
-+ **4、process.on()**
++ **4、`process.on`()**
 
 &#8195;&#8195;process对象部署了EventEmitter接口，可以使用on方法监听各种事件，并指定回调函数。
 
@@ -919,11 +919,11 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
 + 4）SIGTERM事件：系统发出进程终止信号SIGTERM时触发
 + 5）exit事件：进程退出前触发
 
-+ **5、process.kill()**
++ **5、`process.kill`()**
 
-&#8195;&#8195;process.kill方法用来对指定`ID`的线程发送信号，默认为SIGINT信号。
+&#8195;&#8195;`process.kill`方法用来对指定`ID`的线程发送信号，默认为SIGINT信号。
 
-&#8195;&#8195;process.kill(process.pid, 'SIGTERM');
+&#8195;&#8195;`process.kill`(`process.pid`, 'SIGTERM');
             上面代码用于杀死当前进程。
 
 + **6、beforeExit事件**
@@ -933,7 +933,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
 
 + **7、信号事件**
 
-&#8195;&#8195;主要对SIGTERM和SIGINT信号部署监听函数，这两个信号在非Windows平台会导致进程退出，但是只要部署了监听函数，`Node`进程收到信号后就不会退出。
+&#8195;&#8195;主要对SIGTERM和SIGINT信号部署监听函数，这两个信号在非`Windows`平台会导致进程退出，但是只要部署了监听函数，`Node`进程收到信号后就不会退出。
 + **8、进程的退出码**
 ```javascript
     0，正常退出
@@ -945,7 +945,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
 ### 2.9 **11、url**
 &#8195;&#8195;url模块用于生成和解析`URL`。该模块使用前，必须加载。
 
-**&#8195;`11.1`、url.resolve(from, to)**
+**&#8195;`11.1`、`url.resolve`(from, to)**
 ```javascript
     url.resolve方法用于生成URL。它的第一个参数是基准URL，其余参数依次根据基准URL，生成对应的位置。
     url.resolve('/one/two/three', 'four')
@@ -962,7 +962,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
 ### 2.10 **12、querystring**
 &#8195;&#8195;querystring模块主要用来解析查询字符串。
 
-**&#8195;1、querystring.parse()**
+**&#8195;1、`querystring.parse`()**
 
 &#8195;&#8195;用于将一个查询字符串解析为 `JavaScript` 对象。
 ```javascript
@@ -1000,7 +1000,7 @@ parse方法也可以用来解析一般的字符串。
     //rs.push(null)中的null，用来告诉rs，数据输入完毕。
     rs.pipe(process.stdout);
 ```
-&#8195;&#8195;"可读数据流"有两种状态：**流动态和暂停态**。处于流动态时，数据会尽快地从数据源导向用户的程序；处于暂停态时，必须显式调用stream.read()等指令，"可读数据流"才会释放数据。刚刚新建的时候，"可读数据流"处于暂停态。
+&#8195;&#8195;"可读数据流"有两种状态：**流动态和暂停态**。处于流动态时，数据会尽快地从数据源导向用户的程序；处于暂停态时，必须显式调用`stream.read`()等指令，"可读数据流"才会释放数据。刚刚新建的时候，"可读数据流"处于暂停态。
 
 &#8195;&#8195;三种方法可以让暂停态转为流动态。
 + 1、添加data事件的监听函数
@@ -1046,11 +1046,11 @@ parse方法也可以用来解析一般的字符串。
         console.log(data)
     });
 ```
-&#8195;&#8195;readable事件表示系统缓冲之中有可读的数据，使用read方法去读出数据。如果没有数据可读，read方法会返回null。
+&#8195;&#8195;readable事件表示系统缓冲之中有可读的数据，使用read方法去读出数据。如果没有数据可读，read方法会返回`null`。
 &#8195;&#8195;"可读数据流"除了read方法，还有以下方法。
-+ 1、Readable.pause() ：暂停数据流。已经存在的数据，也不再触发data事件，数据将保留在缓存之中，此时的数据流称为静态数据流。如果对静态数据流再次调用pause方法，数据流将重新开始流动，但是缓存中现有的数据，不会再触发data事件。
-+ 2、Readable.resume()：恢复暂停的数据流。
-+ 3、readable.unpipe()：从管道中移除目的地数据流。如果该方法使用时带有参数，会阻止“可读数据流”进入某个特定的目的地数据流。如果使用时不带有参数，则会移除所有的目的地数据流。
++ 1、`Readable.pause`() ：暂停数据流。已经存在的数据，也不再触发data事件，数据将保留在缓存之中，此时的数据流称为静态数据流。如果对静态数据流再次调用pause方法，数据流将重新开始流动，但是缓存中现有的数据，不会再触发data事件。
++ 2、`Readable.resume`()：恢复暂停的数据流。
++ 3、`readable.unpipe`()：从管道中移除目的地数据流。如果该方法使用时带有参数，会阻止“可读数据流”进入某个特定的目的地数据流。如果使用时不带有参数，则会移除所有的目的地数据流。
 
 + **2、1 readable 属性**
 
@@ -1058,7 +1058,7 @@ parse方法也可以用来解析一般的字符串。
 
 + **2、2 read()**
 
-&#8195;&#8195;read方法从系统缓存读取并返回数据。如果读不到数据，则返回null。该方法可以接受一个整数作为参数，表示所要读取数据的数量，然后会返回该数量的数据。如果读不到足够数量的数据，返回null。如果不提供这个参数，默认返回系统缓存之中的所有数据。
+&#8195;&#8195;read方法从系统缓存读取并返回数据。如果读不到数据，则返回`null`。该方法可以接受一个整数作为参数，表示所要读取数据的数量，然后会返回该数量的数据。如果读不到足够数量的数据，返回`null`。如果不提供这个参数，默认返回系统缓存之中的所有数据。
 ```javascript
     var readable = getReadableStreamSomehow();
     readable.on('readable', function() {
@@ -1216,7 +1216,7 @@ parse方法也可以用来解析一般的字符串。
     7、child process stdin
     8、process.stdout, process.stderr
 ```
-&#8195;&#8195;部署"可写数据流"，必须继承stream.Writable，以及实现stream._write方法。下面是一个例子，数据库的写入接口部署“可写数据流”接口。
+&#8195;&#8195;部署"可写数据流"，必须继承`stream.Writable`，以及实现`stream._write`方法。下面是一个例子，数据库的写入接口部署“可写数据流”接口。
 ```javascript
     var Writable = require('stream').Writable;
     var util = require('util');
@@ -1276,7 +1276,7 @@ parse方法也可以用来解析一般的字符串。
 + **`4.6`、事件**
 + 1）drain事件
 
-&#8195;&#8195;writable.write(chunk)返回false以后，当缓存数据全部写入完成，可以继续写入时，会触发drain事件，表示缓存空了。
+&#8195;&#8195;`writable.write`(`chunk`)返回false以后，当缓存数据全部写入完成，可以继续写入时，会触发drain事件，表示缓存空了。
 
 + 2） finish事件
 
@@ -1365,7 +1365,7 @@ parse方法也可以用来解析一般的字符串。
 
 &#8195;&#8195;`Node` 应用由模块组成，采用 `CommonJS` 模块规范。
         **每个文件就是一个模块，有自己的作用域。在一个文件里面定义的变量、函数、类，都是私有的，对其他文件不可见。**
-        `CommonJS`规范规定，每个模块内部，**module变量代表当前模块**。这个变量是一个对象，它的exports属性（即module.exports）是对外的接口。加载某个模块，其实是加载该模块的module.exports属性。
+        `CommonJS`规范规定，每个模块内部，**`module`变量代表当前模块**。这个变量是一个对象，它的exports属性（即`module.exports`）是对外的接口。加载某个模块，其实是加载该模块的`module.exports`属性。
 ```javascript
     var x = 5;
     var addX = function (value) {
@@ -1378,28 +1378,28 @@ parse方法也可以用来解析一般的字符串。
             1、所有代码都运行在模块作用域，不会污染全局作用域。
             2、模块可以多次加载，但是只会在第一次加载时运行一次，然后运行结果就被缓存了，以后再加载，就直接读取缓存结果。要想让模块再次运行，必须清除缓存。
             3、模块加载的顺序，按照其在代码中出现的顺序。
-**&#8195;2、module对象**
+**&#8195;2、`module`对象**
 
-&#8195;&#8195;`Node`内部提供一个Module构建函数。所有模块都是Module的实例。每个模块内部，都有一个module对象，代表当前模块。它有以下属性。
-+ 1)module.id 模块的识别符，通常是带有绝对路径的模块文件名。
-+ 2)module.filename 模块的文件名，带有绝对路径。
-+ 3)module.loaded 返回一个布尔值，表示模块是否已经完成加载。
-+ 4)module.parent 返回一个对象，表示调用该模块的模块。module.parent就是调用它的父模块。利用这一点，可以判断当前模块是否为入口脚本。
-+ 5)module.children 返回一个数组，表示该模块要用到的其他模块。
-+ 6)module.exports 表示模块对外输出的值。
+&#8195;&#8195;`Node`内部提供一个Module构建函数。所有模块都是Module的实例。每个模块内部，都有一个`module`对象，代表当前模块。它有以下属性。
++ 1)`module.id` 模块的识别符，通常是带有绝对路径的模块文件名。
++ 2)`module.filename` 模块的文件名，带有绝对路径。
++ 3)`module.loaded` 返回一个布尔值，表示模块是否已经完成加载。
++ 4)`module.parent` 返回一个对象，表示调用该模块的模块。`module.parent`就是调用它的父模块。利用这一点，可以判断当前模块是否为入口脚本。
++ 5)`module.children` 返回一个数组，表示该模块要用到的其他模块。
++ 6)`module.exports` 表示模块对外输出的值。
   
-+ **2、1 module.exports属性**
++ **2、1 `module.exports`属性**
 
-&#8195;&#8195;module.exports属性表示当前模块对外输出的接口，其他文件加载该模块，实际上就是读取module.exports变量。
+&#8195;&#8195;`module.exports`属性表示当前模块对外输出的接口，其他文件加载该模块，实际上就是读取`module.exports`变量。
 
 + **2、2 exports变量**
 
-&#8195;&#8195;`Node`为每个模块提供一个exports变量，指向module.exports。这等同在每个模块头部，有一行这样的命令。
+&#8195;&#8195;`Node`为每个模块提供一个exports变量，指向`module.exports`。这等同在每个模块头部，有一行这样的命令。
 ```javascript
     var exports = module.exports;
 ```
-&#8195;&#8195;注意，**不能直接将exports变量指向一个值，因为这样等于切断了exports与module.exports的联系。**
-            如果一个模块的对外接口，就是一个单一的值，不能使用exports输出，只能使用module.exports输出。
+&#8195;&#8195;注意，**不能直接将exports变量指向一个值，因为这样等于切断了exports与`module.exports`的联系。**
+            如果一个模块的对外接口，就是一个单一的值，不能使用exports输出，只能使用`module.exports`输出。
 ```javascript
     module.exports = function (x){ console.log(x);};
 ```
@@ -1410,7 +1410,7 @@ parse方法也可以用来解析一般的字符串。
 **&#8195;1、`npm`安装模块时，对应的版本可以加上各种限定，主要有以下几种：**
 + 1)指定版本：比如1.`2.2`，遵循“大版本.次要版本.小版本”的格式规定，安装时只安装指定版本。
 + 2)波浪号（tilde）+指定版本：比如~`1.2.2`，表示安装1.2.x的最新版本（不低于1.`2.2`），但是不安装1.3.x，也就是说安装时不改变大版本号和次要版本号。
-+ 3)插入号（caret）+指定版本：比如ˆ1.`2.2`，表示安装1.x.x的最新版本（不低于1.`2.2`），但是不安装2.x.x，也就是说安装时不改变大版本号。需要注意的是，如果大版本号为0，则插入号的行为与波浪号相同，这是因为此时处于开发阶段，即使是次要版本号变动，也可能带来程序的不兼容。
++ 3)插入号（caret）+指定版本：比如ˆ1.`2.2`，表示安装1.`x.x`的最新版本（不低于1.`2.2`），但是不安装2.`x.x`，也就是说安装时不改变大版本号。需要注意的是，如果大版本号为0，则插入号的行为与波浪号相同，这是因为此时处于开发阶段，即使是次要版本号变动，也可能带来程序的不兼容。
 + 4)latest：安装最新版本。  
 
 **&#8195;2、`npm`安装：**
@@ -1475,7 +1475,7 @@ parse方法也可以用来解析一般的字符串。
     $ npm install sax@0.1.1
     $ npm install sax@">=0.1.0 <0.2.0"
 ```
-+ 2)如果使用--save-exact参数，会在package.json文件指定安装模块的确切版本。
++ 2)如果使用--save-exact参数，会在`package.json`文件指定安装模块的确切版本。
 ```javascript
     $ npm install readable-stream --save --save-exact
 ```
@@ -1486,8 +1486,8 @@ parse方法也可以用来解析一般的字符串。
                 $ NODE_ENV=production npm install
 ```
 **&#8195;10、`npm` run** 
-+ 1)`npm` run命令会自动在环境变量$PATH添加node_modules/.bin目录，所以scripts字段里面调用命令时不用加上路径，这就避免了全局安装NPM模块。
-+ 2)`npm` run如果不加任何参数，直接运行，会列出package.json里面所有可以执行的脚本命令。
++ 1)`npm` run命令会自动在环境变量$PATH添加`node_modules/.bin`目录，所以scripts字段里面调用命令时不用加上路径，这就避免了全局安装NPM模块。
++ 2)`npm` run如果不加任何参数，直接运行，会列出`package.json`里面所有可以执行的脚本命令。
 ```javascript
     "build": "npm run build-js && npm run build-css"
     //上面的写法是先运行npm run build-js，然后再运行npm run build-css，两个命令中间用&&连接。如果希望两个命令同时平行执行，它们中间可以用&连接。
@@ -1531,8 +1531,8 @@ parse方法也可以用来解析一般的字符串。
     $ npm-run-all --parallel watch:*
 ```
 + 3)start命令
-&#8195;&#8195;如果start脚本没有配置，`npm` start命令默认执行下面的脚本，前提是模块的根目录存在一个server.js文件。
-                $ node server.js
+&#8195;&#8195;如果start脚本没有配置，`npm` start命令默认执行下面的脚本，前提是模块的根目录存在一个`server.js`文件。
+                $ node `server.js`
 + 4)dev脚本命令
 &#8195;&#8195;规定开发阶段所要做的处理，比如构建网页资源。
 + 5)serve脚本命令用于启动服务。
@@ -1551,8 +1551,8 @@ parse方法也可以用来解析一般的字符串。
 
 **&#8195;11、内部变量**
 
-&#8195;&#8195;scripts字段可以使用一些内部变量，主要是package.json的各种字段。
-            比如，package.json的内容是{"name":"foo", "version":"`1.2.5`"}，那么变量npm_package_name的值是foo，变量npm_package_version的值是1.`2.5`。
+&#8195;&#8195;scripts字段可以使用一些内部变量，主要是`package.json`的各种字段。
+            比如，`package.json`的内容是{"name":"foo", "version":"`1.2.5`"}，那么变量`npm_package_name`的值是foo，变量`npm_package_version`的值是1.`2.5`。
 ```javascript
     {
     "scripts":{
@@ -1604,11 +1604,11 @@ parse方法也可以用来解析一般的字符串。
 
 **&#8195;14、`npm` adduser**
 
-&#8195;&#8195;`npm` adduser用于在npmjs.com注册一个用户。
+&#8195;&#8195;`npm` adduser用于在`npmjs.com`注册一个用户。
 
 **&#8195;15、`npm` publish**
 
-&#8195;&#8195;`npm` publish用于将当前模块发布到npmjs.com。执行之前，需要向npmjs.com申请用户名。
+&#8195;&#8195;`npm` publish用于将当前模块发布到`npmjs.com`。执行之前，需要向`npmjs.com`申请用户名。
 ```javascript
     $ npm adduser
 ```

@@ -25,21 +25,21 @@ Document 是 `LangChain` 里表示文档片段的对象，通常包含：
 - `page_content`：正文
 - `metadata`：来源信息
 
-metadata 建议包含：
+`metadata` 建议包含：
 
 - 文件名
 - 文档 `ID`
 - 页码
 - 章节标题
-- chunk `ID`
+- `chunk` `ID`
 - 权限信息
 - 版本号
 
 常见坑：
 
 1. 只存正文，不存来源。
-2. 文档更新后找不到旧 chunk。
-3. metadata 字段不统一。
+2. 文档更新后找不到旧 `chunk`。
+3. `metadata` 字段不统一。
 4. 回答时无法展示引用。
 
 ## 3. Loader
@@ -67,8 +67,8 @@ Text Splitter 把长文档切成小块，方便向量化和检索。
 
 | 参数 | 大白话解释 |
 |---|---|
-| chunk size | 每块多大 |
-| chunk overlap | 相邻块重复多少内容 |
+| `chunk` size | 每块多大 |
+| `chunk` overlap | 相邻块重复多少内容 |
 | separator | 按什么符号切 |
 | `token` length | 按 `token` 而不是字符计算长度 |
 
@@ -82,8 +82,8 @@ Text Splitter 把长文档切成小块，方便向量化和检索。
 
 常见坑：
 
-1. chunk 太大：检索不精准。
-2. chunk 太小：语义不完整。
+1. `chunk` 太大：检索不精准。
+2. `chunk` 太小：语义不完整。
 3. overlap 太小：上下文断裂。
 4. overlap 太大：重复内容过多。
 5. 没保留标题路径：检索到片段后不知道属于哪章。
@@ -98,16 +98,16 @@ Text Splitter 把长文档切成小块，方便向量化和检索。
 
 - 插入向量
 - 查询相似向量
-- metadata 过滤
+- `metadata` 过滤
 - 删除旧向量
 - 更新索引
 
 常见坑：
 
-1. 换 embedding 模型但不重建索引。
+1. 换 `embedding` 模型但不重建索引。
 2. 文档删除后向量没删。
 3. 没有按权限过滤。
-4. top_k 设置不合理。
+4. `top_k` 设置不合理。
 
 ## 6. `Retriever`
 
@@ -119,16 +119,16 @@ Text Splitter 把长文档切成小块，方便向量化和检索。
 |---|---|
 | similarity search | 按向量相似度找 |
 | MMR | 兼顾相关性和多样性 |
-| metadata filter | 按权限、部门、文档类型过滤 |
+| `metadata` filter | 按权限、部门、文档类型过滤 |
 | hybrid search | 结合关键词和向量 |
-| rerank | 先召回，再重排序 |
+| `rerank` | 先召回，再重排序 |
 
 常见坑：
 
 1. 只看最终答案，不看检索结果。
 2. 用户问题太短，直接检索效果差。
-3. top_k 太小召回不足。
-4. top_k 太大塞进太多无关内容。
+3. `top_k` 太小召回不足。
+4. `top_k` 太大塞进太多无关内容。
 
 ## 7. `Context` 拼接
 
@@ -174,7 +174,7 @@ python docs/public/langchain-examples/04_rag/context_building.py
 再运行联网完整 `RAG`：
 
 ~~~powershell
-python docs/public/langchain-examples/04_rag_pipeline.py
+python `docs/public/langchain-examples/04_rag_pipeline.py`
 ~~~
 
 该脚本会用 `OpenAI` `Embeddings` 构建内存向量库、检索制度片段，再由
@@ -186,10 +186,10 @@ python docs/public/langchain-examples/04_rag_pipeline.py
     + 文档加载 -> 文本切分 -> `Embedding` -> 向量库 -> `Retriever` -> `Prompt` -> `LLM` -> Answer
 2. `Document.metadata` 为什么重要？
     + 用于权限过滤、文档类型分类、检索结果排序。
-    + 没有 metadata 会导致检索结果不准确。
-3. chunk size 和 chunk overlap 会影响什么？
-    + chunk size 太大：检索不精准。
-    + chunk size 太小：语义不完整。
+    + 没有 `metadata` 会导致检索结果不准确。
+3. `chunk` size 和 `chunk` overlap 会影响什么？
+    + `chunk` size 太大：检索不精准。
+    + `chunk` size 太小：语义不完整。
     + overlap 太小：上下文断裂。
     + overlap 太大：重复内容过多。
 4. `Retriever` 和 Vector Store 是什么关系？

@@ -6,7 +6,7 @@ tags: jquery
 note: jquery回调对象总结
 ---
 &#8195;&#8195;`jquery.CallBacks`是一个在 `jquery`中应用广泛的回调函数列表对象，它对回调函数队列进行了很好的管理。主要用的`发布订阅设计模式`。
-## 1、jQuery.Callbacks
+## 1、`jQuery.Callbacks`
 &#8195;&#8195;在函数内部定义并初始化一些私有变量。
 ```js
 jQuery.Callbacks = function (options) {
@@ -67,13 +67,13 @@ jQuery.Callbacks = function (options) {
         return self;
 }
 ```
-## 2、jquery.CallBacks的可选参数
+## 2、`jquery.CallBacks`的可选参数
 &#8195;&#8195;在初始化`jquery.CallBacks(options)`时会传入可选参数。
 + `once`: 确保这个回调列表只执行一次。
 + `memory`: 保持以前的值，将添加到这个列表的后面的最新的值立即执行调用任何回调 (像一个递延 Deferred).
 + `unique`: 确保一次只能添加一个回调(所以在列表中没有重复的回调).
 + `stopOnFalse`: 当一个回调返回 `false` 时中断调用。
-## 3、jquery.CallBacks()暴露给外界的`API`
+## 3、`jquery.CallBacks`()暴露给外界的`API`
 &#8195;&#8195;`jquery.CallBacks()`主要提供了一下`API`。
 ```js
 callbacks.add()        回调列表中添加一个回调或回调的集合。

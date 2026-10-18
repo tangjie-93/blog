@@ -175,13 +175,13 @@ fs.open('message.txt', 'a', (err, fd) => {
 `stats`类中的方法有以下：
 方法 |	描述
 -- | --
-stats.isFile() |	如果是文件返回 true，否则返回 false。
-stats.isDirectory() |	如果是目录返回 true，否则返回 false。
-stats.isBlockDevice()|	如果是块设备返回 true，否则返回 false。
-stats.isCharacterDevice()|	如果是字符设备返回 true，否则返回 false。
-stats.isSymbolicLink()|	如果是软链接返回 true，否则返回 false。
-stats.isFIFO()|	如果是FIFO，返回true，否则返回 false。FIFO是UNIX中的一种特殊类型的命令管道。
-stats.isSocket()|	如果是 Socket 返回 true，否则返回 false。
+`stats.isFile`() |	如果是文件返回 true，否则返回 false。
+`stats.isDirectory`() |	如果是目录返回 true，否则返回 false。
+`stats.isBlockDevice`()|	如果是块设备返回 true，否则返回 false。
+`stats.isCharacterDevice`()|	如果是字符设备返回 true，否则返回 false。
+`stats.isSymbolicLink`()|	如果是软链接返回 true，否则返回 false。
+`stats.isFIFO`()|	如果是FIFO，返回true，否则返回 false。FIFO是UNIX中的一种特殊类型的命令管道。
+`stats.isSocket`()|	如果是 Socket 返回 true，否则返回 false。
 
 ### 1.5 `3.4` 在特定文件中进行读写操作
 > 1、打开文件——`fs.open(path,flags[,mode],callback(err,fd))`

@@ -18,16 +18,16 @@ note: 从普通 RAG 到 Agent 和工程化上线的学习路线。
 `ChatOpenAI` 调用 `OpenAI` `ChatGPT`：
 
 ~~~powershell
-python docs/public/langchain-examples/01_chat_basics.py
-python docs/public/langchain-examples/02_core_chain.py
-python docs/public/langchain-examples/03_model_calling.py
-python docs/public/langchain-examples/04_rag_pipeline.py
-python docs/public/langchain-examples/05_agent_tools.py
-python docs/public/langchain-examples/06_langgraph.py
-python docs/public/langchain-examples/08_enterprise_rag.py
+python `docs/public/langchain-examples/01_chat_basics.py`
+python `docs/public/langchain-examples/02_core_chain.py`
+python `docs/public/langchain-examples/03_model_calling.py`
+python `docs/public/langchain-examples/04_rag_pipeline.py`
+python `docs/public/langchain-examples/05_agent_tools.py`
+python `docs/public/langchain-examples/06_langgraph.py`
+python `docs/public/langchain-examples/08_enterprise_rag.py`
 ~~~
 
-最后配置 `LangSmith` 环境变量，再运行 07_langsmith.py 验证 trace 是否出现。
+最后配置 `LangSmith` 环境变量，再运行 `07_langsmith.py` 验证 trace 是否出现。
 
 ## 2. 阶段一：先跑通普通 `RAG`
 
@@ -144,7 +144,7 @@ python docs/public/langchain-examples/08_enterprise_rag.py
 交付：
 
 - 能打印 Document。
-- 能看到 chunk。
+- 能看到 `chunk`。
 - 能查向量库。
 
 ### 7.2 `7.2` 第 2 天

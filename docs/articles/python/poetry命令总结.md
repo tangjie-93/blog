@@ -25,13 +25,13 @@ note: "整理 Poetry 项目创建、依赖管理、打包发布与常见工作�
 
 ## 2、1️⃣ 项目生命周期管理
 
-| 命令 | 作用 | 典型使用场景 | 与 pip/venv 对比 |
+| 命令 | 作用 | 典型使用场景 | 与 `pip/venv` 对比 |
 | :--- | :--- | :--- | :--- |
 | `poetry new my-project` | 创建一个**新项目**的标准目录结构 | 当你从零开始一个`Python`项目时 | 替代手动创建目录和文件 |
 | `poetry init` | 在**现有项目**中**交互式**地生成 `pyproject.toml` 文件 | 当你有一个旧项目，想改用`Poetry`管理时 | 替代手动编写 `requirements.txt` |
 | `poetry install` | **安装** `pyproject.toml` 中的所有依赖 | 当你刚克隆一个`Poetry`项目，或需要同步队友添加的依赖时 | 相当于 `pip install -r requirements.txt`，但更智能，会自动创建虚拟环境 |
 | `poetry update` | **更新所有依赖**到最新版本，并更新 `poetry.lock` 文件 | 定期批量升级项目依赖包 | 相当于 `pip install --upgrade` 批量操作 |
-| `poetry shell` | **激活**当前项目的虚拟环境 | 你想在项目环境下连续运行多个命令 | 相当于 `venv\Scripts\activate` (Windows) 或 `source venv/bin/activate` (`Linux`/macOS) |
+| `poetry shell` | **激活**当前项目的虚拟环境 | 你想在项目环境下连续运行多个命令 | 相当于 `venv\Scripts\activate` (`Windows`) 或 `source venv/bin/activate` (`Linux`/`macOS`) |
 | `poetry run <command>` | 在虚拟环境中**运行单个命令**，无需先激活环境 | 运行脚本 `poetry run python app.py` 或执行测试 `poetry run pytest` | 无需手动激活环境，非常方便 |
 | `poetry env info` | 查看当前项目虚拟环境的**详细信息**（路径、`Python`版本等） | 当你在IDE（如VSCode）中需要手动指定解释器路径时 | `pip` 无此功能 |
 
@@ -39,7 +39,7 @@ note: "整理 Poetry 项目创建、依赖管理、打包发布与常见工作�
 
 ## 3、2️⃣ 依赖管理
 
-| 命令 | 作用 | 典型使用场景 | 与 pip/venv 对比 |
+| 命令 | 作用 | 典型使用场景 | 与 `pip/venv` 对比 |
 | :--- | :--- | :--- | :--- |
 | `poetry add requests` | **添加**一个依赖到生产环境并安装 | 你的项目需要用 `requests` 库 | 相当于 `pip install requests`，同时自动更新配置文件 |
 | `poetry add pytest --dev` | **添加**一个依赖到开发环境（如测试、文档工具） | 你只想在开发时用 `pytest`，打包到生产环境时不包含它 | 相当于维护两个 `requirements.txt` 文件 |
@@ -52,7 +52,7 @@ note: "整理 Poetry 项目创建、依赖管理、打包发布与常见工作�
 
 ## 4、3️⃣ 打包与发布
 
-| 命令 | 作用 | 典型使用场景 | 与 pip/venv 对比 |
+| 命令 | 作用 | 典型使用场景 | 与 `pip/venv` 对比 |
 | :--- | :--- | :--- | :--- |
 | `poetry build` | 将项目**打包**成分发包（源码包和wheel包） | 你写了一个库，准备分享给别人用 | 替代 `python setup.py sdist bdist_wheel` 等复杂命令 |
 | `poetry publish` | 将打好的包**发布**到PyPI | 把你的库正式发布到官方仓库，让全世界都能用 `pip install` 安装 | 替代 `twine upload dist/*` |
@@ -61,7 +61,7 @@ note: "整理 Poetry 项目创建、依赖管理、打包发布与常见工作�
 
 ## 5、4️⃣ 配置与维护
 
-| 命令 | 作用 | 典型使用场景 | 与 pip/venv 对比 |
+| 命令 | 作用 | 典型使用场景 | 与 `pip/venv` 对比 |
 | :--- | :--- | :--- | :--- |
 | `poetry config --list` | 查看当前的**配置** | 你想知道虚拟环境被创建在了哪里 | `pip` 无此功能 |
 | `poetry config virtualenvs.in-project true` | **配置**虚拟环境创建在项目目录内（生成 `.venv` 文件夹） | 你喜欢把环境放在项目根目录，方便管理和删除 | `python -m venv .venv` |
@@ -141,7 +141,7 @@ poetry run python my_awesome_tool/main.py
 
 ## 8、6️⃣ 配置文件说明
 
-### 8.1 pyproject.toml（项目声明文件）
+### 8.1 `pyproject.toml`（项目声明文件）
 
 ```bash
 [tool.poetry]
@@ -160,7 +160,7 @@ pytest = "^7.0.0"
 black = "^22.0.0"
 ```
 
-### 8.2 poetry.lock（版本锁定文件）
+### 8.2 `poetry.lock`（版本锁定文件）
 
 - 记录了所有依赖的**精确版本号**
 - 必须提交到版本控制系统（git）

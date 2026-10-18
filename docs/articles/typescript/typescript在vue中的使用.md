@@ -25,7 +25,7 @@ note: typescript在vue中的使用
 + 5、@Emit
 + 6、@Inject
 + 7、@Provide
-+ 8、Mixins (在vue-class-component中定义)
++ 8、Mixins (在vue-`class`-component中定义)
 
 ## 3、组件写法对比
 

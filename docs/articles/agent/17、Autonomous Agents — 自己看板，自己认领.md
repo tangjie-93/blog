@@ -6,7 +6,7 @@ tags: "Agent|AI Coding"
 note: "让队友轮询任务板、自动认领空闲任务并汇报状态，形成自治协作闭环。"
 ---
 
-# s17: Autonomous Agents — 自己看板，自己认领
+# s17: `Autonomous Agents` — 自己看板，自己认领
 
 
 s01 → ... → s15 → s16 → `s17` → [s18](./18%E3%80%81Worktree%20Isolation%20%E2%80%94%20%E5%90%84%E5%B9%B2%E5%90%84%E7%9A%84%EF%BC%8C%E4%BA%92%E4%B8%8D%E5%B9%B2%E6%89%B0.md) → s19 → s20
@@ -25,9 +25,9 @@ s16 的队友能通信、能握手关机。但每个队友等 Lead 分配任务�
 
 ## 2、解决方案
 
-![Autonomous Agents Overview](/image/agent-course/s17_autonomous_agents/autonomous-agents-overview.svg)
+![`Autonomous Agents` Overview](/image/agent-course/s17_autonomous_agents/autonomous-agents-overview.svg)
 
-沿用 S16 的教学版 MessageBus 和协议工具。本章新增：**idle_poll**（空闲时每 5 秒轮询一次）、**scan_unclaimed_tasks**（扫描看板上可认领的任务）、**自动认领**（找到任务就 claim，不用 Lead 操心）。
+沿用 S16 的教学版 MessageBus 和协议工具。本章新增：**`idle_poll`**（空闲时每 5 秒轮询一次）、**`scan_unclaimed_tasks`**（扫描看板上可认领的任务）、**自动认领**（找到任务就 claim，不用 Lead 操心）。
 
 队友生命周期从两阶段变成三阶段：
 
@@ -41,7 +41,7 @@ s16 的队友能通信、能握手关机。但每个队友等 Lead 分配任务�
 
 ## 3、工作原理
 
-### 3.1 idle_poll: 空闲轮询
+### 3.1 `idle_poll`: 空闲轮询
 
 队友完成当前任务后不退出，进入 IDLE 阶段——每 5 秒检查一次有没有新工作：
 
@@ -77,9 +77,9 @@ def idle_poll(name, messages, role) -> str:
     return "timeout"
 ```
 
-inbox 优先（可能包含 shutdown_request 等协议消息），任务板其次。IDLE 阶段收到 shutdown_request 会直接回复并退出，不等到下一轮 WORK。
+inbox 优先（可能包含 `shutdown_request` 等协议消息），任务板其次。IDLE 阶段收到 `shutdown_request` 会直接回复并退出，不等到下一轮 WORK。
 
-### 3.2 scan_unclaimed_tasks: 扫描任务看板
+### 3.2 `scan_unclaimed_tasks`: 扫描任务看板
 
 找 pending 状态、无 owner、所有依赖已完成（`can_start`）的任务：
 
@@ -97,7 +97,7 @@ def scan_unclaimed_tasks() -> list[dict]:
 
 三个条件：必须是 pending、没有 owner、所有 blockedBy 依赖已完成。`can_start` 检查依赖任务的状态——有依赖不代表不能做，只有被未完成的任务阻塞才不能做。教学版按文件名排序取第一个；`CC` 用文件锁防止多个队友同时认领同一个任务。
 
-### 3.3 claim_task: owner 检查
+### 3.3 `claim_task`: owner 检查
 
 自动认领时检查 claim 结果，不把失败当成功：
 
@@ -144,14 +144,14 @@ BUS.send(name, "lead", summary, "result")
 ```
 
 关键设计：
-- **外层 while True**：WORK 和 IDLE 交替进行，直到超时或收到关机请求
+- **外层 `while True`**：WORK 和 IDLE 交替进行，直到超时或收到关机请求
 - **内层 for 10**：WORK 阶段最多 10 轮 `LLM` 调用（防止无限循环）
 - **IDLE 超时 60 秒**：12 次轮询 × 5 秒 = 60 秒。超时后发送 summary 并退出
-- **shutdown_request 两阶段都能响应**：WORK 阶段通过 `handle_inbox_message` 分发；IDLE 阶段 `idle_poll` 直接检查并回复
+- **`shutdown_request` 两阶段都能响应**：WORK 阶段通过 `handle_inbox_message` 分发；IDLE 阶段 `idle_poll` 直接检查并回复
 
 ### 3.5 身份重注入
 
-autoCompact（s08）之后，队友的 messages 列表可能被压缩成一段摘要。每次进入新的 WORK 阶段时检查：
+autoCompact（s08）之后，队友的 `messages` 列表可能被压缩成一段摘要。每次进入新的 WORK 阶段时检查：
 
 ```python
 if len(messages) <= 3:
@@ -160,11 +160,11 @@ if len(messages) <= 3:
                    f"Continue your work.</identity>"})
 ```
 
-消息过短说明发生了压缩，此时重新注入身份信息。真实 `CC` 中 context compaction 会保留 system prompt，教学版的简化实现需要手动处理。
+消息过短说明发生了压缩，此时重新注入身份信息。真实 `CC` 中 `context` compaction 会保留 `system` `prompt`，教学版的简化实现需要手动处理。
 
-### 3.6 consume_lead_inbox: 统一 inbox 消费
+### 3.6 `consume_lead_inbox`: 统一 inbox 消费
 
-`check_inbox` 工具和主循环末尾都调用同一个 `consume_lead_inbox()` 函数：先路由协议 response 更新状态，再把所有消息注入 Lead 的对话历史。队友发来的 summary/result 不会只打印在终端，Lead 的 `LLM` 能看到并协调下一步。
+`check_inbox` 工具和主循环末尾都调用同一个 `consume_lead_inbox()` 函数：先路由协议 `response` 更新状态，再把所有消息注入 Lead 的对话历史。队友发来的 `summary/result` 不会只打印在终端，Lead 的 `LLM` 能看到并协调下一步。
 
 ### 3.7 合起来跑
 
@@ -201,15 +201,15 @@ if len(messages) <= 3:
 
 | 组件 | 之前 (s16) | 之后 (s17) |
 |------|-----------|-----------|
-| 任务分配 | Lead 手动 assign | 队友自动认领（can_start 检查依赖） |
+| 任务分配 | Lead 手动 assign | 队友自动认领（`can_start` 检查依赖） |
 | 队友状态 | WORK 或退出 | WORK → IDLE（轮询 60s） → SHUTDOWN |
-| claim_task | 无 owner 检查 | 拒绝已有 owner 的任务 |
-| IDLE 阶段关机 | 不处理 shutdown_request | 直接 dispatch shutdown 并退出 |
-| Lead inbox | 只打印，不进上下文 | consume_lead_inbox 统一注入 history |
-| 新函数 | — | idle_poll, scan_unclaimed_tasks, consume_lead_inbox |
-| 身份保持 | 仅 system prompt | 压缩后自动重注入 |
+| `claim_task` | 无 owner 检查 | 拒绝已有 owner 的任务 |
+| IDLE 阶段关机 | 不处理 `shutdown_request` | 直接 dispatch shutdown 并退出 |
+| Lead inbox | 只打印，不进上下文 | `consume_lead_inbox` 统一注入 history |
+| 新函数 | — | `idle_poll`, `scan_unclaimed_tasks`, `consume_lead_inbox` |
+| 身份保持 | 仅 `system` `prompt` | 压缩后自动重注入 |
 | Lead 工具 | 14 (s16) | 14（不变） |
-| 队友工具 | 5 | 8（+ list_tasks, claim_task, complete_task） |
+| 队友工具 | 5 | 8（+ `list_tasks`, `claim_task`, `complete_task`） |
 | 队友退出条件 | 完成任务即退出 | 60s 无新任务才退出 |
 
 ---
@@ -221,11 +221,11 @@ cd learn-claude-code
 python s17_autonomous_agents/code.py
 ```
 
-试试这个 prompt：
+试试这个 `prompt`：
 
 `Create 3 tasks on the board, then spawn alice and bob. Watch them auto-claim and work.`
 
-观察重点：队友是否自动认领了未分配的任务？有 blockedBy 依赖的任务是否在前置完成后被正确认领？空闲超时后是否自动关机？IDLE 阶段收到 shutdown_request 是否立即响应？`.tasks/` 目录下的任务状态如何变化？
+观察重点：队友是否自动认领了未分配的任务？有 blockedBy 依赖的任务是否在前置完成后被正确认领？空闲超时后是否自动关机？IDLE 阶段收到 `shutdown_request` 是否立即响应？`.tasks/` 目录下的任务状态如何变化？
 
 ---
 
@@ -244,9 +244,9 @@ s18 `Worktree Isolation` → 每个任务有自己的工作目录，互不干扰
 
 教学版用一个 `idle_poll()` 统一处理空闲时的 inbox 检查和任务认领。`CC` 的实际实现是四个机制的组合：
 
-**idle_notification**：队友完成一轮工作后，`sendIdleNotification()`（`inProcessRunner.ts:569-589`）向 Lead 发送空闲通知。Lead 知道队友可用了，可以分配新任务或请求关机。
+**`idle_notification`**：队友完成一轮工作后，`sendIdleNotification()`（`inProcessRunner.ts:569-589`）向 Lead 发送空闲通知。Lead 知道队友可用了，可以分配新任务或请求关机。
 
-**mailbox 轮询**：`waitForNextPromptOrShutdown()`（`inProcessRunner.ts:689-868`）是一个 **500ms 轮询循环**，持续检查三类来源：pending user messages、mailbox 文件消息、task list。shutdown_request 被优先处理（`inProcessRunner.ts:768-804`），不会被普通消息饿死。
+**mailbox 轮询**：`waitForNextPromptOrShutdown()`（`inProcessRunner.ts:689-868`）是一个 **500ms 轮询循环**，持续检查三类来源：pending user `messages`、mailbox 文件消息、task list。`shutdown_request` 被优先处理（`inProcessRunner.ts:768-804`），不会被普通消息饿死。
 
 **task watcher**：`useTaskListWatcher`（`hooks/useTaskListWatcher.ts:34-189`）用 `fs.watch()` 监听 `.claude/tasks/` 目录变化，1 秒 debounce，当新任务创建或依赖解锁时触发检查。依赖判断（`L197-207`）是"blockedBy 中没有未完成的任务"，不是"blockedBy 为空"。
 
@@ -262,13 +262,13 @@ s18 `Worktree Isolation` → 每个任务有自己的工作目录，互不干扰
 
 | 维度 | 教学版 (s17) | `CC` |
 |------|-------------|-----|
-| 空闲机制 | idle_poll 统一轮询（5s） | idle_notification + 500ms mailbox 轮询 + task watcher |
-| 任务发现 | scan_unclaimed_tasks（轮询） | useTaskListWatcher（文件监听）+ tryClaimNextTask（主动轮询） |
-| 依赖判断 | can_start（所有 blockedBy 已完成） | findAvailableTask（同样语义） |
+| 空闲机制 | `idle_poll` 统一轮询（5s） | `idle_notification` + 500ms mailbox 轮询 + task watcher |
+| 任务发现 | `scan_unclaimed_tasks`（轮询） | useTaskListWatcher（文件监听）+ tryClaimNextTask（主动轮询） |
+| 依赖判断 | `can_start`（所有 blockedBy 已完成） | findAvailableTask（同样语义） |
 | 并发安全 | owner 检查（无文件锁） | proper-lockfile 任务锁 + task-list 锁 |
-| shutdown 处理 | IDLE 直接分发，WORK 通过 handle_inbox_message | 500ms 轮询中优先处理 shutdown_request |
+| shutdown 处理 | IDLE 直接分发，WORK 通过 `handle_inbox_message` | 500ms 轮询中优先处理 `shutdown_request` |
 | 超时退出 | 60s 无新任务 | 无固定超时，Lead 手动 shutdown |
-| 身份保持 | messages 长度检测 | context compaction 保留 system prompt |
+| 身份保持 | `messages` 长度检测 | `context` compaction 保留 `system` `prompt` |
 | claim 失败处理 | 检查返回值，失败不注入 | 文件锁保证原子性 |
 
 教学版的 `idle_poll()` 把 `CC` 的四个机制合并成一个轮询函数——简化合理，因为核心语义（空闲时找活干、依赖解锁后可认领、shutdown 优先）是一致的。

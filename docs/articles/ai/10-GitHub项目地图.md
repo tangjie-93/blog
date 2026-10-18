@@ -14,9 +14,9 @@ note: 基于 2026-10-17 GitHub 检索快照，按学习目标选择开源项目�
 
 | 项目 | 用途 | 学习入口 |
 |---|---|---|
-| [PyTorch](https://github.com/pytorch/pytorch) | 张量、自动微分、训练 | 从官方 tutorials 写训练循环 |
-| [Transformers](https://github.com/huggingface/transformers) | 预训练模型、tokenizer、pipeline | 先跑 text classification，再读 model class |
-| [JAX](https://github.com/jax-ml/jax) | 函数式数组计算、加速训练 | 比较 jit/vmap 与 PyTorch |
+| [`PyTorch`](https://github.com/pytorch/pytorch) | 张量、自动微分、训练 | 从官方 tutorials 写训练循环 |
+| [Transformers](https://github.com/huggingface/transformers) | 预训练模型、tokenizer、pipeline | 先跑 text classification，再读 model `class` |
+| [JAX](https://github.com/jax-ml/jax) | 函数式数组计算、加速训练 | 比较 `jit/vmap` 与 `PyTorch` |
 | [nanoGPT](https://github.com/karpathy/nanoGPT) | 小型 GPT 训练教学 | 读数据、模型和训练脚本 |
 
 ## 2、推理与部署
@@ -25,7 +25,7 @@ note: 基于 2026-10-17 GitHub 检索快照，按学习目标选择开源项目�
 |---|---|---|
 | [vLLM](https://github.com/vllm-project/vllm) | 高吞吐 `LLM` 服务 | 显存、模型许可和 `API` 兼容性 |
 | [SGLang](https://github.com/sgl-project/sglang) | 结构化生成、推理优化 | 关注硬件和版本支持 |
-| [llama.cpp](https://github.com/ggml-org/llama.cpp) | 本地 `CPU`/`GPU`、量化模型 | GGUF 模型来源要可信 |
+| [`llama.cpp`](https://github.com/ggml-org/llama.cpp) | 本地 `CPU`/`GPU`、量化模型 | GGUF 模型来源要可信 |
 | [Ollama](https://github.com/ollama/ollama) | 本地模型快速试验 | 教学方便，生产能力需单独评估 |
 | [TensorRT-`LLM`](https://github.com/NVIDIA/TensorRT-LLM) | NVIDIA `GPU` 推理 | CUDA 和硬件耦合明显 |
 
@@ -38,8 +38,8 @@ note: 基于 2026-10-17 GitHub 检索快照，按学习目标选择开源项目�
 | [`LangChain`](https://github.com/langchain-ai/langchain) | 模型、工具、检索组件 | 对比 LCEL 与普通 `Python` |
 | [Qdrant](https://github.com/qdrant/qdrant) | 向量搜索与过滤 | 测试 payload ACL 和删除 |
 | [Milvus](https://github.com/milvus-io/milvus) | 大规模向量数据库 | 观察分片和索引类型 |
-| [FAISS](https://github.com/facebookresearch/faiss) | 本地向量检索库 | 手写 Recall@k |
-| [GraphRAG](https://github.com/microsoft/graphrag) | 图结构 `RAG` | 比较图检索与 chunk 检索 |
+| [FAISS](https://github.com/facebookresearch/faiss) | 本地向量检索库 | 手写 `Recall`@k |
+| [GraphRAG](https://github.com/microsoft/graphrag) | 图结构 `RAG` | 比较图检索与 `chunk` 检索 |
 
 ## 4、`Agent`、评估和多模态
 

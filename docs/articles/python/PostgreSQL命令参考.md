@@ -422,7 +422,7 @@ EXPLAIN ANALYZE SELECT * FROM users WHERE email = 'test@example.com';
 
 ## 8. 常用配置
 
-### 10.1 `8.1` postgresql.conf 配置
+### 10.1 `8.1` `postgresql.conf` 配置
 
 ```bash
 # 编辑配置文件
@@ -459,7 +459,7 @@ autovacuum_vacuum_scale_factor = 0.2
 autovacuum_analyze_scale_factor = 0.1
 ```
 
-### 10.2 `8.2` pg_hba.conf 配置（访问控制）
+### 10.2 `8.2` `pg_hba`.conf 配置（访问控制）
 
 ```bash
 # 编辑访问控制文件

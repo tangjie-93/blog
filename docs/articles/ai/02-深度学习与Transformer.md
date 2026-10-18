@@ -39,7 +39,7 @@ A = softmax(S)
 Y = AV
 ```
 
-`Q` 表示“我正在寻找什么”，`K` 表示“我具有什么线索”，`V` 表示“被取走的内容”。`QKᵀ` 计算每个 query 与所有 key 的匹配分数；除以 `√Dh` 防止维度变大后分数过大，导致 softmax 梯度过小。
+`Q` 表示“我正在寻找什么”，`K` 表示“我具有什么线索”，`V` 表示“被取走的内容”。`QKᵀ` 计算每个 `query` 与所有 key 的匹配分数；除以 `√Dh` 防止维度变大后分数过大，导致 softmax 梯度过小。
 
 ### 3.1 手算一个注意力
 
@@ -49,11 +49,11 @@ K = [[1, 0], [0, 1]]
 V = [[10, 0], [0, 20]]
 ```
 
-第一行 query 与两个 key 的分数为 `[1, 0] / √2`，softmax 后第一列权重更大，因此输出更接近 `[10, 0]`。模型不是选择一个词，而是在所有 value 之间做加权平均。
+第一行 `query` 与两个 key 的分数为 `[1, 0] / √2`，softmax 后第一列权重更大，因此输出更接近 `[10, 0]`。模型不是选择一个词，而是在所有 value 之间做加权平均。
 
 ### 3.2 Causal Mask
 
-语言生成时，位置 `t` 不能看到 `t+1` 之后的 token。实现时把未来位置的分数设为负无穷：
+语言生成时，位置 `t` 不能看到 `t+1` 之后的 `token`。实现时把未来位置的分数设为负无穷：
 
 ```text
 [[0, -∞, -∞],
@@ -90,13 +90,13 @@ x → LayerNorm → Causal Self-Attention → Residual Add
   → LayerNorm → Feed Forward → Residual Add
 ```
 
-前馈网络通常是 `Linear(D, 4D) → GELU → Linear(4D, D)`。注意力负责 token 间通信，前馈网络负责对每个位置独立变换特征。残差连接让梯度可以沿捷径传播；LayerNorm 让不同层的数值范围更稳定。
+前馈网络通常是 `Linear(D, 4D) → GELU → Linear(4D, D)`。注意力负责 `token` 间通信，前馈网络负责对每个位置独立变换特征。残差连接让梯度可以沿捷径传播；LayerNorm 让不同层的数值范围更稳定。
 
 Pre-LN 和 Post-LN 的归一化位置不同。现代大模型常用 Pre-LN 或其变体，因为深层训练更稳定，但具体结构必须以模型实现为准。
 
 ## 6. 位置编码与长上下文
 
-注意力本身对输入顺序不敏感，因此需要位置。绝对位置编码把位置向量直接加到 token 表示；RoPE 通过旋转 `Q/K` 让相对距离进入点积；ALiBi 直接给远距离注意力加偏置。
+注意力本身对输入顺序不敏感，因此需要位置。绝对位置编码把位置向量直接加到 `token` 表示；RoPE 通过旋转 `Q/K` 让相对距离进入点积；ALiBi 直接给远距离注意力加偏置。
 
 长上下文不只是把窗口数字调大：需要考虑训练长度、位置外推、显存、KV Cache、检索噪声和“中间信息丢失”。测试时要把证据放在开头、中间和结尾分别测。
 
@@ -112,9 +112,9 @@ Pre-LN 和 Post-LN 的归一化位置不同。现代大模型常用 Pre-LN 或�
 
 ## 8. 训练目标与暴露偏差
 
-Next-token prediction 让模型在每个位置预测下一个 token。训练时通常使用 teacher forcing，输入是真实前文；推理时输入包含模型自己生成的 token。错误会在长序列中累积，这叫 exposure bias。
+Next-`token` prediction 让模型在每个位置预测下一个 `token`。训练时通常使用 teacher forcing，输入是真实前文；推理时输入包含模型自己生成的 `token`。错误会在长序列中累积，这叫 exposure bias。
 
-训练损失常按所有有效 token 的交叉熵平均；padding 位置要用 mask 排除，否则模型会学到填充符而不是文本。
+训练损失常按所有有效 `token` 的交叉熵平均；padding 位置要用 mask 排除，否则模型会学到填充符而不是文本。
 
 ## 9. 练习与验收
 
@@ -129,5 +129,5 @@ Next-token prediction 让模型在每个位置预测下一个 token。训练时�
 
 - [Attention Is All You Need](https://arxiv.org/abs/1706.03762)
 - [The Illustrated `Transformer`](https://jalammar.github.io/illustrated-transformer/)
-- [PyTorch `Transformer` Tutorial](https://pytorch.org/tutorials/intermediate/transformer_building_blocks.html)
+- [`PyTorch` `Transformer` Tutorial](https://pytorch.org/tutorials/intermediate/transformer_building_blocks.html)
 - [Hugging Face Transformers](https://github.com/huggingface/transformers)

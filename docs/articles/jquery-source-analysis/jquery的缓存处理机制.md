@@ -7,7 +7,7 @@ note: jquery的缓存处理机制
 ---
 
 ` jquery `的缓存机制主要包含以下几个方法。不外乎增、删、改、查操作，以及缓存是否存在的情况。
-## 1、初始化缓存对象——cache
+## 1、初始化缓存对象——`cache`
 ```js
 var acceptData = function (owner) {
     // Accepts only:

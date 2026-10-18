@@ -14,10 +14,10 @@ note: <该思维导图是根据`<<深入浅出webpack>>`章节大纲总结出来
 &#8195;&#8195;webpack的主要作用是构建，把源代码转换成发布到线上的可执行 JavaScrip、`CSS`、`HTML` 代码。在构建的过程中主要做了这几方面的功能。
 
 - 代码转换：将非js文件如 TS 转换成 js，将 scss 转换成 css（Loaderclear）；
-- 文件优化：压缩 js、css、html、压缩合并图片（plugin如uglify）。
-- 代码分割：提取多个页面的公共代码，提取首屏不需要加载的代码让其异步加载（commons-chunk-plugin）。
+- 文件优化：压缩 js、css、html、压缩合并图片（`plugin`如uglify）。
+- 代码分割：提取多个页面的公共代码，提取首屏不需要加载的代码让其异步加载（commons-`chunk`-`plugin`）。
 - 模块合并：将模块分类合并成一个文件。
-- 自动刷新：监听本地代码的变化，自动重新构建、并刷新浏览器（**配置文件watch和watchOPtions及热更新plugin**）。
+- 自动刷新：监听本地代码的变化，自动重新构建、并刷新浏览器（**配置文件watch和watchOPtions及热更新`plugin`**）。
 - 代码校验：代码提交到仓库之前需要校验代码是否符合规范，以及单元测试是否通过。
 - 自动发布：更新完代码后，自动构建出线上发布代码并传输到发布系统。
 
@@ -35,7 +35,7 @@ note: <该思维导图是根据`<<深入浅出webpack>>`章节大纲总结出来
 
 **`3.1` Entry**
 
-&#8195;&#8195;构建的入口，`Webpack` 执行构建的第一步将从 Entry 开始，可抽象成输入。通过搜寻及递归找出所有入口所依赖的模块。**Entry 主要有 String、Array 和 `Object` 三种类型**。如果为 Array 类型时，搭配 output.library 配置项使用时，只有数组里的最后一个入口文件的模块会被导出。
+&#8195;&#8195;构建的入口，`Webpack` 执行构建的第一步将从 Entry 开始，可抽象成输入。通过搜寻及递归找出所有入口所依赖的模块。**Entry 主要有 String、Array 和 `Object` 三种类型**。如果为 Array 类型时，搭配 `output.library` 配置项使用时，只有数组里的最后一个入口文件的模块会被导出。
 - 如果 entry 是一个 string或者array，就只会生成一个 Chunk，这时 Chunk 的名称是 main 。
 - 如果 entry 是一个 object ，就可能会出现多个 Chunk，这时 Chunk 的名称是 object 键值对中键的名称。
 ```javascript
@@ -72,10 +72,10 @@ note: <该思维导图是根据`<<深入浅出webpack>>`章节大纲总结出来
 
 &#8195;&#8195;配置如何输出最终想要的代码。output 是一个 object，里面包含一系列配置项，下面分别介绍它们。
 + filename:输出文件的名称，为string 类型。 
-+ chunkFilename: 配置无入口的 Chunk 在输出时的文件名称。chunkFilename 只用于指定在运行过程中生成的 Chunk 在输出时的文件名称.常见的会在运行时生成 Chunk 场景有在使用 **CommonChunkPlugin、使用 import('path/to/module')** 动态加载等时。 
++ chunkFilename: 配置无入口的 Chunk 在输出时的文件名称。chunkFilename 只用于指定在运行过程中生成的 Chunk 在输出时的文件名称.常见的会在运行时生成 Chunk 场景有在使用 **CommonChunkPlugin、使用 `import`('`path/to/module`')** 动态加载等时。 
 + path:输出文件存放在本地的目录，必须是 string 类型的绝对路径。通常通过 `Node.js` 的 path 模块去获取绝对路径。
-+ publicPath:加载异步资源对应的 `URL` 地址。一般为`CDN`地址。通常用于配置发布到线上资源的 `URL` 前缀，为string 类型。 默认值是空字符串 ''，即使用相对路径。**output.path 和 output.publicPath 都支持字符串模版，内置变量只有一个：hash 代表一次编译操作的 Hash 值。**
-+ libraryTarget：配置以何种方式导出库。是字符串的枚举类型。通常搭配target使用。通常有var、commonjs、commonjs2、this、window和global等值。
++ publicPath:加载异步资源对应的 `URL` 地址。一般为`CDN`地址。通常用于配置发布到线上资源的 `URL` 前缀，为string 类型。 默认值是空字符串 ''，即使用相对路径。**`output.path` 和 `output.publicPath` 都支持字符串模版，内置变量只有一个：hash 代表一次编译操作的 Hash 值。**
++ libraryTarget：配置以何种方式导出库。是字符串的枚举类型。通常搭配target使用。通常有`var`、commonjs、commonjs2、this、window和global等值。
 + target：配置导出库的名称。
 ```javascript
   module.exports={
@@ -336,7 +336,7 @@ note: <该思维导图是根据`<<深入浅出webpack>>`章节大纲总结出来
 **`3.7` 其他常见配置项**
 
 + devtool：配置 `Webpack` 如何生成 Source Map。有很多配置项。可以使用SourceMapDevToolPlugin插件来替换该配置，进行更细粒度的控制。
-+ target：webpack 能够为多种环境或 target 构建编译。webpack 为目标(target)指定一个环境。target 的取值可以为 web（默认，浏览器环境）、node（node 环境，使用 require 加载 chunk 代码，此时源码中的 require("fs")中的方式模块不会打包到 chunk 里）、async-node（异步加载 chunk 代码）、webworker、electron-main、electron-renderer。
++ target：webpack 能够为多种环境或 target 构建编译。webpack 为目标(target)指定一个环境。target 的取值可以为 web（默认，浏览器环境）、node（node 环境，使用 `require` 加载 `chunk` 代码，此时源码中的 `require`("fs")中的方式模块不会打包到 `chunk` 里）、`async`-node（异步加载 `chunk` 代码）、webworker、electron-main、electron-renderer。
 + watch：false,为true时表示启用 Watch 模式。这意味着在初始构建之后，webpack 将继续监听任何已解析文件的更改。Watch 模式默认关闭。**在使用 DevServer 时，监听模式默认是开启的。**
 + watchOptions：在watch为true时，才有效。
 
@@ -367,7 +367,7 @@ note: <该思维导图是根据`<<深入浅出webpack>>`章节大纲总结出来
         }
     }
 ```
-+ externals：防止将某些 import 的包(package)打包到 bundle 中，而是在运行时(runtime)再去从外部获取这些扩展依赖。
++ externals：防止将某些 `import` 的包(package)打包到 bundle 中，而是在运行时(runtime)再去从外部获取这些扩展依赖。
 ```javascript
     //在index.html以外联脚本的方式引入脚本文件
     <script
@@ -760,7 +760,7 @@ note: <该思维导图是根据`<<深入浅出webpack>>`章节大纲总结出来
 
 **`3.9` 多种配置类型**
 
-&#8195;&#8195;配置文件除了以`Object`的形式输出以外，还可以以function或者promise的形式输出,同时还可以导出多个配置对象。
+&#8195;&#8195;配置文件除了以`Object`的形式输出以外，还可以以`function`或者promise的形式输出,同时还可以导出多个配置对象。
 ```javascript
     //以对象的形式,需要写多个配置文件以适应"开发和生产"模式
     module.exports={
@@ -811,7 +811,7 @@ note: <该思维导图是根据`<<深入浅出webpack>>`章节大纲总结出来
     
 ```
 以函数的形式导出配置文件时。
-+ env：当前运行时的 `Webpack` **专属环境变量**，env 是一个 `Object`。设置它需要在启动 `Webpack` 时带上参数。例如启动命令是 webpack --env.production --env.bao=foo时，则 env 的值是 {"production":"true","bao":"foo"}。
++ env：当前运行时的 `Webpack` **专属环境变量**，env 是一个 `Object`。设置它需要在启动 `Webpack` 时带上参数。例如启动命令是 webpack --`env.production` --`env.bao`=foo时，则 env 的值是 {"production":"true","bao":"foo"}。
 + args：代表在启动 `Webpack` 时所有通过命令行传入的参数。例如 --config、--env、--devtool、--progress、---watch，可以通过 webpack -h 列出所有 `Webpack` 支持的命令行参数。
 
 

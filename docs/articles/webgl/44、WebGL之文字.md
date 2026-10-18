@@ -50,7 +50,7 @@ textNode.nodeValue = clock.toFixed(2);
 `demo`地址 [`WebGL`之文字-`HTML`](https://github.com/tangjie-93/WebGL/blob/main/fundmantalExamples/%E6%96%87%E5%AD%97/html%E6%96%87%E5%AD%97.html)
 
 
-## 2. `WebGL`之文字-二维Canvas
+## 2. `WebGL`之文字-二维`Canvas`
 
 除了使用 `HTML`元素显示文字，还可以使用一个新画布，但是使用的是二维上下文。少一些灵活性， 比如不能使用好用的 `CSS` 样式了，但是也不需要创建并保持 `HTML`元素了。
 核心代买如下所示

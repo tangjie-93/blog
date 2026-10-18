@@ -5,13 +5,13 @@ type: 技术
 tags: javascript
 note: 在工作中有时候会看到**prototype**和__proto__这两个属性，对这两个属性我一直比较蒙圈，但是我通过查阅相关资料，决定做一下总结加深自己的理解，写得不对的地方还请各位大神指出。
 ---
-​&#8195;&#8195;在工作中有时候会看到**prototype**和__proto__这两个属性，对这两个属性我一直比较蒙圈，但是我通过查阅相关资料，决定做一下总结加深自己的理解，写得不对的地方还请各位大神指出。
+​&#8195;&#8195;在工作中有时候会看到**`prototype`**和`__proto__`这两个属性，对这两个属性我一直比较蒙圈，但是我通过查阅相关资料，决定做一下总结加深自己的理解，写得不对的地方还请各位大神指出。
 
-## 1、prototype
+## 1、`prototype`
 
 &#8195;&#8195;每个函数都有一个`prototype`属性，该属性是一个指针，指向一个对象（构造函数的原型对象） ，这个对象包含所有实例共享的属性和方法。原型对象都有一个`constructor`属性，这个属性指向所关联的构造函数。使用这个对象的好处就是可以让所有实例对象共享它所拥有的属性和方法。**这个属性只用js中的类(或者说能够作为构造函数的对象)才会有。**
 
-## 2、 __proto__
+## 2、 `__proto__`
 
 &#8195;&#8195;每个实例对象都有一个`__proto__`属性，用于指向构造函数的原型对象（`prototype`）。`__proto__`属性是在调用构造函数创建实例对象时产生的。**该属性存在于实例和构造函数的原型对象之间，而不是存在于实例与构造函数之间。** 
 
@@ -43,7 +43,7 @@ console.log(person1.__proto__===Person.prototype);//true
 >4、在默认情况下，所有原型对象都会自动获得一个 `constructor` (构造函数)属性，这个属性包含一个指向 `prototype` 属性所在函数的指针。
 
 
-## 3、 跟__proto__属性相关的两个方法
+## 3、 跟`__proto__`属性相关的两个方法
 
 ```js
 function Person(){
@@ -151,10 +151,10 @@ console.log(friend instanceof Person); //true
 console.log(friend.constructor == Person); //false
 console.log(friend.constructor == Object); //true
 ```
-注意：**使用对象字面量来重写整个原型对象时**，本质上完全重写了默认的 prototype 对象，因此 constructor 属性也就变成了新对象的 constructor 属性（**指向 `Object` 构造函数**），不再指向 Person。但是可以通过在重写原型对象时指定constructor属性，使之还是指向原来的constructor。此时，尽管 instanceof
+注意：**使用对象字面量来重写整个原型对象时**，本质上完全重写了默认的 `prototype` 对象，因此 constructor 属性也就变成了新对象的 constructor 属性（**指向 `Object` 构造函数**），不再指向 Person。但是可以通过在重写原型对象时指定constructor属性，使之还是指向原来的constructor。此时，尽管 instanceof
 操作符还能返回正确的结果，但通过 constructor 已经无法确定对象的类型了。
 
-**object instanceof constructor:** 检测 constructor.prototype 是否存在于参数 object 的原型链上。
+**object instanceof constructor:** 检测 `constructor.prototype` 是否存在于参数 object 的原型链上。
 
 ​		由于原型的动态性，调用构造函数时会为实例添加一个指向最初原型的Prototype指针，而把原型修改为另外一个对象就等于切断了构造函数与最初原型之间的联系。看下面的例子         
 
@@ -177,7 +177,7 @@ console.log(friend instanceof Person);//false
 console.log(friend instanceof Object);//true
 console.log(friend2 instanceof Person);//true
 ```
-结果分析：这是因为friend1的prototype指向的是没重写Person.prototype之前的Person.prototype，也就是构造函数最初的原型对象。而friend2的prototype指向的是重写Person.prototype后的Person.prototype。
+结果分析：这是因为friend1的`prototype`指向的是没重写`Person.prototype`之前的`Person.prototype`，也就是构造函数最初的原型对象。而friend2的`prototype`指向的是重写`Person.prototype`后的`Person.prototype`。
 
 ## 6、 原型链
 

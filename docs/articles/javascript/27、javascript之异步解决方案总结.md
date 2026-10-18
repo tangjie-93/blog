@@ -64,7 +64,7 @@ promise.then(res=>{
     console.log(res);
 })
 ```
-### 4、async/await
+### 4、`async/await`
 
 **优点:** 代码清晰。将异步变成了同步。
 ```js

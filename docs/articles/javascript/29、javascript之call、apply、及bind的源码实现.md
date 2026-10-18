@@ -12,7 +12,7 @@ note: 这3个方法，每次看到后都会去网上搜一下用法，然而过�
 + 1、允许为不同的对象分配和调用属于另一个对象的函数/方法，也就是改变（或者说是扩大）函数运行的作用域，优点：对象不需要跟方法有任何耦合关系；  
 + 2、提供新的 `this` 值给当前调用的函数/方法。 
 
-## 1、fun.call(thisArg, arg1, arg2, ...)
+## 1、`fun.call`(thisArg, arg1, arg2, ...)
 
 | 参数      | 描述                                 |
 | --------- | ------------------------------------ |
@@ -121,7 +121,7 @@ Function.prototype.call(A, 60, 50);// 没有输出
 //Function.prototype.call.call=>call
 Function.prototype.call.call.call(A, 80, 70);// NAN undefined
 ```
-## 2、fun.apply(thisArg, [arguments]) 
+## 2、`fun.apply`(thisArg, [arguments]) 
 
 | 参数      | 描述                          |
 | --------- | ----------------------------- |

@@ -19,9 +19,9 @@ s01 → s02 → s03 → s04 → `s05` → [s06](./06%E3%80%81Subagent%20%E2%80%9
 
 ## 1、问题
 
-给 `Agent` 一个复杂任务："把所有 `Python` 文件改成 snake_case 命名，然后跑测试，修好失败。"
+给 `Agent` 一个复杂任务："把所有 `Python` 文件改成 `snake_case` 命名，然后跑测试，修好失败。"
 
-`Agent` 开始干活，改了 3 个文件，跑了个测试，发现 2 个失败，开始修。修着修着，它忘了最初是"改成 snake_case"，测试失败把注意力全吸走了。
+`Agent` 开始干活，改了 3 个文件，跑了个测试，发现 2 个失败，开始修。修着修着，它忘了最初是"改成 `snake_case`"，测试失败把注意力全吸走了。
 
 对话越长越严重：工具结果不断填满上下文，系统提示的影响力被稀释。一个 10 步重构，做完 1-3 步就开始即兴发挥，因为 4-10 步已经被挤出注意力了。
 
@@ -31,7 +31,7 @@ s01 → s02 → s03 → s04 → `s05` → [s06](./06%E3%80%81Subagent%20%E2%80%9
 
 ![Todo Overview](/image/agent-course/s05_todo_write/todo-overview.svg)
 
-保留上一章的最小 hook 结构，重点看新增的 `todo_write` 工具和 reminder 机制。`todo_write` 本身不做任何实际工作，不能读文件、不能跑命令，只是让 `Agent` 在动手之前先理清思路。
+保留上一章的最小 `hook` 结构，重点看新增的 `todo_write` 工具和 reminder 机制。`todo_write` 本身不做任何实际工作，不能读文件、不能跑命令，只是让 `Agent` 在动手之前先理清思路。
 
 dispatch 机制不变，新工具仍然走 `TOOL_HANDLERS[block.name]` 分发。但为了演示 todo reminder，循环里加了一个计数器：连续 3 轮没调 `todo_write` 就注入一条提醒。
 
@@ -39,7 +39,7 @@ dispatch 机制不变，新工具仍然走 `TOOL_HANDLERS[block.name]` 分发。
 
 ## 3、工作原理
 
-**todo_write 工具**，接收一个带状态的列表，保存在当前进程内存中，同时在终端显示进度：
+**`todo_write` 工具**，接收一个带状态的列表，保存在当前进程内存中，同时在终端显示进度：
 
 ```python
 CURRENT_TODOS: list[dict] = []
@@ -101,7 +101,7 @@ if rounds_since_todo >= 3 and messages:
 
 `Agent` 收到任务后的典型流程：先调 `todo_write` 列出所有步骤（全 `pending`）→ 做一个步骤，改成 `in_progress` → 做完改成 `completed` → 看下一个 `pending` → 继续。连续 3 轮没有调用 `todo_write` 时，循环会在下一次 `LLM` 调用前追加一条 reminder。
 
-**关键洞察**：todo_write 不给 `Agent` 增加任何**执行能力**。它增加的是**规划能力**。
+**关键洞察**：`todo_write` 不给 `Agent` 增加任何**执行能力**。它增加的是**规划能力**。
 
 ---
 
@@ -109,10 +109,10 @@ if rounds_since_todo >= 3 and messages:
 
 | 组件 | 之前 (s04) | 之后 (s05) |
 |------|-----------|-----------|
-| 工具数量 | 5 (bash, read, write, edit, glob) | 6 (+todo_write) |
+| 工具数量 | 5 (`bash`, read, write, edit, glob) | 6 (+`todo_write`) |
 | 规划能力 | 无 | 带状态的 TODO 列表 + nag reminder |
 | SYSTEM 提示 | 通用提示 | 加入 "先计划再执行" 引导 |
-| 循环 | 不变 | dispatch 不变，新增 rounds_since_todo 计数器和 reminder 注入 |
+| 循环 | 不变 | dispatch 不变，新增 `rounds_since_todo` 计数器和 reminder 注入 |
 
 ---
 
@@ -124,7 +124,7 @@ python s05_todo_write/code.py
 python s05_todo_write/code_openai.py
 ```
 
-试试这些 prompt：
+试试这些 `prompt`：
 
 1. `Refactor s05_todo_write/example/hello.py: add type hints, docstrings, and a main guard`（先列 3 步再执行）
 2. `Create a Python package under s05_todo_write/example/demo_pkg with __init__.py, utils.py, and tests/test_utils.py`
@@ -138,7 +138,7 @@ python s05_todo_write/code_openai.py
 
 `Agent` 能计划了。但如果一个任务太大，比如"重构整个认证模块"，光靠 TODO 列表不够。这个任务本身就是几十个小任务的集合，放在同一个对话里会被上下文淹没。
 
-s06 Subagent → 把大任务拆成子任务，每个子任务派一个独立的 `Agent`。它们有自己的干净上下文，不会互相污染。
+s06 `Subagent` → 把大任务拆成子任务，每个子任务派一个独立的 `Agent`。它们有自己的干净上下文，不会互相污染。
 
 <details>
 <summary>深入 `CC` 源码</summary>
@@ -148,7 +148,7 @@ s06 Subagent → 把大任务拆成子任务，每个子任务派一个独立的
 - **`TodoWrite`（V1）**：一个简单的列表工具，数据在内存 AppState 中维护（`TodoWriteTool.ts:65-103`）。教学版也保存在进程内存里，退出后清空
 - **`Task` `System`（`V2` = s12）**：文件持久化、依赖图、并发锁、ownership
 
-切换由 `isTodoV2Enabled()` 控制。当前源码的实现逻辑：交互式会话中 `V2` 默认启用，非交互式会话（`SDK`）中 V1 默认启用；设置 `CLAUDE_CODE_ENABLE_TASKS` 环境变量可强制启用 `V2`。注意源码注释 "Force-enable tasks in non-interactive mode" 描述的是 env var 路径的用途，和默认分支的返回值语义不同，阅读时需区分。
+切换由 `isTodoV2Enabled()` 控制。当前源码的实现逻辑：交互式会话中 `V2` 默认启用，非交互式会话（`SDK`）中 V1 默认启用；设置 `CLAUDE_CODE_ENABLE_TASKS` 环境变量可强制启用 `V2`。注意源码注释 "Force-enable tasks in non-interactive mode" 描述的是 env `var` 路径的用途，和默认分支的返回值语义不同，阅读时需区分。
 
 教学版省略了真实源码中的 `activeForm` 字段（`utils/todo/types.ts:8-15`）。`CC` 用它给 `UI` spinner 展示"正在做什么"，教学版只有终端输出，不需要这个字段。
 
@@ -158,8 +158,8 @@ s06 Subagent → 把大任务拆成子任务，每个子任务派一个独立的
 - 文件持久化（Claude 配置目录下 `tasks/{taskListId}/{taskId}.json`）而非内存列表
 - `blockedBy` 依赖图而非平铺列表
 - `proper-lockfile` 并发安全而非无锁
-- 四个独立工具（Create/Get/Update/List）而非一个
-- TaskCreated / TaskCompleted hooks（`TaskCreateTool.ts:80-129`、`TaskUpdateTool.ts:231-260`）供外部系统集成
+- 四个独立工具（`Create/Get/Update/List`）而非一个
+- TaskCreated / TaskCompleted `hooks`（`TaskCreateTool.ts:80-129`、`TaskUpdateTool.ts:231-260`）供外部系统集成
 
 </details>
 

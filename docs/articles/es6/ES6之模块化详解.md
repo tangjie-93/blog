@@ -30,11 +30,11 @@ note: ES6之模块化详解
 
 
 
-## 2、 	export的用法
+## 2、 	`export`的用法
 
 
-&#8195;&#8195;export命令用于**规定模块的对外接口**，import命令用于输入其他模块提供的功能。
-&#8195;&#8195;**export写法种类：**
+&#8195;&#8195;`export`命令用于**规定模块的对外接口**，`import`命令用于输入其他模块提供的功能。
+&#8195;&#8195;**`export`写法种类：**
 >1、使用大括号指定所要输出的一组变量。`export {firstName, lastName, year};`
 
 >2、直接使用export关键字输出该变量。export var year = 1958;
@@ -48,7 +48,7 @@ var lastName = 'Jackson';
 var year = 1958;
 export {firstName, lastName, year};
 ```       
-&#8195;&#8195;通常情况下，export输出的变量就是本来的名字，但是可以使用as关键字重命名。
+&#8195;&#8195;通常情况下，`export`输出的变量就是本来的名字，但是可以使用as关键字重命名。
 ```js
 function v1() { ... }
 function v2() { ... }
@@ -58,7 +58,7 @@ export {
     v2 as streamLatestVersion
 };
 ```       
-&#8195;&#8195;注意1：export命令规定的是对外的接口，必须与模块内部的变量建立一一对应关系。
+&#8195;&#8195;注意1：`export`命令规定的是对外的接口，必须与模块内部的变量建立一一对应关系。
 ```js
 // 报错
 export 1;
@@ -69,12 +69,12 @@ export m;
 function f() {}
 export f;
 ```       
-&#8195;&#8195;注意2：export语句输出的接口，**与其对应的值是动态绑定关系** ，即通过该接口，可以取到模块内部实时的值。 
+&#8195;&#8195;注意2：`export`语句输出的接口，**与其对应的值是动态绑定关系** ，即通过该接口，可以取到模块内部实时的值。 
 ```js
 export var foo = 'bar';
 setTimeout(() => foo = 'baz', 500);
 ```       
-&#8195;&#8195;注意3：export命令可以出现在模块的任何位置，只要处于模块顶层就可以。
+&#8195;&#8195;注意3：`export`命令可以出现在模块的任何位置，只要处于模块顶层就可以。
 ```js
 function foo() {
     export default 'bar' // SyntaxError
@@ -82,10 +82,10 @@ function foo() {
 foo()
 ```       
 
-## 3、	import的用法
+## 3、	`import`的用法
 
 
-&#8195;&#8195;import命令输入的变量都是只读的，因为它的本质是输入接口。也就是说，**不允许在加载模块的脚本里面，改写接口。**
+&#8195;&#8195;`import`命令输入的变量都是只读的，因为它的本质是输入接口。也就是说，**不允许在加载模块的脚本里面，改写接口。**
 ```js
 import {a} from './xxx.js'
 a = {}; // Syntax Error : 'a' is read-only;
@@ -93,12 +93,12 @@ a = {}; // Syntax Error : 'a' is read-only;
 import {a} from './xxx.js'
 a.foo = 'hello'; // 合法操作
 ```        
-&#8195;&#8195;import后面的from指定模块文件的位置，可以是相对路径，也可以是绝对路径，.js后缀可以省略。如果只是模块名，不带有路径，那么必须有配置文件，告诉 `JavaScript` 引擎该模块的位置。
+&#8195;&#8195;`import`后面的from指定模块文件的位置，可以是相对路径，也可以是绝对路径，.js后缀可以省略。如果只是模块名，不带有路径，那么必须有配置文件，告诉 `JavaScript` 引擎该模块的位置。
 ```js
 import {myMethod} from 'util';
 //util是模块文件名，由于不带有路径，必须通过配置，告诉引擎怎么取到这个模块。
 ```      
-&#8195;&#8195;注意，import命令具有提升效果，会提升到整个模块的头部，首先执行。**import是静态执行，所以不能使用表达式和变量** ，这些只有在运行时才能得到结果的语法结构。
+&#8195;&#8195;注意，`import`命令具有提升效果，会提升到整个模块的头部，首先执行。**`import`是静态执行，所以不能使用表达式和变量** ，这些只有在运行时才能得到结果的语法结构。
 ```js
 // 报错
 import { 'f' + 'oo' } from 'my_module';
@@ -119,7 +119,7 @@ console.log('圆面积：' + area(4));
 console.log('圆周长：' + circumference(14));
 ```       
 
-## 4、	模块的整体加载 import *
+## 4、	模块的整体加载 `import` *
 
 
 &#8195;&#8195;整体加载的写法： `import * from "module"`
@@ -129,10 +129,10 @@ console.log('圆面积：' + circle.area(4));
 console.log('圆周长：' + circle.circumference(14));
 ```        
 
-## 5、	export default
+## 5、	`export` default
 
 
-&#8195;&#8195;用到export default命令，为模块指定默认输出。
+&#8195;&#8195;用到`export` default命令，为模块指定默认输出。
 ```js
 // export-default.js
 export default function () {
@@ -150,8 +150,8 @@ function foo() {
 }
 export default foo;
 ```       
-&#8195;&#8195;2、一个模块只能有一个默认输出，因此export default命令只能使用一次。所以，import命令后面才不用加大括号，因为只可能唯一对应export default命令。
-**本质上，export default就是输出一个叫做default的变量或方法，然后系统允许你为它取任意名字。但是建议import时还是用default后面的名字。**
+&#8195;&#8195;2、一个模块只能有一个默认输出，因此`export` default命令只能使用一次。所以，`import`命令后面才不用加大括号，因为只可能唯一对应`export` default命令。
+**本质上，`export` default就是输出一个叫做default的变量或方法，然后系统允许你为它取任意名字。但是建议`import`时还是用default后面的名字。**
 ```js        
 // modules.js
 function add(x, y) {
@@ -165,18 +165,18 @@ import { default as foo } from 'modules';
 // 等同于
 // import foo from 'modules';
 ```       
-&#8195;&#8195;3、因为export default命令的本质是将后面的值，赋给default变量，所以可以直接将一个值写在export default之后。
+&#8195;&#8195;3、因为`export` default命令的本质是将后面的值，赋给default变量，所以可以直接将一个值写在`export` default之后。
 ```js
 // 正确
 export default 42;
 // 报错
 export 42;
 ```        
-&#8195;&#8195;4、如果想在一条import语句中，同时输入默认方法(default)和其他接口，可以写成下面这样。
+&#8195;&#8195;4、如果想在一条`import`语句中，同时输入默认方法(default)和其他接口，可以写成下面这样。
 ```js
 import _, { each, forEach } from 'lodash';
 ```       
-&#8195;&#8195;5、	export default也可以用来输出类。
+&#8195;&#8195;5、	`export` default也可以用来输出类。
 ```js
 // MyClass.js
 export default class { ... }
@@ -185,7 +185,7 @@ import MyClass from 'MyClass';
 let o = new MyClass();
 ```       
 
-## 6、	export和import的复合写法
+## 6、	`export`和`import`的复合写法
 
 
 ```js
@@ -222,7 +222,7 @@ export default function(x) {
     return Math.exp(x);
 }
 ```        
-&#8195;&#8195;上面代码中的export*，表示再输出circle模块的所有属性和方法。**注意，export `*` 命令会忽略circle模块的default方法。**
+&#8195;&#8195;上面代码中的`export`*，表示再输出circle模块的所有属性和方法。**注意，`export` `*` 命令会忽略circle模块的default方法。**
 ```js
 // main.js
 import * as math from 'circleplus';//整体加载的写法
@@ -234,16 +234,16 @@ import exp 表示，将circleplus模块的默认方法加载为exp方法。
 ## 8、	Import（）
 
 
-&#8195;&#8195;可以实现动态加载。运行时执行，也就是说，什么时候运行到这一句，就会加载指定的模块。**import()返回一个 `Promise` 对象。** 
+&#8195;&#8195;可以实现动态加载。运行时执行，也就是说，什么时候运行到这一句，就会加载指定的模块。**`import`()返回一个 `Promise` 对象。** 
 
-&#8195;&#8195;注意：import()加载模块成功以后，这个模块会作为一个对象，当作then方法的参数。因此，可以使用对象解构赋值的语法，获取输出接口。
+&#8195;&#8195;注意：`import`()加载模块成功以后，这个模块会作为一个对象，当作then方法的参数。因此，可以使用对象解构赋值的语法，获取输出接口。
 ```js
 import('./myModule.js')
 .then(({export1, export2}) => {
     // ...•
 });
 ```       
-&#8195;&#8195;上面代码中，export1和export2都是myModule.js的输出接口，可以解构获得。
+&#8195;&#8195;上面代码中，export1和export2都是`myModule.js`的输出接口，可以解构获得。
 如果模块有default输出接口，可以用参数直接获得。
 ```js
 import('./myModule.js')
@@ -259,23 +259,23 @@ import('./myModule.js')
 });
 ```       
 
-## 9、	module的加载实现
+## 9、	`module`的加载实现
 
 
-&#8195;&#8195;浏览器加载 `ES6` 模块，也使用script标签，但是要加入type="module"属性。
+&#8195;&#8195;浏览器加载 `ES6` 模块，也使用script标签，但是要加入type="`module`"属性。
 ```js
 <script type="module" src="./foo.js"></script>
 <!-- 等同于 -->
 <script type="module" src="./foo.js" defer></script>
 ```
-&#8195;&#8195;**对于外部的模块脚本（上例是foo.js），有几点需要注意。**
+&#8195;&#8195;**对于外部的模块脚本（上例是`foo.js`），有几点需要注意。**
 
 &#8195;&#8195;1、	代码是在模块作用域之中运行，而不是在全局作用域运行。模块内部的顶层变量，外部不可见。  
 &#8195;&#8195;2、	模块脚本自动采用严格模式，不管有没有声明use strict。    
-&#8195;&#8195;3、   	模块之中，可以使用import命令加载其他模块（.js后缀不可省略，需要提供绝对 `URL` 或相对 `URL`），也可以使用export命令输出对外接口。       
-&#8195;&#8195;4、   	模块之中，顶层的this关键字返回undefined，而不是指向window。也就是说，在模块顶层使用this关键字，是无意义的。  
+&#8195;&#8195;3、   	模块之中，可以使用`import`命令加载其他模块（.js后缀不可省略，需要提供绝对 `URL` 或相对 `URL`），也可以使用`export`命令输出对外接口。       
+&#8195;&#8195;4、   	模块之中，顶层的this关键字返回`undefined`，而不是指向window。也就是说，在模块顶层使用this关键字，是无意义的。  
 &#8195;&#8195;5、	同一个模块如果加载多次，将只执行一次。  
-&#8195;&#8195;利用顶层的this等于undefined这个语法点，可以侦测当前代码是否在 `ES6` 模块之中。
+&#8195;&#8195;利用顶层的this等于`undefined`这个语法点，可以侦测当前代码是否在 `ES6` 模块之中。
 ```js
 const isNotModuleScript = this !== undefined;
 ```       
@@ -289,7 +289,7 @@ const isNotModuleScript = this !== undefined;
 
 >2、	`CommonJS` 模块是运行时加载。 `ES6` 模块是编译时输出接口 。
 
-&#8195;&#8195;第二个差异是因为 `CommonJS` 加载的**是一个对象（即module.exports属性）**，该对象只有在脚本运行完才会生成。而 `ES6` 模块不是对象，它的对外接口只是**一种静态定义**，在代码静态解析阶段就会生成。  
+&#8195;&#8195;第二个差异是因为 `CommonJS` 加载的**是一个对象（即`module.exports`属性）**，该对象只有在脚本运行完才会生成。而 `ES6` 模块不是对象，它的对外接口只是**一种静态定义**，在代码静态解析阶段就会生成。  
 &#8195;&#8195;第一个差异是因为`CommonJS` 模块输出的是**值的拷贝**，也就是说，一旦输出一个值，模块内部的变化就影响不到这个值。**`ES6`模块是动态引用，并且不会缓存值，模块里面的变量绑定其所在的模块。**
 ```js
 // lib.js
@@ -307,7 +307,7 @@ console.log(mod.counter);  // 3
 mod.incCounter();
 console.log(mod.counter); // 3
 ```       
-&#8195;&#8195;**这是因为mod.counter是一个原始类型的值 ，会被缓存**。除非写成一个函数，才能得到内部变动后的值。
+&#8195;&#8195;**这是因为`mod.counter`是一个原始类型的值 ，会被缓存**。除非写成一个函数，才能得到内部变动后的值。
 ```js
 // lib.js
 var counter = 3;
@@ -326,7 +326,7 @@ console.log(mod.counter);  // 3
 mod.incCounter();
 console.log(mod.counter); // 4
 ```        
-&#8195;&#8195;**可以对obj添加属性，但是重新赋值就会报错。** 因为变量obj指向的地址是只读的，不能重新赋值，这就好比main.js创造了一个名为obj的const变量。
+&#8195;&#8195;**可以对obj添加属性，但是重新赋值就会报错。** 因为变量obj指向的地址是只读的，不能重新赋值，这就好比`main.js`创造了一个名为obj的`const`变量。
 ```js
 // lib.js
 export let obj = {};
@@ -337,21 +337,21 @@ obj = {}; // TypeError
 ```        
 &#8195;&#8195;**commonJS和`ES6`内部变量的区别：**
 
-&#8195;&#8195;1、`ES6` 模块之中，顶层的this指向undefined；`CommonJS` 模块的顶层this指向当前模块。    
+&#8195;&#8195;1、`ES6` 模块之中，顶层的this指向`undefined`；`CommonJS` 模块的顶层this指向当前模块。    
 &#8195;&#8195;2、以下这些顶层变量在 `ES6` 模块之中都是不存在的。
 
 +	arguments
-+	require
-+	module
++	`require`
++	`module`
 +	exports
-+	__filename
-+	__dirname
++	`__filename`
++	`__dirname`
 
 
 ## 11、	`ES6`加载`CommonJS`模块（整体输入）
 
 
-&#8195;&#8195;`Node` 会自动将module.exports属性，当作模块的默认输出，即等同于export default xxx。
+&#8195;&#8195;`Node` 会自动将`module.exports`属性，当作模块的默认输出，即等同于`export` default xxx。
 ```js
 // a.js
 module.exports = {
@@ -364,12 +364,12 @@ export default {
     bar: 'world'
 };
 ```
-&#8195;&#8195;由于 `ES6` 模块是编译时确定输出接口，`CommonJS` 模块是运行时确定输出接口，所以采用import命令加载 `CommonJS` 模块时，不允许采用下面的写法。
+&#8195;&#8195;由于 `ES6` 模块是编译时确定输出接口，`CommonJS` 模块是运行时确定输出接口，所以采用`import`命令加载 `CommonJS` 模块时，不允许采用下面的写法。
 ```js
 // 不正确
 import { readFile } from 'fs';
 ```       
-&#8195;&#8195;因为fs是 `CommonJS`格式，只有在运行时才能确定readFile接口，而import命令要求编译时就确定这个接口。**解决方法就是改为整体输入。**
+&#8195;&#8195;因为fs是 `CommonJS`格式，只有在运行时才能确定readFile接口，而`import`命令要求编译时就确定这个接口。**解决方法就是改为整体输入。**
 ```js
 // 正确的写法一
 import * as express from 'express';
@@ -379,14 +379,14 @@ import express from 'express';
 const app = express();
 ```       
 
-## 12、	`CommonJS`加载`ES6`模块（import()函数）
+## 12、	`CommonJS`加载`ES6`模块（`import`()函数）
 
-&#8195;&#8195;`CommonJS` 模块加载 `ES6` 模块，不能使用require命令，而要使用import()函数。`ES6` 模块的所有输出接口，会成为输入对象的属性。
+&#8195;&#8195;`CommonJS` 模块加载 `ES6` 模块，不能使用`require`命令，而要使用`import`()函数。`ES6` 模块的所有输出接口，会成为输入对象的属性。
 
 ## 13、	`CommonJS` 模块的加载原理。
 
 
-&#8195;&#8195;require命令第一次加载该脚本，就会执行整个脚本，然后在内存生成一个对象。
+&#8195;&#8195;`require`命令第一次加载该脚本，就会执行整个脚本，然后在内存生成一个对象。
 ```js
 {
     id: '...',
@@ -395,7 +395,7 @@ const app = express();
     ...
 }
 ```
-&#8195;&#8195;该对象的id属性是模块名，exports属性是模块输出的各个接口，loaded属性是一个布尔值，表示该模块的脚本是否执行完毕。其他还有很多属性，这里都省略了。以后需要用到这个模块的时候，就会到exports属性上面取值。即使再次执行require命令，也不会再次执行该模块，而是到缓存之中取值。**也就是说，`CommonJS` 模块无论加载多少次，都只会在第一次加载时运行一次，以后再加载，就返回第一次运行的结果，除非手动清除系统缓存。**
+&#8195;&#8195;该对象的id属性是模块名，exports属性是模块输出的各个接口，loaded属性是一个布尔值，表示该模块的脚本是否执行完毕。其他还有很多属性，这里都省略了。以后需要用到这个模块的时候，就会到exports属性上面取值。即使再次执行`require`命令，也不会再次执行该模块，而是到缓存之中取值。**也就是说，`CommonJS` 模块无论加载多少次，都只会在第一次加载时运行一次，以后再加载，就返回第一次运行的结果，除非手动清除系统缓存。**
 
 
 ## 14、	`CommonJS`的循环加载
@@ -425,15 +425,15 @@ $ node main.js
 
 ![](https://user-gold-cdn.xitu.io/2019/4/13/16a172d64e1c8bd7?w=485&h=126&f=png&s=13654)
 
-&#8195;&#8195;在main.js中的详细执行过程如下：
+&#8195;&#8195;在`main.js`中的详细执行过程如下：
 
-&#8195;&#8195;a.js脚本先输出一个done变量，然后加载另一个脚本文件b.js。**注意，此时a.js代码就停在这里，等待b.js执行完毕，再往下执行。** b.js执行到第二行，就会去加载a.js，这时，就发生了“循环加载”。系统会去a.js模块对应对象的exports属性取值，可是因为a.js还没有执行完，从exports属性只能取回已经执行的部分，而不是最后的值。（a.js已经执行的部分，只有一行。）然后，b.js接着往下执行，等到全部执行完毕，再把执行权交还给a.js。于是，a.js接着往下执行，直到执行完毕。
+&#8195;&#8195;`a.js`脚本先输出一个done变量，然后加载另一个脚本文件`b.js`。**注意，此时`a.js`代码就停在这里，等待`b.js`执行完毕，再往下执行。** `b.js`执行到第二行，就会去加载`a.js`，这时，就发生了“循环加载”。系统会去`a.js`模块对应对象的exports属性取值，可是因为`a.js`还没有执行完，从exports属性只能取回已经执行的部分，而不是最后的值。（`a.js`已经执行的部分，只有一行。）然后，`b.js`接着往下执行，等到全部执行完毕，再把执行权交还给`a.js`。于是，`a.js`接着往下执行，直到执行完毕。
 	
 
 ## 15、	`ES6`模块的循环加载
 
 
-&#8195;&#8195;`ES6` 模块是动态引用，如果使用import从一个模块加载变量（即import foo from 'foo'），那些变量不会被缓存，而是成为一个指向被加载模块的引用
+&#8195;&#8195;`ES6` 模块是动态引用，如果使用`import`从一个模块加载变量（即`import` foo from 'foo'），那些变量不会被缓存，而是成为一个指向被加载模块的引用
 ```js	
 // a.mjs
 import {bar} from './b';
@@ -456,5 +456,5 @@ ReferenceError: foo is not defined
 ```
 &#8195;&#8195;上述代码的详细执行过程如下：
 
-&#8195;&#8195;首先，执行a.mjs以后，引擎发现它加载了b.mjs，因此会优先执行b.mjs，然后再执行a.mjs。接着，执行b.mjs的时候，已知它从a.mjs输入了foo接口，这时不会去执行a.mjs，而是认为这个接口已经存在了，继续往下执行。执行到第三行console.log(foo)的时候，才发现这个接口根本没定义，因此报错。这可以通过将foo写成函数来解决这个问题。
-这是因为函数具有提升作用（提升到顶部），在执行import {bar} from './b'时，函数foo就已经有定义了，所以b.mjs加载的时候不会报错。这也意味着，如果把函数foo改写成函数表达式，也会报错。
+&#8195;&#8195;首先，执行`a.mjs`以后，引擎发现它加载了`b.mjs`，因此会优先执行`b.mjs`，然后再执行`a.mjs`。接着，执行`b.mjs`的时候，已知它从`a.mjs`输入了foo接口，这时不会去执行`a.mjs`，而是认为这个接口已经存在了，继续往下执行。执行到第三行`console.log`(foo)的时候，才发现这个接口根本没定义，因此报错。这可以通过将foo写成函数来解决这个问题。
+这是因为函数具有提升作用（提升到顶部），在执行`import` {bar} from './b'时，函数foo就已经有定义了，所以`b.mjs`加载的时候不会报错。这也意味着，如果把函数foo改写成函数表达式，也会报错。

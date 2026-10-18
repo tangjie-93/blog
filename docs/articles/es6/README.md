@@ -61,7 +61,7 @@ p.then((arg) => {
 ```
 ## 3、`Promise`的实例方法
 
-### 1、`Promise`.prototype.then(onFulfilled, onRejected)
+### 1、`Promise`.`prototype.then`(onFulfilled, onRejected)
 + `onFulfilled`和`onRejected`分别是`Promise`实例对象成功和失败情况的回调函数。
 + 该方法返回一个新的 `promise`实例对象。
 + **将以回调的返回值（return，只要不报错），作为`then` 函数调用时 `onFulfilled` 回调函数的参数。** 并且`then`方法可以被同一个 `promise` 对象调用多次。
@@ -222,7 +222,7 @@ promise.then((res) => {
     console.log(res, Date.now() - start);//success 1007
 })
 ```
-### 2、`Promise`.prototype.catch(onRejected)
+### 2、`Promise`.`prototype.catch`(onRejected)
 &#8195;&#8195;该方法的原码如下所示：
       
 ```javascript       
@@ -360,7 +360,7 @@ new Promise((resolve, reject) => {
     console.log(res);
 })
 ```
-### 3、`Promise`.prototype.finally(onFinally)
+### 3、`Promise`.`prototype.finally`(onFinally)
 &#8195;&#8195;该方法返回一个 `Promise`，在`promise`执行结束时，无论结果是`fulfilled`或者是`rejected`，在执行`then()`和`catch()`后，都会执行`finally`指定的回调函数。源码实现如下：
 
 ```javascript          
@@ -490,7 +490,7 @@ if (value instanceof MyPromise) {
 }
 ```
 
-&#8195;&#8195;1、如果这个值是个thenable（即带有then方法），返回的promise会"跟随"这个thenable的对象（**从它们的运行结果来看，返回的就好像是这个thenable对象一样。但实际上返回的是一个`Promise`对象**），采用它的最终状态（指resolved/rejected/pending/settled）。
+&#8195;&#8195;1、如果这个值是个thenable（即带有then方法），返回的promise会"跟随"这个thenable的对象（**从它们的运行结果来看，返回的就好像是这个thenable对象一样。但实际上返回的是一个`Promise`对象**），采用它的最终状态（指`resolved/rejected/pending/settled`）。
 
 ```javascript             
 let thenable = {

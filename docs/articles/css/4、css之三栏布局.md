@@ -13,7 +13,7 @@ note: 三栏布局的实现方式
     <div class="right"></div>  
 </div>
 ```
-### 1 方法1 浮动布局（float+margin/padding）
+### 1 方法1 浮动布局（float+`margin/padding`）
 
 ```CSS
 .left {

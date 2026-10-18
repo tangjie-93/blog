@@ -29,7 +29,7 @@ Reflect.has(Object, 'assign') // true
 
 ### 2.1 `Reflect.get`：读取属性
 
-&#8195;&#8195;1）Reflect.get（target, name, receiver）：查找并返回target对象的name属性，如果没有该属性，则返回undefined。
+&#8195;&#8195;1）`Reflect.get`（target, name, receiver）：查找并返回target对象的name属性，如果没有该属性，则返回`undefined`。
 ```js
 var myObject = {
     foo: 1,
@@ -50,7 +50,7 @@ console.log((Reflect.get(myObject, 'baz', myReceiverObject)) // 8
 
 ### 2.2 `Reflect.set`：设置属性
 
-&#8195;&#8195;2）Reflect.set(target, name, value, receiver): Reflect.set方法设置target对象的name属性等于value。如果name属性设置了赋值函数，则赋值函数的this绑定receiver。如果第一个参数不是对象，Reflect.set会报错。
+&#8195;&#8195;2）`Reflect.set`(target, name, value, receiver): `Reflect.set`方法设置target对象的name属性等于value。如果name属性设置了赋值函数，则赋值函数的this绑定receiver。如果第一个参数不是对象，`Reflect.set`会报错。
 ```js        
 var myObject = {
 	foo: 1,
@@ -69,7 +69,7 @@ myObject.foo // 3
 ```
 ### 2.3 `Reflect.has`：检查属性
 
-&#8195;&#8195;3）Reflect.has(obj,name):对应name in obj里面的in运算符。如果第一个参数不是对象，Reflect.has和in运算符都会报错。
+&#8195;&#8195;3）`Reflect.has`(obj,name):对应name in obj里面的in运算符。如果第一个参数不是对象，`Reflect.has`和in运算符都会报错。
 ```js        
 var myObject = {
 	foo: 1,

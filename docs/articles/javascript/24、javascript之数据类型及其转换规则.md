@@ -8,7 +8,7 @@ note: js数据类型及其常见用法
 &#8195;&#8195;`javascript`中一种有9种数据类型，有7种简单数据类型（也称为基本数据类型）：`undefined、null、boolean、number 和string、symbol、bigint`，还有2种复杂数据类型——`Object`和 `function`。
 <img src="../../images/js/js数据类型.png">
 
-## 1、undefined
+## 1、`undefined`
 &#8195;&#8195;`undefined` 类型只有一个值，即特殊的`undefined`。根据工作中总结，只要有这几种情况下会出现`undefined`。
 >1.定义变量，但是没有初始化时,如var a；
 
@@ -62,7 +62,7 @@ console.log("a".__proto__);
 
 >4、在正则捕获的时候，如果没有捕获到结果，默认也是null。
 
-**注意：实际上，undefined 值是派生自 null值的。undefined转为数值为NAN,而null转为数值却为0**
+**注意：实际上，`undefined` 值是派生自 `null`值的。`undefined`转为数值为NAN,而`null`转为数值却为0**
 ```js        
 alert(typeof null);//object
 alert(null == undefined);弹出的是true 
@@ -77,12 +77,12 @@ alert(Number(null))//0
 | :-------------: |:-------------:| :-------------:|
 | String        | 任何非空字符串 | 空字符串("") |
 | `Number`        | 任何非零数值(包括无穷大)      |   0和NAN |
-| `Object`        | 任何对象      |    null |
-| undefined     | 没有为true的情况      |    undefined |
+| `Object`        | 任何对象      |    `null` |
+| `undefined`     | 没有为true的情况      |    `undefined` |
 
 **注意：**  
 + js存在6种假值。分别是
-""、0、null、undefined、false、和NAN。  
+""、0、`null`、`undefined`、false、和NAN。  
 + +true返回的是1。一元加号会尝试将 `boolean` 类型转换为数字类型。 true被转换为1，false被转换为0。 
 + `+"1"`返回的是NAN。
 
@@ -214,7 +214,7 @@ parseInt(77,6) //NaN
 
 + 1、如果值有 `toString()`方法，则调用该方法（没有参数）并返回相应的结果；    
 
-+ 2、如果值是 `null`,则返回 "null"；
++ 2、如果值是 `null`,则返回 "`null`"；
 
 + 3、如果值是 `undefined`，则返回 `"undefined"`。   
 ```js       
@@ -311,7 +311,7 @@ var str="hello world hello hello";
 var res=str.replace(/(.ll)/g,"123($1)");
 console.log(res);//h123(ell)o world h123(ell)o h123(ell)o
 ```
-&#8195;&#8195;如果第二个参数为函数，在只有一个匹配项的情况下，会向这个函数传递3个参数：**模式的匹配项，模式匹配项在字符串中的位置和原始字符串。 function(match,pos,originalText)** 。如果是有多个捕获组的情况下，传递给函数的参数依次是模式的匹配项，第一个捕获组的匹配项，第二个捕获组的匹配项。。。，最后两个参数仍然是模式匹配项在字符串中的位置和原始字符串。
+&#8195;&#8195;如果第二个参数为函数，在只有一个匹配项的情况下，会向这个函数传递3个参数：**模式的匹配项，模式匹配项在字符串中的位置和原始字符串。 `function`(match,pos,originalText)** 。如果是有多个捕获组的情况下，传递给函数的参数依次是模式的匹配项，第一个捕获组的匹配项，第二个捕获组的匹配项。。。，最后两个参数仍然是模式匹配项在字符串中的位置和原始字符串。
 
 &#8195;&#8195;**split():** 基于指定的分隔符将字符串分割为多个子字符串。并返回一个数组。分隔符可以是字付串也可以是RegExp对象。还可以接受第二个参数，用于指定返回数组的大小。        
 ```js       
@@ -375,7 +375,7 @@ console.log(b);//{n:10,x:{n:12}}
 ```
 主要是注意这几个方法:       
 + **hasOwnProperty(propertyName)：**
-用于检查给定的属性在当前对象实例中（而不是在实例的原型中）是否存在。其中，作为参数的属性名（propertyName）必须以字符串形式指定（例如：o.hasOwnProperty("name")）。
+用于检查给定的属性在当前对象实例中（而不是在实例的原型中）是否存在。其中，作为参数的属性名（propertyName）必须以字符串形式指定（例如：`o.hasOwnProperty`("name")）。
 
 + **isPrototypeOf(object)：**
 用于检查传入的对象是否是传入对象的原型。
@@ -388,7 +388,7 @@ console.log(b);//{n:10,x:{n:12}}
  
 + **getValues(obj)：**
  返回一个数组，成员是参数对象自身的（不含继承的）所有可遍历（enumerable）属性的键值。属性名为数值的属性，是按照数值大小，从小到大遍历的。
-## 9、function
+## 9、`function`
 ```js
 typeof function(){} //function
 ```

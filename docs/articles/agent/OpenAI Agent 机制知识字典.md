@@ -7,7 +7,7 @@ note: "从 Agent Loop 到综合系统，查阅 20 个章节的核心机制与代
 ---
 
 <script setup>
-import { withBase } from 'vitepress'
+`import` { withBase } from 'vitepress'
 </script>
 
 # `Agent` 架构全景：20 章核心机制回顾
@@ -180,7 +180,7 @@ for call in tool_calls:
 
 ---
 
-## 3. s03: Permission
+## 3. s03: `Permission`
 
 ### 5.1 `3.1` 简介
 
@@ -228,7 +228,7 @@ for block in function_calls(response):
 
 ---
 
-## 4. s04: Hooks
+## 4. s04: `Hooks`
 
 ### 6.1 `4.1` 简介
 
@@ -311,7 +311,7 @@ def run_todo_write(todos: list[dict]) -> str:
 
 ---
 
-## 6. s06: Subagent
+## 6. s06: `Subagent`
 
 ### 8.1 `6.1` 简介
 
@@ -533,7 +533,7 @@ def get_system_prompt(context: dict) -> str:
 
 ---
 
-## 11. s11: Error Recovery
+## 11. s11: `Error Recovery`
 
 ### 13.1 `11.1` 简介
 
@@ -822,7 +822,7 @@ def match_response(request_id: str, response: dict) -> str:
 
 ---
 
-## 17. s17: Autonomous Agents
+## 17. s17: `Autonomous Agents`
 
 ### 19.1 `17.1` 简介
 

@@ -166,57 +166,57 @@ function render(gl, count) {
     + 屏幕坐标系到设备坐标系的转换。
         + 屏幕坐标系左上角为原点，X 轴坐标向右为正，Y 轴坐标向下为正。
         + 坐标范围：
-            + X轴：【0, canvas.width】
-            + Y轴：【0, canvas.height】
+            + X轴：【0, `canvas.width`】
+            + Y轴：【0, `canvas.height`】
         + 设备坐标系以屏幕中心为原点，X 轴坐标向右为正，Y 轴向上为正。
         + 坐标范围是
             + X轴：【-1, 1】。
             + Y轴：【-1, 1】。
 + `WebGL` `API`
     + shader：着色器对象
-        + gl.createShader：创建着色器。
-        + gl.shaderSource：指定着色器源码。
-        + gl.compileShader：编译着色器。
+        + `gl.createShader`：创建着色器。
+        + `gl.shaderSource`：指定着色器源码。
+        + `gl.compileShader`：编译着色器。
     + program：着色器程序
-        + gl.createProgram：创建着色器程序。
-        + gl.attachShader：链接着色器对象。
-        + gl.linkProgram：链接着色器程序。
-        + gl.useProgram：使用着色器程序。
+        + `gl.createProgram`：创建着色器程序。
+        + `gl.attachShader`：链接着色器对象。
+        + `gl.linkProgram`：链接着色器程序。
+        + `gl.useProgram`：使用着色器程序。
     + attribute：着色器属性
-        + gl.getAttribLocation：获取顶点着色器中的属性位置。
-        + gl.enableVertexAttribArray：启用着色器属性。
-        + gl.vertexAttribPointer：设置着色器属性读取 buffer 的方式。
-        + gl.vertexAttrib2f：给着色器属性赋值，值为两个浮点数。
-        + gl.vertexAttrib3f：给着色器属性赋值，值为三个浮点数。
+        + `gl.getAttribLocation`：获取顶点着色器中的属性位置。
+        + `gl.enableVertexAttribArray`：启用着色器属性。
+        + `gl.vertexAttribPointer`：设置着色器属性读取 buffer 的方式。
+        + `gl.vertexAttrib2f`：给着色器属性赋值，值为两个浮点数。
+        + `gl.vertexAttrib3f`：给着色器属性赋值，值为三个浮点数。
     + uniform：着色器全局属性
-        + gl.getUniformLocation：获取全局变量位置。
-        + gl.uniform4f：给全局变量赋值 4 个浮点数。
-        + gl.uniform1i：给全局变量赋值 1 个整数。
+        + `gl.getUniformLocation`：获取全局变量位置。
+        + `gl.uniform4f`：给全局变量赋值 4 个浮点数。
+        + `gl.uniform1i`：给全局变量赋值 1 个整数。
     + buffer：缓冲区
-        + gl.createBuffer：创建缓冲区对象。
-        + gl.bindBuffer：将缓冲区对象设置为当前缓冲。
-        + gl.bufferData：向当前缓冲对象复制数据。
+        + `gl.createBuffer`：创建缓冲区对象。
+        + `gl.bindBuffer`：将缓冲区对象设置为当前缓冲。
+        + `gl.bufferData`：向当前缓冲对象复制数据。
     + clear：清屏
-        + gl.clearColor：设置清除屏幕的背景色。
-        + gl.clear：清除屏幕。
+        + `gl.clearColor`：设置清除屏幕的背景色。
+        + `gl.clear`：清除屏幕。
     + draw：绘制
-        + gl.drawArrays：数组绘制方式。
-        + gl.drawElements：索引绘制方式。
+        + `gl.drawArrays`：数组绘制方式。
+        + `gl.drawElements`：索引绘制方式。
     + 图元
-        + gl.POINTS：点。
-        + gl.LINE：基本线段。
-        + gl.LINE_STRIP：连续线段。
-        + gl.LINE_LOOP：闭合线段。
-        + gl.TRIANGLES：基本三角形。
-        + gl.TRIANGLE_STRIP：三角带。
-        + gl.TRIANGLE_FAN：三角扇。
+        + `gl.POINTS`：点。
+        + `gl.LINE`：基本线段。
+        + `gl.LINE_STRIP`：连续线段。
+        + `gl.LINE_LOOP`：闭合线段。
+        + `gl.TRIANGLES`：基本三角形。
+        + `gl.TRIANGLE_STRIP`：三角带。
+        + `gl.TRIANGLE_FAN`：三角扇。
     + 纹理贴图
-        + gl.createTexture：创建纹理对象。
-        + gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true); 设置图片的翻转
-        + gl.activeTexture：激活纹理单元。
-        + gl.bindTexture：绑定纹理对象到当前纹理。
-        + gl.texImage2D：将图片数据传递给 `GPU`。
-        + gl.texParameterf：设置图片放大缩小时的过滤算法。
+        + `gl.createTexture`：创建纹理对象。
+        + `gl.pixelStorei`(`gl.UNPACK_FLIP_Y_WEBGL`, true); 设置图片的翻转
+        + `gl.activeTexture`：激活纹理单元。
+        + `gl.bindTexture`：绑定纹理对象到当前纹理。
+        + `gl.texImage2D`：将图片数据传递给 `GPU`。
+        + `gl.texParameterf`：设置图片放大缩小时的过滤算法。
 
 
 **参考**<br>

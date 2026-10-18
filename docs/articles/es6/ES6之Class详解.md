@@ -6,11 +6,11 @@ tags: es6
 note: ES6之Class详解
 ---
 
-## 1、class的基本语法
+## 1、`class`的基本语法
 
 
-&#8195;新的class写法只是**让对象原型的写法更加清晰、更像面向对象编程的语法** 而已。`ES6` 的类，完全可以看作构造函数的另一种写法。
-事实上，**类的所有方法都定义在类的prototype属性上面。**
+&#8195;新的`class`写法只是**让对象原型的写法更加清晰、更像面向对象编程的语法** 而已。`ES6` 的类，完全可以看作构造函数的另一种写法。
+事实上，**类的所有方法都定义在类的`prototype`属性上面。**
 
 >1、`ES6` 的类，完全可以看作构造函数的另一种写法。类本身就指向构造函数。
 ```js       
@@ -68,7 +68,7 @@ new Foo() instanceof Foo
 ## 3、	类的实例
 
 
-&#8195;&#8195;与 `ES5` 一样，实例的属性除非显式定义在其本身（即定义在this对象上），否则都是定义在原型上（即定义在class上）。
+&#8195;&#8195;与 `ES5` 一样，实例的属性除非显式定义在其本身（即定义在this对象上），否则都是定义在原型上（即定义在`class`上）。
 ```js
 //定义类
 class Point {
@@ -149,7 +149,7 @@ let person = new class {
 }('张三');
 person.sayName(); // "张三" 
 ```       
-&#8195;&#8195;**class的注意事项**  
+&#8195;&#8195;**`class`的注意事项**  
 &#8195;&#8195;1、严格模式。类和模块的内部，默认就是严格模式。     
 &#8195;&#8195;2、不存在提升。类不存在变量提升。  
 &#8195;&#8195;3、`name`属性总是返回紧跟在`class`关键字后面的类名。    
@@ -170,7 +170,7 @@ for (let x of new Foo('hello', 'world')) {
 }
 ```
 &#8195;&#8195;5、	This的指向。
-**类的方法内部如果含有this，它默认指向类的实例。** 但是，必须非常小心，一旦单独使用该方法，很可能报错。`this`会指向该方法运行时所在的环境（由于 class 内部是严格模式，所以 this 实际指向的是undefined）
+**类的方法内部如果含有this，它默认指向类的实例。** 但是，必须非常小心，一旦单独使用该方法，很可能报错。`this`会指向该方法运行时所在的环境（由于 `class` 内部是严格模式，所以 this 实际指向的是`undefined`）
 ```js
 class Logger {
     printName(name = 'there') {
@@ -281,7 +281,7 @@ function bar(baz) {
     return this.snaf = baz;
 }
 ```
-&#8195;&#8195;2、利用`Symbol`值的唯一性，将私有方法的名字命名为一个`Symbol`值。一般情况下无法获取到它们，因此达到了私有方法和私有属性的效果。但是也不是绝对不行，Reflect.ownKeys()依然可以拿到它们。
+&#8195;&#8195;2、利用`Symbol`值的唯一性，将私有方法的名字命名为一个`Symbol`值。一般情况下无法获取到它们，因此达到了私有方法和私有属性的效果。但是也不是绝对不行，`Reflect.ownKeys`()依然可以拿到它们。
 ```js
 const bar = Symbol('bar');
 const snaf = Symbol('snaf');
@@ -298,10 +298,10 @@ export default class myClass{
 };
 ```        
 
-## 11、new.target()
+## 11、`new.target`()
 
 
-&#8195;&#8195;`ES6` 为new命令引入了一个new.target属性，该属性一般用在构造函数之中，**返回new命令作用于的那个构造函数** 。如果构造函数不是通过new命令或Reflect.construct()调用的，new.target会返回undefined，因此**这个属性可以用来确定构造函数是怎么调用的。** Class 内部调用new.target，返回当前Class。在函数外部，使用new.target会报错。
+&#8195;&#8195;`ES6` 为new命令引入了一个`new.target`属性，该属性一般用在构造函数之中，**返回new命令作用于的那个构造函数** 。如果构造函数不是通过new命令或`Reflect.construct`()调用的，`new.target`会返回`undefined`，因此**这个属性可以用来确定构造函数是怎么调用的。** Class 内部调用`new.target`，返回当前Class。在函数外部，使用`new.target`会报错。
 ```js
 function Person(name) {
     if (new.target !== undefined) {
@@ -321,7 +321,7 @@ function Person(name) {
 var person = new Person('张三'); // 正确
 var notAPerson = Person.call(person, '张三');  // 报错 
  ```       
- &#8195;&#8195;**子类继承父类时，new.target会返回子类。主要是看new后面的类是哪个**  
+ &#8195;&#8195;**子类继承父类时，`new.target`会返回子类。主要是看new后面的类是哪个**  
 ```js
 class Rectangle {
 constructor(length, width) {
@@ -462,7 +462,7 @@ class B extends A {
 }
 let b = new B();
 ```        
-&#8195;&#8195;而当读取super.x的时候，读的是A.prototype.x，所以返回undefined。
+&#8195;&#8195;而当读取`super.x`的时候，读的是`A.prototype`.x，所以返回`undefined`。
 ```js
 class A {
     constructor() {
@@ -484,13 +484,13 @@ class B extends A {
 B.x = 3;
 B.m() // 3
 ```       
-&#8195;&#8195;静态方法B.m里面，super.print指向父类的静态方法。这个方法里面的this指向的是B，而不是B的实例。
+&#8195;&#8195;静态方法`B.m`里面，`super.print`指向父类的静态方法。这个方法里面的this指向的是B，而不是B的实例。
 
 
 ## 15、类的 `prototype` 属性和 `__proto__` 属性
 
 
- &#8195; &#8195;`ES5` 实现之中，每一个对象都有__proto__属性，指向对应的构造函数的prototype属性。
+ &#8195; &#8195;`ES5` 实现之中，每一个对象都有`__proto__`属性，指向对应的构造函数的`prototype`属性。
 ```js
 instance.__proto__===A.prototype//instance是A的实例
 ```   
@@ -505,7 +505,7 @@ console.log(B.prototype.__proto__ === A.prototype )// true,
 // 等同于
 Object.create(A.prototype);
 ```       
- &#8195; &#8195;作为一个对象，子类（B）的原型（__proto__属性）是父类（A）；作为一个构造函数，子类（B）的原型对象（prototype属性）是父类的原型对象（prototype属性）的实例。
+ &#8195; &#8195;作为一个对象，子类（B）的原型（`__proto__`属性）是父类（A）；作为一个构造函数，子类（B）的原型对象（`prototype`属性）是父类的原型对象（`prototype`属性）的实例。
  
 
 ## 16、实例的 `__proto__` 属性

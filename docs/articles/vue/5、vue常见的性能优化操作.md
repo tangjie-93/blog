@@ -86,7 +86,7 @@ computed：{
 ## 2、打包优化
 + 压缩代码
 + 模板预编译
-+ Tree Shaking/Scope Hoisting
++ Tree `Shaking/Scope` Hoisting
 + 使用cdn加载第三方模块
 + 多线程打包happypack
 + splitChunks抽离公共文件

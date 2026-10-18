@@ -148,7 +148,7 @@ function symmetricTree(root){
 ## 7、前序遍历[平衡二叉树](https://leetcode-cn.com/problems/ping-heng-er-cha-shu-lcof/)
 输入一棵二叉树的根节点，判断该树是不是平衡二叉树。如果某二叉树中任意节点的左右子树的深度相差不超过1，那么它就是一棵平衡二叉树。
 **示例 1:**
-给定二叉树 [3,9,20,null,null,15,7]
+给定二叉树 [3,9,20,`null`,`null`,15,7]
     3
    / \
   9  20
@@ -156,7 +156,7 @@ function symmetricTree(root){
    15   7
 返回 true 。
 **示例 2:**
-给定二叉树 [1,2,2,3,3,null,null,4,4]
+给定二叉树 [1,2,2,3,3,`null`,`null`,4,4]
 
        1
       / \
@@ -189,16 +189,16 @@ function isBalanced(root){
 
 百度百科中最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q，最近公共祖先表示为一个结点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。”
 
-例如，给定如下二叉搜索树:  root = [6,2,8,0,4,7,9,null,null,3,5]
+例如，给定如下二叉搜索树:  root = [6,2,8,0,4,7,9,`null`,`null`,3,5]
 <img src="../../images/算法/binarysearchtree_improved.png">
 示例 1:
 
-输入: root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 8
+输入: root = [6,2,8,0,4,7,9,`null`,`null`,3,5], p = 2, q = 8
 输出: 6 
 解释: 节点 2 和节点 8 的最近公共祖先是 6。
 示例 2:
 
-输入: root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 4
+输入: root = [6,2,8,0,4,7,9,`null`,`null`,3,5], p = 2, q = 4
 输出: 2
 解释: 节点 2 和节点 4 的最近公共祖先是 2, 因为根据定义最近公共祖先节点可以为节点本身。
 
@@ -276,7 +276,7 @@ function hasPathSum(root,sum){
 ## 10、[二叉搜索树的最近公共祖先](https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-search-tree)
 给定一个二叉搜索树, 找到该树中两个指定节点的最近公共祖先。
 百度百科中最近公共祖先的定义为："对于有根树 T 的两个结点 p、q，最近公共祖先表示为一个结点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。"
-例如，给定如下二叉搜索树:  root = [6,2,8,0,4,7,9,null,null,3,5]
+例如，给定如下二叉搜索树:  root = [6,2,8,0,4,7,9,`null`,`null`,3,5]
 <img src="../../images/算法/binarysearchtree_improved.png" />
 
 ```js
@@ -483,7 +483,7 @@ var diameterOfBinaryTree = function(root) {
 示例 1：
 
 <img src="../../images/算法/smbt1.jpg" />
-输入：root = [2,2,5,null,null,5,7]
+输入：root = [2,2,5,`null`,`null`,5,7]
 输出：5
 解释：最小的值是 2 ，第二小的值是 5 。
 
@@ -529,7 +529,7 @@ var findSecondMinimumValue = function(root) {
 <!-- 示例 2：
 <img src="../../images/http/cousins.png" /> -->
 
-输入：root = [1,2,3,null,4,null,5], x = 5, y = 4
+输入：root = [1,2,3,`null`,4,`null`,5], x = 5, y = 4
 输出：true
 ```js
 var isCousins = function(root, x, y) {
@@ -593,8 +593,8 @@ const pathSum=function(root,sum){
 &#8195;&#8195;给你二叉搜索树的根节点 `root` ，同时给定最小边界`low `和最大边界 `high`。通过修剪二叉搜索树，使得所有节点的值在`[low, high]`中。修剪树不应该改变保留在树中的元素的相对结构（即，如果没有被移除，原有的父代子代关系都应当保留）。 可以证明，存在唯一的答案。所以结果应当返回修剪好的二叉搜索树的新的根节点。注意，根节点可能会根据给定的边界发生改变。
 <img src="../../images/算法/trim2.jpg" />
 示例 2：
-输入：root = [3,0,4,null,2,null,null,1], low = 1, high = 3
-输出：[3,2,null,1]
+输入：root = [3,0,4,`null`,2,`null`,`null`,1], low = 1, high = 3
+输出：[3,2,`null`,1]
 
 ```js
 /**

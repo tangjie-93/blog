@@ -26,9 +26,9 @@ note: "从 Python 后端、数据库到 AI 应用、部署监控的阶段学习�
 | **代码规范** | `Black`（格式化）、`Ruff`（linting）、`pre-commit hooks` |
 | **调试工具** | `pdb`、`IPython`、`VSCode` 调试配置 |
 
-### 2.2 `1.2` Web 框架选型：`FastAPI`（强烈推荐）
+### 2.2 `1.2` `Web` 框架选型：`FastAPI`（强烈推荐）
 
-根据搜索结果，`FastAPI` 已成为 `Python` 生态中发展最快、社区最活跃的 Web 框架，`GitHub Star` 已超 80k+，增长速度超过 `Flask` 和 `Django`。
+根据搜索结果，`FastAPI` 已成为 `Python` 生态中发展最快、社区最活跃的 `Web` 框架，`GitHub Star` 已超 80k+，增长速度超过 `Flask` 和 `Django`。
 
 #### 为什么选 `FastAPI`？
 
@@ -42,7 +42,7 @@ note: "从 Python 后端、数据库到 AI 应用、部署监控的阶段学习�
 
 #### 学习资源
 
-- **官方文档**（fastapi.tiangolo.com）：从"快速入门"开始，再到"高级用法"
+- **官方文档**（`fastapi.tiangolo`.com）：从"快速入门"开始，再到"高级用法"
 - **重点掌握**：路由定义、请求参数处理、`Pydantic` 模型、依赖注入
 
 ---
@@ -100,7 +100,7 @@ note: "从 Python 后端、数据库到 AI 应用、部署监控的阶段学习�
 |----|------|
 | **`LangChain`** | 构建 `LLM` 应用的核心框架 |
 | **Chains** | 串联多个 `LLM` 调用 |
-| **Agents** | 让 `LLM` 使用工具 |
+| **`Agents`** | 让 `LLM` 使用工具 |
 | **`Memory`** | 对话历史管理 |
 | **Retrieval** | `RAG`（检索增强生成）实现 |
 | **`LlamaIndex`** | 专注数据索引和检索 |
@@ -180,7 +180,7 @@ COPY . .
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 ```
 
-### 5.2 `4.2` Kubernetes 基础
+### 5.2 `4.2` `Kubernetes` 基础
 
 | 概念 | 说明 |
 |------|------|
@@ -258,7 +258,7 @@ CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 
 | 平台 | 课程 | 特点 |
 |------|------|------|
-| IBM | `Python` Back-end Development Capstone | 18 小时实战，涵盖 `Flask`、`Django`、`MongoDB`、`Docker`、Kubernetes |
+| IBM | `Python` Back-end Development Capstone | 18 小时实战，涵盖 `Flask`、`Django`、`MongoDB`、`Docker`、`Kubernetes` |
 | Udacity | Backend Developer with `Python` | 67 小时，`Flask`、`SQL`、`Docker`、安全、部署 |
 | 编程狮 | `AI` 驱动的 `Python` 编程实战 | 73 节视频，涵盖 `DeepSeek`、`LlamaIndex`、`MCP` 服务 |
 

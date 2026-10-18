@@ -28,7 +28,7 @@ s06 的子 `Agent` 是临时工，叫来干一件事就走了。但有些任务�
 
 ![`Agent Teams` Overview](/image/agent-course/s15_agent_teams/agent-teams-overview.svg)
 
-教学代码沿用 S14 的能力（prompt 组装、任务系统、后台执行、cron 调度）。为了聚焦团队机制，省略了完整错误恢复、记忆和技能系统。新增三样：**MessageBus**（文件收件箱）、**spawn_teammate_thread**（启动队友线程）、**inbox 注入**（Lead 接收队友消息并注入 history）。
+教学代码沿用 S14 的能力（`prompt` 组装、任务系统、后台执行、`cron` 调度）。为了聚焦团队机制，省略了完整错误恢复、记忆和技能系统。新增三样：**MessageBus**（文件收件箱）、**`spawn_teammate_thread`**（启动队友线程）、**inbox 注入**（Lead 接收队友消息并注入 history）。
 
 子 `Agent` vs 队友：
 
@@ -71,9 +71,9 @@ class MessageBus:
 
 为什么用文件而不是内存队列？教学版选文件是因为直观、跨线程可观察。真实 `CC` 也用文件收件箱（`~/.claude/teams/{team}/inboxes/`），但加了 `proper-lockfile` 防并发写冲突。教学版的 `read_inbox` 有 read + unlink 竞态，多线程同时读可能丢消息，对教学场景可以接受。
 
-### 3.2 spawn_teammate_thread: 启动队友
+### 3.2 `spawn_teammate_thread`: 启动队友
 
-Lead 调用 `spawn_teammate` 工具启动一个队友。队友跑在自己的 daemon 线程里，有自己的 system prompt、自己的 messages、自己的简化工具集：
+Lead 调用 `spawn_teammate` 工具启动一个队友。队友跑在自己的 daemon 线程里，有自己的 `system` `prompt`、自己的 `messages`、自己的简化工具集：
 
 ```python
 def spawn_teammate_thread(name: str, role: str, prompt: str) -> str:
@@ -98,7 +98,7 @@ def spawn_teammate_thread(name: str, role: str, prompt: str) -> str:
 ```
 
 关键设计：
-- **队友有简化工具集**：bash、read、write、send_message。教学版省略了任务和 cron，聚焦通信机制。真实 `CC` 的队友也有 TaskCreate、TaskUpdate 等工具，任务系统是团队共享的
+- **队友有简化工具集**：`bash`、read、write、`send_message`。教学版省略了任务和 `cron`，聚焦通信机制。真实 `CC` 的队友也有 TaskCreate、TaskUpdate 等工具，任务系统是团队共享的
 - **教学版限 10 轮**：防止队友无限循环。真实 `CC` 用 idle loop：跑完一轮后发 `idle_notification`，等 inbox 消息，收到后继续，直到 `shutdown_request` 才退出
 - **完成后自动汇报**：`BUS.send(name, "lead", summary)` 把最终结果发到 Lead 的收件箱
 
@@ -150,10 +150,10 @@ if inbox:
 |------|-----------|-----------|
 | `Agent` 数量 | 1 | 1 Lead + N 队友线程 |
 | 通信 | 无 | MessageBus + .mailboxes/*.jsonl |
-| 新类 | — | MessageBus, active_teammates dict |
-| 新函数 | — | spawn_teammate_thread, run_send_message, run_check_inbox |
-| Lead 工具 | 11 (s14) | + spawn_teammate, send_message, check_inbox (14) |
-| 队友工具 | — | bash, read_file, write_file, send_message (4) |
+| 新类 | — | MessageBus, `active_teammates` dict |
+| 新函数 | — | `spawn_teammate_thread`, `run_send_message`, `run_check_inbox` |
+| Lead 工具 | 11 (s14) | + `spawn_teammate`, `send_message`, `check_inbox` (14) |
+| 队友工具 | — | `bash`, `read_file`, `write_file`, `send_message` (4) |
 | 权限 | 本地决策 | 教学版省略（真实 `CC` 有冒泡机制） |
 
 ---
@@ -165,19 +165,19 @@ cd learn-claude-code
 python s15_agent_teams/code.py
 ```
 
-试试这些 prompt：
+试试这些 `prompt`：
 
 1. `Spawn alice as a backend developer. Ask her to create a file called schema.sql with a users table.`
 2. `Check your inbox for alice's result.`
 3. `Spawn bob as a tester. Ask him to check if schema.sql exists and list its contents.`
 
-观察重点：Lead 如何启动队友？`.mailboxes/` 目录下的 JSONL 文件长什么样？队友完成后 Lead 的 inbox 有没有注入到 history？
+观察重点：Lead 如何启动队友？`.mailboxes/` 目录下的 `JSONL` 文件长什么样？队友完成后 Lead 的 inbox 有没有注入到 history？
 
 ---
 
 ## 6、接下来
 
-队友能干活、能通信。但如果 Lead 想让 Alice 关机，直接杀线程会留下写到一半的文件。需要一个体面的关机协议：Lead 发 shutdown_request，队友收尾后退出。
+队友能干活、能通信。但如果 Lead 想让 Alice 关机，直接杀线程会留下写到一半的文件。需要一个体面的关机协议：Lead 发 `shutdown_request`，队友收尾后退出。
 
 s16 `Team Protocols` → 关机握手与消息约定。
 
@@ -233,7 +233,7 @@ s16 `Team Protocols` → 关机握手与消息约定。
 
 1. **Spawn**：创建 tmux 窗格（或进程内），分配颜色，写入 team config
 2. **Work**：`useInboxPoller` 每 1 秒检查收件箱 → 有消息就提交为新的 turn
-3. **Idle**：Stop hook 触发 → 发 `idle_notification` 给 Lead
+3. **Idle**：Stop `hook` 触发 → 发 `idle_notification` 给 Lead
 4. **Shutdown**：Lead 发 `shutdown_request` → 队友回复 `shutdown_approved` → Lead 清理
 
 ### 五、Team Config

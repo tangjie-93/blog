@@ -78,7 +78,7 @@ langchain_core
 ## 4. 先运行 Demo
 
 不要只按顺序读理论。每篇 01-08 文档都有对应的可执行入口，统一说明见
-[examples/README.md](./examples/)。所有生成类示例都用
+[`examples/README.md`](./examples/)。所有生成类示例都用
 `ChatOpenAI` 调用 `OpenAI` `ChatGPT`，需要先配置 `OPENAI_API_KEY`。
 
 ## 5. 最常见组合

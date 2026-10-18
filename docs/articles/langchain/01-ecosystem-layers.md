@@ -95,7 +95,7 @@ python docs/public/langchain-examples/01_ecosystem/ecosystem_layers.py
 再运行联网综合 Demo：
 
 ~~~powershell
-python docs/public/langchain-examples/01_chat_basics.py
+python `docs/public/langchain-examples/01_chat_basics.py`
 ~~~
 
 该脚本实际调用 `OpenAI` `ChatGPT`，并把 `Prompt`、模型适配器和输出解析器连成最小链路。

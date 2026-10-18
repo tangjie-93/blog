@@ -95,7 +95,7 @@ void main() {
 
 <img src='../../images/webgl/fog.png' width=200 />
 
-[demo地址](https://github.com/tangjie-93/WebGL/blob/main/%E8%B7%9F%E7%9D%80%E5%AE%98%E7%BD%91%E5%AD%A6WebGL%2BWebGL%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97/%E9%AB%98%E7%BA%A7%E6%8A%80%E6%9C%AF/%E9%9B%BE%E5%8C%96(%E5%A4%A7%E6%B0%94%E6%95%88%E6%9E%9C)/demo/fog.html)
+[demo地址](https://github.com/tangjie-93/WebGL/blob/main/%E8%B7%9F%E7%9D%80%E5%AE%98%E7%BD%91%E5%AD%A6WebGL%2BWebGL%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97/%E9%AB%98%E7%BA%A7%E6%8A%80%E6%9C%AF/%E9%9B%BE%E5%8C%96(%E5%A4%A7%E6%B0%94%E6%95%88%E6%9E%9C)/`demo/fog.html`)
 
 
 
@@ -139,7 +139,7 @@ void main() {
 
 **注意：** 使用深度很简单但是有一个问题。假设围绕相机有一圈物体。我们根据到相机 `z`平面的距离计算雾量。这意味着你转动相机，当它在视图空间中的 `z` 值趋近于 `0` ，物体会越来越不受雾的影响。
 
-[demo地址](https://github.com/tangjie-93/WebGL/blob/main/%E8%B7%9F%E7%9D%80%E5%AE%98%E7%BD%91%E5%AD%A6WebGL%2BWebGL%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97/%E9%AB%98%E7%BA%A7%E6%8A%80%E6%9C%AF/%E9%9B%BE%E5%8C%96(%E5%A4%A7%E6%B0%94%E6%95%88%E6%9E%9C)/demo/fog-w.html)
+[demo地址](https://github.com/tangjie-93/WebGL/blob/main/%E8%B7%9F%E7%9D%80%E5%AE%98%E7%BD%91%E5%AD%A6WebGL%2BWebGL%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97/%E9%AB%98%E7%BA%A7%E6%8A%80%E6%9C%AF/%E9%9B%BE%E5%8C%96(%E5%A4%A7%E6%B0%94%E6%95%88%E6%9E%9C)/`demo/fog-w.html`)
 
 ## 4.指数雾
 它根据距观察者距离的平方变厚。一个常见的 **指数雾公式** 是：
@@ -194,7 +194,7 @@ void main() {
 
   gl_FragColor = mix(color, u_fogColor, fogAmount);
 ```
-[demo地址](https://github.com/tangjie-93/WebGL/blob/main/%E8%B7%9F%E7%9D%80%E5%AE%98%E7%BD%91%E5%AD%A6WebGL%2BWebGL%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97/%E9%AB%98%E7%BA%A7%E6%8A%80%E6%9C%AF/%E9%9B%BE%E5%8C%96(%E5%A4%A7%E6%B0%94%E6%95%88%E6%9E%9C)/demo/fog-%E6%8C%87%E6%95%B0.html)
+[demo地址](https://github.com/tangjie-93/WebGL/blob/main/%E8%B7%9F%E7%9D%80%E5%AE%98%E7%BD%91%E5%AD%A6WebGL%2BWebGL%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97/%E9%AB%98%E7%BA%A7%E6%8A%80%E6%9C%AF/%E9%9B%BE%E5%8C%96(%E5%A4%A7%E6%B0%94%E6%95%88%E6%9E%9C)/`demo/fog-%E6%8C%87%E6%95%B0.html`)
 
 **参考文档**
 

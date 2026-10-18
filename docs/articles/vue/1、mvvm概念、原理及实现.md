@@ -64,7 +64,7 @@ function defineReactive(data){
 ```
 **2、数据代理**
 
-&#8195;&#8195;将`data,methods,computed`上的数据挂载到`vm`实例上。让我们不用每次获取数据时，都通过mvvm._data.a.b这种方式，而可以直接通过mvvm.a.b来获取。
+&#8195;&#8195;将`data,methods,computed`上的数据挂载到`vm`实例上。让我们不用每次获取数据时，都通过`mvvm._data`.`a.b`这种方式，而可以直接通过`mvvm.a`.b来获取。
 ```javascript
 class MVVM{
     constructor(options){

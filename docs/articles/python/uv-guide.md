@@ -54,7 +54,7 @@ uv init [OPTIONS] [PATH]
 | `--app` | 创建**应用项目**（默认行为），生成带入口脚本的结构 | `npm init` + `src/index.ts` |
 | `--lib` | 创建**库项目**（可被 pip 安装/发布的包），不生成入口脚本 | `npm init` 用于发布 `npm` 包 |
 | `--package` | 同 `--lib` 的别名 | — |
-| `--no-readme` | 不生成 README.md | — |
+| `--no-readme` | 不生成 `README.md` | — |
 | `--no-workspace` | 不和已有的 workspace 关联 | — |
 | `--python` / `-p` | 指定 `Python` 版本，如 `--python 3.12` | `nvm use 20` |
 | `--no-pin-python` | 不创建 `.python-version` 文件 | — |
@@ -68,9 +68,9 @@ uv init [OPTIONS] [PATH]
 |---|---|---|---|
 | **用途** | 独立应用（`FastAPI`、脚本等） | 可发布的 `Python` 库/包 | 纯脚本/实验性项目 |
 | **入口文件** | `hello.py` | 无（需手动创建） | 无 |
-| **pyproject.toml** | 有 `[project.scripts]` | 有 `[build-system]` | 极简，无 `[build-system]` |
+| **`pyproject.toml`** | 有 `[project.scripts]` | 有 `[build-system]` | 极简，无 `[build-system]` |
 | **可 pip install** | 可以 | 可以 | 不可以 |
-| **适用场景** | Web `API`、`CLI` 工具 | `SDK`、工具库 | jupyter notebook、临时实验 |
+| **适用场景** | `Web` `API`、`CLI` 工具 | `SDK`、工具库 | jupyter notebook、临时实验 |
 
 ### 2.4 init 生成的 `hello.py` 差异
 
@@ -85,7 +85,7 @@ if __name__ == "__main__":
 ```
 > 这是标准的应用入口脚本，可通过 `pyproject.toml` 中的 `[project.scripts]` 注册为 `CLI` 命令。
 
-**`uv init --lib` 不生成 hello.py**，只生成基本目录：
+**`uv init --lib` 不生成 `hello.py`**，只生成基本目录：
 ```
 my-lib/
 ├── src/
@@ -221,7 +221,7 @@ uv add "https://files.pythonhosted.org/packages/.../package-1.0-py3-none-any.whl
 | `--group <GROUP>` | 添加到自定义依赖组 | `uv add --group test pytest` |
 | `--optional <GROUP>` | 添加到可选依赖 (`[project.optional-dependencies]`) | `uv add --optional redis redis` |
 | `--extra <NAME>` | 安装时包含指定 extras | `uv add "uvicorn[standard]"` |
-| `--no-sync` | 只修改 toml/lock，不安装 | `uv add fastapi --no-sync` |
+| `--no-sync` | 只修改 `toml/lock`，不安装 | `uv add fastapi --no-sync` |
 | `--package <PKG>` | 在 workspace 中指定子包 | `uv add --package api fastapi` |
 | `--frozen` | 不更新 lock 文件中已有的其他依赖 | — |
 | `--raw-sources` | 使用原始依赖源（不解析） | — |
@@ -338,7 +338,7 @@ uv lock --verbose
 ```
 
 `uv.lock` 文件内容：
-- 跨平台锁定（可在 macOS 生成，`Linux` 使用）
+- 跨平台锁定（可在 `macOS` 生成，`Linux` 使用）
 - 记录所有依赖的精确版本和 hash
 - 应提交到 `Git`
 
@@ -631,7 +631,7 @@ uv sync              # 一键创建 .venv + 安装全部依赖
 uv run pytest        # 跑测试验证
 ```
 
-### 16.3 场景 3：CI/CD (`GitHub` Actions)
+### 16.3 场景 3：`CI/CD` (`GitHub` Actions)
 
 ```yaml
 steps:
@@ -686,6 +686,6 @@ uvx cookiecutter gh:user/template
 
 ## 18、更多资源
 
-- 官方文档：[docs.astral.sh/`uv`](https://docs.astral.sh/uv/)
+- 官方文档：[`docs.astral.sh`/`uv`](https://docs.astral.sh/uv/)
 - `GitHub`：[astral-sh/`uv`](https://github.com/astral-sh/uv)
-- 迁移指南：[docs.astral.sh/`uv`/guides](https://docs.astral.sh/uv/guides/)
+- 迁移指南：[`docs.astral.sh`/`uv`/guides](https://docs.astral.sh/uv/guides/)

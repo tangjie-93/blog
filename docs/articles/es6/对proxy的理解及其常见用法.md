@@ -277,7 +277,7 @@ proxy.test="test";
 + **getPrototypeOf(target)：**  
 拦截获取对象原型的操作。具体来说，拦截下面这些操作。    
 **注意:**   
- 1、该方法必须返回一个对象或者null，否则会报错。     
+ 1、该方法必须返回一个对象或者`null`，否则会报错。     
 2、另外，如果目标对象不可扩展（non-extensible）， getPrototypeOf方法必须返回目标对象的原型对象。
 
 ```javascript             
@@ -307,7 +307,7 @@ proxy.test="test";
 + **isExtensible(target)：**    拦截`Object`.isExtensible(proxy)，返回一个布尔值。**该方法只能返回布尔值，跟前面那些只能返回布尔值方法一样，否则返回值会被自动转为布尔值。同时它的返回值必须与目标对象的isExtensible属性保持一致，否则就会抛出错误。**
 
 + **setPrototypeOf(target, proto)：** 拦截`Object`.setPrototypeOf(proxy, proto)，返回一个布尔值。如果目标对象是函数，那么还有两种额外操作可以拦截。
-+ **apply(target, object, args)：** 拦截函数的调用、以及call、apply和bind操作，比如proxy(...args)、proxy.call(object, ...args)、proxy.apply(...),proxy.bind(...)()。
++ **apply(target, object, args)：** 拦截函数的调用、以及call、apply和bind操作，比如proxy(...args)、`proxy.call`(object, ...args)、`proxy.apply`(...),`proxy.bind`(...)()。
   
 ```javascript          
     function foo(a,b){

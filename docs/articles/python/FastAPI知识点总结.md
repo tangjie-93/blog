@@ -8,7 +8,7 @@ note: "系统整理路由、参数、依赖注入、安全、数据库、异步�
 
 # `FastAPI` 完整知识点总结
 
-`FastAPI` 是一个现代、快速的 `Python` Web 框架，用于构建 `API`。它基于 `Python` 类型提示构建，天生支持异步编程，具有自动文档生成、类型验证等特性。
+`FastAPI` 是一个现代、快速的 `Python` `Web` 框架，用于构建 `API`。它基于 `Python` 类型提示构建，天生支持异步编程，具有自动文档生成、类型验证等特性。
 
 ---
 
@@ -2189,7 +2189,7 @@ async def read_items():
 
 ## 10. 异步编程
 
-### 11.1 `10.1` async/await 基础
+### 11.1 `10.1` `async/await` 基础
 
 ```python
 from fastapi import FastAPI
@@ -2811,7 +2811,7 @@ poetry update
 
 | 依赖 | 用途 |
 |------|------|
-| `fastapi` | Web 框架 |
+| `fastapi` | `Web` 框架 |
 | `uvicorn` | ASGI 服务器 |
 | `pydantic` | 数据验证 |
 | `pydantic-settings` | 配置管理 |
@@ -2824,7 +2824,7 @@ poetry update
 | `pytest` | 测试框架 |
 | `pytest-asyncio` | 异步测试 |
 
-### 17.3 `Poetry` 项目配置模板 (pyproject.toml)
+### 17.3 `Poetry` 项目配置模板 (`pyproject.toml`)
 
 ```toml
 [tool.poetry]

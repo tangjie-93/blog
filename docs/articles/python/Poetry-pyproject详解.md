@@ -6,7 +6,7 @@ tags: "Python"
 note: "详解 pyproject.toml 的项目元数据、依赖组、构建与工具配置。"
 ---
 
-# `Poetry` pyproject.toml 配置文件详解
+# `Poetry` `pyproject.toml` 配置文件详解
 
 `pyproject.toml` 是 `Python` 项目的核心配置文件，采用 TOML 格式。它定义了项目的元数据、依赖管理、构建系统配置等信息。`Poetry` 使用这个文件来管理项目的依赖和发布。
 
@@ -16,9 +16,9 @@ note: "详解 pyproject.toml 的项目元数据、依赖组、构建与工具配
 
 1. [文件结构概览](#_1-文件结构概览)
 2. [project 区域详解](#_2-project-区域详解)
-3. [build-system 区域详解](#_3-build-system-区域详解)
-4. [tool.poetry 区域详解](#_4-tool-poetry-区域详解)
-5. [tool 扩展区域](#_5-tool-扩展区域)
+3. [build-`system` 区域详解](#_3-build-system-区域详解)
+4. [`tool.poetry` 区域详解](#_4-tool-poetry-区域详解)
+5. [`tool` 扩展区域](#_5-tool-扩展区域)
 6. [完整配置示例](#_6-完整配置示例)
 7. [常用命令](#_7-常用命令)
 
@@ -223,7 +223,7 @@ Issues = "https://github.com/username/project/issues"
 
 ---
 
-## 3. build-system 区域详解
+## 3. build-`system` 区域详解
 
 `[build-system]` 定义了项目的构建系统。
 
@@ -244,7 +244,7 @@ build-backend = "poetry.core.masonry.api"  # 构建后端
 
 ---
 
-## 4. tool.poetry 区域详解
+## 4. `tool.poetry` 区域详解
 
 `[tool.poetry]` 是 `Poetry` 特定的配置文件，定义项目打包和依赖管理的详细行为。
 
@@ -372,7 +372,7 @@ myapp = "myapp.cli:main"
 app = "main:app"
 ```
 
-### 5.6 `4.6` 完整的 tool.poetry 示例
+### 5.6 `4.6` 完整的 `tool.poetry` 示例
 
 ```json
 [tool.poetry]
@@ -428,7 +428,7 @@ app = "main:app"
 
 ---
 
-## 5. tool 扩展区域
+## 5. `tool` 扩展区域
 
 `[tool]` 区域用于配置各种 `Python` 工具。
 
@@ -583,7 +583,7 @@ known_third_party = ["fastapi", "uvicorn", "pydantic"]
 known_first_party = ["app"]
 ```
 
-#### coverage.py 测试覆盖
+#### `coverage.py` 测试覆盖
 
 ```json
 [tool.coverage.run]

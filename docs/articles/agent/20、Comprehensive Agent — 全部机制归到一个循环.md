@@ -24,13 +24,13 @@ s01 → ... → s18 → s19 → `s20`
 一个能长期工作的 coding agent 需要同时拥有：
 
 - 工具分发和权限边界
-- hooks 扩展点
+- `hooks` 扩展点
 - todo 计划和任务图
-- 技能、记忆、系统 prompt 组装
+- 技能、记忆、系统 `prompt` 组装
 - 压缩和错误恢复
-- 后台任务和 cron 调度
+- 后台任务和 `cron` 调度
 - 团队、协议、自治认领
-- worktree 隔离
+- `worktree` 隔离
 - `MCP` 外部工具接入
 
 难点不是把功能堆起来，而是看清楚它们都挂在循环的哪个位置。S20 就是终点章：把所有组件归位。
@@ -59,7 +59,7 @@ S20 不是再发明一个新机制，而是把前面的教学组件合成一个�
           → 下一轮
 ```
 
-循环本身仍然是同一个结构：调用模型，检查响应里是否出现 `tool_use` block，执行工具，把结果追加回 `messages`。`CC` 源码里也不直接信任 `stop_reason == "tool_use"`，而是以实际出现的 tool_use block 作为是否继续工具轮的信号。变化的是循环周围的 harness 变完整了。
+循环本身仍然是同一个结构：调用模型，检查响应里是否出现 `tool_use` block，执行工具，把结果追加回 `messages`。`CC` 源码里也不直接信任 `stop_reason == "tool_use"`，而是以实际出现的 `tool_use` block 作为是否继续工具轮的信号。变化的是循环周围的 harness 变完整了。
 
 ---
 
@@ -67,22 +67,22 @@ S20 不是再发明一个新机制，而是把前面的教学组件合成一个�
 
 | 位置 | 组件 | 作用 |
 |------|------|------|
-| 用户输入前后 | `UserPromptSubmit` hooks | 记录、注入、审计用户输入 |
-| `LLM` 前 | cron queue | 把定时触发的 prompt 注入 `messages` |
+| 用户输入前后 | `UserPromptSubmit` `hooks` | 记录、注入、审计用户输入 |
+| `LLM` 前 | `cron` queue | 把定时触发的 `prompt` 注入 `messages` |
 | `LLM` 前 | background notifications | 后台任务完成后以 `<task_notification>` 注入 |
-| `LLM` 前 | compaction pipeline | 先压大输出，再裁历史，再压旧 tool_result，必要时摘要 |
-| `LLM` 前 | memory / skills / `MCP` state | 组装 system prompt，让模型看到当前能力和长期上下文 |
-| `LLM` 调用 | error recovery | 429/529 重试，`max_tokens` 升级，prompt too long 触发 reactive compact |
-| 工具执行前 | `PreToolUse` hooks + permission | 拦截危险命令、写越界、破坏性 `MCP` 工具 |
+| `LLM` 前 | compaction pipeline | 先压大输出，再裁历史，再压旧 `tool_result`，必要时摘要 |
+| `LLM` 前 | `memory` / skills / `MCP` state | 组装 `system` `prompt`，让模型看到当前能力和长期上下文 |
+| `LLM` 调用 | error recovery | `429/529` 重试，`max_tokens` 升级，`prompt` too long 触发 reactive `compact` |
+| 工具执行前 | `PreToolUse` `hooks` + `permission` | 拦截危险命令、写越界、破坏性 `MCP` 工具 |
 | 工具分发 | `assemble_tool_pool` | 组装内置工具和 `MCP` 动态工具 |
-| 工具执行时 | background dispatch | 慢 bash 操作放 daemon thread，主循环先返回占位结果 |
-| 工具执行后 | `PostToolUse` hooks | 大输出告警、日志等后处理 |
-| 返回循环 | tool_result | 每个 `tool_use` 对应一个 `tool_result`，再回到下一轮 |
-| 本轮没有 tool_use / 停止时 | `Stop` hooks | 统计、清理、审计 |
+| 工具执行时 | background dispatch | 慢 `bash` 操作放 daemon thread，主循环先返回占位结果 |
+| 工具执行后 | `PostToolUse` `hooks` | 大输出告警、日志等后处理 |
+| 返回循环 | `tool_result` | 每个 `tool_use` 对应一个 `tool_result`，再回到下一轮 |
+| 本轮没有 `tool_use` / 停止时 | `Stop` `hooks` | 统计、清理、审计 |
 
 ---
 
-## 4、code.py 包含什么
+## 4、`code.py` 包含什么
 
 ### 4.1 工具与分发
 
@@ -108,9 +108,9 @@ BUILTIN_HANDLERS + mcp__server__tool handlers
 
 所以 `connect_mcp("docs")` 后，下一轮工具池里会出现 `mcp__docs__search`。
 
-### 4.2 权限和 hooks
+### 4.2 权限和 `hooks`
 
-权限不写死在工具执行行里，而是作为 `PreToolUse` hook：
+权限不写死在工具执行行里，而是作为 `PreToolUse` `hook`：
 
 ```python
 blocked = trigger_hooks("PreToolUse", block)
@@ -119,7 +119,7 @@ if blocked:
     continue
 ```
 
-这样 permission、log、审计都可以挂在同一个 hook 点上。执行后再触发 `PostToolUse`。
+这样 `permission`、log、审计都可以挂在同一个 `hook` 点上。执行后再触发 `PostToolUse`。
 
 ### 4.3 计划与任务
 
@@ -134,12 +134,12 @@ S20 同时保留两层计划：
 
 S20 有两种 delegation：
 
-- `task`：一次性 subagent。独立 `messages[]`，中间过程丢弃，只返回最终摘要。
+- `task`：一次性 `subagent`。独立 `messages[]`，中间过程丢弃，只返回最终摘要。
 - `spawn_teammate`：持久队友线程。通过 MessageBus 收发消息，能 idle 轮询任务板并自动认领。
 
-一次性 subagent 解决“上下文隔离”；持久队友解决“长期并行协作”。
+一次性 `subagent` 解决“上下文隔离”；持久队友解决“长期并行协作”。
 
-### 4.5 记忆、技能和 prompt
+### 4.5 记忆、技能和 `prompt`
 
 `assemble_system_prompt(context)` 每轮组装：
 
@@ -149,7 +149,7 @@ S20 有两种 delegation：
 - `.memory/MEMORY.md`
 - 已连接 `MCP` server
 
-技能只在 system prompt 里放目录。完整内容通过 `load_skill(name)` 按需加载。
+技能只在 `system` `prompt` 里放目录。完整内容通过 `load_skill(name)` 按需加载。
 
 ### 4.6 压缩和恢复
 
@@ -163,27 +163,27 @@ tool_result_budget → snip_compact → micro_compact → compact_history
 
 - 429：指数退避重试
 - 529：指数退避，连续失败可切 fallback model
-- `max_tokens`：先提高 max_tokens，再要求 continuation
-- prompt too long：reactive compact 后重试
+- `max_tokens`：先提高 `max_tokens`，再要求 continuation
+- `prompt` too long：reactive `compact` 后重试
 
-### 4.7 后台和 cron
+### 4.7 后台和 `cron`
 
-慢 bash 操作不会阻塞主循环：
+慢 `bash` 操作不会阻塞主循环：
 
 ```text
 should_run_background → start_background_task → placeholder tool_result
 后台完成 → task_notification → 下一轮注入 messages
 ```
 
-cron 调度器独立 daemon thread 每秒检查一次。`CLI` 会监听 `cron_queue`，命中后主动把 `[Scheduled] ...` 注入并运行一轮 `Agent`。
+`cron` 调度器独立 daemon thread 每秒检查一次。`CLI` 会监听 `cron_queue`，命中后主动把 `[Scheduled] ...` 注入并运行一轮 `Agent`。
 
-### 4.8 worktree 与 `MCP`
+### 4.8 `worktree` 与 `MCP`
 
-worktree 负责隔离目录：
+`worktree` 负责隔离目录：
 
 - `create_worktree(name, task_id)` 创建独立分支和目录
 - task 的 `worktree` 字段绑定目录
-- 队友 claim 到带 worktree 的 task 后，bash/read/write 自动在对应目录下执行
+- 队友 claim 到带 `worktree` 的 task 后，`bash/read/write` 自动在对应目录下执行
 
 `MCP` 负责外部能力：
 
@@ -198,16 +198,16 @@ worktree 负责隔离目录：
 | 组件 | s19 | s20 |
 |------|-----|-----|
 | 工具池 | 内置 + `MCP` | 内置 + `MCP`，补齐 s01-s18 的工具 |
-| 权限 | 教学主体省略 | `PreToolUse` hook 中执行 |
-| hooks | 省略 | UserPromptSubmit / `PreToolUse` / `PostToolUse` / Stop |
+| 权限 | 教学主体省略 | `PreToolUse` `hook` 中执行 |
+| `hooks` | 省略 | UserPromptSubmit / `PreToolUse` / `PostToolUse` / Stop |
 | todo | 省略 | `todo_write` + reminder |
-| skill | 省略 | catalog in system prompt + `load_skill` |
-| compact | 省略 | `LLM` 前压缩 + `compact` 工具 + reactive compact |
-| error recovery | 简化 try/except | retry / max_tokens / prompt too long |
+| skill | 省略 | catalog in `system` `prompt` + `load_skill` |
+| `compact` | 省略 | `LLM` 前压缩 + `compact` 工具 + reactive `compact` |
+| error recovery | 简化 `try/except` | retry / `max_tokens` / `prompt` too long |
 | background | 省略 | 慢操作后台线程 + task notification |
-| cron | 省略 | daemon scheduler + durable jobs |
+| `cron` | 省略 | daemon scheduler + durable jobs |
 | multi-agent | 保留 | 保留；队友使用隔离目录下的基础工具 |
-| worktree | 保留 | 保留 |
+| `worktree` | 保留 | 保留 |
 | `MCP` | 新增 | 保留，作为最终工具池的一部分 |
 
 ---
@@ -229,13 +229,13 @@ python s20_comprehensive/code.py
 
 观察重点：
 
-- 工具调用前是否经过 hooks/permission
+- 工具调用前是否经过 `hooks/permission`
 - `connect_mcp` 后下一轮是否出现 `MCP` 工具
 - 慢操作是否返回 background placeholder
 - 到点是不是自动提醒开会
 - 队友是否提交 plan，并在 approval 前暂停
 - plan 批准后，队友是否能认领任务
-- worktree 绑定后，队友是否切到对应目录
+- `worktree` 绑定后，队友是否切到对应目录
 
 ---
 

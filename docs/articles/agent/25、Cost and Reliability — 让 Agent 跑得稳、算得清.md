@@ -6,7 +6,7 @@ tags: "Agent|AI Coding"
 note: "把 token、延迟、并发、限流和失败预算纳入 Agent 运行时，控制质量与成本的交换。"
 ---
 
-# 25、Cost and Reliability — 让 `Agent` 跑得稳、算得清
+# 25、`Cost and Reliability` — 让 `Agent` 跑得稳、算得清
 
 `Agent` 的费用不是一次模型调用，而是模型轮次、工具结果、重试、并行分支和人工等待的总和。每次运行都应有预算和终止条件。
 

@@ -6,7 +6,7 @@ tags: "Agent|AI Coding"
 note: "在工具执行前设置拒绝、规则匹配和用户审批，建立安全边界。"
 ---
 
-# s03: Permission — 执行前做权限判断
+# s03: `Permission` — 执行前做权限判断
 
 
 s01 → s02 → `s03` → [s04](./04%E3%80%81Hooks%20%E2%80%94%20%E6%8C%82%E5%9C%A8%E5%BE%AA%E7%8E%AF%E4%B8%8A%EF%BC%8C%E4%B8%8D%E5%86%99%E8%BF%9B%E5%BE%AA%E7%8E%AF%E9%87%8C.md) → s05 → ... → s20
@@ -18,7 +18,7 @@ s01 → s02 → `s03` → [s04](./04%E3%80%81Hooks%20%E2%80%94%20%E6%8C%82%E5%9C
 
 ## 1、问题
 
-s02 的 `Agent` 有 5 个工具。file tools 受 `safe_path` 保护，但 bash 不受限制。让它"清理一下项目"，可能执行 `rm -rf /`。
+s02 的 `Agent` 有 5 个工具。file `tools` 受 `safe_path` 保护，但 `bash` 不受限制。让它"清理一下项目"，可能执行 `rm -rf /`。
 
 安全不能靠信任模型，要靠代码——在工具执行之前做判断。
 
@@ -26,7 +26,7 @@ s02 的 `Agent` 有 5 个工具。file tools 受 `safe_path` 保护，但 bash �
 
 ## 2、解决方案
 
-![Permission Overview](/image/agent-course/s03_permission/permission-overview.svg)
+![`Permission` Overview](/image/agent-course/s03_permission/permission-overview.svg)
 
 s02 的循环完全保留。唯一的变动在工具执行前插入 `check_permission()`——每个工具调用经过三道闸门，顺序固定：硬拒绝优先，软询问次之，都没命中就放行。
 
@@ -44,9 +44,9 @@ s02 的循环完全保留。唯一的变动在工具执行前插入 `check_permi
 
 ## 3、工作原理
 
-![Permission Pipeline](/image/agent-course/s03_permission/permission-pipeline.svg)
+![`Permission` Pipeline](/image/agent-course/s03_permission/permission-pipeline.svg)
 
-**闸门 1**：一张硬拒绝表，先查，命中就返回阻止信息。（教学示意：简单字符串匹配不是可靠安全机制，命令变体和 shell 展开可能绕过。`CC` 的做法见附录。）
+**闸门 1**：一张硬拒绝表，先查，命中就返回阻止信息。（教学示意：简单字符串匹配不是可靠安全机制，命令变体和 `shell` 展开可能绕过。`CC` 的做法见附录。）
 
 ```python
 DENY_LIST = [
@@ -131,8 +131,8 @@ for block in response.content:
 | 组件 | 之前 (s02) | 之后 (s03) |
 |------|-----------|-----------|
 | 安全模型 | 无（信任模型） | 三道闸门权限管线 |
-| 新函数 | — | check_deny_list, check_rules, ask_user, check_permission |
-| 循环 | 直接执行所有工具 | 执行前插入 check_permission() |
+| 新函数 | — | `check_deny_list`, `check_rules`, `ask_user`, `check_permission` |
+| 循环 | 直接执行所有工具 | 执行前插入 `check_permission`() |
 
 ---
 
@@ -144,10 +144,10 @@ python s03_permission/code.py
 python s03_permission/code_openai.py
 ```
 
-试试这些 prompt：
+试试这些 `prompt`：
 
 1. `Create a file called test.txt in the current directory`（应该直接通过）
-2. `Delete the file test.txt`（bash + rm 会触发闸门 2）
+2. `Delete the file test.txt`（`bash` + rm 会触发闸门 2）
 3. `What files are in the current directory?`（只读，全部通过）
 4. `Try to write a file to /etc/something`（写工作区外，触发闸门 2）
 
@@ -159,7 +159,7 @@ python s03_permission/code_openai.py
 
 权限检查做了——但每次都在循环里硬编码 `check_permission()`。如果我想在每次工具执行前后加日志？如果想在某些操作后自动触发 git commit？这些扩展逻辑散落在 loop 里，循环很快就会膨胀。
 
-s04 Hooks → 给循环加钩子，扩展逻辑挂在钩子上，循环保持干净。
+s04 `Hooks` → 给循环加钩子，扩展逻辑挂在钩子上，循环保持干净。
 
 <details>
 <summary>深入 `CC` 源码</summary>
@@ -179,12 +179,12 @@ s04 Hooks → 给循环加钩子，扩展逻辑挂在钩子上，循环保持干
 
 ### 二、生产版的验证阶段
 
-`CC` 的工具调用不是经过三道闸门，而是经过多个阶段，分布在 `checkPermissionsAndCallTool()`（`toolExecution.ts:599-1745`）、hooks、`hasPermissionsToUseToolInner()`（`utils/permissions/permissions.ts:1158-1310`）和 classifier 逻辑里：
+`CC` 的工具调用不是经过三道闸门，而是经过多个阶段，分布在 `checkPermissionsAndCallTool()`（`toolExecution.ts:599-1745`）、`hooks`、`hasPermissionsToUseToolInner()`（`utils/permissions/permissions.ts:1158-1310`）和 classifier 逻辑里：
 
-1. **Zod schema 验证**（`toolExecution.ts:614-680`）— 参数类型检查
+1. **Zod `schema` 验证**（`toolExecution.ts:614-680`）— 参数类型检查
 2. **validateInput()**（`toolExecution.ts:682-733`）— 工具级语义验证
 3. **backfillObservableInput()**（`toolExecution.ts:784`）— 补全遗留字段
-4. **`PreToolUse` hooks**（`toolExecution.ts:800-862`）— 钩子可以返回 allow/deny/ask
+4. **`PreToolUse` `hooks`**（`toolExecution.ts:800-862`）— 钩子可以返回 `allow/deny/ask`
 5. **resolveHookPermissionDecision()**（`toolExecution.ts:921-931`）— 协调钩子+管线决策
 6. **hasPermissionsToUseToolInner()**（`permissions.ts:1158-1310`）— 多层规则检查：
    - 整个工具被 deny rule 禁用 → `deny`
@@ -230,7 +230,7 @@ s04 Hooks → 给循环加钩子，扩展逻辑挂在钩子上，循环保持干
 ### 6.7 教学版的简化是刻意的
 
 - 多阶段管线 → 3 道闸门：理解门槛大幅降低
-- 8 个规则来源 → 1 个本地 DENY_LIST：概念量可控
+- 8 个规则来源 → 1 个本地 `DENY_LIST`：概念量可控
 - isDestructive → 忽略（教学版没有 `UI` 层，`CC` 里它也不参与权限决策）
 - YoloClassifier → 省略（依赖于额外的 `LLM` 调用和遥测系统）
 - 权限冒泡 → 省略（s15 才涉及多 `Agent`）

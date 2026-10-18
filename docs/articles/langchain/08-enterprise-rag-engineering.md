@@ -42,7 +42,7 @@ Demo 能跑，不代表企业 `RAG` 能上线。
 
 要会什么：
 
-1. 文档入库时写入权限 metadata。
+1. 文档入库时写入权限 `metadata`。
 2. 检索时按用户、部门、角色过滤。
 3. 引用来源也要做权限检查。
 4. trace 和日志也要处理敏感数据。
@@ -56,9 +56,9 @@ Demo 能跑，不代表企业 `RAG` 能上线。
 要会什么：
 
 1. 文档版本号。
-2. chunk `ID`。
+2. `chunk` `ID`。
 3. 增量入库。
-4. 删除旧 chunk。
+4. 删除旧 `chunk`。
 5. 重建索引。
 6. 更新后跑评估集。
 
@@ -66,7 +66,7 @@ Demo 能跑，不代表企业 `RAG` 能上线。
 
 1. 新文档入库了，旧版本没删。
 2. 文档删除了，向量库里还在。
-3. 没有记录 chunk 和源文档版本关系。
+3. 没有记录 `chunk` 和源文档版本关系。
 4. 更新后没有回归测试。
 
 ## 4. 引用和溯源
@@ -109,7 +109,7 @@ Demo 能跑，不代表企业 `RAG` 能上线。
 1. 小任务用便宜模型。
 2. 大任务才用强模型。
 3. 缓存稳定结果。
-4. 控制 top_k。
+4. 控制 `top_k`。
 5. 控制上下文长度。
 6. 限制 `Agent` 最大步骤。
 
@@ -147,7 +147,7 @@ python docs/public/langchain-examples/08_enterprise/fallbacks.py
 再运行联网综合 `RAG`：
 
 ~~~powershell
-python docs/public/langchain-examples/08_enterprise_rag.py
+python `docs/public/langchain-examples/08_enterprise_rag.py`
 ~~~
 
 该脚本先按角色过滤可访问文档，再使用 `OpenAI` `Embeddings` 检索，最后由
@@ -156,7 +156,7 @@ python docs/public/langchain-examples/08_enterprise_rag.py
 ## 8. 本模块自测
 
 1. 为什么权限过滤不能只靠前端？
-2. 文档更新时为什么要删除旧 chunk？
+2. 文档更新时为什么要删除旧 `chunk`？
 3. 什么样的引用才算可追溯？
 4. `RAG` 成本主要来自哪些地方？
 5. 检索不到资料时系统应该怎么回答？

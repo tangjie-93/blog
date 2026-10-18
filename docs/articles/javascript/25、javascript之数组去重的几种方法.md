@@ -121,7 +121,7 @@ function removeSameEle(arr){
 ```
 
 
-## 8、使用object.keys()去重
+## 8、使用`object.keys`()去重
 
 
 ```js

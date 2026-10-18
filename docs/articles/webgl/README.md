@@ -5,7 +5,7 @@ type: 技术
 tags: WebGL
 note: WebGL基础知识总结
 ---
-## 1、什么是GLSL？
+## 1、什么是`GLSL`？
 
 `GLSL` 的中文意思是 `OpenGL` 着色语言，英文全称是 `OpenGL Shading Language`，它是用来在 `OpenGL` 编写 **着色器程序** 的语言。
 
@@ -17,12 +17,12 @@ note: WebGL基础知识总结
 ## 2、内置变量
 |  内置变量   | 含义  | 值数据类型
 |  ----  | ----  | ----
-| gl_PointSize  | 点渲染模式，正方形点区域渲染像素大小,**只有在绘制图元是点的时候才会生效** | float
-| gl_Position  | 顶点位置坐标,顶点的裁剪坐标系坐标，包含 X, Y, Z，W 四个坐标分量，顶点着色器接收到这个坐标之后，对它进行透视除法，即将各个分量同时除以 W，转换成 NDC 坐标，NDC 坐标每个分量的取值范围都在【-1, 1】之间 | vec4
-| gl_FragColor  | 片元颜色值,片元（像素）颜色，包含 R, G, B, A 四个颜色分量，且每个分量的取值范围在【0,1】之间。不同于我们常规颜色的【0，255】取值范围，所以当我们给 gl_FragColor 赋值时，也需要对其进行转换。平常我们所采用的颜色值（R, G, B, A），对应的转换公式为： (R值/255，G值/255，B值/255，A值/1） | vec4
-| gl_FragCoord  | 片元坐标，单位像素 | vec2
-| gl_PointCoord  | 点渲染模式对应点像素坐标 | vec2
-### 1、gl_PointSize
+| `gl_PointSize`  | 点渲染模式，正方形点区域渲染像素大小,**只有在绘制图元是点的时候才会生效** | float
+| `gl_Position`  | 顶点位置坐标,顶点的裁剪坐标系坐标，包含 X, Y, Z，W 四个坐标分量，顶点着色器接收到这个坐标之后，对它进行透视除法，即将各个分量同时除以 W，转换成 NDC 坐标，NDC 坐标每个分量的取值范围都在【-1, 1】之间 | vec4
+| `gl_FragColor`  | 片元颜色值,片元（像素）颜色，包含 R, G, B, A 四个颜色分量，且每个分量的取值范围在【0,1】之间。不同于我们常规颜色的【0，255】取值范围，所以当我们给 `gl_FragColor` 赋值时，也需要对其进行转换。平常我们所采用的颜色值（R, G, B, A），对应的转换公式为： (R值/255，G值/255，B值/255，A值/1） | vec4
+| `gl_FragCoord`  | 片元坐标，单位像素 | vec2
+| `gl_PointCoord`  | 点渲染模式对应点像素坐标 | vec2
+### 1、`gl_PointSize`
 内置变量 `gl_PointSize` 主要是用来设置顶点渲染出来的方形点像素大小。值是一般是在绘制函数 `gl.drawArrays()` 绘制模式是点模式 `gl.POINTS` 的时候使用。
 ```js
 void main() {
@@ -36,7 +36,7 @@ gl.POINTS表示绘制类型，0表示从第1个数据开始绘制，4表示绘�
 */
 gl.drawArrays(gl.POINTS,0,4);
 ```
-### 2、gl_Position
+### 2、`gl_Position`
 `gl_Position` 内置变量表示最终传入片元着色器片元化要使用的顶点位置坐标。如果有多个顶点，每个顶点都要执行一遍顶点着色器主函数`main` 中的程序。
 ```js
 attribute a_posotion;
@@ -61,7 +61,7 @@ gl.vertexAttribPointer(aposLocation,2,gl.FLOAT,false,0,0);
 //允许数据传递(这句代码放在能获取到aposLocation的任意位置都可以)
 gl.enableVertexAttribArray(aposLocation);
 ```
-### 3、gl_FragColor
+### 3、`gl_FragColor`
 `gl_FragColor` 内置变量主要用来设置片元像素的颜色，出现的位置是片元着色器语言的 `main` 函数中。包含 4 个分量 `(R, G, B, A)`，各个颜色分量的取值范围是`【0，1】`，也不同于我们常规颜色的`【0，255】`取值范围，所以当我们给 `gl_FragColor` 赋值时，也需要对其进行转换。平常我们所采用的颜色值`（R, G, B, A）`，对应的转换公式为： `(R值/255，G值/255，B值/255，A值/1）`。
 ```js
   void main() {
@@ -80,7 +80,7 @@ void main() {
   gl_FragColor = texture2D(u_Sampler,v_TexCoord);
 }
 ```
-### 4、gl_PointCoord
+### 4、`gl_PointCoord`
 渲染点片元坐标。一个顶点渲染为一个正方形区域，每个正方形区域以正方向区域的左上角建立一个直角坐标系，然后使用内置变量`gl_PointCoord` 描述正方形区域中像素或者说片元的坐标，比如正方形区域的左上角坐标是 `(0.0,0.0`),正方形区域几何中心坐标是 `(0.5,0.5)`，右下角坐标是`(1.0,1.0)`。 图片来源于网络
 
 <img src="../..//images/webgl/PointCoord.png" />
@@ -105,7 +105,7 @@ void main(){
 <img src="../../images/webgl/PointCoord-圆形.png" width='300' />  <img src="../../images/webgl/PointCoord-正方形.png" width='300' />
 </div>
 
-### 5、gl_FragCoord
+### 5、`gl_FragCoord`
 内置变量 `gl_FragCoord` 表示 `WebGL` 在 `canvas` 画布上渲染的所有片元或者说像素的坐标。坐标原点是 `canvas` 画布的左上角，水平向右方向是 `x` 轴正向，竖直向下方向为 `y` 轴正方向。，`gl_FragCoord` 坐标的单位是像素，`gl_FragCoord` 的数据类型是`vec2`, 通过 `gl_FragCoord.x`、`gl_FragCoord.y` 可以分别访问片元坐标的纵横坐标。
 
 **`gl_FragCoord` 在片元着色器中的应用** 
@@ -418,7 +418,7 @@ vec3 lightDirection = u_LightPosition - vec3(0, 0, 0);
 vec3 lightDirection = u_LightPosition - v_Position;
 ```
 
-## 9、GLSL语法和WebGLAPI总结
+## 9、`GLSL`语法和WebGLAPI总结
 #### 1、着色器语言`GLSL`
 + 修饰符
     + attribute：属性修饰符。
@@ -427,83 +427,83 @@ vec3 lightDirection = u_LightPosition - v_Position;
 + 屏幕坐标系到设备坐标系的转换。
     + 屏幕坐标系左上角为原点，X 轴坐标向右为正，Y 轴坐标向下为正。
     + 坐标范围：
-        + X轴：【0, canvas.width】
-        + Y轴：【0, canvas.height】
+        + X轴：【0, `canvas.width`】
+        + Y轴：【0, `canvas.height`】
     + 设备坐标系以屏幕中心为原点，X 轴坐标向右为正，Y 轴向上为正。
     + 坐标范围是
         + X轴：【-1, 1】。
         + Y轴：【-1, 1】。
 #### 2、`WebGL` `API`
 + shader：着色器对象
-    + gl.createShader：创建着色器。
-    + gl.shaderSource：指定着色器源码。
-    + gl.compileShader：编译着色器。
+    + `gl.createShader`：创建着色器。
+    + `gl.shaderSource`：指定着色器源码。
+    + `gl.compileShader`：编译着色器。
 + program：着色器程序
-    + gl.createProgram：创建着色器程序。
-    + gl.attachShader：链接着色器对象。
-    + gl.linkProgram：链接着色器程序。
-    + gl.useProgram：使用着色器程序。
+    + `gl.createProgram`：创建着色器程序。
+    + `gl.attachShader`：链接着色器对象。
+    + `gl.linkProgram`：链接着色器程序。
+    + `gl.useProgram`：使用着色器程序。
 + attribute：着色器属性
-    + gl.getAttribLocation：获取顶点着色器中的属性位置。
-    + gl.enableVertexAttribArray：启用着色器属性。
-    + gl.vertexAttribPointer：设置着色器属性读取 buffer 的方式。
-    + gl.vertexAttrib2f：给着色器属性赋值，值为两个浮点数。
-    + gl.vertexAttrib3f：给着色器属性赋值，值为三个浮点数。
+    + `gl.getAttribLocation`：获取顶点着色器中的属性位置。
+    + `gl.enableVertexAttribArray`：启用着色器属性。
+    + `gl.vertexAttribPointer`：设置着色器属性读取 buffer 的方式。
+    + `gl.vertexAttrib2f`：给着色器属性赋值，值为两个浮点数。
+    + `gl.vertexAttrib3f`：给着色器属性赋值，值为三个浮点数。
 + uniform：着色器全局属性
-    + gl.getUniformLocation：获取全局变量位置。
-    + gl.uniform1f (floatUniformLoc, v);                 // float
-    + gl.uniform1fv(floatUniformLoc, [v]);               // float 或 float array
-    + l.uniform2f (vec2UniformLoc,  v0, v1);            // vec2
-    + gl.uniform2fv(vec2UniformLoc,  [v0, v1]);          // vec2 或 vec2 array
-    + gl.uniform3f (vec3UniformLoc,  v0, v1, v2);        // vec3
-    + gl.uniform3fv(vec3UniformLoc,  [v0, v1, v2]);      // vec3 或 vec3 array
-    + gl.uniform4f (vec4UniformLoc,  v0, v1, v2, v4);    // vec4 给全局变量赋值 4 个浮点数。
-    + gl.uniform4fv(vec4UniformLoc,  [v0, v1, v2, v4]);  // vec4 或 vec4 array
+    + `gl.getUniformLocation`：获取全局变量位置。
+    + `gl.uniform1f` (floatUniformLoc, v);                 // float
+    + `gl.uniform1fv`(floatUniformLoc, [v]);               // float 或 float array
+    + `l.uniform2f` (vec2UniformLoc,  v0, v1);            // vec2
+    + `gl.uniform2fv`(vec2UniformLoc,  [v0, v1]);          // vec2 或 vec2 array
+    + `gl.uniform3f` (vec3UniformLoc,  v0, v1, v2);        // vec3
+    + `gl.uniform3fv`(vec3UniformLoc,  [v0, v1, v2]);      // vec3 或 vec3 array
+    + `gl.uniform4f` (vec4UniformLoc,  v0, v1, v2, v4);    // vec4 给全局变量赋值 4 个浮点数。
+    + `gl.uniform4fv`(vec4UniformLoc,  [v0, v1, v2, v4]);  // vec4 或 vec4 array
     
-    + gl.uniformMatrix2fv(mat2UniformLoc, false, [  4x element array ])  // mat2 或 mat2 array
-    + gl.uniformMatrix3fv(mat3UniformLoc, false, [  9x element array ])  // mat3 或 mat3 array
-    + gl.uniformMatrix4fv(mat4UniformLoc, false, [ 16x element array ])  // mat4 或 mat4 array
+    + `gl.uniformMatrix2fv`(mat2UniformLoc, false, [  4x element array ])  // mat2 或 mat2 array
+    + `gl.uniformMatrix3fv`(mat3UniformLoc, false, [  9x element array ])  // mat3 或 mat3 array
+    + `gl.uniformMatrix4fv`(mat4UniformLoc, false, [ 16x element array ])  // mat4 或 mat4 array
     
-    + gl.uniform1i (intUniformLoc,   v);                 // int 给全局变量赋值 1 个整数。
-    + gl.uniform1iv(intUniformLoc, [v]);                 // int 或 int array
-    + gl.uniform2i (ivec2UniformLoc, v0, v1);            // ivec2
-    + gl.uniform2iv(ivec2UniformLoc, [v0, v1]);          // ivec2 或 ivec2 array
-    + gl.uniform3i (ivec3UniformLoc, v0, v1, v2);        // ivec3
-    + gl.uniform3iv(ivec3UniformLoc, [v0, v1, v2]);      // ivec3 or ivec3 array
-    + gl.uniform4i (ivec4UniformLoc, v0, v1, v2, v4);    // ivec4
-    + gl.uniform4iv(ivec4UniformLoc, [v0, v1, v2, v4]);  // ivec4 或 ivec4 array
+    + `gl.uniform1i` (intUniformLoc,   v);                 // int 给全局变量赋值 1 个整数。
+    + `gl.uniform1iv`(intUniformLoc, [v]);                 // int 或 int array
+    + `gl.uniform2i` (ivec2UniformLoc, v0, v1);            // ivec2
+    + `gl.uniform2iv`(ivec2UniformLoc, [v0, v1]);          // ivec2 或 ivec2 array
+    + `gl.uniform3i` (ivec3UniformLoc, v0, v1, v2);        // ivec3
+    + `gl.uniform3iv`(ivec3UniformLoc, [v0, v1, v2]);      // ivec3 or ivec3 array
+    + `gl.uniform4i` (ivec4UniformLoc, v0, v1, v2, v4);    // ivec4
+    + `gl.uniform4iv`(ivec4UniformLoc, [v0, v1, v2, v4]);  // ivec4 或 ivec4 array
     
-    + gl.uniform1i (sampler2DUniformLoc,   v);           // sampler2D (textures)
-    + gl.uniform1iv(sampler2DUniformLoc, [v]);           // sampler2D 或 sampler2D array
+    + `gl.uniform1i` (sampler2DUniformLoc,   v);           // sampler2D (textures)
+    + `gl.uniform1iv`(sampler2DUniformLoc, [v]);           // sampler2D 或 sampler2D array
     
-    + gl.uniform1i (samplerCubeUniformLoc,   v);         // samplerCube (textures)
-    + gl.uniform1iv(samplerCubeUniformLoc, [v]);         // samplerCube 或 samplerCube array
+    + `gl.uniform1i` (samplerCubeUniformLoc,   v);         // samplerCube (textures)
+    + `gl.uniform1iv`(samplerCubeUniformLoc, [v]);         // samplerCube 或 samplerCube array
 + buffer：缓冲区
-    + gl.createBuffer：创建缓冲区对象。
-    + gl.bindBuffer：将缓冲区对象设置为当前缓冲。
-    + gl.bufferData：向当前缓冲对象复制数据。
+    + `gl.createBuffer`：创建缓冲区对象。
+    + `gl.bindBuffer`：将缓冲区对象设置为当前缓冲。
+    + `gl.bufferData`：向当前缓冲对象复制数据。
 + clear：清屏
-    + gl.clearColor：设置清除屏幕的背景色。
-    + gl.clear：清除屏幕。
+    + `gl.clearColor`：设置清除屏幕的背景色。
+    + `gl.clear`：清除屏幕。
 + draw：绘制
-    + gl.drawArrays：数组绘制方式。
-    + gl.drawElements：索引绘制方式。
+    + `gl.drawArrays`：数组绘制方式。
+    + `gl.drawElements`：索引绘制方式。
 + 图元类型及**图形绘制函数**
     -  drawArrays(type,start,count): 用指定的图元进行绘制。`type`主要有以下一些类型。`start` 指定从哪个点开始绘制。`count`指定绘制需要使用到多少个点。
-    - gl.POINTS: 绘制一系列点。
-    - gl.LINE_STRIP: 绘制一个线条。即，绘制一系列线段，上一点连接下一点。
-    - gl.LINE_LOOP: 绘制一个线圈。即，绘制一系列线段，上一点连接下一点，并且最后一点与第一个点相连。
-    - gl.LINES: 绘制一系列单独线段。每两个点作为端点，线段之间不连接。
-    - gl.TRIANGLE_STRIP：绘制一个三角带。
-    - gl.TRIANGLE_FAN：绘制一个三角扇。
-    - gl.TRIANGLES: 绘制一系列三角形。每三个点作为顶点。
+    - `gl.POINTS`: 绘制一系列点。
+    - `gl.LINE_STRIP`: 绘制一个线条。即，绘制一系列线段，上一点连接下一点。
+    - `gl.LINE_LOOP`: 绘制一个线圈。即，绘制一系列线段，上一点连接下一点，并且最后一点与第一个点相连。
+    - `gl.LINES`: 绘制一系列单独线段。每两个点作为端点，线段之间不连接。
+    - `gl.TRIANGLE_STRIP`：绘制一个三角带。
+    - `gl.TRIANGLE_FAN`：绘制一个三角扇。
+    - `gl.TRIANGLES`: 绘制一系列三角形。每三个点作为顶点。
 + 纹理贴图
-    + gl.createTexture：创建纹理对象。
-    + gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true); 设置图片的翻转
-    + gl.activeTexture：激活纹理单元。
-    + gl.bindTexture：绑定纹理对象到当前纹理。
-    + gl.texImage2D：将图片数据传递给 `GPU`。
-    + gl.texParameterf：设置图片放大缩小时的过滤算法。
+    + `gl.createTexture`：创建纹理对象。
+    + `gl.pixelStorei`(`gl.UNPACK_FLIP_Y_WEBGL`, true); 设置图片的翻转
+    + `gl.activeTexture`：激活纹理单元。
+    + `gl.bindTexture`：绑定纹理对象到当前纹理。
+    + `gl.texImage2D`：将图片数据传递给 `GPU`。
+    + `gl.texParameterf`：设置图片放大缩小时的过滤算法。
 + 常用方法总结
   - precision：精度设置限定符，使用此限定符设置完精度后，之后所有该数据类型都将沿用该精度，除非单独设置。
   - distance：计算顶点之间距离。

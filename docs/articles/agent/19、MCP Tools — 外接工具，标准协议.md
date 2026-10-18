@@ -19,7 +19,7 @@ s01 → ... → s17 → s18 → `s19` → [s20](./20%E3%80%81Comprehensive%20Age
 
 ## 1、问题
 
-s01 到 s18，`Agent` 的所有工具都是手写的——bash、read、write、task、worktree。每个工具的输入验证、执行逻辑、错误处理，都是你一行行写的。
+s01 到 s18，`Agent` 的所有工具都是手写的——`bash`、read、write、task、`worktree`。每个工具的输入验证、执行逻辑、错误处理，都是你一行行写的。
 
 现在你有 3 个外部服务想接入：公司的 Jira `API`（查 issue、建 ticket）、自建的部署系统（触发 deploy、看日志）、团队的 Notion 知识库（搜文档、建页面）。你不想为每个服务重写一套工具代码。
 
@@ -37,12 +37,12 @@ s01 到 s18，`Agent` 的所有工具都是手写的——bash、read、write、
 |------|------|
 | MCPClient | `Agent` 端的客户端，连接 server、发现工具、调用工具 |
 | `MCP` `Server` | 外部服务，实现 `tools/list` + `tools/call` |
-| assemble_tool_pool | 把内置工具和 `MCP` 工具组装成一个工具池 |
+| `assemble_tool_pool` | 把内置工具和 `MCP` 工具组装成一个工具池 |
 | mcp\_\_server\_\_tool 命名 | 避免不同 server 的工具名冲突 |
 
-沿用 s18 的教学版 worktree 隔离、自主认领、空闲轮询、协议系统。本章新增：`connect_mcp` 工具——连接外部服务，发现工具，加入工具池。
+沿用 s18 的教学版 `worktree` 隔离、自主认领、空闲轮询、协议系统。本章新增：`connect_mcp` 工具——连接外部服务，发现工具，加入工具池。
 
-教学版用 mock handler 模拟外部 server。真实版会启动子进程，通过 stdin/stdout 发送 `JSON`-RPC 请求。mock 的好处是不依赖外部服务就能跑完整流程；代价是你看不到真正的网络通信和进程管理。
+教学版用 mock handler 模拟外部 server。真实版会启动子进程，通过 `stdin/stdout` 发送 `JSON`-`RPC` 请求。mock 的好处是不依赖外部服务就能跑完整流程；代价是你看不到真正的网络通信和进程管理。
 
 ---
 
@@ -70,9 +70,9 @@ class MCPClient:
         return handler(**args)
 ```
 
-教学版用 `Python` 函数模拟 server 的工具实现。真实版通过 stdio `JSON`-RPC 与子进程通信。
+教学版用 `Python` 函数模拟 server 的工具实现。真实版通过 stdio `JSON`-`RPC` 与子进程通信。
 
-### 3.2 connect_mcp：连接 + 发现
+### 3.2 `connect_mcp`：连接 + 发现
 
 ```python
 def connect_mcp(name: str) -> str:
@@ -88,7 +88,7 @@ def connect_mcp(name: str) -> str:
 
 连接后，server 提供的工具立即可用。
 
-### 3.3 normalize_mcp_name：名称规范化
+### 3.3 `normalize_mcp_name`：名称规范化
 
 ```python
 _DISALLOWED_CHARS = re.compile(r'[^a-zA-Z0-9_-]')
@@ -99,7 +99,7 @@ def normalize_mcp_name(name: str) -> str:
 
 所有非 `[a-zA-Z0-9_-]` 的字符替换为 `_`。防止 server 名或工具名中包含特殊字符导致命名冲突或注入问题。
 
-### 3.4 assemble_tool_pool：组装工具池
+### 3.4 `assemble_tool_pool`：组装工具池
 
 ```python
 def assemble_tool_pool() -> tuple[list[dict], dict]:
@@ -119,11 +119,11 @@ def assemble_tool_pool() -> tuple[list[dict], dict]:
 
 前缀 `mcp__{server}__{tool}` 避免不同 server 的工具名冲突。名称经过 `normalize_mcp_name` 规范化。
 
-`MCP` 工具的 description 带 `(readOnly)` 或 `(destructive)` 标注——教学版用文本标注，真实 `CC` 用 tool annotations 结构体让权限系统判断。
+`MCP` 工具的 description 带 `(readOnly)` 或 `(destructive)` 标注——教学版用文本标注，真实 `CC` 用 `tool` annotations 结构体让权限系统判断。
 
-### 3.5 无缓存：工具池变了，prompt 也变
+### 3.5 无缓存：工具池变了，`prompt` 也变
 
-s10-s18 的 `agent_loop` 用 prompt cache 避免重复序列化。s19 去掉了缓存：
+s10-s18 的 `agent_loop` 用 `prompt` `cache` 避免重复序列化。s19 去掉了缓存：
 
 ```python
 def agent_loop(messages, context):
@@ -139,7 +139,7 @@ def agent_loop(messages, context):
 
 ### 3.6 `MCP` 工具只有 Lead 可用
 
-教学版中，`connect_mcp` 是 Lead 工具，`assemble_tool_pool` 也只服务于 Lead 的 `agent_loop`。Teammate 仍使用固定的 8 个子集工具（bash、read_file、write_file、send_message、submit_plan、list_tasks、claim_task、complete_task）。
+教学版中，`connect_mcp` 是 Lead 工具，`assemble_tool_pool` 也只服务于 Lead 的 `agent_loop`。Teammate 仍使用固定的 8 个子集工具（`bash`、`read_file`、`write_file`、`send_message`、`submit_plan`、`list_tasks`、`claim_task`、`complete_task`）。
 
 这是教学简化。真实 `CC` 中，`MCP` 工具对主 agent 和子 agent 都可用——子 agent 继承父级的 `MCP` 配置。
 
@@ -150,13 +150,13 @@ def agent_loop(messages, context):
 | 组件 | 之前 (s18) | 之后 (s19) |
 |------|-----------|-----------|
 | 工具来源 | 全部手写 builtin | 手写 + `MCP` 外部工具动态发现 |
-| 工具池 | 固定 BUILTIN_TOOLS | assemble_tool_pool 动态组装 mcp\_\_ 前缀工具 |
-| 名称安全 | 无 | normalize_mcp_name 规范化 |
-| 新类型 | — | MCPClient 类（模拟 tools/list + tools/call） |
+| 工具池 | 固定 `BUILTIN_TOOLS` | `assemble_tool_pool` 动态组装 mcp\_\_ 前缀工具 |
+| 名称安全 | 无 | `normalize_mcp_name` 规范化 |
+| 新类型 | — | MCPClient 类（模拟 `tools/list` + `tools/call`） |
 | 命名空间 | — | mcp\_\_server\_\_tool 避免冲突 |
 | 工具描述 | 无标注 | (readOnly)/(destructive) 标注 |
-| prompt 缓存 | 有（s10 起） | 去掉——工具池动态变化后缓存失效 |
-| Lead 工具 | 17 (s18) | 18 (+connect_mcp) |
+| `prompt` 缓存 | 有（s10 起） | 去掉——工具池动态变化后缓存失效 |
+| Lead 工具 | 17 (s18) | 18 (+`connect_mcp`) |
 | Teammate 工具 | 8 (s18) | 8（不变，`MCP` 工具仅 Lead 可用） |
 | 扩展方式 | 写代码加工具 | 标准协议，任意语言实现 server |
 
@@ -169,7 +169,7 @@ cd learn-claude-code
 python s19_mcp_plugin/code.py
 ```
 
-试试这些 prompt：
+试试这些 `prompt`：
 
 1. `Connect to the docs MCP server and search for something`
 2. `Connect to the deploy server and trigger a deployment`
@@ -183,7 +183,7 @@ python s19_mcp_plugin/code.py
 
 现在 `Agent` 可以通过标准协议接入外部工具了。但前面 19 章每章都只加一个机制，真实 `Agent` 不会这样拆开运行。
 
-工具、权限、hooks、todo、任务图、记忆、压缩、后台、cron、团队、worktree、`MCP` 这些机制应该挂在同一个循环上，而不是散在 19 个 demo 里。
+工具、权限、`hooks`、todo、任务图、记忆、压缩、后台、`cron`、团队、`worktree`、`MCP` 这些机制应该挂在同一个循环上，而不是散在 19 个 demo 里。
 
 s20 Comprehensive `Agent` → 把前 19 章的机制合回一个完整 harness。机制很多，循环一个。
 
@@ -198,14 +198,14 @@ s20 Comprehensive `Agent` → 把前 19 章的机制合回一个完整 harness�
 
 | Transport | 通信方式 |
 |-----------|---------|
-| `stdio` | 子进程 stdin/stdout（跨平台默认） |
+| `stdio` | 子进程 `stdin/stdout`（跨平台默认） |
 | `sse` | `HTTP` `Server`-Sent Events |
 | `http` | Streamable `HTTP`（`POST`/`SSE` 双向） |
 | `ws` | `WebSocket` |
 | `sse-ide` | IDE 内嵌 `SSE` 传输 |
 | `sdk` | 进程内 `SDK` 传输 |
 
-连接时本地（stdio）和远程（http/sse/ws）服务器分批并发：本地批量 3 个，远程批量 20 个。
+连接时本地（stdio）和远程（`http/sse/ws`）服务器分批并发：本地批量 3 个，远程批量 20 个。
 
 ### 二、工具池组装算法
 
@@ -263,9 +263,9 @@ claude.ai 连接器 < plugin < user settings.json < approved project .mcp.json <
 `CC` 的 `MCP` 认证（`auth.ts`）支持完整的 `OAuth` `2.0` + PKCE 流程：
 - 通过公钥客户端 + PKCE 发现 `OAuth` 元数据（RFC 8414 / RFC 9728）
 - 本地回调服务器接收授权码
-- 令牌通过 `getSecureStorage()` 持久化（macOS Keychain / `Linux` 加密文件 / Windows 凭据管理器）
+- 令牌通过 `getSecureStorage()` 持久化（`macOS` Keychain / `Linux` 加密文件 / `Windows` 凭据管理器）
 - 过期前 5 分钟自动刷新
-- 支持跨应用访问（XAA）：浏览器获取 id_token → RFC 8693 + RFC 7523 交换 → 无需反复弹浏览器
+- 支持跨应用访问（XAA）：浏览器获取 `id_token` → RFC 8693 + RFC 7523 交换 → 无需反复弹浏览器
 
 ### 八、连接生命周期的错误处理
 
@@ -281,7 +281,7 @@ claude.ai 连接器 < plugin < user settings.json < approved project .mcp.json <
 - Channel 反向通知 → 省略：教学版 `Agent` 是主动方
 - `OAuth` 流程 → 省略：教学版假设 server 不需要认证
 - 多层配置优先级 → 省略：教学版直接传 server name
-- 复杂的错误分类 → 省略：教学版用 try/except 兜底
+- 复杂的错误分类 → 省略：教学版用 `try/except` 兜底
 - `MCP` 工具只给 Lead → 省略子 agent 继承：简化代码结构
 
 </details>

@@ -144,8 +144,8 @@ python docs/public/langchain-examples/07_langsmith/monitoring_metrics.py
 配置 `LANGSMITH_TRACING=true`、`LANGSMITH_API_KEY` 后运行 Trace 示例：
 
 ~~~powershell
-python docs/public/langchain-examples/07_langsmith/trace.py
-python docs/public/langchain-examples/07_langsmith.py
+python `docs/public/langchain-examples/07_langsmith/trace.py`
+python `docs/public/langchain-examples/07_langsmith.py`
 ~~~
 
 该脚本用 `@traceable` 包裹一次 `ChatOpenAI` 调用；运行结束后可在 `LangSmith`
