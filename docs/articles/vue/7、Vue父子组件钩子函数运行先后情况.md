@@ -77,7 +77,7 @@ note: Vue父子组件钩子函数运行先后情况
 
 ​**通过实践发现，组件的不同引用方式，父组件的钩子函数的运行情况也是不一样的。**
 
-## **1、第一种情况(动态引入)**：直接在components中通过import动态引入。
+## 1、**1、第一种情况(动态引入)**：直接在components中通过import动态引入。
 
 ```javascript     
     //hookParent.vue
@@ -196,12 +196,12 @@ export default {
 
 &#8195;&#8195;通过监听钩子函数运行发现，当 `mounted` 钩子函数运行后，才会在界面上显示所挂载的元素。并且**子组件的mounted钩子函数要晚于父组件的mounted钩子函数**，子组件是在父组件的`beforeUpdate`和 `updated` 钩子函数之间加载的。同时也说明组件**动态引入方式子组件是在父组件挂载之后才挂载的**。
 
-## **2、第二种情况(静态引入)**：import hookChild from "./hookChild。钩子函数的运行情况如下：
+## 2、**2、第二种情况(静态引入)**：import hookChild from "./hookChild。钩子函数的运行情况如下：
 <img src="../../images/vue/parent-child-hook.png" alt="暂无数据">
 <!-- ![](https://user-gold-cdn.xitu.io/2019/5/27/16af9c5f6a53c12a?w=1918&h=243&f=png&s=38077) -->
 
 &#8195;&#8195;相对于组件的动态引入方式，组件的静态引入方式的父组件少调用了 `beforeUpdete` 和 `updated` 两个钩子函数。
-## **3、占位符（slot）的功能其实和动态组件的运行情况是一样的**
+## 3、**3、占位符（slot）的功能其实和动态组件的运行情况是一样的**
 
 
 **总结：**  

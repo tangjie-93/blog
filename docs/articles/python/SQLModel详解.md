@@ -8,11 +8,11 @@ note: "学习模型定义、会话管理、CRUD、关系模型与工程实践。
 
 # SQLModel 详解
 
-SQLModel 是一个现代 Python 库，它结合了 SQLAlchemy 和 Pydantic 的最佳特性，为数据库操作和数据验证提供了统一的接口。本文档将详细介绍 SQLModel 的使用方法和最佳实践。
+SQLModel 是一个现代 `Python` 库，它结合了 SQLAlchemy 和 Pydantic 的最佳特性，为数据库操作和数据验证提供了统一的接口。本文档将详细介绍 SQLModel 的使用方法和最佳实践。
 
 ---
 
-## 目录
+## 1、目录
 
 1. [什么是 SQLModel](#_1-什么是-sqlmodel)
 2. [安装与环境配置](#_2-安装与环境配置)
@@ -28,21 +28,21 @@ SQLModel 是一个现代 Python 库，它结合了 SQLAlchemy 和 Pydantic 的�
 
 ## 1. 什么是 SQLModel
 
-SQLModel 是由 FastAPI 的创建者 Sebastián Ramírez 开发的一个 Python 库，它的核心思想是将 SQLAlchemy（用于数据库 ORM）和 Pydantic（用于数据验证）的功能结合起来，提供一个统一的接口。
+SQLModel 是由 `FastAPI` 的创建者 Sebastián Ramírez 开发的一个 `Python` 库，它的核心思想是将 SQLAlchemy（用于数据库 ORM）和 Pydantic（用于数据验证）的功能结合起来，提供一个统一的接口。
 
-### 主要特点：
+### 2.1 主要特点：
 
-- **类型提示**：完全支持 Python 类型提示
+- **类型提示**：完全支持 `Python` 类型提示
 - **数据验证**：自动进行数据验证，确保数据完整性
-- **数据库操作**：提供简洁的数据库操作 API
-- **自动文档**：与 FastAPI 集成，自动生成 API 文档
+- **数据库操作**：提供简洁的数据库操作 `API`
+- **自动文档**：与 `FastAPI` 集成，自动生成 `API` 文档
 - **代码简洁**：减少样板代码，提高开发效率
 
 ---
 
 ## 2. 安装与环境配置
 
-### 2.1 安装 SQLModel
+### 3.1 `2.1` 安装 SQLModel
 
 ```bash
 # 使用 pip 安装
@@ -57,17 +57,17 @@ pip install "sqlmodel[mysql]"       # 包含 MySQL 驱动
 pip install "sqlmodel[sqlite]"      # 包含 SQLite 驱动
 ```
 
-### 2.2 环境要求
+### 3.2 `2.2` 环境要求
 
-- Python 3.7+
-- SQLAlchemy 1.4.22+
-- Pydantic 2.0+
+- `Python` `3.7`+
+- SQLAlchemy `1.4.22`+
+- Pydantic `2.0`+
 
 ---
 
 ## 3. 基本概念
 
-### 3.1 核心组件
+### 4.1 `3.1` 核心组件
 
 | 组件 | 描述 |
 |------|------|
@@ -77,7 +77,7 @@ pip install "sqlmodel[sqlite]"      # 包含 SQLite 驱动
 | `Session` | 数据库会话，用于执行数据库操作 |
 | `select` | 用于构建 SELECT 查询 |
 
-### 3.2 工作原理
+### 4.2 `3.2` 工作原理
 
 SQLModel 的工作原理是：
 1. 定义继承自 `SQLModel` 的模型类
@@ -90,7 +90,7 @@ SQLModel 的工作原理是：
 
 ## 4. 模型定义
 
-### 4.1 基础模型
+### 5.1 `4.1` 基础模型
 
 ```python
 from sqlmodel import SQLModel, Field
@@ -103,7 +103,7 @@ class Hero(SQLModel, table=True):
     age: Optional[int] = None
 ```
 
-### 4.2 字段配置
+### 5.2 `4.2` 字段配置
 
 ```python
 class Item(SQLModel, table=True):
@@ -114,7 +114,7 @@ class Item(SQLModel, table=True):
     is_available: bool = Field(default=True)
 ```
 
-### 4.3 模型继承
+### 5.3 `4.3` 模型继承
 
 ```python
 from sqlmodel import SQLModel, Field
@@ -137,7 +137,7 @@ class User(TimestampMixin, table=True):
 
 ## 5. 数据库操作
 
-### 5.1 创建数据库表
+### 6.1 `5.1` 创建数据库表
 
 ```python
 from sqlmodel import SQLModel, create_engine
@@ -150,7 +150,7 @@ engine = create_engine(DATABASE_URL, echo=True)
 SQLModel.metadata.create_all(engine)
 ```
 
-### 5.2 会话管理
+### 6.2 `5.2` 会话管理
 
 ```python
 from sqlmodel import Session
@@ -166,7 +166,7 @@ def get_session():
         yield session
 ```
 
-### 5.3 CRUD 操作
+### 6.3 `5.3` CRUD 操作
 
 #### 创建（Create）
 
@@ -238,7 +238,7 @@ with Session(engine) as session:
 
 ## 6. 关系模型
 
-### 6.1 一对一关系
+### 7.1 `6.1` 一对一关系
 
 ```python
 from sqlmodel import SQLModel, Field, Relationship
@@ -263,7 +263,7 @@ User.model_rebuild()
 UserProfile.model_rebuild()
 ```
 
-### 6.2 一对多关系
+### 7.2 `6.2` 一对多关系
 
 ```python
 from sqlmodel import SQLModel, Field, Relationship
@@ -287,7 +287,7 @@ Team.model_rebuild()
 Hero.model_rebuild()
 ```
 
-### 6.3 多对多关系
+### 7.3 `6.3` 多对多关系
 
 ```python
 from sqlmodel import SQLModel, Field, Relationship
@@ -319,7 +319,7 @@ Team.model_rebuild()
 
 ## 7. 高级特性
 
-### 7.1 联合模型
+### 8.1 `7.1` 联合模型
 
 ```python
 from sqlmodel import SQLModel, Field
@@ -350,7 +350,7 @@ class HeroResponse(HeroBase):
     id: int
 ```
 
-### 7.2 事务管理
+### 8.2 `7.2` 事务管理
 
 ```python
 from sqlmodel import Session
@@ -370,7 +370,7 @@ except SQLAlchemyError as e:
     # 发生异常时自动回滚，无需手动处理
 ```
 
-### 7.3 批量操作
+### 8.3 `7.3` 批量操作
 
 ```python
 from sqlmodel import Session, select
@@ -411,7 +411,7 @@ with Session(engine) as session:
 
 ## 8. 最佳实践
 
-### 8.1 项目结构
+### 9.1 `8.1` 项目结构
 
 ```
 app/
@@ -433,7 +433,7 @@ app/
     └── items.py
 ```
 
-### 8.2 配置管理
+### 9.2 `8.2` 配置管理
 
 ```python
 # core/config.py
@@ -462,7 +462,7 @@ def create_db_and_tables():
     SQLModel.metadata.create_all(engine)
 ```
 
-### 8.3 依赖注入
+### 9.3 `8.3` 依赖注入
 
 ```python
 # 为 FastAPI 提供数据库会话
@@ -480,7 +480,7 @@ def create_hero(hero: HeroCreate, session: Session = Depends(get_session)):
     return db_hero
 ```
 
-### 8.4 错误处理
+### 9.4 `8.4` 错误处理
 
 ```python
 from fastapi import FastAPI, HTTPException, status, Depends
@@ -514,7 +514,7 @@ async def validation_exception_handler(request, exc):
 
 ## 9. 常见问题
 
-### 9.1 表未创建
+### 10.1 `9.1` 表未创建
 
 **问题**：运行时提示表不存在
 
@@ -523,17 +523,17 @@ async def validation_exception_handler(request, exc):
 - 检查模型是否设置了 `table=True`
 - 检查数据库连接是否正确
 
-### 9.2 关系模型错误
+### 10.2 `9.2` 关系模型错误
 
 **问题**：关系模型引用错误
 
 **解决方案**：
-- SQLModel 0.0.14+ 使用 `model_rebuild()` 解析前向引用（旧版本使用 `update_forward_refs()`）
+- SQLModel `0.0.14`+ 使用 `model_rebuild()` 解析前向引用（旧版本使用 `update_forward_refs()`）
 - 确保外键引用正确
 - 检查关系定义是否匹配
 - 确保使用了 `Relationship()` 来定义关系，而不是简单的类型注解
 
-### 9.3 数据验证错误
+### 10.3 `9.3` 数据验证错误
 
 **问题**：数据验证失败
 
@@ -542,7 +542,7 @@ async def validation_exception_handler(request, exc):
 - 确保必填字段有值
 - 检查字段约束是否满足
 
-### 9.4 性能问题
+### 10.4 `9.4` 性能问题
 
 **问题**：查询速度慢
 
@@ -571,7 +571,7 @@ heroes = session.exec(statement).all()
 
 ## 10. 代码示例
 
-### 完整的 FastAPI + SQLModel 示例
+### 11.1 完整的 `FastAPI` + SQLModel 示例
 
 ```python
 from fastapi import FastAPI, Depends, HTTPException, status
@@ -715,18 +715,18 @@ if __name__ == "__main__":
 
 ## 11. 总结
 
-SQLModel 是一个强大的库，它结合了 SQLAlchemy 和 Pydantic 的最佳特性，为 Python 开发者提供了一种简洁、类型安全的方式来处理数据库操作。通过本文档的介绍，你应该已经了解了 SQLModel 的基本概念、使用方法和最佳实践。
+SQLModel 是一个强大的库，它结合了 SQLAlchemy 和 Pydantic 的最佳特性，为 `Python` 开发者提供了一种简洁、类型安全的方式来处理数据库操作。通过本文档的介绍，你应该已经了解了 SQLModel 的基本概念、使用方法和最佳实践。
 
-### 核心优势：
+### 12.1 核心优势：
 
-1. **类型安全**：完全支持 Python 类型提示
+1. **类型安全**：完全支持 `Python` 类型提示
 2. **数据验证**：自动进行数据验证
 3. **代码简洁**：减少样板代码
-4. **易于集成**：与 FastAPI 无缝集成
+4. **易于集成**：与 `FastAPI` 无缝集成
 5. **功能强大**：支持复杂的数据库操作和关系
 
-SQLModel 是构建现代 Python 应用的理想选择，特别是当你需要同时处理数据库操作和数据验证时。
+SQLModel 是构建现代 `Python` 应用的理想选择，特别是当你需要同时处理数据库操作和数据验证时。
 
 ---
 
-*文档更新时间：2026-04-02*
+*文档更新时间：`2026-04-02`*

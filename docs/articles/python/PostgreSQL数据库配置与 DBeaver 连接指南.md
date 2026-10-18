@@ -78,7 +78,7 @@ psql -U postgres -d fastapi_db -h localhost -p 5432
 #### 步骤一：打开新建连接向导
 1. 启动 DBeaver
 2. 点击菜单栏 **数据库 (Database)** → **新建连接 (New Connection)**
-3. 或使用快捷键：`Ctrl + N` (Windows/Linux) 或 `Cmd + Shift + N` (Mac)
+3. 或使用快捷键：`Ctrl + N` (Windows/`Linux`) 或 `Cmd + Shift + N` (Mac)
 
 #### 步骤二：选择数据库类型
 1. 在左侧列表中选择 **PostgreSQL**
@@ -116,12 +116,12 @@ psql -U postgres -d fastapi_db -h localhost -p 5432
     - **Functions**: 查看函数
     - **Sequences**: 查看序列
 
-#### 执行 SQL 查询
+#### 执行 `SQL` 查询
 1. 右键点击数据库连接
-2. 选择 **SQL 编辑器 (SQL Editor)** → **打开 SQL 编辑器 (Open SQL Editor)**
+2. 选择 **`SQL` 编辑器 (`SQL` Editor)** → **打开 `SQL` 编辑器 (Open `SQL` Editor)**
 3. 或使用快捷键：`F3`
 
-#### 常用 SQL 命令
+#### 常用 `SQL` 命令
 
 ```sql
 -- 查看所有表
@@ -253,8 +253,8 @@ GRANT ALL PRIVILEGES ON DATABASE fastapi_db TO postgres;
 
 | 快捷键 | 功能 |
 |--------|------|
-| `F3` | 打开 SQL 编辑器 |
-| `Ctrl + Enter` | 执行 SQL 语句 |
+| `F3` | 打开 `SQL` 编辑器 |
+| `Ctrl + Enter` | 执行 `SQL` 语句 |
 | `Ctrl + Shift + H` | 显示查询历史 |
 | `Ctrl + Space` | 代码自动补全 |
 | `Ctrl + /` | 注释/取消注释 |
@@ -266,7 +266,7 @@ GRANT ALL PRIVILEGES ON DATABASE fastapi_db TO postgres;
 ## 六、推荐的 DBeaver 设置
 
 ### 1. 编辑器设置
-- **窗口** → **首选项** → **编辑器** → **SQL 编辑器**
+- **窗口** → **首选项** → **编辑器** → **`SQL` 编辑器**
   - 启用自动补全
   - 启用语法高亮
   - 启用格式化
@@ -285,7 +285,7 @@ GRANT ALL PRIVILEGES ON DATABASE fastapi_db TO postgres;
 
 ## 七、安全建议
 
-### 生产环境配置
+### 7.1 生产环境配置
 
 1. **使用强密码**:
    ```dotenv
@@ -317,4 +317,4 @@ GRANT ALL PRIVILEGES ON DATABASE fastapi_db TO postgres;
 - [PostgreSQL 官方文档](https://www.postgresql.org/docs/)
 - [DBeaver 官方文档](https://dbeaver.com/docs/)
 - [SQLModel 文档](https://sqlmodel.tiangolo.com/)
-- [FastAPI 文档](https://fastapi.tiangolo.com/)
+- [`FastAPI` 文档](https://fastapi.tiangolo.com/)

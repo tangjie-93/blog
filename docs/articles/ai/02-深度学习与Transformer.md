@@ -1,45 +1,133 @@
 ---
 title: 深度学习与 Transformer
-date: '2026-10-17'
+date: '2026-10-18'
 type: 技术
-tags: AI|深度学习|Transformer
-note: 理解神经网络、注意力和 Transformer 的最小结构。
+tags: AI|深度学习|Transformer|注意力
+note: 从张量形状和计算图出发，推导 Transformer 的每个组件为什么存在。
 ---
 
-# 02. 深度学习与 Transformer
+# 02. 深度学习与 `Transformer`
 
-## 1. 神经网络
+## 1. 从神经元到计算图
 
-神经网络由线性层、非线性激活、归一化和残差连接组成。线性层混合特征，激活提供表达能力，归一化改善数值稳定性，残差让深层网络更容易优化。卷积适合局部空间模式，循环网络按序处理但并行性弱，Transformer 用注意力直接建立 token 间关系。
+一个线性层完成 `z = xW + b`，激活函数再完成 `a = σ(z)`。线性层只能表示线性变换，多层之间没有激活时仍可合并成一层；`ReLU`、`GELU` 等非线性让网络能够逼近复杂函数。
 
-## 2. Self-Attention
+训练时，前向计算得到输出，损失函数产生一个标量，反向传播沿计算图求每个参数的梯度。梯度不是“重要性分数”，而是损失对参数的局部变化率。
 
-给定输入表示，线性投影得到 `Q、K、V`：
+## 2. 张量形状是第一调试工具
+
+以批量文本为例：`B` 是 batch size，`T` 是序列长度，`D` 是隐藏维度，`H` 是头数，`Dh = D/H`。
 
 ```text
-Attention(Q,K,V) = softmax(QKᵀ / √dₖ)V
+token id       [B, T]
+embedding      [B, T, D]
+Q/K/V          [B, H, T, Dh]
+attention      [B, H, T, T]
+输出           [B, T, D]
 ```
 
-`QKᵀ` 衡量 token 之间的关联，缩放避免 softmax 过早饱和，`V` 汇总被关注的信息。多头注意力让不同头学习不同关系。注意力的代价通常随序列长度平方增长，因此长上下文需要缓存、稀疏注意力或其他优化。
+`attention [B,H,T,T]` 的最后两个维度表示“每个位置看其他位置的权重”。`T` 变成两倍时，注意力矩阵的元素数量大约变成四倍，这就是长上下文昂贵的原因。
 
-## 3. Transformer 组件
+## 3. Self-Attention 的推导
 
-一个典型块包含多头注意力、前馈网络、残差连接和归一化。位置编码提供顺序信息。编码器更适合理解和分类；解码器以自回归方式预测下一个 token；编码器-解码器适合翻译和条件生成。
+输入 `X` 经过三个线性投影得到：
 
-## 4. 训练目标
+```text
+Q = XWQ, K = XWK, V = XWV
+S = QKᵀ / √Dh
+A = softmax(S)
+Y = AV
+```
 
-语言模型常用 next-token prediction：给定前文预测下一个 token。掩码语言模型随机遮住 token 训练双向表示。训练阶段看到完整标签，推理阶段只能使用已经生成的前文，这种差异会造成暴露偏差。Teacher forcing 加快训练，但不能保证长序列生成稳定。
+`Q` 表示“我正在寻找什么”，`K` 表示“我具有什么线索”，`V` 表示“被取走的内容”。`QKᵀ` 计算每个 query 与所有 key 的匹配分数；除以 `√Dh` 防止维度变大后分数过大，导致 softmax 梯度过小。
 
-## 5. 规模规律与边界
+### 3.1 手算一个注意力
 
-增加数据、参数和计算通常能改善平均能力，但收益受数据质量、优化和推理预算限制。上下文窗口大不代表模型能均匀使用所有内容；需要测试长文档中证据位置的影响。不要把 benchmark 排名直接当作业务质量。
+```text
+Q = [[1, 0], [0, 1]]
+K = [[1, 0], [0, 1]]
+V = [[10, 0], [0, 20]]
+```
 
-## 6. 学习任务
+第一行 query 与两个 key 的分数为 `[1, 0] / √2`，softmax 后第一列权重更大，因此输出更接近 `[10, 0]`。模型不是选择一个词，而是在所有 value 之间做加权平均。
 
-- 用 PyTorch 实现单头 attention，打印每个 token 的权重。
-- 比较 RNN 与 Transformer 在相同序列上的并行训练方式。
-- 为一个分类任务选择 encoder，为文本生成任务选择 decoder，并说明原因。
+### 3.2 Causal Mask
 
-验收：能手算一个 2×2 attention；解释 causal mask 的作用；指出为什么位置编码是必要的。
+语言生成时，位置 `t` 不能看到 `t+1` 之后的 token。实现时把未来位置的分数设为负无穷：
 
-参考：[PyTorch](https://github.com/pytorch/pytorch)、[Hugging Face Transformers](https://github.com/huggingface/transformers)。
+```text
+[[0, -∞, -∞],
+ [0,   0, -∞],
+ [0,   0,   0]]
+```
+
+如果忘了 mask，训练时模型会偷看答案，损失很低，推理时却崩溃。
+
+## 4. Multi-Head Attention
+
+多头注意力把 `D` 切成 `H` 个子空间，每个头独立计算注意力，再拼接并投影。不同头可以学习指代关系、局部邻近、语法结构等不同模式，但“每个头都有清晰语义”不是保证。
+
+```python
+import torch
+import torch.nn.functional as F
+
+def attention(q, k, v, causal=False):
+    d = q.size(-1)
+    score = q @ k.transpose(-2, -1) / d**0.5
+    if causal:
+        t = score.size(-1)
+        mask = torch.triu(torch.ones(t, t, dtype=torch.bool), diagonal=1)
+        score = score.masked_fill(mask, float("-inf"))
+    return F.softmax(score, dim=-1) @ v
+```
+
+## 5. 一个完整的 Transformer Block
+
+典型 Decoder block 的数据流是：
+
+```text
+x → LayerNorm → Causal Self-Attention → Residual Add
+  → LayerNorm → Feed Forward → Residual Add
+```
+
+前馈网络通常是 `Linear(D, 4D) → GELU → Linear(4D, D)`。注意力负责 token 间通信，前馈网络负责对每个位置独立变换特征。残差连接让梯度可以沿捷径传播；LayerNorm 让不同层的数值范围更稳定。
+
+Pre-LN 和 Post-LN 的归一化位置不同。现代大模型常用 Pre-LN 或其变体，因为深层训练更稳定，但具体结构必须以模型实现为准。
+
+## 6. 位置编码与长上下文
+
+注意力本身对输入顺序不敏感，因此需要位置。绝对位置编码把位置向量直接加到 token 表示；RoPE 通过旋转 `Q/K` 让相对距离进入点积；ALiBi 直接给远距离注意力加偏置。
+
+长上下文不只是把窗口数字调大：需要考虑训练长度、位置外推、显存、KV Cache、检索噪声和“中间信息丢失”。测试时要把证据放在开头、中间和结尾分别测。
+
+## 7. Encoder、Decoder 与 Encoder-Decoder
+
+| 结构 | 注意力 | 适合任务 |
+| --- | --- | --- |
+| Encoder-only | 双向 | 分类、向量表示、抽取 |
+| Decoder-only | 因果遮罩 | 对话、代码、文本生成 |
+| Encoder-Decoder | 编码双向、解码因果 | 翻译、摘要、条件生成 |
+
+架构不是能力的全部。数据、训练目标、指令微调和推理策略同样决定效果。
+
+## 8. 训练目标与暴露偏差
+
+Next-token prediction 让模型在每个位置预测下一个 token。训练时通常使用 teacher forcing，输入是真实前文；推理时输入包含模型自己生成的 token。错误会在长序列中累积，这叫 exposure bias。
+
+训练损失常按所有有效 token 的交叉熵平均；padding 位置要用 mask 排除，否则模型会学到填充符而不是文本。
+
+## 9. 练习与验收
+
+1. 用 `torch` 实现单头 attention，打印 `[B,H,T,T]` 权重并验证每行和为 `1`。
+2. 去掉 causal mask，比较训练损失与生成质量。
+3. 把序列长度从 `128` 改成 `256`，记录注意力显存和耗时变化。
+4. 实现一个最小 decoder block，逐层打印张量形状。
+
+完成标准：能手算 `2×2` attention；能解释 `Q/K/V`、causal mask、残差和 LayerNorm；能根据任务选择 Encoder 或 Decoder；能说明为什么长上下文会带来二次方成本。
+
+## 10. 延伸资料
+
+- [Attention Is All You Need](https://arxiv.org/abs/1706.03762)
+- [The Illustrated Transformer](https://jalammar.github.io/illustrated-transformer/)
+- [PyTorch Transformer Tutorial](https://pytorch.org/tutorials/intermediate/transformer_building_blocks.html)
+- [Hugging Face Transformers](https://github.com/huggingface/transformers)

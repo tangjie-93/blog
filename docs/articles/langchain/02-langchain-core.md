@@ -10,7 +10,7 @@ note: 掌握 Message、Prompt、Runnable、Tool 与 OutputParser 等核心对象
 
 ## 1. 这一模块解决什么问题
 
-`langchain_core` 是 LangChain 生态的底座。它不是拿来直接“做完整业务系统”的大框架，而是定义统一接口和通用数据结构。
+`langchain_core` 是 `LangChain` 生态的底座。它不是拿来直接“做完整业务系统”的大框架，而是定义统一接口和通用数据结构。
 
 大白话：
 
@@ -58,7 +58,7 @@ prompt = ChatPromptTemplate.from_messages([
 
 ## 4. Runnable
 
-Runnable 是 LangChain 里的统一执行接口。很多对象都支持 `.invoke()`、`.stream()`、`.batch()`。
+Runnable 是 `LangChain` 里的统一执行接口。很多对象都支持 `.invoke()`、`.stream()`、`.batch()`。
 
 ```python
 chain = prompt | llm
@@ -111,20 +111,20 @@ OutputParser 用来把模型输出解析成结构化数据。
 
 常见坑：
 
-1. 只在 Prompt 里要求 JSON，没有解析和兜底。
-2. 模型多输出一句话，JSON 解析失败。
+1. 只在 `Prompt` 里要求 `JSON`，没有解析和兜底。
+2. 模型多输出一句话，`JSON` 解析失败。
 3. 字段没有默认值。
 4. 解析失败后没有重试或降级。
 
 ## 7. 可运行 Demo
 
-下面代码用于离线理解基础对象；要运行实际调用 OpenAI ChatGPT 的完整版本，请使用本节末尾链接的 `02_core_chain.py`。先安装依赖：
+下面代码用于离线理解基础对象；要运行实际调用 `OpenAI` ChatGPT 的完整版本，请使用本节末尾链接的 `02_core_chain.py`。先安装依赖：
 
 ```bash
 pip install langchain-core
 ```
 
-将下面代码保存为 `langchain_core_demo.py` 后执行 `python langchain_core_demo.py`。它覆盖 Message、Prompt、Runnable、Tool 和 OutputParser 五个核心对象。
+将下面代码保存为 `langchain_core_demo.py` 后执行 `python langchain_core_demo.py`。它覆盖 Message、`Prompt`、Runnable、Tool 和 OutputParser 五个核心对象。
 
 ```python
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage, ToolMessage
@@ -223,7 +223,7 @@ tool: 《员工休假制度》第 3 条：工作满一年后，每年享有 5 �
 {'risk_level': '高', 'needs_human_review': True, 'source_ids': ['policy-expense-008']}
 ```
 
-### 配套单概念与 OpenAI 综合 Demo
+### 7.1 配套单概念与 `OpenAI` 综合 Demo
 
 完整示例索引见 [示例统一准备](./examples/)。基础对象可分别离线运行：
 

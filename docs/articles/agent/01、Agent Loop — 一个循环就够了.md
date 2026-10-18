@@ -6,16 +6,16 @@ tags: "Agent|AI Coding"
 note: "用一个稳定的模型—工具—结果循环驱动 Agent 持续完成任务。"
 ---
 
-# s01: Agent Loop — 一个循环就够了
+# s01: `Agent Loop` — 一个循环就够了
 
 
 `s01` → [s02](./02%E3%80%81Tool%20Use%20%E2%80%94%20%E5%A4%9A%E5%8A%A0%E4%B8%80%E4%B8%AA%E5%B7%A5%E5%85%B7%EF%BC%8C%E5%8F%AA%E5%8A%A0%E4%B8%80%E8%A1%8C.md) → s03 → s04 → ... → s20
-> *"One loop & Bash is all you need"* — 一个工具 + 一个循环 = 一个 Agent。
+> *"One loop & `Bash` is all you need"* — 一个工具 + 一个循环 = 一个 `Agent`。
 >
 > **Harness 层**: 循环 — 模型与真实世界的第一道连接。
 ---
 
-## 问题
+## 1、问题
 
 你提出了一个问题给大模型：“帮我读取下我的目录下有哪些文件，并且执行XXX.py”。
 
@@ -27,9 +27,9 @@ note: "用一个稳定的模型—工具—结果循环驱动 Agent 持续完成
 
 ---
 
-## 解决方案
+## 2、解决方案
 
-![Agent Loop](/image/agent-course/s01_agent_loop/agent-loop.svg)
+![`Agent Loop`](/image/agent-course/s01_agent_loop/agent-loop.svg)
 
 一个 `while True` 循环，模型调用工具就继续，不调用就停。整个过程只有两个信号：
 
@@ -40,7 +40,7 @@ note: "用一个稳定的模型—工具—结果循环驱动 Agent 持续完成
 
 ---
 
-## 工作原理
+## 3、工作原理
 
 将这个过程翻译成代码。分步来看：
 
@@ -50,7 +50,7 @@ note: "用一个稳定的模型—工具—结果循环驱动 Agent 持续完成
 messages = [{"role": "user", "content": query}]
 ```
 
-**第 2 步**：将消息和工具定义一起发给 LLM。
+**第 2 步**：将消息和工具定义一起发给 `LLM`。
 
 ```python
 response = client.messages.create(
@@ -117,7 +117,7 @@ def agent_loop(messages):
 
 ---
 
-## 试一下
+## 4、试一下
 
 > **教学 demo 提示**：代码会执行模型生成的 shell 命令。建议在一个临时测试目录中运行，避免影响你的项目文件。s03 会讲真正的权限系统。
 
@@ -135,7 +135,7 @@ cp .env.example .env
 python s01_agent_loop/code.py
 ```
 
-如果要使用 OpenAI 大模型，运行同目录下的 OpenAI 版本，核心循环逻辑不变：
+如果要使用 `OpenAI` 大模型，运行同目录下的 `OpenAI` 版本，核心循环逻辑不变：
 
 ```sh
 # 编辑 .env，填入 OPENAI_API_KEY 和 OPENAI_MODEL
@@ -152,7 +152,7 @@ python s01_agent_loop/code_openai.py
 
 ---
 
-## 接下来
+## 5、接下来
 
 现在模型手里只有 bash 一个工具，读文件要 `cat`，写文件要 `echo ... >`，找个文件要 `find`，又丑又容易出错。
 
@@ -187,7 +187,7 @@ let needsFollowUp = false
 | 1 | `messages` | 当前迭代的消息数组 | s01 |
 | 2 | `toolUseContext` | 工具、信号、权限上下文 | s02 |
 | 3 | `autoCompactTracking` | 压缩状态追踪 | s08 |
-| 4 | `maxOutputTokensRecoveryCount` | token 恢复尝试次数（上限 3） | s11 |
+| 4 | `maxOutputTokensRecoveryCount` | `token` 恢复尝试次数（上限 3） | s11 |
 | 5 | `hasAttemptedReactiveCompact` | 本轮是否已尝试响应式压缩 | s08 |
 | 6 | `maxOutputTokensOverride` | 8K→64K 的升级覆盖 | s11 |
 | 7 | `pendingToolUseSummary` | 后台 Haiku 生成的 tool use 摘要 | s08 |
@@ -202,7 +202,7 @@ let needsFollowUp = false
 <details>
 <summary>三、多条退出和继续路径</summary>
 
-教学版只有 1 条退出路径（模型不调工具就结束）。生产版有多条退出和继续路径，覆盖 blocking limit、prompt too long、model error、abort、hook stop、max turns、token budget continuation、reactive compact retry 等场景。每种场景都有对应的恢复或退出策略。
+教学版只有 1 条退出路径（模型不调工具就结束）。生产版有多条退出和继续路径，覆盖 blocking limit、prompt too long、model error、abort、hook stop、max turns、`token` budget continuation、reactive compact retry 等场景。每种场景都有对应的恢复或退出策略。
 
 </details>
 

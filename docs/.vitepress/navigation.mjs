@@ -1,7 +1,10 @@
 import { readdirSync } from 'node:fs'
 import { join } from 'node:path'
 
-const articleLabels = { 'OpenAI Agent 机制知识字典': 'Agent 架构全景' }
+const articleLabels = {
+  'OpenAI Agent 机制知识字典': 'Agent 架构全景',
+  '10、前端跨域的9种解决方案': '前端跨域的8种解决方案'
+}
 
 const agentGroups = [
   ['基础与工具', file => /^(?:01-|01、|02、|21、)/u.test(file)],
@@ -13,7 +16,7 @@ const agentGroups = [
 ]
 
 const labels = {
-  agent: 'Agent 架构', 'ai-coding': 'AI Coding',
+  ai: 'AI 基础', agent: 'Agent 架构', 'ai-coding': 'AI Coding',
   css: 'CSS', es6: 'ES6', http: 'HTTP', javascript: 'JavaScript',
   java: 'Java', langchain: 'LangChain',
   'jquery-source-analysis': 'jQuery 源码', linux: 'Linux', node: 'Node.js',
@@ -44,7 +47,10 @@ export function createNavigation(articlesDir) {
     sidebar[`/articles/${category.name}/`] = category.name === 'agent'
       ? [{ text: `${text} 专题`, ...(files.includes('README.md') ? { link } : {}) },
         ...agentGroups.map(([group, matches]) => ({ text: group,
-          items: articleItems.filter((_, index) => matches(articleFiles[index]))
+          items: articleItems.filter((_, index) => matches(articleFiles[index])).map((item, index) => ({
+            ...item,
+            text: `${index + 1}、${item.text.replace(/^\d+、/, '')}`
+          }))
         })).filter(group => group.items.length)]
       : [{ text: `${text} 专题`, ...(files.includes('README.md') ? { link } : {}), items: articleItems }]
   }

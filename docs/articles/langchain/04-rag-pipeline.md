@@ -6,11 +6,11 @@ tags: LangChain|RAG
 note: 从文档加载、切分、向量检索到回答引用，跑通 RAG 链路。
 ---
 
-# 04. RAG 基础链路
+# 04. `RAG` 基础链路
 
 ## 1. 这一模块解决什么问题
 
-RAG 的核心目标是：让模型回答时参考你的私有知识，而不是只靠模型自己的记忆。
+`RAG` 的核心目标是：让模型回答时参考你的私有知识，而不是只靠模型自己的记忆。
 
 最小链路：
 
@@ -20,7 +20,7 @@ RAG 的核心目标是：让模型回答时参考你的私有知识，而不是�
 
 ## 2. Document
 
-Document 是 LangChain 里表示文档片段的对象，通常包含：
+Document 是 `LangChain` 里表示文档片段的对象，通常包含：
 
 - `page_content`：正文
 - `metadata`：来源信息
@@ -44,7 +44,7 @@ metadata 建议包含：
 
 ## 3. Loader
 
-Loader 负责把 PDF、Word、Markdown、网页、数据库记录等加载成 Document。
+Loader 负责把 PDF、Word、`Markdown`、网页、数据库记录等加载成 Document。
 
 重点检查：
 
@@ -70,7 +70,7 @@ Text Splitter 把长文档切成小块，方便向量化和检索。
 | chunk size | 每块多大 |
 | chunk overlap | 相邻块重复多少内容 |
 | separator | 按什么符号切 |
-| token length | 按 token 而不是字符计算长度 |
+| `token` length | 按 `token` 而不是字符计算长度 |
 
 切分建议：
 
@@ -88,9 +88,9 @@ Text Splitter 把长文档切成小块，方便向量化和检索。
 4. overlap 太大：重复内容过多。
 5. 没保留标题路径：检索到片段后不知道属于哪章。
 
-## 5. Embedding 和向量库
+## 5. `Embedding` 和向量库
 
-Embedding 把文本变成向量，让机器能计算“语义相似”。
+`Embedding` 把文本变成向量，让机器能计算“语义相似”。
 
 向量库保存向量，并支持相似度搜索。
 
@@ -132,7 +132,7 @@ Retriever 是“根据问题找资料”的接口。
 
 ## 7. Context 拼接
 
-Context 拼接是把检索到的文档片段整理后放进 Prompt。
+Context 拼接是把检索到的文档片段整理后放进 `Prompt`。
 
 好的上下文应该包含：
 
@@ -144,12 +144,12 @@ Context 拼接是把检索到的文档片段整理后放进 Prompt。
 
 常见坑：
 
-1. 把所有检索结果原样塞进 Prompt。
+1. 把所有检索结果原样塞进 `Prompt`。
 2. 没有来源编号，模型无法引用。
 3. 上下文太长，关键信息被淹没。
 4. 没有去重。
 
-## 8. 最小 RAG 验收标准
+## 8. 最小 `RAG` 验收标准
 
 1. 能加载 3 到 5 篇测试文档。
 2. 能切分并入库。
@@ -171,19 +171,19 @@ python docs/public/langchain-examples/04_rag/retrievers.py
 python docs/public/langchain-examples/04_rag/context_building.py
 ```
 
-再运行联网完整 RAG：
+再运行联网完整 `RAG`：
 
 ~~~powershell
 python docs/public/langchain-examples/04_rag_pipeline.py
 ~~~
 
-该脚本会用 OpenAI Embeddings 构建内存向量库、检索制度片段，再由
+该脚本会用 `OpenAI` `Embeddings` 构建内存向量库、检索制度片段，再由
 `ChatOpenAI` 调用 ChatGPT 基于上下文生成带来源标记的答案。
 
 ## 10. 本模块自测
 
-1. RAG 的完整链路是什么？
-    + 文档加载 -> 文本切分 -> Embedding -> 向量库 -> Retriever -> Prompt -> LLM -> Answer
+1. `RAG` 的完整链路是什么？
+    + 文档加载 -> 文本切分 -> `Embedding` -> 向量库 -> Retriever -> `Prompt` -> `LLM` -> Answer
 2. `Document.metadata` 为什么重要？
     + 用于权限过滤、文档类型分类、检索结果排序。
     + 没有 metadata 会导致检索结果不准确。

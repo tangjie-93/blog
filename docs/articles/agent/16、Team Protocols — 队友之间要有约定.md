@@ -6,17 +6,17 @@ tags: "Agent|AI Coding"
 note: "通过消息、计划提交和审批约定协调队友，避免重复认领与无序修改。"
 ---
 
-# s16: Team Protocols — 队友之间要有约定
+# s16: `Team Protocols` — 队友之间要有约定
 
 
 s01 → ... → s14 → s15 → `s16` → [s17](./17%E3%80%81Autonomous%20Agents%20%E2%80%94%20%E8%87%AA%E5%B7%B1%E7%9C%8B%E6%9D%BF%EF%BC%8C%E8%87%AA%E5%B7%B1%E8%AE%A4%E9%A2%86.md) → s18 → s19 → s20
 > *"队友之间要有约定"* — request-response 模式驱动协商。
 >
-> **Harness 层**: 协议 — Agent 之间的结构化握手。
+> **Harness 层**: 协议 — `Agent` 之间的结构化握手。
 
 ---
 
-## 问题
+## 1、问题
 
 s15 的队友能干活了，但协调是松散的：Lead 发消息，队友回复，没有结构化的协议。两个场景暴露了问题：
 
@@ -28,11 +28,11 @@ s15 的队友能干活了，但协调是松散的：Lead 发消息，队友回�
 
 ---
 
-## 解决方案
+## 2、解决方案
 
-![Team Protocols Overview](/image/agent-course/s16_team_protocols/team-protocols-overview.svg)
+![`Team Protocols` Overview](/image/agent-course/s16_team_protocols/team-protocols-overview.svg)
 
-教学代码承接前面章节的 Agent 能力脉络，在 S15 团队通信基础上加入结构化协议。为了聚焦协议机制，省略了完整错误恢复、记忆和技能系统。新增三样：**ProtocolState**（请求状态追踪）、**dispatch_message**（按消息类型路由到处理器）、**match_response**（通过 request_id 关联回复与请求，含类型校验）。
+教学代码承接前面章节的 `Agent` 能力脉络，在 S15 团队通信基础上加入结构化协议。为了聚焦协议机制，省略了完整错误恢复、记忆和技能系统。新增三样：**ProtocolState**（请求状态追踪）、**dispatch_message**（按消息类型路由到处理器）、**match_response**（通过 request_id 关联回复与请求，含类型校验）。
 
 两种协议，一套机制：
 
@@ -45,9 +45,9 @@ s15 的队友能干活了，但协调是松散的：Lead 发消息，队友回�
 
 ---
 
-## 工作原理
+## 3、工作原理
 
-### ProtocolState: 请求状态
+### 3.1 ProtocolState: 请求状态
 
 每个协议请求创建一条状态记录，记录谁发的、发给谁、当前状态、附带内容：
 
@@ -67,7 +67,7 @@ pending_requests: dict[str, ProtocolState] = {}
 
 发请求时创建记录，收回复时通过 `request_id` 找到对应记录，更新状态。
 
-### 四步协议流程
+### 3.2 四步协议流程
 
 以关机为例，完整链路：
 
@@ -95,7 +95,7 @@ pending_requests: dict[str, ProtocolState] = {}
 
 > 教学版用 `shutdown_response` 统一命名（approve 字段区分同意/拒绝）。真实源码拆成 `shutdown_approved` 和 `shutdown_rejected` 两种独立消息类型（`teammateMailbox.ts:720-763`）。
 
-### dispatch_message: 按类型路由
+### 3.3 dispatch_message: 按类型路由
 
 队友的 inbox 不只收普通消息，还收协议消息。`handle_inbox_message` 按消息类型分发：
 
@@ -118,7 +118,7 @@ def handle_inbox_message(name, msg, messages):
 
 新增协议类型只需加新的 `if` 分支。
 
-### match_response: 类型校验
+### 3.4 match_response: 类型校验
 
 `match_response` 不只按 `request_id` 找状态，还会校验响应类型是否匹配请求类型：
 
@@ -138,7 +138,7 @@ def match_response(response_type, request_id, approve):
 
 一个 shutdown_response 不会意外 approve 一个 plan_approval 请求。
 
-### 统一 inbox 消费：consume_lead_inbox
+### 3.5 统一 inbox 消费：consume_lead_inbox
 
 `check_inbox` 工具和主循环末尾都调用同一个 `consume_lead_inbox()` 函数，先路由协议消息再返回剩余内容，避免消息被读走但协议状态没更新：
 
@@ -155,11 +155,11 @@ def consume_lead_inbox(route_protocol=True) -> list[dict]:
     return msgs
 ```
 
-主循环末尾还会把 inbox 消息注入到 `history`，让 LLM 能看到并做出反应。
+主循环末尾还会把 inbox 消息注入到 `history`，让 `LLM` 能看到并做出反应。
 
-### 队友 idle loop：等待而不是退出
+### 3.6 队友 idle loop：等待而不是退出
 
-s15 的队友跑完 10 轮就退出。s16 的队友在 LLM 返回非 tool_use 后进入 idle 等待：轮询 inbox，收到 shutdown_request 就响应退出，收到新消息就继续工作。
+s15 的队友跑完 10 轮就退出。s16 的队友在 `LLM` 返回非 tool_use 后进入 idle 等待：轮询 inbox，收到 shutdown_request 就响应退出，收到新消息就继续工作。
 
 ```
 LLM 返回非 tool_use
@@ -170,7 +170,7 @@ LLM 返回非 tool_use
 
 教学版省略了 idle_notification 给 Lead 的通知。真实 CC 在 idle 时发 `idle_notification`，Lead 收到后知道队友空闲，可以分配新任务。
 
-### 合起来跑
+### 3.7 合起来跑
 
 ```
 1. Lead: "让 Alice 创建一个文件，然后关机"
@@ -189,7 +189,7 @@ LLM 返回非 tool_use
 
 ---
 
-## 相对 s15 的变更
+## 4、相对 s15 的变更
 
 | 组件 | 之前 (s15) | 之后 (s16) |
 |------|-----------|-----------|
@@ -206,7 +206,7 @@ LLM 返回非 tool_use
 
 ---
 
-## 试一下
+## 5、试一下
 
 ```sh
 cd learn-claude-code
@@ -222,7 +222,7 @@ python s16_team_protocols/code.py
 
 ---
 
-## 接下来
+## 6、接下来
 
 s15-s16 中，Lead 必须给每个队友分配任务。"Alice 做这个，Bob 做那个"。任务看板上有 10 个未认领的任务，Lead 得手动 assign。
 
@@ -239,7 +239,7 @@ CC 的团队协议实现（`teammateMailbox.ts`，1184 行）和教学版在核�
 
 **计划审批**：真实源码里 plan approval request 由 `ExitPlanModeV2Tool.ts:263-312` 在 plan-mode-required 队友退出 plan mode 时产生。`useInboxPoller.ts:599-661` 当前会自动回写 approval，并把请求交给 Lead 作为上下文（regular message）。`SendMessageTool.ts:434-518` 仍保留显式 approve/reject response 能力，审批时可同时设置 `permissionMode`（如"批准但以 plan mode 运行"），响应中可包含 `feedback` 字符串供队友修正后重新提交。不是简单的"Lead 手动 review_plan 工具"流程。
 
-**消息格式**：CC 的协议消息是结构化的 JSON（有 Zod schema 验证），教学版用简单的 type + metadata 字典。字段名也不统一：permission 用 `request_id`（`teammateMailbox.ts:453-462`），shutdown 和 plan approval 用 `requestId`（`teammateMailbox.ts:684-763`）。
+**消息格式**：CC 的协议消息是结构化的 `JSON`（有 Zod schema 验证），教学版用简单的 type + metadata 字典。字段名也不统一：permission 用 `request_id`（`teammateMailbox.ts:453-462`），shutdown 和 plan approval 用 `requestId`（`teammateMailbox.ts:684-763`）。
 
 **执行门控**：CC 的队友有完整的 permission gating。未获批准的高风险操作会被拦截，不是可选的。教学版只演示了消息流程，没有实现执行拦截。
 

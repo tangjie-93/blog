@@ -6,13 +6,13 @@ tags: WebGL
 note:  纹理动画
 ---
 
-## 纹理动画的实现思路
+## 1、纹理动画的实现思路
 
 在前端我们可以使通过改变`dom`的样式来实现`dom`的动画效果。在`WebGL`中我们同样可以实现动画效果。通过改变`纹理坐标`我们也可以实现纹理贴图的动画效果。
 实现代码如下。
 我们只需要在`纹理贴图demo`的基础上修改两个地方就可以实现纹理动画效果了。
 
-## 修改 `assignValue` 函数
+## 2、修改 `assignValue` 函数
 
 这里不再调用`gl.bufferData`向缓冲区传递数据了。
 ```js
@@ -53,7 +53,7 @@ function assignValue(gl, program) {
 }
 ```
 
-## 更新 `WebGL` 渲染函数
+## 3、更新 `WebGL` 渲染函数
 
 在这里调用`gl.bufferData`向缓冲区传递数据，因为数据的纹理坐标一直在发生改变，所以写入缓冲区的数据也要不断重新写入。调用`requestAnimationFrame`动画函数，每一次重新渲染时`纹理坐标`的`x`轴值不断增加`0.005`,使得图片呈现一直向左运动的效果。当然也可以通过修改`y`轴的值实现向下或向上的运行.
 ```js
@@ -79,11 +79,11 @@ function render(gl, positions) {
 }
 ```
 
-## 动画效果
+## 4、动画效果
 
 <img src="../../images/webgl/纹理动画-向左运动.gif" alt="暂无数据" width=300>
 
-## 参考资料
+## 5、参考资料
 
 [WebGL零基础入门教程(郭隆邦)](http://www.yanhuangxueyuan.com/WebGL/)<br>
 [WebGL 入门与实践](https://juejin.cn/book/6844733755580481543/section/6844733755916025869)<br>

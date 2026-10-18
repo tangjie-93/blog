@@ -6,15 +6,15 @@ tags: LangChain|LangSmith
 note: 用 LangSmith 追踪、评估和监控 LLM 应用。
 ---
 
-# 07. LangSmith 观测和评估
+# 07. `LangSmith` 观测和评估
 
 ## 1. 这一模块解决什么问题
 
-LLM 应用最难的是：出问题时你不知道是哪一步错了。
+`LLM` 应用最难的是：出问题时你不知道是哪一步错了。
 
-LangSmith 用来回答这些问题：
+`LangSmith` 用来回答这些问题：
 
-- Prompt 最终长什么样？
+- `Prompt` 最终长什么样？
 - 模型看到了哪些上下文？
 - 检索到了哪些文档？
 - 调用了哪个工具？
@@ -29,13 +29,13 @@ Trace 是一次完整请求的执行记录。
 它能记录：
 
 - 用户输入
-- Prompt
+- `Prompt`
 - 模型输入输出
 - Retriever 结果
 - Tool 调用
-- LangGraph 节点
+- `LangGraph` 节点
 - 耗时
-- token
+- `token`
 - 成本
 - 错误
 
@@ -82,9 +82,9 @@ Dataset 应该覆盖：
 
 ## 4. Evaluation
 
-Evaluation 是评估 LLM 应用质量。
+Evaluation 是评估 `LLM` 应用质量。
 
-企业 RAG 至少评估：
+企业 `RAG` 至少评估：
 
 | 评估项 | 说明 |
 |---|---|
@@ -94,7 +94,7 @@ Evaluation 是评估 LLM 应用质量。
 | 正确性 | 答案是否解决问题 |
 | 引用准确性 | 引用是否真的支持答案 |
 | 延迟 | 响应是否太慢 |
-| 成本 | token 和调用次数是否可控 |
+| 成本 | `token` 和调用次数是否可控 |
 
 常见坑：
 
@@ -124,7 +124,7 @@ Feedback 是用户或人工评审对回答的反馈。
 - 错误率
 - 平均延迟
 - P95 延迟
-- token 消耗
+- `token` 消耗
 - 单次请求成本
 - 工具失败率
 - 检索为空比例
@@ -148,20 +148,20 @@ python docs/public/langchain-examples/07_langsmith/trace.py
 python docs/public/langchain-examples/07_langsmith.py
 ~~~
 
-该脚本用 `@traceable` 包裹一次 `ChatOpenAI` 调用；运行结束后可在 LangSmith
+该脚本用 `@traceable` 包裹一次 `ChatOpenAI` 调用；运行结束后可在 `LangSmith`
 项目中查看这次 ChatGPT 调用的 trace。
 
 ## 8. 本模块自测
 
 1. Trace 能看到哪些信息？
    + 用户输入
-   + Prompt
+   + `Prompt`
    + 模型输入输出
    + Retriever 结果
    + Tool 调用
-   + LangGraph 节点
+   + `LangGraph` 节点
    + 耗时
-   + token
+   + `token`
    + 成本
    + 错误
    + 其他元数据

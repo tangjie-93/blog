@@ -6,13 +6,13 @@ tags: "Python"
 note: "系统整理路由、参数、依赖注入、安全、数据库、异步与部署知识。"
 ---
 
-# FastAPI 完整知识点总结
+# `FastAPI` 完整知识点总结
 
-FastAPI 是一个现代、快速的 Python Web 框架，用于构建 API。它基于 Python 类型提示构建，天生支持异步编程，具有自动文档生成、类型验证等特性。
+`FastAPI` 是一个现代、快速的 `Python` Web 框架，用于构建 `API`。它基于 `Python` 类型提示构建，天生支持异步编程，具有自动文档生成、类型验证等特性。
 
 ---
 
-## 目录
+## 1、目录
 
 1. [基础入门](#_1-基础入门)
 2. [路由与请求处理](#_2-路由与请求处理)
@@ -24,7 +24,7 @@ FastAPI 是一个现代、快速的 Python Web 框架，用于构建 API。它�
 8. [安全与认证](#_8-安全与认证)
 9. [数据库集成](#_9-数据库集成)
 10. [异步编程](#_10-异步编程)
-11. [WebSocket](#_11-websocket)
+11. [`WebSocket`](#_11-websocket)
 12. [配置管理](#_12-配置管理)
 13. [测试](#_13-测试)
 14. [部署与性能优化](#_14-部署与性能优化)
@@ -34,7 +34,7 @@ FastAPI 是一个现代、快速的 Python Web 框架，用于构建 API。它�
 
 ## 1. 基础入门
 
-### 1.1 安装与环境配置
+### 2.1 `1.1` 安装与环境配置
 
 ```bash
 # 使用 Poetry 安装（推荐）
@@ -50,7 +50,7 @@ pip install "uvicorn[standard]"
 pip install "fastapi[all]"
 ```
 
-### 1.2 Poetry 项目配置
+### 2.2 `1.2` Poetry 项目配置
 
 ```bash
 # 初始化 Poetry 项目
@@ -87,7 +87,7 @@ poetry run uvicorn main:app --reload
 poetry run pytest
 ```
 
-### 1.3 第一个 FastAPI 应用
+### 2.3 `1.3` 第一个 `FastAPI` 应用
 
 ```python
 from fastapi import FastAPI
@@ -104,7 +104,7 @@ def read_item(item_id: int, q: Union[str, None] = None):
     return {"item_id": item_id, "q": q}
 ```
 
-### 1.4 启动服务
+### 2.4 `1.4` 启动服务
 
 ```bash
 # 使用 Poetry 运行
@@ -120,13 +120,13 @@ uvicorn main:app --host 0.0.0.0 --port 8000
 uvicorn main:app --ssl-keyfile=key.pem --ssl-certfile=cert.pem
 ```
 
-### 1.5 自动文档
+### 2.5 `1.5` 自动文档
 
 - **Swagger UI**: `http://localhost:8000/docs`
 - **ReDoc**: `http://localhost:8000/redoc`
-- **OpenAPI JSON**: `http://localhost:8000/openapi.json`
+- **OpenAPI `JSON`**: `http://localhost:8000/openapi.json`
 
-### 1.6 FastAPI 应用配置
+### 2.6 `1.6` `FastAPI` 应用配置
 
 ```python
 from fastapi import FastAPI
@@ -156,7 +156,7 @@ app.add_middleware(
 
 ## 2. 路由与请求处理
 
-### 2.1 HTTP 方法装饰器
+### 3.1 `2.1` `HTTP` 方法装饰器
 
 ```python
 from fastapi import FastAPI
@@ -188,7 +188,7 @@ def options_items():
     return {"method": "OPTIONS"}
 ```
 
-### 2.2 路径参数
+### 3.2 `2.2` 路径参数
 
 ```python
 from fastapi import FastAPI
@@ -213,7 +213,7 @@ def get_item(item_id: int):
     return {"item_id": item_id}
 ```
 
-### 2.3 预定义路径参数
+### 3.3 `2.3` 预定义路径参数
 
 ```python
 from fastapi import FastAPI
@@ -233,7 +233,7 @@ def get_model(model_name: ModelName):
     return {"model_name": model_name, "message": "Have some residuals"}
 ```
 
-### 2.4 查询参数
+### 3.4 `2.4` 查询参数
 
 ```python
 from fastapi import FastAPI, Query
@@ -285,7 +285,7 @@ def read_items(
     return {"q": q}
 ```
 
-### 2.5 请求体
+### 3.5 `2.5` 请求体
 
 ```python
 from fastapi import FastAPI
@@ -325,7 +325,7 @@ class ItemWithImage(BaseModel):
     images: list[Image] | None = None
 ```
 
-### 2.6 多个请求体参数
+### 3.6 `2.6` 多个请求体参数
 
 ```python
 from fastapi import FastAPI, Body
@@ -359,7 +359,7 @@ def update_item(
     return {"item_id": item_id, "item": item, "q": q, "importance": importance}
 ```
 
-### 2.7 表单数据
+### 3.7 `2.7` 表单数据
 
 ```python
 from fastapi import FastAPI, Form
@@ -391,7 +391,7 @@ def create_item(
     return {"name": name, "description": description, "price": price, "tags": tags}
 ```
 
-### 2.8 文件上传
+### 3.8 `2.8` 文件上传
 
 ```python
 from fastapi import FastAPI, UploadFile, File, Form
@@ -440,7 +440,7 @@ async def upload_and_save(file: UploadFile):
     return {"path": save_path}
 ```
 
-### 2.9 请求对象
+### 3.9 `2.9` 请求对象
 
 ```python
 from fastapi import FastAPI, Request
@@ -463,7 +463,7 @@ async def get_request_info(request: Request):
 
 ## 3. Pydantic 数据模型
 
-### 3.1 基础模型
+### 4.1 `3.1` 基础模型
 
 ```python
 from pydantic import BaseModel, Field, ConfigDict
@@ -495,7 +495,7 @@ class UserConfig(BaseModel):
     name: str
 ```
 
-### 3.2 字段验证
+### 4.2 `3.2` 字段验证
 
 ```python
 from pydantic import BaseModel, Field, validator, field_validator
@@ -529,7 +529,7 @@ class UserValidated(BaseModel):
         return v
 ```
 
-### 3.3 嵌套模型
+### 4.3 `3.3` 嵌套模型
 
 ```python
 from pydantic import BaseModel
@@ -556,7 +556,7 @@ class Company(BaseModel):
     employees: List["Person"] = []
 ```
 
-### 3.4 组合类型
+### 4.4 `3.4` 组合类型
 
 ```python
 from pydantic import BaseModel, Field
@@ -593,7 +593,7 @@ class FlexibleModel(BaseModel):
     data: Union[str, int, List[int], dict[str, str]] = None
 ```
 
-### 3.5 继承与组合
+### 4.5 `3.5` 继承与组合
 
 ```python
 from pydantic import BaseModel
@@ -624,7 +624,7 @@ class UserResponse(UserBase, BaseSchema):
         from_attributes = True
 ```
 
-### 3.6 数据转换
+### 4.6 `3.6` 数据转换
 
 ```python
 from pydantic import BaseModel, SecretStr
@@ -658,7 +658,7 @@ user_updated = user.model_copy(update={"name": "Jane"})
 
 ## 4. 响应处理
 
-### 4.1 响应模型
+### 5.1 `4.1` 响应模型
 
 ```python
 from fastapi import FastAPI
@@ -706,7 +706,7 @@ async def get_item(item_id: int):
     return item
 ```
 
-### 4.2 状态码
+### 5.2 `4.2` 状态码
 
 ```python
 from fastapi import FastAPI, status
@@ -732,7 +732,7 @@ def get_item(item_id: int):
     return {"item_id": item_id}
 ```
 
-### 4.3 JSON 响应
+### 5.3 `4.3` `JSON` 响应
 
 ```python
 from fastapi import FastAPI, JSONResponse
@@ -780,7 +780,7 @@ def file_response():
     )
 ```
 
-### 4.4 流式响应
+### 5.4 `4.4` 流式响应
 
 ```python
 from fastapi import FastAPI
@@ -815,7 +815,7 @@ async def download_file():
     )
 ```
 
-### 4.5 响应头
+### 5.5 `4.5` 响应头
 
 ```python
 from fastapi import FastAPI
@@ -847,20 +847,20 @@ async def response_headers(response: Response):
 
 ## 5. 依赖注入系统
 
-FastAPI 的依赖注入系统是其核心特性之一，它允许你通过声明式的方式管理依赖关系，使代码更加模块化、可测试和可维护。
+`FastAPI` 的依赖注入系统是其核心特性之一，它允许你通过声明式的方式管理依赖关系，使代码更加模块化、可测试和可维护。
 
-### 5.1 什么是依赖注入
+### 6.1 `5.1` 什么是依赖注入
 
-依赖注入（Dependency Injection, DI）是一种设计模式，它将对象的创建和使用分离。在 FastAPI 中，你可以通过 `Depends` 来声明依赖，框架会自动解析和注入这些依赖。
+依赖注入（Dependency Injection, DI）是一种设计模式，它将对象的创建和使用分离。在 `FastAPI` 中，你可以通过 `Depends` 来声明依赖，框架会自动解析和注入这些依赖。
 
 **核心概念：**
 - **依赖函数**：返回依赖对象的函数
 - **依赖提供者**：创建和管理依赖的函数或类
 - **依赖消费者**：使用依赖的路由处理函数
 
-### 5.2 基础依赖注入
+### 6.2 `5.2` 基础依赖注入
 
-#### 5.2.1 最简单的依赖
+#### `5.2.1` 最简单的依赖
 
 ```python
 from fastapi import FastAPI, Depends
@@ -892,7 +892,7 @@ async def read_users(commons: dict = Depends(common_parameters)):
     return commons
 ```
 
-#### 5.2.2 带 yield 的依赖（上下文管理器模式）
+#### `5.2.2` 带 yield 的依赖（上下文管理器模式）
 
 ```python
 from fastapi import FastAPI, Depends, HTTPException
@@ -921,7 +921,7 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
     return user
 ```
 
-#### 5.2.3 异步依赖
+#### `5.2.3` 异步依赖
 
 ```python
 from fastapi import FastAPI, Depends
@@ -943,9 +943,9 @@ async def read_async_items(data: dict = Depends(get_async_data)):
     return data
 ```
 
-### 5.3 类作为依赖
+### 6.3 `5.3` 类作为依赖
 
-#### 5.3.1 基础类依赖
+#### `5.3.1` 基础类依赖
 
 ```python
 from fastapi import FastAPI, Depends
@@ -986,7 +986,7 @@ def get_items(db: DatabaseConnection = Depends(get_db)):
     return {"results": results, "stats": stats}
 ```
 
-#### 5.3.2 可调用类依赖
+#### `5.3.2` 可调用类依赖
 
 ```python
 from fastapi import FastAPI, Depends, Request
@@ -1021,9 +1021,9 @@ def get_items(params: dict = Depends(pagination)):
     return params
 ```
 
-### 5.4 子依赖和依赖链
+### 6.4 `5.4` 子依赖和依赖链
 
-#### 5.4.1 多层依赖嵌套
+#### `5.4.1` 多层依赖嵌套
 
 ```python
 from fastapi import FastAPI, Depends, Header, HTTPException
@@ -1072,7 +1072,7 @@ def search(params: dict = Depends(sorted_pagination)):
     return params
 ```
 
-#### 5.4.2 Header 依赖
+#### `5.4.2` Header 依赖
 
 ```python
 from fastapi import FastAPI, Depends, Header, HTTPException
@@ -1110,7 +1110,7 @@ def info(headers: dict = Depends(get_headers_info)):
     return headers
 ```
 
-#### 5.4.3 认证依赖链
+#### `5.4.3` 认证依赖链
 
 ```python
 from fastapi import FastAPI, Depends, Header, HTTPException, status
@@ -1199,9 +1199,9 @@ def get_all_users(admin: dict = Depends(require_admin)):
     return {"message": "Admin access granted", "admin": admin}
 ```
 
-### 5.5 依赖缓存机制
+### 6.5 `5.5` 依赖缓存机制
 
-#### 5.5.1 默认缓存行为
+#### `5.5.1` 默认缓存行为
 
 ```python
 from fastapi import FastAPI, Depends
@@ -1231,7 +1231,7 @@ def get_items(
     return {"settings": settings, "db": db}
 ```
 
-#### 5.5.2 禁用缓存
+#### `5.5.2` 禁用缓存
 
 ```python
 from fastapi import FastAPI, Depends
@@ -1270,9 +1270,9 @@ def with_cache(
     return {"timestamp1": timestamp1, "timestamp2": timestamp2}
 ```
 
-### 5.6 依赖的多种用法
+### 6.6 `5.6` 依赖的多种用法
 
-#### 5.6.1 可选依赖
+#### `5.6.1` 可选依赖
 
 ```python
 from fastapi import FastAPI, Depends
@@ -1294,7 +1294,7 @@ def optional_dep(q: Optional[str] = Depends(get_optional_query)):
     return {"q": q}
 ```
 
-#### 5.6.2 多个依赖
+#### `5.6.2` 多个依赖
 
 ```python
 from fastapi import FastAPI, Depends
@@ -1323,7 +1323,7 @@ def multiple_deps(
     return {"a": a, "b": b, "c": c}
 ```
 
-#### 5.6.3 使用 Annotated（推荐方式）
+#### `5.6.3` 使用 Annotated（推荐方式）
 
 ```python
 from fastapi import FastAPI, Depends, Query
@@ -1355,9 +1355,9 @@ def read_items(
     }
 ```
 
-### 5.7 路径操作装饰器中的依赖
+### 6.7 `5.7` 路径操作装饰器中的依赖
 
-#### 5.7.1 路由级别的依赖
+#### `5.7.1` 路由级别的依赖
 
 ```python
 from fastapi import FastAPI, Depends, HTTPException, Header
@@ -1385,7 +1385,7 @@ def create_protected_item():
     return {"message": "Item created"}
 ```
 
-#### 5.7.2 包含依赖的路由器
+#### `5.7.2` 包含依赖的路由器
 
 ```python
 from fastapi import FastAPI, Depends, APIRouter, HTTPException, Header
@@ -1425,9 +1425,9 @@ async def read_item(item_id: str):
 app.include_router(router)
 ```
 
-### 5.8 全局依赖
+### 6.8 `5.8` 全局依赖
 
-#### 5.8.1 应用级别的全局依赖
+#### `5.8.1` 应用级别的全局依赖
 
 ```python
 from fastapi import FastAPI, Depends, Request
@@ -1481,7 +1481,7 @@ def get_users(request: Request):
     }
 ```
 
-#### 5.8.2 条件全局依赖
+#### `5.8.2` 条件全局依赖
 
 ```python
 from fastapi import FastAPI, Depends, Request
@@ -1518,9 +1518,9 @@ def get_items():
     return {"items": []}
 ```
 
-### 5.9 依赖注入的最佳实践
+### 6.9 `5.9` 依赖注入的最佳实践
 
-#### 5.9.1 依赖的组织结构
+#### `5.9.1` 依赖的组织结构
 
 ```
 project/
@@ -1537,7 +1537,7 @@ project/
 │   └── services/
 ```
 
-#### 5.9.2 数据库依赖示例
+#### `5.9.2` 数据库依赖示例
 
 ```python
 # app/dependencies/database.py
@@ -1566,7 +1566,7 @@ def get_db() -> Session:
 DBDependency = Depends(get_db)
 ```
 
-#### 5.9.3 认证依赖示例
+#### `5.9.3` 认证依赖示例
 
 ```python
 # app/dependencies/auth.py
@@ -1643,7 +1643,7 @@ async def get_current_active_user(
     return current_user
 ```
 
-#### 5.9.4 在路由中使用依赖
+#### `5.9.4` 在路由中使用依赖
 
 ```python
 # app/routers/users.py
@@ -1676,7 +1676,7 @@ async def read_user(
     return {"user_id": user_id, "current_user": current_user}
 ```
 
-### 5.10 依赖注入的测试
+### 6.10 `5.10` 依赖注入的测试
 
 ```python
 # 测试时覆盖依赖
@@ -1705,7 +1705,7 @@ def test_read_items():
 
 ## 6. 中间件
 
-### 6.1 基础中间件
+### 7.1 `6.1` 基础中间件
 
 ```python
 from fastapi import FastAPI, Request
@@ -1746,7 +1746,7 @@ async def auth_middleware(request: Request, call_next):
     return await call_next(request)
 ```
 
-### 6.2 CORS 中间件
+### 7.2 `6.2` CORS 中间件
 
 ```python
 from fastapi import FastAPI
@@ -1783,7 +1783,7 @@ app.add_middleware(
 )
 ```
 
-### 6.3 内置中间件
+### 7.3 `6.3` 内置中间件
 
 ```python
 from fastapi import FastAPI
@@ -1819,7 +1819,7 @@ app.add_middleware(
 
 ## 7. 错误处理
 
-### 7.1 HTTP 异常
+### 8.1 `7.1` `HTTP` 异常
 
 ```python
 from fastapi import FastAPI, HTTPException
@@ -1854,7 +1854,7 @@ async def create_item(name: str):
     return {"name": name}
 ```
 
-### 7.2 自定义异常处理器
+### 8.2 `7.2` 自定义异常处理器
 
 ```python
 from fastapi import FastAPI, Request, HTTPException
@@ -1913,7 +1913,7 @@ async def general_exception_handler(request: Request, exc: Exception):
 
 ## 8. 安全与认证
 
-### 8.1 API Key 认证
+### 9.1 `8.1` `API` Key 认证
 
 ```python
 from fastapi import FastAPI, Depends, HTTPException, Security
@@ -1941,7 +1941,7 @@ async def secure_query_endpoint(api_key: str = Security(api_key_query)):
     return {"message": "Access granted"}
 ```
 
-### 8.2 OAuth2 密码 Bearer
+### 9.2 `8.2` OAuth2 密码 Bearer
 
 ```python
 from fastapi import FastAPI, Depends, HTTPException, status
@@ -1980,7 +1980,7 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
     return {"access_token": "valid-token", "token_type": "bearer"}
 ```
 
-### 8.3 JWT 认证
+### 9.3 `8.3` JWT 认证
 
 ```python
 from fastapi import FastAPI, Depends, HTTPException, status
@@ -2050,7 +2050,7 @@ async def read_users_me(current_user: User = Depends(get_current_user)):
     return current_user
 ```
 
-### 8.4 依赖注入认证
+### 9.4 `8.4` 依赖注入认证
 
 ```python
 from fastapi import FastAPI, Depends, HTTPException
@@ -2079,7 +2079,7 @@ async def protected_route(token: str = Depends(verify_credentials)):
 
 ## 9. 数据库集成
 
-### 9.1 SQLModel 基础
+### 10.1 `9.1` SQLModel 基础
 
 ```python
 from fastapi import FastAPI, HTTPException
@@ -2136,7 +2136,7 @@ def delete_hero(hero_id: int):
         return {"ok": True}
 ```
 
-### 9.2 异步数据库操作
+### 10.2 `9.2` 异步数据库操作
 
 ```python
 from fastapi import FastAPI
@@ -2189,7 +2189,7 @@ async def read_items():
 
 ## 10. 异步编程
 
-### 10.1 async/await 基础
+### 11.1 `10.1` async/await 基础
 
 ```python
 from fastapi import FastAPI
@@ -2235,7 +2235,7 @@ async def concurrent_endpoints():
     return {"api_1": results[0], "api_2": results[1]}
 ```
 
-### 10.2 后台任务
+### 11.2 `10.2` 后台任务
 
 ```python
 from fastapi import FastAPI, BackgroundTasks
@@ -2265,9 +2265,9 @@ async def process_item(item: str, background_tasks: BackgroundTasks):
 
 ---
 
-## 11. WebSocket
+## 11. `WebSocket`
 
-### 11.1 基础 WebSocket
+### 12.1 `11.1` 基础 `WebSocket`
 
 ```python
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
@@ -2312,7 +2312,7 @@ async def websocket_endpoint(websocket: WebSocket, client_id: str):
 
 ## 12. 配置管理
 
-### 12.1 Settings 配置
+### 13.1 `12.1` Settings 配置
 
 ```python
 from fastapi import FastAPI
@@ -2338,7 +2338,7 @@ def read_root():
     return {"app_name": settings.app_name}
 ```
 
-### 12.2 多环境配置
+### 13.2 `12.2` 多环境配置
 
 ```python
 from fastapi import FastAPI
@@ -2376,7 +2376,7 @@ else:
 
 ## 13. 测试
 
-### 13.1 基础单元测试
+### 14.1 `13.1` 基础单元测试
 
 ```python
 # test_main.py
@@ -2406,7 +2406,7 @@ def test_create_item():
     assert "id" in data
 ```
 
-### 13.2 异步测试
+### 14.2 `13.2` 异步测试
 
 ```python
 # test_async.py
@@ -2423,7 +2423,7 @@ async def test_async_endpoint():
         assert response.json() == {"message": "Async response"}
 ```
 
-### 13.3 测试数据库
+### 14.3 `13.3` 测试数据库
 
 ```python
 # test_database.py
@@ -2462,7 +2462,7 @@ def test_create_item(client: TestClient):
     assert response.status_code == 200
 ```
 
-### 13.4 测试覆盖
+### 14.4 `13.4` 测试覆盖
 
 ```bash
 # 使用 Poetry 运行测试
@@ -2483,7 +2483,7 @@ poetry run pytest -m integration
 
 ## 14. 部署与性能优化
 
-### 14.1 Uvicorn 配置
+### 15.1 `14.1` Uvicorn 配置
 
 ```bash
 # 使用 Poetry 运行
@@ -2508,7 +2508,7 @@ uvicorn main:app --factory \
     --log-config log_config.py
 ```
 
-### 14.2 Gunicorn 配置
+### 15.2 `14.2` Gunicorn 配置
 
 ```bash
 # 使用 Gunicorn 运行
@@ -2519,7 +2519,7 @@ gunicorn main:app \
     --timeout 120
 ```
 
-### 14.3 Docker 部署
+### 15.3 `14.3` `Docker` 部署
 
 ```dockerfile
 # Dockerfile
@@ -2572,7 +2572,7 @@ volumes:
   postgres_data:
 ```
 
-### 14.4 性能优化技巧
+### 15.4 `14.4` 性能优化技巧
 
 ```python
 # 1. 使用缓存
@@ -2615,7 +2615,7 @@ async def fetch_items():
 
 ## 15. 最佳实践
 
-### 15.1 项目结构
+### 16.1 `15.1` 项目结构
 
 ```
 my_project/
@@ -2655,7 +2655,7 @@ my_project/
 └── docker-compose.yml
 ```
 
-### 15.2 代码规范
+### 16.2 `15.2` 代码规范
 
 ```python
 # 1. 使用类型注解
@@ -2703,7 +2703,7 @@ def create_user(user: UserCreate) -> UserResponse:
     pass
 ```
 
-### 15.3 安全性最佳实践
+### 16.3 `15.3` 安全性最佳实践
 
 ```python
 # 1. 使用环境变量存储敏感信息
@@ -2756,9 +2756,9 @@ class UserInput(BaseModel):
 
 ---
 
-## 附录
+## 17、附录
 
-### 常用命令
+### 17.1 常用命令
 
 ```bash
 # ========== Poetry 命令（推荐）==========
@@ -2807,7 +2807,7 @@ poetry show --outdated
 poetry update
 ```
 
-### 常用依赖
+### 17.2 常用依赖
 
 | 依赖 | 用途 |
 |------|------|
@@ -2820,11 +2820,11 @@ poetry update
 | `passlib` | 密码哈希 |
 | `python-multipart` | 表单数据解析 |
 | `aiofiles` | 异步文件操作 |
-| `httpx` | HTTP 客户端 |
+| `httpx` | `HTTP` 客户端 |
 | `pytest` | 测试框架 |
 | `pytest-asyncio` | 异步测试 |
 
-### Poetry 项目配置模板 (pyproject.toml)
+### 17.3 Poetry 项目配置模板 (pyproject.toml)
 
 ```toml
 [tool.poetry]
@@ -2874,4 +2874,4 @@ testpaths = ["tests"]
 
 ---
 
-*文档更新时间：2026-03-18*
+*文档更新时间：`2026-03-18`*

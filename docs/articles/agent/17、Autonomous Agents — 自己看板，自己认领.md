@@ -17,13 +17,13 @@ s01 → ... → s15 → s16 → `s17` → [s18](./18%E3%80%81Worktree%20Isolatio
 
 ---
 
-## 问题
+## 1、问题
 
 s16 的队友能通信、能握手关机。但每个队友等 Lead 分配任务——如果任务看板上有 10 个未认领任务，Lead 得手动 assign 10 次。这不能扩展。队友应该自己看任务看板，发现没人做的任务就认领，做完再找下一个。
 
 ---
 
-## 解决方案
+## 2、解决方案
 
 ![Autonomous Agents Overview](/image/agent-course/s17_autonomous_agents/autonomous-agents-overview.svg)
 
@@ -33,15 +33,15 @@ s16 的队友能通信、能握手关机。但每个队友等 Lead 分配任务�
 
 | 阶段 | 行为 | 退出条件 |
 |------|------|---------|
-| WORK | inbox → LLM → 工具循环 | `stop_reason != tool_use` |
+| WORK | inbox → `LLM` → 工具循环 | `stop_reason != tool_use` |
 | IDLE | 每 5s 轮询 inbox + 任务板 | 60s 超时 |
 | SHUTDOWN | 发 summary，退出 | — |
 
 ---
 
-## 工作原理
+## 3、工作原理
 
-### idle_poll: 空闲轮询
+### 3.1 idle_poll: 空闲轮询
 
 队友完成当前任务后不退出，进入 IDLE 阶段——每 5 秒检查一次有没有新工作：
 
@@ -79,7 +79,7 @@ def idle_poll(name, messages, role) -> str:
 
 inbox 优先（可能包含 shutdown_request 等协议消息），任务板其次。IDLE 阶段收到 shutdown_request 会直接回复并退出，不等到下一轮 WORK。
 
-### scan_unclaimed_tasks: 扫描任务看板
+### 3.2 scan_unclaimed_tasks: 扫描任务看板
 
 找 pending 状态、无 owner、所有依赖已完成（`can_start`）的任务：
 
@@ -97,7 +97,7 @@ def scan_unclaimed_tasks() -> list[dict]:
 
 三个条件：必须是 pending、没有 owner、所有 blockedBy 依赖已完成。`can_start` 检查依赖任务的状态——有依赖不代表不能做，只有被未完成的任务阻塞才不能做。教学版按文件名排序取第一个；CC 用文件锁防止多个队友同时认领同一个任务。
 
-### claim_task: owner 检查
+### 3.3 claim_task: owner 检查
 
 自动认领时检查 claim 结果，不把失败当成功：
 
@@ -118,7 +118,7 @@ def claim_task(task_id: str, owner: str = "agent") -> str:
 
 教学版没有文件锁，并发认领可能出现竞争。但至少 `task.owner` 检查避免了最明显的"后写覆盖"问题。CC 用 `proper-lockfile` 保护任务文件，`claimTask` 在文件锁内完成读-改-写（`utils/tasks.ts:541-612`）。
 
-### 队友生命周期: WORK → IDLE → SHUTDOWN
+### 3.4 队友生命周期: WORK → IDLE → SHUTDOWN
 
 s16 的队友做完任务就退出。s17 加了 IDLE 阶段，队友在外层循环中反复 WORK → IDLE：
 
@@ -145,11 +145,11 @@ BUS.send(name, "lead", summary, "result")
 
 关键设计：
 - **外层 while True**：WORK 和 IDLE 交替进行，直到超时或收到关机请求
-- **内层 for 10**：WORK 阶段最多 10 轮 LLM 调用（防止无限循环）
+- **内层 for 10**：WORK 阶段最多 10 轮 `LLM` 调用（防止无限循环）
 - **IDLE 超时 60 秒**：12 次轮询 × 5 秒 = 60 秒。超时后发送 summary 并退出
 - **shutdown_request 两阶段都能响应**：WORK 阶段通过 `handle_inbox_message` 分发；IDLE 阶段 `idle_poll` 直接检查并回复
 
-### 身份重注入
+### 3.5 身份重注入
 
 autoCompact（s08）之后，队友的 messages 列表可能被压缩成一段摘要。每次进入新的 WORK 阶段时检查：
 
@@ -162,11 +162,11 @@ if len(messages) <= 3:
 
 消息过短说明发生了压缩，此时重新注入身份信息。真实 CC 中 context compaction 会保留 system prompt，教学版的简化实现需要手动处理。
 
-### consume_lead_inbox: 统一 inbox 消费
+### 3.6 consume_lead_inbox: 统一 inbox 消费
 
-`check_inbox` 工具和主循环末尾都调用同一个 `consume_lead_inbox()` 函数：先路由协议 response 更新状态，再把所有消息注入 Lead 的对话历史。队友发来的 summary/result 不会只打印在终端，Lead 的 LLM 能看到并协调下一步。
+`check_inbox` 工具和主循环末尾都调用同一个 `consume_lead_inbox()` 函数：先路由协议 response 更新状态，再把所有消息注入 Lead 的对话历史。队友发来的 summary/result 不会只打印在终端，Lead 的 `LLM` 能看到并协调下一步。
 
-### 合起来跑
+### 3.7 合起来跑
 
 ```
 1. Lead: "搭建后端——任务太多，让队友自己认领"
@@ -197,7 +197,7 @@ if len(messages) <= 3:
 
 ---
 
-## 相对 s16 的变更
+## 4、相对 s16 的变更
 
 | 组件 | 之前 (s16) | 之后 (s17) |
 |------|-----------|-----------|
@@ -214,7 +214,7 @@ if len(messages) <= 3:
 
 ---
 
-## 试一下
+## 5、试一下
 
 ```sh
 cd learn-claude-code
@@ -229,11 +229,11 @@ python s17_autonomous_agents/code.py
 
 ---
 
-## 接下来
+## 6、接下来
 
 队友自组织了。但 Alice 和 Bob 都在同一个目录下工作——Alice 改 `config.py`，Bob 也改 `config.py`，互相覆盖。
 
-s18 Worktree Isolation → 每个任务有自己的工作目录，互不干扰。
+s18 `Worktree Isolation` → 每个任务有自己的工作目录，互不干扰。
 
 <details>
 <summary>深入 CC 源码</summary>

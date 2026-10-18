@@ -6,7 +6,7 @@ tags: react
 note: react基本知识点总结
 ---
 
-## Context-组件跨层级通信
+## 1、Context-组件跨层级通信
 `Context` 设计的目的是为了共享那些对于一个组件而言是 全局的数据。主要有以下 `API`。
 
 #### 1 `React.createContext`

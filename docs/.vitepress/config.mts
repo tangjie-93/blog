@@ -9,7 +9,7 @@ const base = process.env.VITEPRESS_BASE || '/'
 const navGroups = [
   { text: '语言与标准', categories: ['javascript', 'es6', 'typescript', 'css', 'http'] },
   { text: '框架与工程', categories: ['vue', 'vue3', 'react', 'node', 'webpack', 'linux'] },
-  { text: 'AI', categories: ['agent', 'rag', 'ai-coding'] },
+  { text: 'AI', categories: ['ai', 'agent', 'rag'] },
   { text: '后端', categories: ['python', 'java', 'langchain'] },
   { text: '图形与交互', categories: ['webgl', 'threejs'] },
   { text: '源码与算法', categories: ['jquery-source-analysis', '算法', '其他'] }
@@ -23,7 +23,11 @@ const groupedNav = navGroups.flatMap(({ text, categories }) => {
   return items.length ? [{ text, items }] : []
 })
 const groupedCategories = new Set(navGroups.flatMap(group => group.categories))
-const remainingNav = nav.filter(item => !groupedCategories.has(decodeURIComponent(item.link.split('/')[2] || '')))
+const hiddenNavCategories = new Set(['ai-coding'])
+const remainingNav = nav.filter(item => {
+  const category = decodeURIComponent(item.link.split('/')[2] || '')
+  return !groupedCategories.has(category) && !hiddenNavCategories.has(category)
+})
 if (remainingNav.length) groupedNav.push({ text: '更多专题', items: remainingNav })
 
 export default defineConfig({

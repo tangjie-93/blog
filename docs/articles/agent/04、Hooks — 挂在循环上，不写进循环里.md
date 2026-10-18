@@ -17,9 +17,9 @@ s01 → s02 → s03 → `s04` → [s05](./05%E3%80%81TodoWrite%20%E2%80%94%20%E6
 
 ---
 
-## 问题
+## 1、问题
 
-s03 的 Agent 有权限检查了。但每次加一个新检查，比如"记录每次 bash 调用"、"操作后自动 git add"，都要修改 `agent_loop` 函数。
+s03 的 `Agent` 有权限检查了。但每次加一个新检查，比如"记录每次 bash 调用"、"操作后自动 git add"，都要修改 `agent_loop` 函数。
 
 循环很快就变成了这样：
 
@@ -38,11 +38,11 @@ def agent_loop(messages):
             # ... 很快循环就认不出来了
 ```
 
-你想扩展的是 Agent 的行为，但你改的却是循环本身。循环应该是一个稳定的核心，扩展应该挂在外面。
+你想扩展的是 `Agent` 的行为，但你改的却是循环本身。循环应该是一个稳定的核心，扩展应该挂在外面。
 
 ---
 
-## 解决方案
+## 2、解决方案
 
 ![Hooks Overview](/image/agent-course/s04_hooks/hooks-overview.svg)
 
@@ -52,7 +52,7 @@ s03 的循环和权限逻辑完全保留。唯一的变动是把 `check_permissi
 
 | 事件 | 触发时机 | 典型用途 |
 |------|---------|---------|
-| UserPromptSubmit | 用户输入提交后、进入 LLM 前 | 输入验证、注入上下文 |
+| UserPromptSubmit | 用户输入提交后、进入 `LLM` 前 | 输入验证、注入上下文 |
 | PreToolUse | 工具执行前 | 权限检查、日志记录 |
 | PostToolUse | 工具执行后 | 副作用（自动 git add 等）、输出检查 |
 | Stop | 循环即将退出时 | 收尾清理（CC 还支持强制续跑） |
@@ -61,7 +61,7 @@ s03 的循环和权限逻辑完全保留。唯一的变动是把 `check_permissi
 
 ---
 
-## 工作原理
+## 3、工作原理
 
 **hook 注册表**：一个字典，事件名映射到回调列表。
 
@@ -86,7 +86,7 @@ def trigger_hooks(event: str, *args):
 
 教学版中，PreToolUse 的非 None 返回值会阻止本次工具执行，Stop 的非 None 返回值会强制续跑。UserPromptSubmit 和 PostToolUse 的返回值未被使用。
 
-**UserPromptSubmit**，用户输入提交后、进入 LLM 前触发。CC 中可以拦截或修改输入，教学版只做日志演示：
+**UserPromptSubmit**，用户输入提交后、进入 `LLM` 前触发。CC 中可以拦截或修改输入，教学版只做日志演示：
 
 ```python
 def context_inject_hook(query: str) -> str | None:
@@ -191,7 +191,7 @@ for block in response.content:
 
 ---
 
-## 相对 s03 的变更
+## 4、相对 s03 的变更
 
 | 组件 | 之前 (s03) | 之后 (s04) |
 |------|-----------|-----------|
@@ -204,7 +204,7 @@ for block in response.content:
 
 ---
 
-## 试一下
+## 5、试一下
 
 ```sh
 cd learn-claude-code
@@ -221,11 +221,11 @@ python s04_hooks/code_openai.py
 
 ---
 
-## 接下来
+## 6、接下来
 
-Agent 现在能安全执行操作了。但它有没有停下来想过"我应该先做什么，再做什么"？给它一个复杂任务，它是一上来就动手，还是先列个计划？
+`Agent` 现在能安全执行操作了。但它有没有停下来想过"我应该先做什么，再做什么"？给它一个复杂任务，它是一上来就动手，还是先列个计划？
 
-s05 TodoWrite → 给 Agent 一个计划工具。先列清单，再做。
+s05 TodoWrite → 给 `Agent` 一个计划工具。先列清单，再做。
 
 <details>
 <summary>深入 CC 源码</summary>
@@ -241,7 +241,7 @@ s05 TodoWrite → 给 Agent 一个计划工具。先列清单，再做。
 | 工具相关 | `PreToolUse`, `PostToolUse`, `PostToolUseFailure` |
 | 会话相关 | `SessionStart`, `SessionEnd`, `Stop`, `StopFailure`, `Setup` |
 | 用户交互 | `UserPromptSubmit`, `Notification`, `PermissionRequest`, `PermissionDenied` |
-| 子 Agent | `SubagentStart`, `SubagentStop` |
+| 子 `Agent` | `SubagentStart`, `SubagentStop` |
 | 压缩相关 | `PreCompact`, `PostCompact` |
 | 团队相关 | `TeammateIdle`, `TaskCreated`, `TaskCompleted` |
 | 其他 | `Elicitation`, `ElicitationResult`, `ConfigChange`, `WorktreeCreate`, `WorktreeRemove`, `InstructionsLoaded`, `CwdChanged`, `FileChanged` |
@@ -262,7 +262,7 @@ CC 的 `HookResult`（`types/hooks.ts:260-275`）有 14 个字段，以下是常
 | `permissionBehavior` | allow/deny/ask/passthrough | hook 返回权限决策 |
 | `updatedInput` | Record | 修改工具输入 |
 | `additionalContext` | string | 附加上下文 |
-| `updatedMCPToolOutput` | unknown | MCP 工具输出修改 |
+| `updatedMCPToolOutput` | unknown | `MCP` 工具输出修改 |
 
 ### 三、关键不变式：Hook 'allow' 不能绕过 deny/ask 规则
 
@@ -276,9 +276,9 @@ CC 的 Stop hooks 有一个防无限循环机制（`query.ts:212,1300`）：`sto
 
 ### 五、hook_stopped_continuation
 
-PostToolUse hooks 返回 `preventContinuation: true` 时，会产生一个 `hook_stopped_continuation` 附件（`toolHooks.ts:117-130`）。query.ts（L1388-1393）检测到后设置 `shouldPreventContinuation = true`，循环退出。这是 "hook 优雅地让 Agent 停机" 的机制，不是崩溃，是完成。
+PostToolUse hooks 返回 `preventContinuation: true` 时，会产生一个 `hook_stopped_continuation` 附件（`toolHooks.ts:117-130`）。query.ts（L1388-1393）检测到后设置 `shouldPreventContinuation = true`，循环退出。这是 "hook 优雅地让 `Agent` 停机" 的机制，不是崩溃，是完成。
 
-### 教学版的简化是刻意的
+### 6.6 教学版的简化是刻意的
 
 - 27 个事件 → 4 个（UserPromptSubmit/PreToolUse/PostToolUse/Stop）：覆盖 agent cycle 关键节点
 - 14 个字段 → 简单的返回值（None = 继续，非 None = 阻止/续跑）：心智负担降到最低

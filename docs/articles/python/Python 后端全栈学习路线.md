@@ -6,18 +6,18 @@ tags: "Python"
 note: "从 Python 后端、数据库到 AI 应用、部署监控的阶段学习路线。"
 ---
 
-# Python 后端全栈学习路线
+# `Python` 后端全栈学习路线
 
-## 总体目标
-从传统后端开发者转型为 AI 时代的全栈工程师，掌握 FastAPI、数据库、AI 应用开发等核心技能。
+## 1、总体目标
+从传统后端开发者转型为 `AI` 时代的全栈工程师，掌握 `FastAPI`、数据库、`AI` 应用开发等核心技能。
 
 ---
 
-## 第一阶段：巩固 Python 后端基础（2-3 周）
+## 2、第一阶段：巩固 `Python` 后端基础（2-3 周）
 
-虽然你有 Python 基础，但后端开发需要更系统的知识：
+虽然你有 `Python` 基础，但后端开发需要更系统的知识：
 
-### 1.1 环境与工具链
+### 2.1 `1.1` 环境与工具链
 
 | 技能 | 说明 |
 |------|------|
@@ -26,16 +26,16 @@ note: "从 Python 后端、数据库到 AI 应用、部署监控的阶段学习�
 | **代码规范** | `Black`（格式化）、`Ruff`（linting）、`pre-commit hooks` |
 | **调试工具** | `pdb`、`IPython`、`VSCode` 调试配置 |
 
-### 1.2 Web 框架选型：FastAPI（强烈推荐）
+### 2.2 `1.2` Web 框架选型：`FastAPI`（强烈推荐）
 
 根据搜索结果，`FastAPI` 已成为 `Python` 生态中发展最快、社区最活跃的 Web 框架，`GitHub Star` 已超 80k+，增长速度超过 `Flask` 和 `Django`。
 
-#### 为什么选 FastAPI？
+#### 为什么选 `FastAPI`？
 
 | 特性 | 说明 |
 |------|------|
 | **高性能** | 可媲美 `Node.js`/`Go`，`QPS` 比 `Flask` 高出 3-5 倍 |
-| **自动 API 文档** | 写好代码自动生成 `Swagger UI` 和 `ReDoc` |
+| **自动 `API` 文档** | 写好代码自动生成 `Swagger UI` 和 `ReDoc` |
 | **类型提示驱动** | 使用 `Python` 类型注解自动校验参数，`IDE` 体验极佳 |
 | **原生异步支持** | 适合高并发 `IO` 场景 |
 | **依赖注入系统** | 灵活处理权限、数据库会话等 |
@@ -47,15 +47,15 @@ note: "从 Python 后端、数据库到 AI 应用、部署监控的阶段学习�
 
 ---
 
-## 第二阶段：数据持久化（3-4 周）
+## 3、第二阶段：数据持久化（3-4 周）
 
 企业开发中数据库是绕不开的：
 
-### 2.1 关系型数据库
+### 3.1 `2.1` 关系型数据库
 
 | 数据库 | 说明 |
 |--------|------|
-| **PostgreSQL**（首选） | 支持向量存储，对 AI 应用友好 |
+| **PostgreSQL**（首选） | 支持向量存储，对 `AI` 应用友好 |
 | **MySQL** | 传统业务场景 |
 
 #### ORM 选型
@@ -66,7 +66,7 @@ note: "从 Python 后端、数据库到 AI 应用、部署监控的阶段学习�
 | **SQLAlchemy** | 成熟稳定，学习曲线较陡 |
 | **Tortoise-ORM** | 专为异步设计，语法类似 `Django` |
 
-### 2.2 NoSQL 数据库
+### 3.2 `2.2` NoSQL 数据库
 
 | 数据库 | 说明 |
 |--------|------|
@@ -75,7 +75,7 @@ note: "从 Python 后端、数据库到 AI 应用、部署监控的阶段学习�
 
 - 重点：`Motor`（`MongoDB` 异步驱动）、`redis-py` + `aioredis`
 
-### 2.3 向量数据库（AI 时代必备）
+### 3.3 `2.3` 向量数据库（`AI` 时代必备）
 
 | 数据库 | 说明 |
 |--------|------|
@@ -90,15 +90,15 @@ note: "从 Python 后端、数据库到 AI 应用、部署监控的阶段学习�
 
 ---
 
-## 第三阶段：AI 应用开发核心（4-6 周）
+## 4、第三阶段：`AI` 应用开发核心（4-6 周）
 
-这是你从传统后端向 AI 时代转型的关键：
+这是你从传统后端向 `AI` 时代转型的关键：
 
-### 3.1 AI 基础库
+### 4.1 `3.1` `AI` 基础库
 
 | 库 | 说明 |
 |----|------|
-| **LangChain** | 构建 `LLM` 应用的核心框架 |
+| **`LangChain`** | 构建 `LLM` 应用的核心框架 |
 | **Chains** | 串联多个 `LLM` 调用 |
 | **Agents** | 让 `LLM` 使用工具 |
 | **Memory** | 对话历史管理 |
@@ -111,7 +111,7 @@ note: "从 Python 后端、数据库到 AI 应用、部署监控的阶段学习�
 - 查询引擎、聊天引擎
 - 与向量数据库无缝集成
 
-### 3.2 实战项目：RAG 系统
+### 4.2 `3.2` 实战项目：`RAG` 系统
 
 #### 技术栈
 `FastAPI` + `LangChain` + `Chroma` + `OpenAI`/`DeepSeek API`
@@ -152,11 +152,11 @@ async def query(q: str):
 
 ---
 
-## 第四阶段：微服务与容器化（2-3 周）
+## 5、第四阶段：微服务与容器化（2-3 周）
 
 现代后端开发的必备技能：
 
-### 4.1 Docker 容器化
+### 5.1 `4.1` `Docker` 容器化
 
 | 技能 | 说明 |
 |------|------|
@@ -180,7 +180,7 @@ COPY . .
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 ```
 
-### 4.2 Kubernetes 基础
+### 5.2 `4.2` Kubernetes 基础
 
 | 概念 | 说明 |
 |------|------|
@@ -195,17 +195,17 @@ CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 
 ---
 
-## 第五阶段：部署与监控（2-3 周）
+## 6、第五阶段：部署与监控（2-3 周）
 
-### 5.1 云平台部署
+### 6.1 `5.1` 云平台部署
 
 | 平台 | 服务 |
 |------|------|
 | **AWS** | `EC2`, `ECS`, `Lambda` |
 | **阿里云** | `ECS`, `SAE`, `FC` |
-| **Vercel** | 快速部署前端 + Python API |
+| **`Vercel`** | 快速部署前端 + `Python` `API` |
 
-### 5.2 监控与可观测性
+### 6.2 `5.2` 监控与可观测性
 
 | 类型 | 工具 |
 |------|------|
@@ -216,9 +216,9 @@ CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 
 ---
 
-## 第六阶段：项目实战（持续进行）
+## 7、第六阶段：项目实战（持续进行）
 
-### 项目 1：AI 客服系统
+### 7.1 项目 1：`AI` 客服系统
 
 #### 技术栈
 `FastAPI` + `DeepSeek`/`LlamaIndex` + 向量数据库 + `React`
@@ -230,9 +230,9 @@ CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 - 对话历史存储
 - 管理后台（数据统计、反馈标注）
 
-### 项目 2：MCP 服务开发
+### 7.2 项目 2：`MCP` 服务开发
 
-`MCP`（Model Context Protocol）是 AI 领域前沿技术，可以让 AI 大模型调用你编写的服务：
+`MCP`（Model Context Protocol）是 `AI` 领域前沿技术，可以让 `AI` 大模型调用你编写的服务：
 
 #### 学习路径
 
@@ -242,29 +242,29 @@ CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 
 ---
 
-## 学习资源推荐
+## 8、学习资源推荐
 
-### 免费资源
+### 8.1 免费资源
 
 | 类型 | 资源名称 | 说明 |
 |------|----------|------|
-| 官方文档 | FastAPI 官方文档 | 权威首选，教程-用户指南章节必读 |
-| 社区 | FastAPI 官方 Discord | 实时问题解答，全球开发者社区 |
-| 中文社区 | 知乎 FastAPI 专题、掘金专栏 | 本土化教程，贴近国内开发场景 |
-| 实战项目 | Full Stack FastAPI PostgreSQL | 包含前端 React 的完整模板 |
-| 学习路线 | Python-100-Days | 骆昊的 Python 百天计划 |
+| 官方文档 | `FastAPI` 官方文档 | 权威首选，教程-用户指南章节必读 |
+| 社区 | `FastAPI` 官方 Discord | 实时问题解答，全球开发者社区 |
+| 中文社区 | 知乎 `FastAPI` 专题、掘金专栏 | 本土化教程，贴近国内开发场景 |
+| 实战项目 | Full Stack `FastAPI` PostgreSQL | 包含前端 `React` 的完整模板 |
+| 学习路线 | `Python`-100-Days | 骆昊的 `Python` 百天计划 |
 
-### 付费课程（有预算可选）
+### 8.2 付费课程（有预算可选）
 
 | 平台 | 课程 | 特点 |
 |------|------|------|
-| IBM | Python Back-end Development Capstone | 18 小时实战，涵盖 Flask、Django、MongoDB、Docker、Kubernetes |
-| Udacity | Backend Developer with Python | 67 小时，Flask、SQL、Docker、安全、部署 |
-| 编程狮 | AI 驱动的 Python 编程实战 | 73 节视频，涵盖 DeepSeek、LlamaIndex、MCP 服务 |
+| IBM | `Python` Back-end Development Capstone | 18 小时实战，涵盖 Flask、Django、MongoDB、`Docker`、Kubernetes |
+| Udacity | Backend Developer with `Python` | 67 小时，Flask、`SQL`、`Docker`、安全、部署 |
+| 编程狮 | `AI` 驱动的 `Python` 编程实战 | 73 节视频，涵盖 `DeepSeek`、LlamaIndex、`MCP` 服务 |
 
 ---
 
-## 学习路径总结
+## 9、学习路径总结
 
 ```
 第 1-3 周   ：FastAPI 基础 → 路由、Pydantic、依赖注入
@@ -277,30 +277,30 @@ CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 
 ---
 
-## 核心建议
+## 10、核心建议
 
 | 建议 | 说明 |
 |------|------|
 | **不要贪多求快** | 每个阶段至少完成一个小项目再进入下一阶段 |
-| **关注前沿但打好基础** | AI 工具迭代快，但 HTTP、数据库、容器化是相对稳定的 |
+| **关注前沿但打好基础** | `AI` 工具迭代快，但 `HTTP`、数据库、容器化是相对稳定的 |
 | **参与开源** | 推荐参与 Resume Matcher、OpenHands 等项目 |
 | **保持代码规范** | 类型注解、单元测试、文档注释 |
 
 ---
 
-## 行动指南
+## 11、行动指南
 
-你现在可以开始了！第一周先把 FastAPI 官方文档的 "Tutorial - User Guide" 过一遍，有问题随时问我。
+你现在可以开始了！第一周先把 `FastAPI` 官方文档的 "Tutorial - User Guide" 过一遍，有问题随时问我。
 
-### 第一周任务清单
+### 11.1 第一周任务清单
 
-- [ ] 安装 FastAPI 和 Uvicorn
-- [ ] 阅读 FastAPI 官方文档 "Tutorial - User Guide"
-- [ ] 创建第一个 FastAPI 应用
+- [ ] 安装 `FastAPI` 和 Uvicorn
+- [ ] 阅读 `FastAPI` 官方文档 "Tutorial - User Guide"
+- [ ] 创建第一个 `FastAPI` 应用
 - [ ] 掌握路由定义和请求参数处理
 - [ ] 学习 Pydantic 模型定义
 - [ ] 了解依赖注入系统
 
 ---
 
-*更新时间：2026-03-17*
+*更新时间：`2026-03-17`*

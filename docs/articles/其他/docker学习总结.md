@@ -102,7 +102,7 @@ docker run -P -d nginx:latest
 docker run -p 80:80 -v /data:/data -d nginx:latest
 ```
 
-4、绑定容器的 8080 端口，并将其映射到本地主机 127.0.0.1 的 80 端口上。
+4、绑定容器的 8080 端口，并将其映射到本地主机 `127.0.0`.1 的 80 端口上。
 
 ```bash
 docker run -p 127.0.0.1:80:8080/tcp ubuntu bash
@@ -551,9 +551,9 @@ ARG <参数名>[=<默认值>]
 
 ​		申明端口。在运行时使用随机端口映射时，也就是 docker run -P 时，会自动随机映射 EXPOSE 的端口。
 
-### 5、Docker Compose
+### 5、`Docker` Compose
 
-​		Compose 是用于定义和运行多容器 Docker 应用程序的工具。通过 Compose，您可以使用 YML 文件来配置应用程序需要的所有服务。然后，使用一个命令，就可以从 YML 文件配置中创建并启动所有服务。
+​		Compose 是用于定义和运行多容器 `Docker` 应用程序的工具。通过 Compose，您可以使用 YML 文件来配置应用程序需要的所有服务。然后，使用一个命令，就可以从 YML 文件配置中创建并启动所有服务。
 
 Compose使用的三个步骤：
 

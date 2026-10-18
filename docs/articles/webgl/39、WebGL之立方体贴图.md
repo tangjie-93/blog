@@ -10,7 +10,7 @@ note: WebGL之立方体贴图
 在 `WebGL` 中实现立方体贴图`（Cube Mapping）`是一种用于环境贴图或反射效果的技术。以下是如何在 `WebGL` 中实现立方体贴图的步骤，包括创建一个立方体并应用贴图。立方体贴图由六个面组成，分别对应立方体的六个方向（正 `X`、负 `X`、正`Y`、负`Y`、正`Z`、负`Z`）。每个面都是一个独立的 `2D` 纹理。不像常规的纹理坐标有`2`个纬度，立方体纹理使用法向量， 根据法向量的朝向选取立方体`6`个面中的一个，这个面的像素用来采样生成颜色。
 我们除了使用图片绘制纹理，我们还可以使用`canvas`来绘制纹理。
 
-#### 1.1 使用图片绘制纹理
+#### `1.1` 使用图片绘制纹理
 核心代码如下所示
 + 顶点着色器代码
 ```js
@@ -73,7 +73,7 @@ function createTexture(gl) {
 <img width=300 src='../../images/webgl/立方体贴图-图片.png'>
 
 `demo`地址 [立方体贴图-使用图片绘制纹理](https://github.com/tangjie-93/WebGL/blob/main/fundmantalExamples/%E4%B8%89%E7%BB%B4%E7%BA%B9%E7%90%86/%E7%AB%8B%E6%96%B9%E4%BD%93%E8%B4%B4%E5%9B%BE-%E4%BD%BF%E7%94%A8%E5%9B%BE%E7%89%87%E7%BB%98%E5%88%B6%E7%BA%B9%E7%90%86.html)
-#### 1.2 使用canvas绘制纹理
+#### `1.2` 使用canvas绘制纹理
 核心代码如下所示
 ```js
 function createTexture() {

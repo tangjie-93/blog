@@ -16,15 +16,15 @@ s01 → s02 → `s03` → [s04](./04%E3%80%81Hooks%20%E2%80%94%20%E6%8C%82%E5%9C
 
 ---
 
-## 问题
+## 1、问题
 
-s02 的 Agent 有 5 个工具。file tools 受 `safe_path` 保护，但 bash 不受限制。让它"清理一下项目"，可能执行 `rm -rf /`。
+s02 的 `Agent` 有 5 个工具。file tools 受 `safe_path` 保护，但 bash 不受限制。让它"清理一下项目"，可能执行 `rm -rf /`。
 
 安全不能靠信任模型，要靠代码——在工具执行之前做判断。
 
 ---
 
-## 解决方案
+## 2、解决方案
 
 ![Permission Overview](/image/agent-course/s03_permission/permission-overview.svg)
 
@@ -42,7 +42,7 @@ s02 的循环完全保留。唯一的变动在工具执行前插入 `check_permi
 
 ---
 
-## 工作原理
+## 3、工作原理
 
 ![Permission Pipeline](/image/agent-course/s03_permission/permission-pipeline.svg)
 
@@ -126,7 +126,7 @@ for block in response.content:
 
 ---
 
-## 相对 s02 的变更
+## 4、相对 s02 的变更
 
 | 组件 | 之前 (s02) | 之后 (s03) |
 |------|-----------|-----------|
@@ -136,7 +136,7 @@ for block in response.content:
 
 ---
 
-## 试一下
+## 5、试一下
 
 ```sh
 cd learn-claude-code
@@ -155,7 +155,7 @@ python s03_permission/code_openai.py
 
 ---
 
-## 接下来
+## 6、接下来
 
 权限检查做了——但每次都在循环里硬编码 `check_permission()`。如果我想在每次工具执行前后加日志？如果想在某些操作后自动触发 git commit？这些扩展逻辑散落在 loop 里，循环很快就会膨胀。
 
@@ -217,23 +217,23 @@ CC 没有单一的 deny list。权限规则来自 8 个来源（`types/permissio
 
 ### 四、isDestructive() 是什么
 
-CC 中 `isDestructive`（`Tool.ts:405-406`）**纯粹是 UI 展示用的**——在工具列表里显示 `[destructive]` 标签。它不参与权限决策。默认所有工具都返回 `false`。只有 ExitWorktree（remove 时）和 MCP 工具（依赖 `annotations.destructiveHint`）覆写了它。
+CC 中 `isDestructive`（`Tool.ts:405-406`）**纯粹是 UI 展示用的**——在工具列表里显示 `[destructive]` 标签。它不参与权限决策。默认所有工具都返回 `false`。只有 ExitWorktree（remove 时）和 `MCP` 工具（依赖 `annotations.destructiveHint`）覆写了它。
 
 ### 五、YoloClassifier（自动审批）
 
-CC 的 auto 模式下，不会每次都弹对话框。`classifyYoloAction`（`utils/permissions/yoloClassifier.ts:1012`）把工具调用 + 对话上下文发给一个分类器 LLM 判断是否安全。先尝试 acceptEdits 模式模拟（`permissions.ts:620-656`，如果 acceptEdits 允许 → 直接批准），再查安全工具白名单（`permissions.ts:658-686`），最后才调分类器。分类器连续拒绝太多次 → 回退到人工审批。
+CC 的 auto 模式下，不会每次都弹对话框。`classifyYoloAction`（`utils/permissions/yoloClassifier.ts:1012`）把工具调用 + 对话上下文发给一个分类器 `LLM` 判断是否安全。先尝试 acceptEdits 模式模拟（`permissions.ts:620-656`，如果 acceptEdits 允许 → 直接批准），再查安全工具白名单（`permissions.ts:658-686`），最后才调分类器。分类器连续拒绝太多次 → 回退到人工审批。
 
 ### 六、权限冒泡
 
-子 Agent（通过 AgentTool fork 出来的）的 `permissionMode` 设为 `'bubble'`（`forkSubagent.ts:50`）。意思是权限弹窗**冒泡到父 Agent 的终端**，而不是在子 Agent 里静默拒绝。Bash 分类器在这个过程中继续跑——给权限对话框显示的同时在后台判断是否可以自动批准。
+子 `Agent`（通过 AgentTool fork 出来的）的 `permissionMode` 设为 `'bubble'`（`forkSubagent.ts:50`）。意思是权限弹窗**冒泡到父 `Agent` 的终端**，而不是在子 `Agent` 里静默拒绝。`Bash` 分类器在这个过程中继续跑——给权限对话框显示的同时在后台判断是否可以自动批准。
 
-### 教学版的简化是刻意的
+### 6.7 教学版的简化是刻意的
 
 - 多阶段管线 → 3 道闸门：理解门槛大幅降低
 - 8 个规则来源 → 1 个本地 DENY_LIST：概念量可控
 - isDestructive → 忽略（教学版没有 UI 层，CC 里它也不参与权限决策）
-- YoloClassifier → 省略（依赖于额外的 LLM 调用和遥测系统）
-- 权限冒泡 → 省略（s15 才涉及多 Agent）
+- YoloClassifier → 省略（依赖于额外的 `LLM` 调用和遥测系统）
+- 权限冒泡 → 省略（s15 才涉及多 `Agent`）
 
 </details>
 

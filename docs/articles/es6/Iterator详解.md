@@ -6,7 +6,7 @@ tags: es6
 note: Iterator详解
 ---
 
-## Iterator
+## 1、Iterator
 
 
 &#8195;&#8195;`Iterator`是一种接口，为各种不同的数据结构提供统一的访问机制。任何数据结构只要部署 `Iterator`接口，就可以完成遍历操作（即依次处理该数据结构的所有成员）。
@@ -99,7 +99,7 @@ iterator.next() // { value: undefined, done: true }
 ```
 >（4）	其他一些场合（for…of、Array.form()）
 
-&#8195;&#8195;JavaScript 原有的**for...in循环，只能获得对象的键名**，不能直接获取键值。ES6 提供**for...of循环，允许遍历获得键值**。数组的遍历器接口只返回具有数字索引的属性。
+&#8195;&#8195;`JavaScript` 原有的**for...in循环，只能获得对象的键名**，不能直接获取键值。ES6 提供**for...of循环，允许遍历获得键值**。数组的遍历器接口只返回具有数字索引的属性。
 ```js
 var arr = ['a', 'b', 'c', 'd'];
 arr.foo = 'hello';

@@ -5,7 +5,7 @@ type: 技术
 tags: node
 note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台。 专为数据密集型实时程序设计的。 node中的模块一旦被加载以后，就会被系统缓存。第二次加载该模块时，是从缓存中加载的。如果希望模块执行多次，则可以让函数返回一个函数，然后多次调用该函数。
 ---
-## 第一节  node概述
+## 1、第一节  node概述
 &#8195;&#8195;Node为服务端JavaScript提供了一个事件驱动的、异步的平台。 专为数据密集型实时程序设计的。 node中的模块一旦被加载以后，就会被系统缓存。第二次加载该模块时，是从缓存中加载的。如果希望模块执行多次，则可以让函数返回一个函数，然后多次调用该函数。<br>
 
 ​**node的优势?**
@@ -112,8 +112,8 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
         console.error(err.stack);
     })
 ```
-## 第二节  Node模块介绍
-### **1、assert()**
+## 2、第二节  Node模块介绍
+### 2.1 **1、assert()**
 
 &#8195;&#8195;主要用于断言。如果表达式不符合预期，就抛出一个错误。
 ```javascript
@@ -130,11 +130,11 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
     assert.ifError()<br>
     assert.fail()<br>
 ```
-### **2、Buffer**
+### 2.2 **2、Buffer**
 
 &#8195;&#8195;Buffer对象是Node处理二进制数据(如TCP数据流)的一个接口。它是Node原生提供的全局对象，可以直接使用，不需要require('buffer')。它是一个构造函数，生成的实例代表了V8引擎分配的一段内存，是一个类似数组的对象，成员都为0到255的整数值，即一个8位的字节。
 
-**&#8195;2.1、Buffer对象的直接赋值和取值**
+**&#8195;`2.1`、Buffer对象的直接赋值和取值**
 ```javascript
     // 生成一个256字节的Buffer实例
     var bytes = new Buffer(256);
@@ -149,7 +149,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
     end[0] = 0;
     end[0] // 0
 ```
-**&#8195;2.2、Buffer实例的拷贝生成**
+**&#8195;`2.2`、Buffer实例的拷贝生成**
 ```javascript
     var bytes = new Buffer(8);
     for (var i = 0; i < bytes.length; i++) {
@@ -160,7 +160,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
     more[0] // 4
     copy方法将bytes实例的4号成员到7号成员的这一段，都拷贝到了more实例从0号成员开始的区域。
 ```
-**&#8195;2.3、Buffer构造函数**
+**&#8195;`2.3`、Buffer构造函数**
 
 &#8195;&#8195;用new命令生成一个实例，它可以接受多种形式的参数。
 ```javascript
@@ -183,7 +183,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
     var hello1 = new Buffer('Hello');
     var hello2 = new Buffer(hello1);  
 ```
-**&#8195;2.4、Buffer类的方法**
+**&#8195;`2.4`、Buffer类的方法**
 ```javascript
     Buffer.isEncoding()：返回一个布尔值，表示Buffer实例是否为指定编码。
     Buffer.isBuffer()：接受一个对象作为参数，返回一个布尔值，表示该对象是否为Buffer实例。
@@ -196,7 +196,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
     // 'Hello Worl'
     //如果Buffer.concat的参数数组只有一个成员，就直接返回该成员。如果有多个成员，就返回一个多个成员合并的新Buffer对象。Buffer.concat方法还可以接受第二个参数，指定合并后Buffer对象的总长度。
 ```
-**&#8195;2.5、实例属性**
+**&#8195;`2.5`、实例属性**
 
  &#8195; &#8195;length：返回Buffer对象所占据的内存长度。注意，这个值与Buffer对象的内容无关。
 ```javascript
@@ -205,7 +205,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
     buf.write("some string", 0, "ascii");
     buf.length // 1234
 ```
-**&#8195;2.6、实例方法**
+**&#8195;`2.6`、实例方法**
 
 &#8195;&#8195;write():可以向指定的Buffer对象写入数据。它的第一个参数是所写入的内容，第二个参数（可省略）是所写入的起始位置（默认从0开始），第三个参数（可省略）是编码方式，默认为utf8。<br>
 &#8195;&#8195;slice():返回一个按照指定位置、从原对象切割出来的Buffer实例。它的两个参数分别为切割的起始位置和终止位置。<br>
@@ -224,10 +224,10 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
     var copy = new Buffer(JSON.parse(json));
     copy // <Buffer 74 65 73 74>
 ```
-### **3、Child Process模块**
+### 2.3 **3、Child Process模块**
 &#8195;&#8195;child_process模块用于新建子进程。子进程的运行结果储存在系统缓存之中（最大200KB），等到子进程运行结束以后，主进程再用回调函数读取子进程的运行结果。<br>
 
-**&#8195;3.1、主要方法**
+**&#8195;`3.1`、主要方法**
 
 + 1、exec()
 
@@ -314,10 +314,10 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
 
 &#8195;&#8195;使用 child_process.fork() 生成新进程之后，就可以用 child.send(message, [sendHandle]) 向新进程发送消息。新进程中通过监听message事件，来获取消息。
     
-### **4、cluster**
+### 2.4 **4、cluster**
 &#8195;&#8195;集群模块允许设立一个主进程和若干个工人进程，由主进程监控和协调工人进程的运行。worker之间采用进程间通信交换消息，集群模块内置一个负载均衡器，采用循环赛算法协调各个工人进程之间的负载运行。所有新建立的链接都由主进程完成，然后主进程再把TCP连接分配给指定的工人进程。
 
-**&#8195;4.1、worker对象**
+**&#8195;`4.1`、worker对象**
 
 &#8195;&#8195;是cluster.fork()的返回值，代表一个worker进程。有如下属性：
 
@@ -335,11 +335,11 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
         });
     }
 ```
-**&#8195;4.2、cluster.workers对象**
+**&#8195;`4.2`、cluster.workers对象**
 
 &#8195;&#8195;只有主进程才有，包含了所有worker进程。每个成员的键值就是一个worker进程对象，键名就是该worker进程的worker.id属性。
 
-**&#8195;4.3、cluster模块的属性和方法**
+**&#8195;`4.3`、cluster模块的属性和方法**
 + 1、isWorker、isMaster
 
 &#8195;&#8195;属性由process.env.NODE_UNIQUE_ID决定，如果process.env.NODE_UNIQUE_ID为未定义，就表示该进程是主进程。
@@ -360,13 +360,13 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
     });
 ```
 
-**&#8195;4.4、PM2**
+**&#8195;`4.4`、PM2**
 
 &#8195;&#8195;PM2模块是cluster模块的一个包装层。它的作用是尽量将cluster模块抽象掉，让用户像使用单进程一样，部署多进程Node应用。
 
-**&#8195;4.5、nodemon**
+**&#8195;`4.5`、nodemon**
 &#8195;&#8195;是一个node自动重启工具。通过`nodemon app.js`来启动程序。程序改变后，不用重启程序，直接刷新浏览器就可以看到更新的内容。 
-### **5、Event**
+### 2.5 **5、Event**
 &#8195;&#8195;Node 提供 Event Emitter 接口。通过事件，解决多状态异步操作的响应问题。events模块的EventEmitter是一个构造函数，可以用来生成事件发生器的实例emitter。
 ```javascript
     var EventEmitter = require('events').EventEmitter;
@@ -418,7 +418,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
     emitter.removeListener(name, f):移除事件name的监听函数f
     emitter.removeAllListeners(name):移除事件name的所有监听函数
 ```
-+ 2.1、emit()
++ `2.1`、emit()
 
 &#8195;&#8195;EventEmitter实例对象的emit方法，用来触发事件。它的第一个参数是事件名称，其余参数都会依次传入回调函数。
 ```javascript
@@ -431,39 +431,39 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
     myEmitter.emit('connection', 6);
     // client id: 6
 ```
-+ 2.2、once()
++ `2.2`、once()
 
 &#8195;&#8195;该方法类似于on方法，但是回调函数只触发一次。该方法返回一个EventEmitter对象，因此可以链式加载监听函数。 
-+ 2.3、removeListener()
++ `2.3`、removeListener()
 
 &#8195;&#8195;该方法用于移除回调函数。它接受两个参数，第一个是事件名称，第二个是回调函数名称。这就是说，不能用于移除匿名函数。
-+ 2.4、setMaxListeners()
++ `2.4`、setMaxListeners()
 
 &#8195;&#8195;Node默认允许同一个事件最多可以指定10个回调函数。
-+ 2.5、removeAllListeners()
++ `2.5`、removeAllListeners()
 
 &#8195;&#8195;该方法用于移除某个事件的所有回调函数。
 
-+ 2.6、listeners()
++ `2.6`、listeners()
 
 &#8195;&#8195;listeners方法接受一个事件名称作为参数，返回该事件所有回调函数组成的数组。
-+ 2.7、事件捕获
++ `2.7`、事件捕获
 
 &#8195;&#8195;事件处理过程中抛出的错误，可以使用try...catch捕获。监听函数抛出的错误被try...catch代码块捕获了。一旦被捕获，该事件后面的监听函数都不会再执行了。
 &#8195;&#8195;如果不使用try...catch，可以让进程监听uncaughtException事件。     
-+ 2.8、默认事件
++ `2.8`、默认事件
 
 &#8195;&#8195;Events模块默认支持两个事件。
             newListener事件：添加新的回调函数时触发。
             removeListener事件：移除回调时触发。
 
-### **6、express**
+### 2.6 **6、express**
 
 &#8195;&#8195;Express是目前最流行的基于Node.js的Web开发框架，可以快速地搭建一个完整功能的网站。
 
 **&#8195;1、运行原理**
 
-+ **1.1、底层:http模块**
++ **`1.1`、底层:http模块**
 
 &#8195;&#8195;Express框架建立在node.js内置的http模块上。http模块生成服务器的原始代码如下。
 ```javascript
@@ -481,7 +481,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
     });
     app.listen(3000);
 ```
-+ 1.2、中间件
++ `1.2`、中间件
 
 &#8195;&#8195;中间件（middleware）就是处理HTTP请求的函数。它最大的特点就是，一个中间件处理完，再传递给下一个中间件。
 &#8195;&#8195;每个中间件可以接收三个参数，依次为request对象（代表HTTP请求）、response对象（代表HTTP回应），next回调函数（代表下一个中间件）。每个中间件都可以对HTTP请求（request对象）进行加工，并且决定是否调用next方法，将request对象再传给下一个中间件。中间件可以分为:
@@ -511,7 +511,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
         next();
     }
 ```
-+ 1.3、use()
++ `1.3`、use()
 
 &#8195;&#8195;`use是express注册中间件的方法，它返回一个函数`。
 ```javascript
@@ -546,7 +546,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
     app.use('/path', someMiddleware);
 ```
 **&#8195;2、Express的方法**
-+ 2.1、all方法和HTTP动词方法
++ `2.1`、all方法和HTTP动词方法
 
 &#8195;&#8195;针对不同的请求，Express提供了use方法的一些别名。比如，上面代码也可以用别名的形式来写。
 ```javascript
@@ -583,7 +583,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
         res.send('commit range ' + from + '..' + to);
     });
 ```
- + 2.2、set()
+ + `2.2`、set()
  ```javascript
     set方法用于指定变量的值。
     app.set("views", __dirname + "/views");
@@ -591,7 +591,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
     //使用get()方法获取
     app.get("views");
  ```
-+ 2.3、response对象<br>
++ `2.3`、response对象<br>
 
     1）Response.Redirect方法<br>
         Response.Redirect的方法允许网址的重定向。<br>
@@ -625,7 +625,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
         response.render("index", { message: "Hello World" });
     });
 ```
-+ 2.4、request对象<br>
++ `2.4`、request对象<br>
     1）request.ip:
         request.ip属性用于获得HTTP请求的IP地址。<br>
     2）request.files:
@@ -634,7 +634,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
 **&#8195;3、配置路由**
 
 &#8195;&#8195;所谓“路由”，就是指为不同的访问路径，指定不同的处理方法。
-+ 3.1、指定根路径
++ `3.1`、指定根路径
 ```javascript
     app.get('/', function(req, res) {
         res.send('Hello World');//send方法，表示向浏览器发送一个字符串
@@ -648,14 +648,14 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
         res.end(body);
     });
 ```
-+ 3.2、指定特定路径
++ `3.2`、指定特定路径
 ```javascript
     app.get('/api', function(request, response) {
         response.send({name:"张三",age:40});
         //res.json(200, {name:"张三",age:40});
     });
 ```
-+ 3.3、静态网页模板
++ `3.3`、静态网页模板
 
 &#8195;&#8195;sendfile()专门用于发送文件。
             在项目目录之中，建立一个子目录views，用于存放网页模板。
@@ -673,7 +673,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
     });
     app.listen(3000);
 ```
-+ 3.4、动态网页模板
++ `3.4`、动态网页模板
 
 ```javascript
     //安装模板引擎
@@ -696,7 +696,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
         res.render('article',{title:entry.title, blog:entry});
     });
 ```
-+ 3.5、指定静态文件目录
++ `3.5`、指定静态文件目录
 ```javascript
     app.use(express.static('public'));
     //使用public指代public目录下的文件
@@ -704,7 +704,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
 ```
 **&#8195;4、Express.Router用法**
 
-+ 4.1、基本用法
++ `4.1`、基本用法
 
 &#8195;&#8195;Express.Router是一个构造函数，调用后返回一个路由器实例。然后，使用该实例的HTTP动词方法，为不同的访问路径，指定回调函数；最后，挂载到某个路径。
 ```javascript
@@ -720,7 +720,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
     //将路由挂载到某个路径
     app.use('/app', router);
 ```
-+ 4.2、router.route方法
++ `4.2`、router.route方法
 
 &#8195;&#8195;router实例对象的route方法，可以接受访问路径作为参数。
 ```javascript
@@ -738,7 +738,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
 
     app.use('/', router);
 ```
-+ 4.3、router中间件
++ `4.3`、router中间件
 
 &#8195;&#8195;use方法为router对象指定中间件，即在数据正式发给用户之前，对数据进行处理。下面就是一个中间件的例子。
 ```javascript
@@ -749,7 +749,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
     //函数体中的next()，表示将数据传递给下一个中间件。
     //注意，中间件的放置顺序很重要，等同于执行顺序。而且，中间件必须放在HTTP动词方法之前，否则不会执行。
 ```
-+ 4.4、对路径参数的处理
++ `4.4`、对路径参数的处理
 
 &#8195;&#8195;router对象的param方法用于路径参数的处理
 ```javascript
@@ -765,7 +765,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
     });
     注意，param方法必须放在HTTP动词方法之前。
 ```
-+ 4.5、app.route
++ `4.5`、app.route
 
 &#8195;&#8195;app.route实际上是express.Router()的缩写形式，除了直接挂载到根路径。因此，对同一个路径指定get和post方法的回调函数，可以写成链式形式。
 ```javascript
@@ -780,38 +780,38 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
 ```
 
 
-### **9、os模块**
+### 2.7 **9、os模块**
 
 &#8195;&#8195;os模块提供与操作系统相关的方法。
 
-**&#8195;9.1、os.EOL**
+**&#8195;`9.1`、os.EOL**
 
 &#8195;&#8195;该属性是一个常量，返回当前操作系统的换行符（Windows系统是\r\n，其他系统是\n）
 
-**&#8195;9.2、os.arch()**
+**&#8195;`9.2`、os.arch()**
 
 &#8195;&#8195;os.arch方法返回当前计算机的架构。
 ```javascript
     require(`os`).arch()
     // "x64"
 ```
-**&#8195;9.3、os.tmpdir()**
+**&#8195;`9.3`、os.tmpdir()**
 
 &#8195;&#8195;os.tmpdir方法返回操作系统默认的临时文件目录。
 
-### **10、process对象**
+### 2.8 **10、process对象**
 &#8195;&#8195;process对象是 Node 的一个全局对象，提供当前 Node 进程的信息。它可以在脚本的任意位置使用，不必通过require命令加载。该对象部署了EventEmitter接口。
 
-**&#8195;10.1、属性**
+**&#8195;`10.1`、属性**
 + 1、process.argv：返回一个数组，成员是当前进程的所有命令行参数。
 + 2、process.env：返回一个对象，成员为当前Shell的环境变量，比如process.env.HOME。
 + 3、process.installPrefix：返回一个字符串，表示 Node 安装路径的前缀，比如/usr/local。相应地，Node 的执行文件目录为/usr/local/bin/node。
 + 4、process.pid：返回一个数字，表示当前进程的进程号。
 + 5、process.platform：返回一个字符串，表示当前的操作系统，比如Linux。
 + 6、process.title：返回一个字符串，默认值为node，可以自定义该值。
-+ 7、process.version：返回一个字符串，表示当前使用的 Node 版本，比如v7.10.0。
++ 7、process.version：返回一个字符串，表示当前使用的 Node 版本，比如v7.`10.0`。
 
-**&#8195;10.2、process对象还有一些属性，用来指向 Shell 提供的接口**。
+**&#8195;`10.2`、process对象还有一些属性，用来指向 `Shell` 提供的接口**。
 
 + **1、process.stdout**
 
@@ -868,7 +868,7 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
     # 或者
     $ NODE_ENV=production node app.js
 ```
-**&#8195;10.3、方法**
+**&#8195;`10.3`、方法**
 ```javascript
     process.chdir()：切换工作目录到指定目录。
     process.cwd()：返回运行当前脚本的工作目录的路径（绝对路径）。
@@ -942,10 +942,10 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
     8，不正确的参数
     128 + 信号值，如果Node接受到退出信号（比如SIGKILL或SIGHUP），它的退出码就是128加上信号值。由于128的二进制形式是10000000, 所以退出码的后七位就是信号值。
 ```
-### **11、url**
+### 2.9 **11、url**
 &#8195;&#8195;url模块用于生成和解析URL。该模块使用前，必须加载。
 
-**&#8195;11.1、url.resolve(from, to)**
+**&#8195;`11.1`、url.resolve(from, to)**
 ```javascript
     url.resolve方法用于生成URL。它的第一个参数是基准URL，其余参数依次根据基准URL，生成对应的位置。
     url.resolve('/one/two/three', 'four')
@@ -959,12 +959,12 @@ note: Node为服务端JavaScript提供了一个事件驱动的、异步的平台
     url.resolve('http://example.com/one', '/two')
     // 'http://example.com/two'
 ```
-### **12、querystring**
+### 2.10 **12、querystring**
 &#8195;&#8195;querystring模块主要用来解析查询字符串。
 
 **&#8195;1、querystring.parse()**
 
-&#8195;&#8195;用于将一个查询字符串解析为 JavaScript 对象。
+&#8195;&#8195;用于将一个查询字符串解析为 `JavaScript` 对象。
 ```javascript
     parse方法一共可以接受四个参数。
     str：需要解析的查询字符串
@@ -980,7 +980,7 @@ parse方法也可以用来解析一般的字符串。
     //   condition: 'new',
     // }
 ```
-### **13、stream**
+### 2.11 **13、stream**
 **&#8195;1、概念**
 
 &#8195;&#8195;"数据流"（stream）是处理系统缓存的一种方式。操作系统采用数据块（chunk）的方式读取数据，每收到一次数据，就存入缓存。Node应用程序有两种缓存的处理方式，第一种是等到所有数据接收完毕，一次性从缓存读取，这就是传统的读取文件的方式；第二种是采用"数据流"的方式，收到一块数据，就读取一块，即在数据还没有接收完成时，就开始处理它。<br>
@@ -1247,11 +1247,11 @@ parse方法也可以用来解析一般的字符串。
         writableStream.write(chunk);
     });
 ```
-+ **4.1、 writable属性**
++ **`4.1`、 writable属性**
 
 &#8195;&#8195;writable属性返回一个布尔值。如果数据流仍然打开，并且可写，就返回true，否则返回false。
 
-+ **4.2、 write()**
++ **`4.2`、 write()**
 
 &#8195;&#8195;write方法用于向"可写数据流"写入数据。它接受两个参数，一个是写入的内容，可以是字符串，也可以是一个stream对象（比如可读数据流）或buffer对象（表示二进制数据），另一个是写入完成后的回调函数，它是可选的。
 ```javascript
@@ -1260,20 +1260,20 @@ parse方法也可以用来解析一般的字符串。
 ```
 &#8195;&#8195;write方法返回一个布尔值，表示本次数据是否处理完成。如果返回true，就表示可以写入新的数据了。如果等待写入的数据被缓存了，就返回false，表示此时不能立刻写入新的数据。不过，返回false的情况下，也可以继续传入新的数据等待写入。只是这时，新的数据不会真的写入，只会缓存在内存中。为了避免内存消耗，比较好的做法还是等待该方法返回true，然后再写入。
 
-+ **4.3、 cork()，uncork()**
++ **`4.3`、 cork()，uncork()**
 
 &#8195;&#8195;cork方法可以强制等待写入的数据进入缓存。当调用uncork方法或end方法时，缓存的数据就会吐出。
 
-+ **4.4、 setDefaultEncoding()**
++ **`4.4`、 setDefaultEncoding()**
 
 &#8195;&#8195;setDefaultEncoding方法用于将写入的数据编码成新的格式。它返回一个布尔值，表示编码是否成功，如果返回false就表示编码失败。
 
-+ **4.5、end()**
++ **`4.5`、end()**
 
 &#8195;&#8195;end方法用于终止"可写数据流"。该方法可以接受三个参数，全部都是可选参数。第一个参数是最后所要写入的数据，可以是字符串，也可以是stream对象或buffer对象；第二个参数是写入编码；第三个参数是一个回调函数，finish事件发生时，会触发这个回调函数。
             调用end方法之后，再写入数据会报错。
 
-+ **4.6、事件**
++ **`4.6`、事件**
 + 1）drain事件
 
 &#8195;&#8195;writable.write(chunk)返回false以后，当缓存数据全部写入完成，可以继续写入时，会触发drain事件，表示缓存空了。
@@ -1312,7 +1312,7 @@ parse方法也可以用来解析一般的字符串。
 
 &#8195;&#8195;如果写入数据或pipe数据时发生错误，就会触发该事件。该事件的回调函数，接受一个Error对象作为参数。
 
-+ **4.7、错误处理**
++ **`4.7`、错误处理**
 ```javascript
     var http=require("http"); 
     var onFinished = require('on-finished')
@@ -1333,7 +1333,7 @@ parse方法也可以用来解析一般的字符串。
         })
     })  
 ```
-### **14、Net模块和DNS模块**
+### 2.12 **14、Net模块和DNS模块**
 &#8195;&#8195;net模块用于底层的网络通信。
     下面是一段简单的监听2000端口的代码。
 ```javascript
@@ -1360,7 +1360,7 @@ parse方法也可以用来解析一般的字符串。
 
 &#8195;&#8195;resolve4方法用于IPv4环境，resolve6方法用于IPv6环境，lookup方法在以上两种环境都可以使用，返回IP地址（address）和当前环境（IPv4或IPv6）
     
-### **15、CommonJS规范**
+### 2.13 **15、CommonJS规范**
 **&#8195;1、概述**
 
 &#8195;&#8195;Node 应用由模块组成，采用 CommonJS 模块规范。
@@ -1406,11 +1406,11 @@ parse方法也可以用来解析一般的字符串。
 **&#8195;3、AMD规范与CommonJS规范的兼容性**
 
 &#8195;&#8195;CommonJS规范加载模块是同步的，也就是说，只有加载完成，才能执行后面的操作。AMD规范则是非同步加载模块，允许指定回调函数。由于Node.js主要用于服务器编程，模块文件一般都已经存在于本地硬盘，所以加载起来比较快，不用考虑非同步加载的方式，所以CommonJS规范比较适用。但是，如果是浏览器环境，要从服务器端加载模块，这时就必须采用非同步模式，因此浏览器端一般采用AMD规范。
-### **16、npm包管理器**
+### 2.14 **16、npm包管理器**
 **&#8195;1、npm安装模块时，对应的版本可以加上各种限定，主要有以下几种：**
-+ 1)指定版本：比如1.2.2，遵循“大版本.次要版本.小版本”的格式规定，安装时只安装指定版本。
-+ 2)波浪号（tilde）+指定版本：比如~1.2.2，表示安装1.2.x的最新版本（不低于1.2.2），但是不安装1.3.x，也就是说安装时不改变大版本号和次要版本号。
-+ 3)插入号（caret）+指定版本：比如ˆ1.2.2，表示安装1.x.x的最新版本（不低于1.2.2），但是不安装2.x.x，也就是说安装时不改变大版本号。需要注意的是，如果大版本号为0，则插入号的行为与波浪号相同，这是因为此时处于开发阶段，即使是次要版本号变动，也可能带来程序的不兼容。
++ 1)指定版本：比如1.`2.2`，遵循“大版本.次要版本.小版本”的格式规定，安装时只安装指定版本。
++ 2)波浪号（tilde）+指定版本：比如~`1.2.2`，表示安装1.2.x的最新版本（不低于1.`2.2`），但是不安装1.3.x，也就是说安装时不改变大版本号和次要版本号。
++ 3)插入号（caret）+指定版本：比如ˆ1.`2.2`，表示安装1.x.x的最新版本（不低于1.`2.2`），但是不安装2.x.x，也就是说安装时不改变大版本号。需要注意的是，如果大版本号为0，则插入号的行为与波浪号相同，这是因为此时处于开发阶段，即使是次要版本号变动，也可能带来程序的不兼容。
 + 4)latest：安装最新版本。  
 
 **&#8195;2、npm安装：**
@@ -1552,7 +1552,7 @@ parse方法也可以用来解析一般的字符串。
 **&#8195;11、内部变量**
 
 &#8195;&#8195;scripts字段可以使用一些内部变量，主要是package.json的各种字段。
-            比如，package.json的内容是{"name":"foo", "version":"1.2.5"}，那么变量npm_package_name的值是foo，变量npm_package_version的值是1.2.5。
+            比如，package.json的内容是{"name":"foo", "version":"`1.2.5`"}，那么变量npm_package_name的值是foo，变量npm_package_version的值是1.`2.5`。
 ```javascript
     {
     "scripts":{
@@ -1620,7 +1620,7 @@ parse方法也可以用来解析一般的字符串。
 ```javascript
     $ npm publish
 ```
-&#8195;&#8195;如果当前模块是一个beta版，比如1.3.1-beta.3，那么发布的时候需要使用tag参数，将其发布到指定标签，默认的发布标签是latest。
+&#8195;&#8195;如果当前模块是一个beta版，比如1.`3.1`-beta.3，那么发布的时候需要使用tag参数，将其发布到指定标签，默认的发布标签是latest。
 ```javascript
     $ npm publish --tag beta
 ```
@@ -1664,7 +1664,7 @@ parse方法也可以用来解析一般的字符串。
             它会输出当前版本（current version）、应当安装的版本（wanted version）和最新发布的版本（latest version）。
 
 
-## 第三节 其它
+## 3、第三节 其它
 
 **nrm:镜像源管理工具工具** 
 + 1、nrm ls 查看当前镜像源列表。

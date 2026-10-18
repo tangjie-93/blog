@@ -13,7 +13,7 @@ note: 三栏布局的实现方式
     <div class="right"></div>  
 </div>
 ```
-### 方法1 浮动布局（float+margin/padding）
+### 1 方法1 浮动布局（float+margin/padding）
 
 ```CSS
 .left {
@@ -36,7 +36,7 @@ note: 三栏布局的实现方式
   background: #CA8EFF;
 }
 ```
-### 方法2 浮动布局（float+calc）
+### 2 方法2 浮动布局（float+calc）
 
 ```CSS
 .left {
@@ -59,7 +59,7 @@ note: 三栏布局的实现方式
   background: chocolate;
 }
 ```
-### 方法3 绝对定位布局（absolute+margin）
+### 3 方法3 绝对定位布局（absolute+margin）
 
 ```CSS
 .container {
@@ -91,7 +91,7 @@ note: 三栏布局的实现方式
     height: 100%;
 }
 ```
-### 方法4 table布局
+### 4 方法4 table布局
 
 ```CSS
 .container {
@@ -113,7 +113,7 @@ note: 三栏布局的实现方式
     background: darkgreen
 }
 ```
-### 方法5 flex布局
+### 5 方法5 flex布局
 
 ```CSS
 .container {
@@ -134,7 +134,7 @@ note: 三栏布局的实现方式
     background: cornsilk;
 }
 ```
-### 方法6 grid布局
+### 6 方法6 grid布局
 
 ```CSS
 .container {
@@ -155,7 +155,7 @@ note: 三栏布局的实现方式
   background: cornsilk;
 }
 ```
-### 方法7 圣杯布局
+### 7 方法7 圣杯布局
 圣杯布局时要注意中间和左边元素的位置要换一下。
 ```html
 <div class="container">

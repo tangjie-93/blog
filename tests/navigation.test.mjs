@@ -95,3 +95,23 @@ test('sidebar omits subtitles while preserving complete article URLs', () => {
     rmSync(root, { recursive: true, force: true })
   }
 })
+
+test('agent sidebar numbers each topic group independently', () => {
+  const root = mkdtempSync(join(tmpdir(), 'blog-nav-'))
+  try {
+    mkdirSync(join(root, 'agent'))
+    for (const name of ['01、Loop.md', '02、Tools.md', '21、Patterns.md', '03、Permission.md']) {
+      writeFileSync(join(root, 'agent', name), '# Article')
+    }
+    const { sidebar } = createNavigation(root)
+    const groups = sidebar['/articles/agent/']
+    assert.deepEqual(groups.find(group => group.text === '基础与工具').items.map(item => item.text), [
+      '1、Loop', '2、Tools', '3、Patterns'
+    ])
+    assert.deepEqual(groups.find(group => group.text === '安全与运行时').items.map(item => item.text), [
+      '1、Permission'
+    ])
+  } finally {
+    rmSync(root, { recursive: true, force: true })
+  }
+})

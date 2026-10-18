@@ -6,7 +6,7 @@ tags: css
 note: css的常见布局方式总结
 ---
 
-## 常见布局方式图解
+## 1、常见布局方式图解
 
 <img src="../../images/css/css布局.png">
 

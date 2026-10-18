@@ -11,7 +11,7 @@ note: <该思维导图是根据`<<深入浅出webpack>>`章节大纲总结出来
 
 ### 1、webpack的作用
 
-&#8195;&#8195;webpack的主要作用是构建，把源代码转换成发布到线上的可执行 JavaScrip、CSS、HTML 代码。在构建的过程中主要做了这几方面的功能。
+&#8195;&#8195;webpack的主要作用是构建，把源代码转换成发布到线上的可执行 JavaScrip、`CSS`、`HTML` 代码。在构建的过程中主要做了这几方面的功能。
 
 - 代码转换：将非js文件如 TS 转换成 js，将 scss 转换成 css（Loaderclear）；
 - 文件优化：压缩 js、css、html、压缩合并图片（plugin如uglify）。
@@ -24,18 +24,18 @@ note: <该思维导图是根据`<<深入浅出webpack>>`章节大纲总结出来
 
 ### 2、webpack核心概念
 
-+ Entry：入口，Webpack 执行构建的第一步将从 Entry 开始，可抽象成输入。
++ Entry：入口，`Webpack` 执行构建的第一步将从 Entry 开始，可抽象成输入。
 + Output:出口，告诉 webpack 在哪里输出它所创建的 bundles，以及如何命名这些文件，默认值为 ./dist。
-+ Module：模块，在 Webpack 里一切皆模块，一个模块对应着一个文件。Webpack 会从配置的 Entry 开始递归找出所有依赖的模块。
++ Module：模块，在 `Webpack` 里一切皆模块，一个模块对应着一个文件。`Webpack` 会从配置的 Entry 开始递归找出所有依赖的模块。
 + Chunk：代码块，一个 Chunk 由多个模块组合而成，用于代码合并与分割。
 + Loader：模块转换器，用于把模块原内容按照需求转换成新内容。
-+ Plugin：扩展插件，在 Webpack 构建流程中的特定时机会广播出对应的事件，插件可以监听这些事件的发生，在特定时机做对应的事情。
++ Plugin：扩展插件，在 `Webpack` 构建流程中的特定时机会广播出对应的事件，插件可以监听这些事件的发生，在特定时机做对应的事情。
 
 ### 3、webpack的常见配置
 
-**3.1 Entry**
+**`3.1` Entry**
 
-&#8195;&#8195;构建的入口，Webpack 执行构建的第一步将从 Entry 开始，可抽象成输入。通过搜寻及递归找出所有入口所依赖的模块。**Entry 主要有 String、Array 和 Object 三种类型**。如果为 Array 类型时，搭配 output.library 配置项使用时，只有数组里的最后一个入口文件的模块会被导出。
+&#8195;&#8195;构建的入口，`Webpack` 执行构建的第一步将从 Entry 开始，可抽象成输入。通过搜寻及递归找出所有入口所依赖的模块。**Entry 主要有 String、Array 和 Object 三种类型**。如果为 Array 类型时，搭配 output.library 配置项使用时，只有数组里的最后一个入口文件的模块会被导出。
 - 如果 entry 是一个 string或者array，就只会生成一个 Chunk，这时 Chunk 的名称是 main 。
 - 如果 entry 是一个 object ，就可能会出现多个 Chunk，这时 Chunk 的名称是 object 键值对中键的名称。
 ```javascript
@@ -68,13 +68,13 @@ note: <该思维导图是根据`<<深入浅出webpack>>`章节大纲总结出来
     };
 ```
 
-**3.2 Output**：
+**`3.2` Output**：
 
 &#8195;&#8195;配置如何输出最终想要的代码。output 是一个 object，里面包含一系列配置项，下面分别介绍它们。
 + filename:输出文件的名称，为string 类型。 
 + chunkFilename: 配置无入口的 Chunk 在输出时的文件名称。chunkFilename 只用于指定在运行过程中生成的 Chunk 在输出时的文件名称.常见的会在运行时生成 Chunk 场景有在使用 **CommonChunkPlugin、使用 import('path/to/module')** 动态加载等时。 
-+ path:输出文件存放在本地的目录，必须是 string 类型的绝对路径。通常通过 Node.js 的 path 模块去获取绝对路径。
-+ publicPath:加载异步资源对应的 URL 地址。一般为CDN地址。通常用于配置发布到线上资源的 URL 前缀，为string 类型。 默认值是空字符串 ''，即使用相对路径。**output.path 和 output.publicPath 都支持字符串模版，内置变量只有一个：hash 代表一次编译操作的 Hash 值。**
++ path:输出文件存放在本地的目录，必须是 string 类型的绝对路径。通常通过 `Node.js` 的 path 模块去获取绝对路径。
++ publicPath:加载异步资源对应的 `URL` 地址。一般为CDN地址。通常用于配置发布到线上资源的 `URL` 前缀，为string 类型。 默认值是空字符串 ''，即使用相对路径。**output.path 和 output.publicPath 都支持字符串模版，内置变量只有一个：hash 代表一次编译操作的 Hash 值。**
 + libraryTarget：配置以何种方式导出库。是字符串的枚举类型。通常搭配target使用。通常有var、commonjs、commonjs2、this、window和global等值。
 + target：配置导出库的名称。
 ```javascript
@@ -99,9 +99,9 @@ note: <该思维导图是根据`<<深入浅出webpack>>`章节大纲总结出来
 + hash：	Chunk 的唯一标识的 Hash 值。
 + chunkhash：	Chunk 内容的 Hash 值。
 
-**3.3 Module**
+**`3.3` Module**
 
-&#8195;&#8195;模块，在 Webpack 里一切皆模块，一个模块对应着一个文件。Webpack 会从配置的 Entry 开始递归找出所有依赖的模块。主要有这些配置项。
+&#8195;&#8195;模块，在 `Webpack` 里一切皆模块，一个模块对应着一个文件。`Webpack` 会从配置的 Entry 开始递归找出所有依赖的模块。主要有这些配置项。
 + rules：用来**配置模块的读取和解析规则**，通常用来配置 loader，是一个数组。配置一项 rule 一般是通过以下几项来完成的。
 + noParse：忽略的文件。
 ```javascript
@@ -180,9 +180,9 @@ note: <该思维导图是根据`<<深入浅出webpack>>`章节大纲总结出来
     }
 ```
 
-**3.4 Resolve**
+**`3.4` Resolve**
 
-&#8195;&#8195;Resolve 配置 Webpack 如何寻找模块所对应的文件。设置模块如何被解析。
+&#8195;&#8195;Resolve 配置 `Webpack` 如何寻找模块所对应的文件。设置模块如何被解析。
 
 ```javascript
     module.exports={
@@ -205,7 +205,7 @@ note: <该思维导图是根据`<<深入浅出webpack>>`章节大纲总结出来
     }
 ```
 
-**3.5 Plugins**
+**`3.5` Plugins**
 
 &#8195;&#8195;用于以各种方式自定义 webpack 构建过程。通过在webpack构建过程中，通过在特定的事件阶段，注入相应的逻辑来达到想要的效果。<br>
 
@@ -284,7 +284,7 @@ note: <该思维导图是根据`<<深入浅出webpack>>`章节大纲总结出来
     }
 ```
 
-**3.6 DevServer**
+**`3.6` DevServer**
 
 &#8195;&#8195;此配置项为webpack-dev-server的专有配置项。除了在DevServer中进行配置外，还可以通过命令行参数传入。
 ```javascript
@@ -333,9 +333,9 @@ note: <该思维导图是根据`<<深入浅出webpack>>`章节大纲总结出来
     }
 ```
 
-**3.7 其他常见配置项**
+**`3.7` 其他常见配置项**
 
-+ devtool：配置 Webpack 如何生成 Source Map。有很多配置项。可以使用SourceMapDevToolPlugin插件来替换该配置，进行更细粒度的控制。
++ devtool：配置 `Webpack` 如何生成 Source Map。有很多配置项。可以使用SourceMapDevToolPlugin插件来替换该配置，进行更细粒度的控制。
 + target：webpack 能够为多种环境或 target 构建编译。webpack 为目标(target)指定一个环境。target 的取值可以为 web（默认，浏览器环境）、node（node 环境，使用 require 加载 chunk 代码，此时源码中的 require("fs")中的方式模块不会打包到 chunk 里）、async-node（异步加载 chunk 代码）、webworker、electron-main、electron-renderer。
 + watch：false,为true时表示启用 Watch 模式。这意味着在初始构建之后，webpack 将继续监听任何已解析文件的更改。Watch 模式默认关闭。**在使用 DevServer 时，监听模式默认是开启的。**
 + watchOptions：在watch为true时，才有效。
@@ -395,7 +395,7 @@ note: <该思维导图是根据`<<深入浅出webpack>>`章节大纲总结出来
 ```
 + performance：这些选项可以控制 webpack 如何通知「资源(asset)和入口起点超过指定文件限制」。
 + stat：webpack构建时的统计信息。
-+ node:配置是否 polyfill 或 mock 某些 Node.js 全局变量和模块。这可以使最初为 Node.js 环境编写的代码，在其他环境（如浏览器）中运行。此功能由 webpack 内部的 NodeStuffPlugin 插件提供。
++ node:配置是否 polyfill 或 mock 某些 `Node.js` 全局变量和模块。这可以使最初为 `Node.js` 环境编写的代码，在其他环境（如浏览器）中运行。此功能由 webpack 内部的 NodeStuffPlugin 插件提供。
 ```javascript
     module.exports={
         performance：{
@@ -429,7 +429,7 @@ note: <该思维导图是根据`<<深入浅出webpack>>`章节大纲总结出来
         }
     }
 ```
-**3.8 整体配置**
+**`3.8` 整体配置**
 ```javascript
     module.exports={
         context:__dirname, // Webpack 使用的根目录，入口文件所处的目录的绝对路径的字符串。
@@ -758,7 +758,7 @@ note: <该思维导图是根据`<<深入浅出webpack>>`章节大纲总结出来
     }
 ```
 
-**3.9 多种配置类型**
+**`3.9` 多种配置类型**
 
 &#8195;&#8195;配置文件除了以Object的形式输出以外，还可以以function或者promise的形式输出,同时还可以导出多个配置对象。
 ```javascript
@@ -811,7 +811,7 @@ note: <该思维导图是根据`<<深入浅出webpack>>`章节大纲总结出来
     
 ```
 以函数的形式导出配置文件时。
-+ env：当前运行时的 Webpack **专属环境变量**，env 是一个 Object。设置它需要在启动 Webpack 时带上参数。例如启动命令是 webpack --env.production --env.bao=foo时，则 env 的值是 {"production":"true","bao":"foo"}。
-+ args：代表在启动 Webpack 时所有通过命令行传入的参数。例如 --config、--env、--devtool、--progress、---watch，可以通过 webpack -h 列出所有 Webpack 支持的命令行参数。
++ env：当前运行时的 `Webpack` **专属环境变量**，env 是一个 Object。设置它需要在启动 `Webpack` 时带上参数。例如启动命令是 webpack --env.production --env.bao=foo时，则 env 的值是 {"production":"true","bao":"foo"}。
++ args：代表在启动 `Webpack` 时所有通过命令行传入的参数。例如 --config、--env、--devtool、--progress、---watch，可以通过 webpack -h 列出所有 `Webpack` 支持的命令行参数。
 
 

@@ -8,11 +8,11 @@ note: "详解 pyproject.toml 的项目元数据、依赖组、构建与工具配
 
 # Poetry pyproject.toml 配置文件详解
 
-`pyproject.toml` 是 Python 项目的核心配置文件，采用 TOML 格式。它定义了项目的元数据、依赖管理、构建系统配置等信息。Poetry 使用这个文件来管理项目的依赖和发布。
+`pyproject.toml` 是 `Python` 项目的核心配置文件，采用 TOML 格式。它定义了项目的元数据、依赖管理、构建系统配置等信息。Poetry 使用这个文件来管理项目的依赖和发布。
 
 ---
 
-## 目录
+## 1、目录
 
 1. [文件结构概览](#_1-文件结构概览)
 2. [project 区域详解](#_2-project-区域详解)
@@ -59,9 +59,9 @@ package-mode = "false"
 
 ## 2. project 区域详解
 
-`[project]` 区域遵循 [PEP 621](https://peps.python.org/pep-0621/) 标准，是 Python 项目的官方元数据规范。
+`[project]` 区域遵循 [PEP 621](https://peps.python.org/pep-0621/) 标准，是 `Python` 项目的官方元数据规范。
 
-### 2.1 基础元数据
+### 3.1 `2.1` 基础元数据
 
 ```json
 [project]
@@ -88,7 +88,7 @@ classifiers = [
 ]
 ```
 
-### 2.2 Python 版本要求
+### 3.2 `2.2` `Python` 版本要求
 
 ```json
 requires-python = ">=3.11"        # 最低 Python 版本
@@ -98,11 +98,11 @@ requires-python = ">=3.11"        # 最低 Python 版本
 
 | 写法 | 说明 |
 |------|------|
-| `>=3.11` | Python 3.11 及以上 |
-| `>=3.10,<4.0` | Python 3.10 到 4.0 之间 |
-| `>=3.11,<3.13` | Python 3.11 到 3.12 之间 |
+| `>=3.11` | `Python` `3.11` 及以上 |
+| `>=3.10,<4.0` | `Python` `3.10` 到 `4.0` 之间 |
+| `>=3.11,<3.13` | `Python` `3.11` 到 `3.12` 之间 |
 
-### 2.3 依赖管理
+### 3.3 `2.3` 依赖管理
 
 #### 主依赖
 
@@ -193,7 +193,7 @@ dependencies = [
 ]
 ```
 
-### 2.4 脚本入口点
+### 3.4 `2.4` 脚本入口点
 
 ```json
 [project.scripts]
@@ -205,7 +205,7 @@ gunicorn = "gunicorn.main:main"
 fastapi-app = "main:app"  # poetry run fastapi-app
 ```
 
-### 2.5 其他配置
+### 3.5 `2.5` 其他配置
 
 ```json
 # 项目 URL
@@ -248,7 +248,7 @@ build-backend = "poetry.core.masonry.api"  # 构建后端
 
 `[tool.poetry]` 是 Poetry 特定的配置文件，定义项目打包和依赖管理的详细行为。
 
-### 4.1 基本配置
+### 5.1 `4.1` 基本配置
 
 ```json
 [tool.poetry]
@@ -262,7 +262,7 @@ readme = "README.md"                  # README 文件
 documentation = "https://docs.example.com"  # 文档 URL
 ```
 
-### 4.2 包配置
+### 5.2 `4.2` 包配置
 
 ```json
 # 包模式配置
@@ -289,7 +289,7 @@ include = [
 ]
 ```
 
-### 4.3 依赖配置
+### 5.3 `4.3` 依赖配置
 
 ```json
 [tool.poetry.dependencies]
@@ -337,7 +337,7 @@ mkdocs = "^1.5.0"
 mkdocs-material = "^9.0.0"
 ```
 
-### 4.4 发布配置
+### 5.4 `4.4` 发布配置
 
 ```json
 [tool.poetry]
@@ -355,7 +355,7 @@ packages = [
 ]
 ```
 
-### 4.5 脚本配置
+### 5.5 `4.5` 脚本配置
 
 ```json
 [tool.poetry.scripts]
@@ -372,7 +372,7 @@ myapp = "myapp.cli:main"
 app = "main:app"
 ```
 
-### 4.6 完整的 tool.poetry 示例
+### 5.6 `4.6` 完整的 tool.poetry 示例
 
 ```json
 [tool.poetry]
@@ -430,9 +430,9 @@ app = "main:app"
 
 ## 5. tool 扩展区域
 
-`[tool]` 区域用于配置各种 Python 工具。
+`[tool]` 区域用于配置各种 `Python` 工具。
 
-### 5.1 Black 代码格式化
+### 6.1 `5.1` Black 代码格式化
 
 ```json
 [tool.black]
@@ -463,7 +463,7 @@ extend-exclude = '''
 '''
 ```
 
-### 5.2 Ruff Linter
+### 6.2 `5.2` Ruff Linter
 
 ```json
 [tool.ruff]
@@ -508,7 +508,7 @@ ignore = [
 "tests/*" = ["S101", "PLR2004"]
 ```
 
-### 5.3 MyPy 类型检查
+### 6.3 `5.3` MyPy 类型检查
 
 ```json
 [tool.mypy]
@@ -534,7 +534,7 @@ module = "pydantic.*"
 ignore_missing_imports = true
 ```
 
-### 5.4 Pytest 测试
+### 6.4 `5.4` Pytest 测试
 
 ```json
 [tool.pytest.ini_options]
@@ -564,7 +564,7 @@ filterwarnings = [
 ]
 ```
 
-### 5.5 其他常用工具
+### 6.5 `5.5` 其他常用工具
 
 #### isort 导入排序
 
@@ -624,7 +624,7 @@ include = ["tests/"]
 
 ## 6. 完整配置示例
 
-### FastAPI 项目完整配置
+### 7.1 `FastAPI` 项目完整配置
 
 ```json
 [project]
@@ -768,7 +768,7 @@ exclude_lines = [
 
 ## 7. 常用命令
 
-### 依赖管理
+### 8.1 依赖管理
 
 ```bash
 # 安装项目依赖
@@ -798,7 +798,7 @@ poetry export -f requirements.txt --output requirements.txt
 poetry export -f requirements.txt --with dev --output requirements-dev.txt
 ```
 
-### 开发运行
+### 8.2 开发运行
 
 ```bash
 # 激活虚拟环境
@@ -815,7 +815,7 @@ poetry run ruff check .
 poetry run app
 ```
 
-### 项目管理
+### 8.3 项目管理
 
 ```bash
 # 构建包
@@ -836,7 +836,7 @@ poetry show
 poetry show --with dev
 ```
 
-### 配置工具
+### 8.4 配置工具
 
 ```bash
 # 初始化项目
@@ -849,9 +849,9 @@ poetry config virtualenvs.in-project true  # 在项目目录创建 .venv
 
 ---
 
-## 附录
+## 9、附录
 
-### 字段说明表
+### 9.1 字段说明表
 
 | 字段 | 必填 | 说明 |
 |------|------|------|
@@ -861,21 +861,21 @@ poetry config virtualenvs.in-project true  # 在项目目录创建 .venv
 | `authors` | 否 | 作者列表 |
 | `license` | 否 | 许可证 |
 | `readme` | 否 | README 文件 |
-| `requires-python` | 否 | Python 版本要求 |
+| `requires-python` | 否 | `Python` 版本要求 |
 | `dependencies` | 否 | 主依赖 |
 | `optional-dependencies` | 否 | 可选依赖 |
 
-### 版本号规范
+### 9.2 版本号规范
 
 Poetry 使用 [Semantic Versioning](https://semver.org/) (语义化版本)：
 
-- **MAJOR** (主版本): 不兼容的 API 变更
+- **MAJOR** (主版本): 不兼容的 `API` 变更
 - **MINOR** (次版本): 向后兼容的新功能
 - **PATCH** (补丁版本): 向后兼容的 bug 修复
 
-### 常见问题
+### 9.3 常见问题
 
-#### 1. 如何指定特定版本的 Python？
+#### 1. 如何指定特定版本的 `Python`？
 
 ```toml
 python = "^3.11"  # 等价于 >=3.11,<4.0
@@ -902,4 +902,4 @@ poetry update --no-ansi
 
 ---
 
-*文档更新时间：2026-03-18*
+*文档更新时间：`2026-03-18`*

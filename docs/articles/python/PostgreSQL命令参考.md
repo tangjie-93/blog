@@ -10,13 +10,13 @@ note: "数据库管理、权限、查询、备份恢复和故障排查命令速�
 
 本文档整理了使用 PostgreSQL 数据库时常用的命令，包括服务器管理、数据库操作、用户管理、权限设置、数据操作、备份恢复和监控维护等方面。
 
-## 前言
+## 1、前言
 
-### 命令使用说明
+### 1.1 命令使用说明
 
 1. **命令类型**：
    - **系统命令**：直接在终端执行的命令（如 `pg_ctl`、`createdb`、`psql` 等）
-   - **SQL 命令**：在 PostgreSQL 交互式终端中执行的命令（如 `CREATE TABLE`、`SELECT` 等）
+   - **`SQL` 命令**：在 PostgreSQL 交互式终端中执行的命令（如 `CREATE TABLE`、`SELECT` 等）
    - **元命令**：PostgreSQL 交互式终端中的特殊命令，以反斜杠开头（如 `\dt`、`\du` 等）
 
 2. **前置条件**：
@@ -37,7 +37,7 @@ note: "数据库管理、权限、查询、备份恢复和故障排查命令速�
    - 敏感操作前请做好数据备份
    - 命令执行需要相应的权限
 
-### 快速开始
+### 1.2 快速开始
 
 1. **启动服务器**：
    ```bash
@@ -49,7 +49,7 @@ note: "数据库管理、权限、查询、备份恢复和故障排查命令速�
    psql -d fastapi_db
    ```
 
-3. **执行 SQL 命令**：
+3. **执行 `SQL` 命令**：
    ```sql
    SELECT * FROM users;
    ```
@@ -62,7 +62,7 @@ note: "数据库管理、权限、查询、备份恢复和故障排查命令速�
 
 ---
 
-## 目录
+## 2、目录
 
 1. [服务器管理](#_1-服务器管理)
 2. [数据库管理](#_2-数据库管理)
@@ -78,7 +78,7 @@ note: "数据库管理、权限、查询、备份恢复和故障排查命令速�
 
 ## 1. 服务器管理
 
-### 1.1 启动/停止/重启服务器
+### 3.1 `1.1` 启动/停止/重启服务器
 
 ```bash
 # 启动 PostgreSQL 服务器
@@ -97,7 +97,7 @@ pg_ctl -D $HOME/postgresql/data status
 pg_ctl -D $HOME/postgresql/data reload
 ```
 
-### 1.2 初始化数据库集群
+### 3.2 `1.2` 初始化数据库集群
 
 ```bash
 # 初始化新的数据库集群
@@ -110,7 +110,7 @@ initdb -D $HOME/postgresql/data --encoding=UTF8 --locale=C
 initdb -D $HOME/postgresql/data -U postgres
 ```
 
-### 1.3 日志管理
+### 3.3 `1.3` 日志管理
 
 ```bash
 # 查看日志文件（默认位置）
@@ -124,7 +124,7 @@ pg_ctl -D $HOME/postgresql/data start -l $HOME/postgresql/log/postgresql.log
 
 ## 2. 数据库管理
 
-### 2.1 创建/删除/连接数据库
+### 4.1 `2.1` 创建/删除/连接数据库
 
 ```bash
 # 创建数据库
@@ -149,7 +149,7 @@ psql -d fastapi_db -U postgres
 psql -d fastapi_db -c "SELECT version();"
 ```
 
-### 2.2 查看数据库信息
+### 4.2 `2.2` 查看数据库信息
 
 ```bash
 # 列出所有数据库
@@ -177,7 +177,7 @@ psql -l
 
 ## 3. 用户管理
 
-### 3.1 创建/删除/修改用户
+### 5.1 `3.1` 创建/删除/修改用户
 
 ```bash
 # 创建超级用户
@@ -203,7 +203,7 @@ dropuser user1
 ALTER USER user1 WITH SUPERUSER;
 ```
 
-### 3.2 查看用户信息
+### 5.2 `3.2` 查看用户信息
 
 ```bash
 # 查看所有用户（需要先连接到数据库）
@@ -218,7 +218,7 @@ ALTER USER user1 WITH SUPERUSER;
 
 ## 4. 权限管理
 
-### 4.1 授予/撤销权限
+### 6.1 `4.1` 授予/撤销权限
 
 ```bash
 # 授予用户数据库所有权限（需要先连接到数据库）
@@ -242,7 +242,7 @@ GRANT ALL PRIVILEGES ON SCHEMA public TO postgres;
 REVOKE ALL PRIVILEGES ON DATABASE fastapi_db FROM user1;
 ```
 
-### 4.2 权限查询
+### 6.2 `4.2` 权限查询
 
 ```bash
 # 查看表权限（需要先连接到数据库）
@@ -259,7 +259,7 @@ REVOKE ALL PRIVILEGES ON DATABASE fastapi_db FROM user1;
 
 ## 5. 数据操作
 
-### 5.1 基本 SQL 命令
+### 7.1 `5.1` 基本 `SQL` 命令
 
 ```sql
 -- 创建表
@@ -292,7 +292,7 @@ CREATE INDEX idx_users_email ON users(email);
 DROP TABLE IF EXISTS users;
 ```
 
-### 5.2 事务管理
+### 7.2 `5.2` 事务管理
 
 ```sql
 -- 开始事务
@@ -313,7 +313,7 @@ ROLLBACK;
 
 ## 6. 备份与恢复
 
-### 6.1 数据库备份
+### 8.1 `6.1` 数据库备份
 
 ```bash
 # 备份整个数据库
@@ -332,7 +332,7 @@ pg_dump fastapi_db --data-only > fastapi_db_data.sql
 pg_dump fastapi_db -F custom -f fastapi_db_backup.dump
 ```
 
-### 6.2 数据库恢复
+### 8.2 `6.2` 数据库恢复
 
 ```bash
 # 恢复数据库（从SQL文件）
@@ -348,7 +348,7 @@ pg_restore -d fastapi_db fastapi_db_backup.dump
 pg_restore -C -d postgres fastapi_db_backup.dump
 ```
 
-### 6.3 自动备份脚本
+### 8.3 `6.3` 自动备份脚本
 
 ```bash
 #!/bin/bash
@@ -373,7 +373,7 @@ echo "Backup completed: $BACKUP_FILE"
 
 ## 7. 监控与维护
 
-### 7.1 查看服务器状态
+### 9.1 `7.1` 查看服务器状态
 
 ```bash
 # 查看服务器状态
@@ -386,7 +386,7 @@ ps aux | grep postgres
 psql -d fastapi_db -c "SELECT count(*) FROM pg_stat_activity;"
 ```
 
-### 7.2 数据库维护
+### 9.2 `7.2` 数据库维护
 
 ```sql
 -- 分析表（更新统计信息）
@@ -405,7 +405,7 @@ SELECT pg_size_pretty(pg_total_relation_size('users'));
 SELECT pg_size_pretty(pg_indexes_size('users'));
 ```
 
-### 7.3 慢查询分析
+### 9.3 `7.3` 慢查询分析
 
 ```sql
 -- 查看当前运行的查询
@@ -422,7 +422,7 @@ EXPLAIN ANALYZE SELECT * FROM users WHERE email = 'test@example.com';
 
 ## 8. 常用配置
 
-### 8.1 postgresql.conf 配置
+### 10.1 `8.1` postgresql.conf 配置
 
 ```bash
 # 编辑配置文件
@@ -459,7 +459,7 @@ autovacuum_vacuum_scale_factor = 0.2
 autovacuum_analyze_scale_factor = 0.1
 ```
 
-### 8.2 pg_hba.conf 配置（访问控制）
+### 10.2 `8.2` pg_hba.conf 配置（访问控制）
 
 ```bash
 # 编辑访问控制文件
@@ -480,7 +480,7 @@ host    all             all             ::1/128                 trust
 
 ## 9. 故障排除
 
-### 9.1 常见错误及解决方法
+### 11.1 `9.1` 常见错误及解决方法
 
 | 错误信息 | 可能原因 | 解决方法 |
 |---------|---------|---------|
@@ -490,7 +490,7 @@ host    all             all             ::1/128                 trust
 | `database "fastapi_db" does not exist` | 数据库不存在 | 创建数据库 |
 | `role "postgres" does not exist` | 用户不存在 | 创建用户 |
 
-### 9.2 日志分析
+### 11.2 `9.2` 日志分析
 
 ```bash
 # 查看最近的错误日志
@@ -532,29 +532,29 @@ export PGDATABASE=fastapi_db
 
 ## 11. 快速参考命令
 
-### 服务器操作
+### 13.1 服务器操作
 - **启动**: `pg_ctl start`
 - **停止**: `pg_ctl stop`
 - **重启**: `pg_ctl restart`
 - **状态**: `pg_ctl status`
 
-### 数据库操作
+### 13.2 数据库操作
 - **创建**: `createdb fastapi_db`
 - **删除**: `dropdb fastapi_db`
 - **连接**: `psql fastapi_db`
 
-### 用户操作
+### 13.3 用户操作
 - **创建**: `createuser -s postgres`
 - **删除**: `dropuser postgres`
 - **改密码**: `psql -c "\password postgres"`
 
-### 备份恢复
+### 13.4 备份恢复
 - **备份**: `pg_dump fastapi_db > backup.sql`
 - **恢复**: `psql fastapi_db < backup.sql`
 
-### 权限管理
+### 13.5 权限管理
 - **授予权限**: `psql -c "GRANT ALL PRIVILEGES ON SCHEMA public TO postgres;"`
 
 ---
 
-*文档更新时间：2026-04-02*
+*文档更新时间：`2026-04-02`*

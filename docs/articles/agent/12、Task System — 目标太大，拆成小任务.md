@@ -17,17 +17,17 @@ s01 → ... → s10 → s11 → `s12` → [s13](./13%E3%80%81Background%20Tasks%
 
 ---
 
-## 问题
+## 1、问题
 
-Agent 接到一个项目：搭数据库、写 API、加测试。它用 s05 的 TodoWrite 列了一张清单，然后开始写 API，写到一半发现没数据库表，回头补；加测试时发现 API 接口签名又变了...
+`Agent` 接到一个项目：搭数据库、写 `API`、加测试。它用 s05 的 TodoWrite 列了一张清单，然后开始写 `API`，写到一半发现没数据库表，回头补；加测试时发现 `API` 接口签名又变了...
 
 盖房子不能先盖屋顶再打地基。任务之间有先后。任务依赖应该形成有向无环图（DAG）；教学版只演示 `blockedBy` 检查，没有实现环检测。
 
-s05 的 TodoWrite 是当前任务的执行清单，保存在会话内存中。这里需要的是**任务系统**：每个任务是一个 JSON 文件，任务之间有 `blockedBy` 依赖，跨会话持久化在磁盘上。
+s05 的 TodoWrite 是当前任务的执行清单，保存在会话内存中。这里需要的是**任务系统**：每个任务是一个 `JSON` 文件，任务之间有 `blockedBy` 依赖，跨会话持久化在磁盘上。
 
 ---
 
-## 解决方案
+## 2、解决方案
 
 ![Task System Overview](/image/agent-course/s12_task_system/task-system-overview.svg)
 
@@ -43,17 +43,17 @@ TodoWrite vs Task System：
 | 生命周期 | 当前会话 / 当前任务 | 跨会话保留 |
 | 分工 | 不负责任务认领 | `owner` / claim |
 | 状态 | pending / in_progress / completed | pending / in_progress / completed |
-| 粒度 | Agent 自己的步骤 | 可被认领、追踪、解锁的任务 |
+| 粒度 | `Agent` 自己的步骤 | 可被认领、追踪、解锁的任务 |
 
 ---
 
-## 工作原理
+## 3、工作原理
 
 ![Task DAG](/image/agent-course/s12_task_system/task-dag.svg)
 
-### Task: 数据结构
+### 3.1 Task: 数据结构
 
-每个任务是一个 JSON 文件，存于 `.tasks/` 目录：
+每个任务是一个 `JSON` 文件，存于 `.tasks/` 目录：
 
 ```python
 @dataclass
@@ -68,7 +68,7 @@ class Task:
 
 ID 用 `timestamp + random hex` 生成，简单但够用。CC 用顺序 ID + highwatermark 文件防止 ID 重用，是更严谨的设计。
 
-### create_task: 创建任务
+### 3.2 create_task: 创建任务
 
 ```python
 def create_task(subject: str, description: str = "",
@@ -83,9 +83,9 @@ def create_task(subject: str, description: str = "",
     return task
 ```
 
-创建时自动 `save_task` 到 `.tasks/{id}.json`。`blockedBy` 声明依赖，比如 "写 API" 的 `blockedBy` 是 `["task_schema"]`。
+创建时自动 `save_task` 到 `.tasks/{id}.json`。`blockedBy` 声明依赖，比如 "写 `API`" 的 `blockedBy` 是 `["task_schema"]`。
 
-### can_start: 依赖检查
+### 3.3 can_start: 依赖检查
 
 一个任务只能在它的 `blockedBy` **全部 completed** 之后才能开始：
 
@@ -103,9 +103,9 @@ def can_start(task_id: str) -> bool:
 
 `can_start` 是 `claim_task` 的前置检查：`blockedBy` 里有任何一个不是 completed，就不能认领。不存在的依赖视为 blocked，避免引用错误 ID 时崩溃。
 
-### claim_task: 认领任务
+### 3.4 claim_task: 认领任务
 
-Agent 开始做一个任务时，调用 `claim_task`：设置 `owner`，状态从 `pending` → `in_progress`。`owner` 字段记录谁在做这个任务，多 Agent 场景下防止重复认领：
+`Agent` 开始做一个任务时，调用 `claim_task`：设置 `owner`，状态从 `pending` → `in_progress`。`owner` 字段记录谁在做这个任务，多 `Agent` 场景下防止重复认领：
 
 ```python
 def claim_task(task_id: str, owner: str = "agent") -> str:
@@ -124,7 +124,7 @@ def claim_task(task_id: str, owner: str = "agent") -> str:
 
 如果任务已被别人认领（`status != "pending"`），或者依赖没完成（`can_start` 返回 False），拒绝认领。
 
-### complete_task: 完成与解锁
+### 3.5 complete_task: 完成与解锁
 
 任务做完后，设为 `completed`。同时扫描所有其他任务，找出**刚刚被解锁**的下游任务：
 
@@ -145,9 +145,9 @@ def complete_task(task_id: str) -> str:
 
 完成 "schema" 后，"endpoints" 和 "docs" 的 `can_start` 返回 True，它们可以开始。
 
-### get_task: 查看完整细节
+### 3.6 get_task: 查看完整细节
 
-`list_tasks` 只显示一行摘要。`get_task` 返回完整的任务 JSON，包括 description 和依赖细节。跨会话恢复时，Agent 需要读取完整描述才能继续工作：
+`list_tasks` 只显示一行摘要。`get_task` 返回完整的任务 `JSON`，包括 description 和依赖细节。跨会话恢复时，`Agent` 需要读取完整描述才能继续工作：
 
 ```python
 def get_task(task_id: str) -> str:
@@ -155,7 +155,7 @@ def get_task(task_id: str) -> str:
     return json.dumps(asdict(task), indent=2)
 ```
 
-### 状态机: 两个动作，三个状态
+### 3.7 状态机: 两个动作，三个状态
 
 ```
 pending ──claim──→ in_progress ──complete──→ completed
@@ -168,7 +168,7 @@ pending ──claim──→ in_progress ──complete──→ completed
 
 CC 没有 `in_progress → pending` 的 release 路径。如果 teammate 终止或 shutdown，CC 会把它未完成的任务 unassign（清除 owner），并将 status 重置为 `pending`，方便其他 agent 重新认领。教学版省略了这一恢复路径。
 
-### 合起来跑
+### 3.8 合起来跑
 
 ```python
 # 创建有依赖的任务
@@ -191,11 +191,11 @@ claim_task(tests.id)        # ✓ Claimed (endpoints 已完成)
 complete_task(tests.id)     # ✓ Completed
 ```
 
-每个 `create_task` 写一个 JSON 文件，每个 `claim_task` / `complete_task` 更新文件。跨会话时，`.tasks/` 目录还在，Agent 读文件就能恢复进度。
+每个 `create_task` 写一个 `JSON` 文件，每个 `claim_task` / `complete_task` 更新文件。跨会话时，`.tasks/` 目录还在，`Agent` 读文件就能恢复进度。
 
 ---
 
-## 相对 s11 的变更
+## 4、相对 s11 的变更
 
 | 组件 | 之前 (s11) | 之后 (s12) |
 |------|-----------|-----------|
@@ -208,7 +208,7 @@ complete_task(tests.id)     # ✓ Completed
 
 ---
 
-## 试一下
+## 5、试一下
 
 ```sh
 cd learn-claude-code
@@ -222,15 +222,15 @@ python s12_task_system/code.py
 3. `Claim the first unblocked task and complete it`
 4. `List tasks again — which ones are now unblocked?`
 
-观察重点：`.tasks/` 目录下是否生成了 JSON 文件？完成任务后，被阻塞的任务是否解锁？
+观察重点：`.tasks/` 目录下是否生成了 `JSON` 文件？完成任务后，被阻塞的任务是否解锁？
 
 ---
 
-## 接下来
+## 6、接下来
 
-任务图有了。但有些任务要跑很久——比如全量测试、部署到服务器。Agent 调 LLM 按量计费，不能干等一个慢操作。
+任务图有了。但有些任务要跑很久——比如全量测试、部署到服务器。`Agent` 调 `LLM` 按量计费，不能干等一个慢操作。
 
-s13 Background Tasks → 慢操作放后台。Agent 继续处理其他任务，后台跑完了通知它。
+s13 `Background Tasks` → 慢操作放后台。`Agent` 继续处理其他任务，后台跑完了通知它。
 
 <details>
 <summary>深入 CC 源码</summary>
@@ -257,7 +257,7 @@ s13 Background Tasks → 慢操作放后台。Agent 继续处理其他任务，�
 
 ### 二、不是 TodoWrite 的升级，是两个独立系统
 
-CC 中 Task System 和 TodoWrite **同时存在**，通过 `isTodoV2Enabled()` 切换（`utils/tasks.ts:133`）——交互式会话默认启用 Task（V2），非交互式/SDK 默认用 TodoWrite。环境变量 `CLAUDE_CODE_ENABLE_TASKS` 可强制启用 Task。Task 有 TodoWrite 没有的：文件锁并发保护、依赖强制执行、ownership、fs.watch 响应式监听、生命周期 hooks。
+CC 中 Task System 和 TodoWrite **同时存在**，通过 `isTodoV2Enabled()` 切换（`utils/tasks.ts:133`）——交互式会话默认启用 Task（V2），非交互式/`SDK` 默认用 TodoWrite。环境变量 `CLAUDE_CODE_ENABLE_TASKS` 可强制启用 Task。Task 有 TodoWrite 没有的：文件锁并发保护、依赖强制执行、ownership、fs.watch 响应式监听、生命周期 hooks。
 
 ### 三、并发认领的锁机制
 

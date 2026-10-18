@@ -172,7 +172,7 @@ function render(gl, count) {
         + 坐标范围是
             + X轴：【-1, 1】。
             + Y轴：【-1, 1】。
-+ WebGL API
++ WebGL `API`
     + shader：着色器对象
         + gl.createShader：创建着色器。
         + gl.shaderSource：指定着色器源码。

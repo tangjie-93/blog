@@ -6,7 +6,7 @@ tags: javascript
 note: 浏览器的执行原理
 ---
 
-## 浏览器执行原理图解
+## 1、浏览器执行原理图解
 
 <img src="../../images/js/browserExePrinciple.png" alt="暂无数据">
 <!-- ![](https://user-gold-cdn.xitu.io/2019/7/7/16bccf9312d40cf2?w=2627&h=916&f=png&s=110988) -->

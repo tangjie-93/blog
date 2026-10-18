@@ -10,13 +10,13 @@ note: "从 Agent Loop 到综合系统，查阅 20 个章节的核心机制与代
 import { withBase } from 'vitepress'
 </script>
 
-# Agent 架构全景：20 章核心机制回顾
+# `Agent` 架构全景：20 章核心机制回顾
 
 本文回顾前 `20` 章的核心机制，串联从最小执行循环到完整 `Agent` 系统的学习路径。每一节包含机制简介、核心代码和查阅提示，帮助你把分散的知识点整理成完整的架构视图；代码以各章的 `OpenAI` 实现为例。
 
 > 说明：核心代码片段保留关键结构，省略部分重复的 `schema`、异常处理和打印逻辑。完整实现请查看每章的 `code_openai.py`。
 
-## A. 快速索引
+## 1、A. 快速索引
 
 | 章节 | 知识点 | 一句话理解 | 源码 |
 | --- | --- | --- | --- |
@@ -41,7 +41,7 @@ import { withBase } from 'vitepress'
 | `s19` | `MCP Tools` | 外部服务通过标准协议暴露成可发现、可调用的工具。 | <a :href="withBase('/agent-examples/s19_mcp_plugin/code_openai.py')" download><code>s19_mcp_plugin/code_openai.py</code></a> |
 | `s20` | `Comprehensive Agent` | 把前面所有机制收束回一个完整的 `Agent Loop`。 | <a :href="withBase('/agent-examples/s20_comprehensive/code_openai.py')" download><code>s20_comprehensive/code_openai.py</code></a> |
 
-## B. 能力分层索引
+## 2、B. 能力分层索引
 
 | 能力层 | 包含章节 | 适合查什么 |
 | --- | --- | --- |
@@ -53,13 +53,13 @@ import { withBase } from 'vitepress'
 
 ---
 
-## 1. s01: Agent Loop
+## 1. s01: `Agent Loop`
 
-### 1.1 简介
+### 3.1 `1.1` 简介
 
 `s01` 展示最小可用 `AI Coding Agent` 的 `OpenAI Responses API` 版本。它只有一个 `bash` 工具，但已经具备完整闭环：用户提问、模型返回 `function_call`、程序执行工具、把 `function_call_output` 放回消息历史，然后继续让模型推理。
 
-### 1.2 核心机制
+### 3.2 `1.2` 核心机制
 
 - `TOOLS` 告诉模型可以调用哪些工具。
 - `agent_loop()` 负责持续调用模型。
@@ -67,7 +67,7 @@ import { withBase } from 'vitepress'
 - 工具结果以 `function_call_output` 形式追加为下一轮 `user` 消息。
 - 当模型不再调用工具时，循环结束。
 
-### 1.3 核心代码
+### 3.3 `1.3` 核心代码
 
 ```python
 TOOLS = [{
@@ -113,7 +113,7 @@ def agent_loop(messages: list):
             })
 ```
 
-### 1.4 查阅提示
+### 3.4 `1.4` 查阅提示
 
 不懂 `Agent Loop`、`function_call`、`function_call_output`、消息历史如何闭环时，先看这一章。
 
@@ -121,18 +121,18 @@ def agent_loop(messages: list):
 
 ## 2. s02: Tool Use
 
-### 2.1 简介
+### 4.1 `2.1` 简介
 
 `s02` 从单个 `bash` 工具扩展到多个工具。`OpenAI` 版把工具声明交给 `TOOLS`，把执行逻辑收束到 `call_tool()`。主循环仍然稳定，只把“怎么执行工具”从硬编码改成统一分发函数。
 
-### 2.2 核心机制
+### 4.2 `2.2` 核心机制
 
 - `TOOLS` 是给模型看的工具声明。
 - `function_tool()` 生成 `OpenAI Responses API` 需要的工具定义。
 - `call_tool()` 是给程序用的工具执行入口。
 - `agent_loop()` 从 `response.output` 找出 `function_call`，执行后追加 `function_call_output`。
 
-### 2.3 核心代码
+### 4.3 `2.3` 核心代码
 
 ```python
 def function_tool(name: str, description: str,
@@ -174,7 +174,7 @@ for call in tool_calls:
     })
 ```
 
-### 2.4 查阅提示
+### 4.4 `2.4` 查阅提示
 
 想理解“加一个新工具要改哪里”时，看 `TOOLS`、`TOOL_HANDLERS` 和 `agent_loop()` 里的分发逻辑。
 
@@ -182,18 +182,18 @@ for call in tool_calls:
 
 ## 3. s03: Permission
 
-### 3.1 简介
+### 5.1 `3.1` 简介
 
 `s03` 在工具执行前增加权限判断。工具能力越强，误操作风险越大，所以工具执行入口必须有一个统一的权限闸门。
 
-### 3.2 核心机制
+### 5.2 `3.2` 核心机制
 
 - `check_deny_list()` 先拦截明确危险命令。
 - `check_rules()` 根据工具名和输入判断是否需要用户确认。
 - `ask_user()` 把决策权交给人。
 - `check_permission()` 是工具执行前的统一入口。
 
-### 3.3 核心代码
+### 5.3 `3.3` 核心代码
 
 ```python
 def check_permission(block) -> bool:
@@ -222,7 +222,7 @@ for block in function_calls(response):
     })
 ```
 
-### 3.4 查阅提示
+### 5.4 `3.4` 查阅提示
 
 不懂为什么 `Agent` 不能直接执行所有命令时，看这一章。重点看“执行前统一拦截”。
 
@@ -230,18 +230,18 @@ for block in function_calls(response):
 
 ## 4. s04: Hooks
 
-### 4.1 简介
+### 6.1 `4.1` 简介
 
 `s04` 引入 `Hooks`。权限检查、日志、输出裁剪、上下文注入都属于横切逻辑，如果全部写进 `agent_loop()`，主循环会很快变乱。`Hooks` 的作用是把这些逻辑挂在生命周期事件上。
 
-### 4.2 核心机制
+### 6.2 `4.2` 核心机制
 
 - `HOOKS` 是事件到回调列表的注册表。
 - `register_hook()` 添加回调。
 - `trigger_hooks()` 在关键时刻触发回调。
 - 主循环只保留关键调用点，不关心每个钩子的内部实现。
 
-### 4.3 核心代码
+### 6.3 `4.3` 核心代码
 
 ```python
 HOOKS = {
@@ -263,7 +263,7 @@ output = TOOL_HANDLERS[block.name](**call_args(block))
 trigger_hooks("PostToolUse", {"block": block, "output": output})
 ```
 
-### 4.4 查阅提示
+### 6.4 `4.4` 查阅提示
 
 如果某个功能“每次工具调用前后都要做”，但不属于工具本身，就应该想到 `Hooks`。
 
@@ -271,18 +271,18 @@ trigger_hooks("PostToolUse", {"block": block, "output": output})
 
 ## 5. s05: TodoWrite
 
-### 5.1 简介
+### 7.1 `5.1` 简介
 
 `s05` 增加 `todo_write` 工具，让模型把计划写成结构化状态。这样用户可以看到当前任务列表，`Agent` 也能减少长任务中途跑偏的概率。
 
-### 5.2 核心机制
+### 7.2 `5.2` 核心机制
 
 - `CURRENT_TODOS` 保存当前计划。
 - `_normalize_todos()` 规范化模型传入的待办项。
 - `run_todo_write()` 更新计划并返回可读摘要。
 - `todo_write` 是一个普通工具，但它改变的是 `Agent` 的工作状态。
 
-### 5.3 核心代码
+### 7.3 `5.3` 核心代码
 
 ```python
 CURRENT_TODOS: list[dict] = []
@@ -305,7 +305,7 @@ def run_todo_write(todos: list[dict]) -> str:
     )
 ```
 
-### 5.4 查阅提示
+### 7.4 `5.4` 查阅提示
 
 当你想让 `Agent` 做复杂任务时先列计划、执行中更新状态，查这一章。
 
@@ -313,18 +313,18 @@ def run_todo_write(todos: list[dict]) -> str:
 
 ## 6. s06: Subagent
 
-### 6.1 简介
+### 8.1 `6.1` 简介
 
 `s06` 引入 `Subagent`。主 `Agent` 可以把一个子问题交给子代理，子代理拿到干净的消息历史和有限工具集，完成后只把结果返回主线程。
 
-### 6.2 核心机制
+### 8.2 `6.2` 核心机制
 
 - `BASE_TOOLS` 是主代理可用的基础工具。
 - `SUB_TOOLS` 是子代理可用的工具子集。
 - `spawn_subagent()` 创建独立消息历史。
 - 子代理内部仍然跑同样的 `Agent Loop` 思想。
 
-### 6.3 核心代码
+### 8.3 `6.3` 核心代码
 
 ```python
 def spawn_subagent(description: str) -> str:
@@ -357,7 +357,7 @@ def spawn_subagent(description: str) -> str:
         sub_messages.extend(results)
 ```
 
-### 6.4 查阅提示
+### 8.4 `6.4` 查阅提示
 
 不懂“为什么子任务不直接塞进主上下文”时，看这一章。核心是上下文隔离。
 
@@ -365,11 +365,11 @@ def spawn_subagent(description: str) -> str:
 
 ## 7. s07: Skill Loading
 
-### 7.1 简介
+### 9.1 `7.1` 简介
 
 `s07` 让 `Agent` 可以按需加载技能。技能不是一开始全塞进 `System Prompt`，而是先扫描元信息，等模型需要某个技能时再通过 `load_skill` 读取完整内容。
 
-### 7.2 核心机制
+### 9.2 `7.2` 核心机制
 
 - `_parse_frontmatter()` 读取技能文件头部元数据。
 - `_scan_skills()` 扫描本地 `skills` 目录。
@@ -377,7 +377,7 @@ def spawn_subagent(description: str) -> str:
 - `load_skill()` 把指定技能全文加载进上下文。
 - `build_system()` 把技能列表加入系统提示词。
 
-### 7.3 核心代码
+### 9.3 `7.3` 核心代码
 
 ```python
 def _parse_frontmatter(text: str) -> tuple[dict, str]:
@@ -401,19 +401,19 @@ def load_skill(name: str) -> str:
     return skill["path"].read_text()
 ```
 
-### 7.4 查阅提示
+### 9.4 `7.4` 查阅提示
 
 想理解 `Codex` 或 `Claude Code` 这类系统为什么会“按需加载能力说明”，看这一章。
 
 ---
 
-## 8. s08: Context Compact
+## 8. s08: `Context Compact`
 
-### 8.1 简介
+### 10.1 `8.1` 简介
 
 `s08` 处理上下文过长的问题。工具结果、长对话和重复历史会撑爆上下文窗口，所以系统要能裁剪、持久化、总结和替换历史。
 
-### 8.2 核心机制
+### 10.2 `8.2` 核心机制
 
 - `estimate_size()` 粗略估算消息大小。
 - `snip_compact()` 对大块内容做局部裁剪。
@@ -422,7 +422,7 @@ def load_skill(name: str) -> str:
 - `compact_history()` 用摘要替换旧消息。
 - `reactive_compact()` 在超限错误后触发压缩。
 
-### 8.3 核心代码
+### 10.3 `8.3` 核心代码
 
 ```python
 def compact_history(messages):
@@ -444,7 +444,7 @@ def reactive_compact(messages):
     return compacted
 ```
 
-### 8.4 查阅提示
+### 10.4 `8.4` 查阅提示
 
 遇到 `prompt too long`、工具输出太长、历史太多时，看这一章。
 
@@ -452,11 +452,11 @@ def reactive_compact(messages):
 
 ## 9. s09: Memory
 
-### 9.1 简介
+### 11.1 `9.1` 简介
 
 `s09` 解决“压缩会丢细节”的问题。上下文压缩适合保存当前任务状态，但用户偏好、长期事实、项目约定等应该进入独立的持久记忆层。
 
-### 9.2 核心机制
+### 11.2 `9.2` 核心机制
 
 - `write_memory_file()` 写入持久记忆文件。
 - `_rebuild_index()` 维护记忆索引。
@@ -465,7 +465,7 @@ def reactive_compact(messages):
 - `extract_memories()` 从对话中提取值得长期保存的信息。
 - `consolidate_memories()` 合并重复或过期记忆。
 
-### 9.3 核心代码
+### 11.3 `9.3` 核心代码
 
 ```python
 def write_memory_file(name: str, content: str) -> str:
@@ -487,26 +487,26 @@ def build_system(user_prompt: str) -> str:
     return f"{BASE_SYSTEM}\n\nRelevant memories:\n{memories}"
 ```
 
-### 9.4 查阅提示
+### 11.4 `9.4` 查阅提示
 
 需要区分“当前上下文”和“长期记忆”时，看这一章。
 
 ---
 
-## 10. s10: System Prompt
+## 10. s10: `System Prompt`
 
-### 10.1 简介
+### 12.1 `10.1` 简介
 
 `s10` 把 `System Prompt` 从硬编码字符串升级为运行时组装。真实 `Agent` 的提示词通常来自工作目录、策略、上下文、记忆、工具说明和当前任务状态。
 
-### 10.2 核心机制
+### 12.2 `10.2` 核心机制
 
 - `assemble_system_prompt()` 根据 `context` 组装系统提示词。
 - `get_system_prompt()` 对外提供当前提示词。
 - `update_context()` 更新运行时上下文。
 - 主循环每次调用模型时使用动态 `System Prompt`。
 
-### 10.3 核心代码
+### 12.3 `10.3` 核心代码
 
 ```python
 def assemble_system_prompt(context: dict) -> str:
@@ -527,7 +527,7 @@ def get_system_prompt(context: dict) -> str:
     return assemble_system_prompt(context)
 ```
 
-### 10.4 查阅提示
+### 12.4 `10.4` 查阅提示
 
 如果你不理解“为什么系统提示词不是一个固定字符串”，看这一章。
 
@@ -535,11 +535,11 @@ def get_system_prompt(context: dict) -> str:
 
 ## 11. s11: Error Recovery
 
-### 11.1 简介
+### 13.1 `11.1` 简介
 
 `s11` 增加错误恢复。模型调用、工具调用、网络请求和上下文长度都可能失败，系统需要根据错误类型决定是否重试、延迟多久、是否换模型、是否先压缩上下文。
 
-### 11.2 核心机制
+### 13.2 `11.2` 核心机制
 
 - `RecoveryState` 记录连续失败次数、重试次数和恢复状态。
 - `retry_delay()` 做指数退避。
@@ -547,7 +547,7 @@ def get_system_prompt(context: dict) -> str:
 - `is_prompt_too_long_error()` 判断是否需要压缩。
 - `reactive_compact()` 在上下文错误后压缩再试。
 
-### 11.3 核心代码
+### 13.3 `11.3` 核心代码
 
 ```python
 @dataclass
@@ -569,7 +569,7 @@ def with_retry(operation):
     raise RuntimeError("Operation failed after retries")
 ```
 
-### 11.4 查阅提示
+### 13.4 `11.4` 查阅提示
 
 遇到“模型报错后应该怎么办”时，看这一章。重点是错误分类和恢复策略。
 
@@ -577,11 +577,11 @@ def with_retry(operation):
 
 ## 12. s12: Task System
 
-### 12.1 简介
+### 14.1 `12.1` 简介
 
 `s12` 把大目标拆成持久化任务。任务有 `status`、`owner`、`blockedBy`，可以创建、列出、认领和完成。这样 `Agent` 的工作不只存在于聊天上下文里。
 
-### 12.2 核心机制
+### 14.2 `12.2` 核心机制
 
 - `Task` 是任务数据结构。
 - `.tasks/` 是本地持久化目录。
@@ -590,7 +590,7 @@ def with_retry(operation):
 - `complete_task()` 完成任务并提示被解锁的任务。
 - 任务操作被暴露成工具给模型调用。
 
-### 12.3 核心代码
+### 14.3 `12.3` 核心代码
 
 ```python
 @dataclass
@@ -627,19 +627,19 @@ def claim_task(task_id: str, owner: str = "agent") -> str:
     return f"Claimed {task.id}"
 ```
 
-### 12.4 查阅提示
+### 14.4 `12.4` 查阅提示
 
 当一个目标已经大到需要拆分、排依赖、分配状态时，看这一章。
 
 ---
 
-## 13. s13: Background Tasks
+## 13. s13: `Background Tasks`
 
-### 13.1 简介
+### 15.1 `13.1` 简介
 
 `s13` 处理慢操作。不是所有工具都应该阻塞主循环，例如长时间 `bash` 命令、构建、测试、扫描。后台任务让主循环继续响应，并在后续轮次收集结果。
 
-### 13.2 核心机制
+### 15.2 `13.2` 核心机制
 
 - `is_slow_operation()` 判断工具调用是否可能很慢。
 - `should_run_background()` 决定是否放后台。
@@ -647,7 +647,7 @@ def claim_task(task_id: str, owner: str = "agent") -> str:
 - `collect_background_results()` 回收已完成任务结果。
 - 主循环每轮都检查后台结果。
 
-### 13.3 核心代码
+### 15.3 `13.3` 核心代码
 
 ```python
 BACKGROUND_TASKS: dict[str, dict] = {}
@@ -672,7 +672,7 @@ def collect_background_results() -> list[str]:
     ]
 ```
 
-### 13.4 查阅提示
+### 15.4 `13.4` 查阅提示
 
 不懂“为什么有些命令需要后台跑”时，看这一章。重点是避免主循环被慢工具卡死。
 
@@ -680,11 +680,11 @@ def collect_background_results() -> list[str]:
 
 ## 14. s14: Cron Scheduler
 
-### 14.1 简介
+### 16.1 `14.1` 简介
 
 `s14` 增加定时任务。`Agent` 不应该靠记忆提醒自己每天做某件事，而应该由调度器按时间表达式生产任务。
 
-### 14.2 核心机制
+### 16.2 `14.2` 核心机制
 
 - `CronJob` 保存定时任务定义。
 - `validate_cron()` 校验时间表达式。
@@ -693,7 +693,7 @@ def collect_background_results() -> list[str]:
 - `list_crons` 和 `cancel_cron` 管理定时任务。
 - 命中定时规则时进入 `cron_queue`，再由主循环注入为一条计划消息。
 
-### 14.3 核心代码
+### 16.3 `14.3` 核心代码
 
 ```python
 @dataclass
@@ -736,19 +736,19 @@ def consume_cron_queue() -> list[CronJob]:
     return fired
 ```
 
-### 14.4 查阅提示
+### 16.4 `14.4` 查阅提示
 
 需要做“每天检查一次”“每周生成报告”这类周期任务时，看这一章。
 
 ---
 
-## 15. s15: Agent Teams
+## 15. s15: `Agent Teams`
 
-### 15.1 简介
+### 17.1 `15.1` 简介
 
 `s15` 引入团队。多个 `Agent` 不共享同一个巨大上下文，而是通过消息总线发送消息、检查收件箱、创建队友、分配任务。
 
-### 15.2 核心机制
+### 17.2 `15.2` 核心机制
 
 - `MessageBus` 保存队友之间的消息。
 - `send_message` 发消息。
@@ -756,7 +756,7 @@ def consume_cron_queue() -> list[CronJob]:
 - `spawn_teammate` 创建队友线程。
 - 队友可以有自己的上下文和角色。
 
-### 15.3 核心代码
+### 17.3 `15.3` 核心代码
 
 ```python
 class MessageBus:
@@ -778,19 +778,19 @@ def run_send_message(to: str, content: str) -> str:
     return f"Sent message to {to}"
 ```
 
-### 15.4 查阅提示
+### 17.4 `15.4` 查阅提示
 
 当你想让多个 `Agent` 分工，而不是让一个模型扛所有上下文时，看这一章。
 
 ---
 
-## 16. s16: Team Protocols
+## 16. s16: `Team Protocols`
 
-### 16.1 简介
+### 18.1 `16.1` 简介
 
 `s16` 让团队协作从“能发消息”升级为“有协议”。队友之间不只是聊天，而是按照请求计划、提交计划、审查计划、请求关闭等协议推进工作。
 
-### 16.2 核心机制
+### 18.2 `16.2` 核心机制
 
 - `ProtocolState` 跟踪请求和响应。
 - `new_request_id()` 生成请求编号。
@@ -799,7 +799,7 @@ def run_send_message(to: str, content: str) -> str:
 - `review_plan` 审查计划。
 - `request_shutdown` 请求队友结束。
 
-### 16.3 核心代码
+### 18.3 `16.3` 核心代码
 
 ```python
 @dataclass
@@ -816,7 +816,7 @@ def match_response(request_id: str, response: dict) -> str:
     return f"Matched response for {request_id}"
 ```
 
-### 16.4 查阅提示
+### 18.4 `16.4` 查阅提示
 
 不懂“多代理协作为什么需要协议而不是只靠自然语言”时，看这一章。
 
@@ -824,18 +824,18 @@ def match_response(request_id: str, response: dict) -> str:
 
 ## 17. s17: Autonomous Agents
 
-### 17.1 简介
+### 19.1 `17.1` 简介
 
 `s17` 让队友具备自治能力。队友不再完全等待主代理分配任务，而是可以扫描未认领任务、判断自己能做什么、主动认领并推进。
 
-### 17.2 核心机制
+### 19.2 `17.2` 核心机制
 
 - `scan_unclaimed_tasks()` 找到可开始且无人认领的任务。
 - `idle_poll()` 在空闲时定期检查任务和消息。
 - 队友线程内部调用任务系统。
 - 自治并不等于无控制，仍然受任务状态和协议约束。
 
-### 17.3 核心代码
+### 19.3 `17.3` 核心代码
 
 ```python
 def scan_unclaimed_tasks(owner: str) -> list[Task]:
@@ -854,19 +854,19 @@ def idle_poll(owner: str):
     return claim_task(task.id, owner)
 ```
 
-### 17.4 查阅提示
+### 19.4 `17.4` 查阅提示
 
 想理解“队友自己看板、自己认领”的机制时，看这一章。
 
 ---
 
-## 18. s18: Worktree Isolation
+## 18. s18: `Worktree Isolation`
 
-### 18.1 简介
+### 20.1 `18.1` 简介
 
 `s18` 解决多代理并行改文件时的冲突问题。每个任务可以绑定一个独立 `git worktree`，让不同队友在不同目录工作。
 
-### 18.2 核心机制
+### 20.2 `18.2` 核心机制
 
 - `validate_worktree_name()` 限制工作区名称。
 - `run_git()` 封装 `git` 命令。
@@ -875,7 +875,7 @@ def idle_poll(owner: str):
 - `remove_worktree()` 清理工作区。
 - `keep_worktree()` 保留工作区供人工检查。
 
-### 18.3 核心代码
+### 20.3 `18.3` 核心代码
 
 ```python
 VALID_WT_NAME = re.compile(r"^[A-Za-z0-9._-]{1,64}$")
@@ -898,19 +898,19 @@ def bind_task_to_worktree(task_id: str, worktree: str) -> str:
     return f"Bound {task_id} to {worktree}"
 ```
 
-### 18.4 查阅提示
+### 20.4 `18.4` 查阅提示
 
 只要出现“多个代理并行改同一个仓库”的场景，就应该想到这一章。
 
 ---
 
-## 19. s19: MCP Tools
+## 19. s19: `MCP` Tools
 
-### 19.1 简介
+### 21.1 `19.1` 简介
 
 `s19` 引入 `MCP`。外部系统不再需要被硬编码成内置工具，而是通过标准协议暴露能力。`Agent` 可以连接外部服务、发现工具、调用工具。
 
-### 19.2 核心机制
+### 21.2 `19.2` 核心机制
 
 - `MCPClient` 管理外部连接。
 - `connect_mcp` 连接外部服务。
@@ -918,7 +918,7 @@ def bind_task_to_worktree(task_id: str, worktree: str) -> str:
 - `search`、`trigger` 是示例外部工具。
 - 内置工具和 `MCP` 工具共同进入工具列表。
 
-### 19.3 核心代码
+### 21.3 `19.3` 核心代码
 
 ```python
 class MCPClient:
@@ -957,19 +957,19 @@ def assemble_tool_pool() -> tuple[list[dict], dict]:
     return tools, handlers
 ```
 
-### 19.4 查阅提示
+### 21.4 `19.4` 查阅提示
 
 当你想把数据库、浏览器、搜索、内部平台等外部能力接入 `Agent` 时，看这一章。
 
 ---
 
-## 20. s20: Comprehensive Agent
+## 20. s20: Comprehensive `Agent`
 
-### 20.1 简介
+### 22.1 `20.1` 简介
 
 `s20` 是总装版本。它把前面所有教学机制放回同一个完整 `Agent` 中：工具、权限、钩子、待办、子代理、技能、压缩、记忆、提示词、错误恢复、任务系统、后台任务、定时任务、团队、协议、自治、工作区隔离和 `MCP`。
 
-### 20.2 核心机制
+### 22.2 `20.2` 核心机制
 
 - `Task` 管任务状态。
 - `MessageBus` 管队友消息。
@@ -980,7 +980,7 @@ def assemble_tool_pool() -> tuple[list[dict], dict]:
 - `BUILTIN_TOOLS` 和外部工具共同组成工具层。
 - `agent_loop()` 仍然是中心。
 
-### 20.3 核心代码
+### 22.3 `20.3` 核心代码
 
 ```python
 def call_tool_handler(handler, args: dict, name: str) -> str:
@@ -1043,13 +1043,13 @@ def agent_loop(messages: list, context: dict):
         messages.append({"role": "user", "output": build_user_content(results)})
 ```
 
-### 20.4 查阅提示
+### 22.4 `20.4` 查阅提示
 
 想看“真实一点的 `Agent` 最终长什么样”时，看这一章。重点不是每个细节，而是所有机制如何围绕同一个主循环协作。
 
 ---
 
-## 附录 1. 常见问题速查
+## 23、附录 1. 常见问题速查
 
 | 问题 | 优先查看 |
 | --- | --- |
@@ -1074,7 +1074,7 @@ def agent_loop(messages: list, context: dict):
 | 怎么接外部工具和服务？ | `s19` |
 | 所有机制如何组合？ | `s20` |
 
-## 附录 2. 阅读路线建议
+## 24、附录 2. 阅读路线建议
 
 如果你是第一次系统学习，建议按顺序读：
 
@@ -1091,7 +1091,7 @@ s01 -> s02 -> s03 -> s04 -> s05 -> s06 -> s07 -> s08 -> s09 -> s10
 - 并发和调度：先看 `s13`、`s14`。
 - 多代理平台：先看 `s12`、`s15` 到 `s20`。
 
-## 附录 3. 维护说明
+## 25、附录 3. 维护说明
 
 如果后续新增章节，例如 `s21_xxx`，建议同步更新：
 

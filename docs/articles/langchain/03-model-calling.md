@@ -10,7 +10,7 @@ note: 统一理解 Chat Model、Embedding、流式与批量调用。
 
 ## 1. 这一模块解决什么问题
 
-模型调用是 LLM 应用的发动机。LangChain 生态通过模型集成包把不同厂商的模型接到统一接口里。
+模型调用是 `LLM` 应用的发动机。`LangChain` 生态通过模型集成包把不同厂商的模型接到统一接口里。
 
 常见包：
 
@@ -44,15 +44,15 @@ messages -> chat model -> AIMessage
 5. 使用流式输出。
 6. 理解模型返回的消息结构。
 
-## 3. Embedding Model
+## 3. `Embedding` Model
 
-Embedding 模型把文本变成向量。
+`Embedding` 模型把文本变成向量。
 
 ```text
 "报销流程是什么" -> [0.12, -0.03, 0.88, ...]
 ```
 
-RAG 的检索依赖向量相似度。Embedding 质量不好，检索结果就不准。
+`RAG` 的检索依赖向量相似度。`Embedding` 质量不好，检索结果就不准。
 
 要会什么：
 
@@ -84,7 +84,7 @@ RAG 的检索依赖向量相似度。Embedding 质量不好，检索结果就不
 | 合同风险分析 | 更强模型 |
 | 批处理摘要 | 看成本选择 |
 
-上线系统要记录模型名称、版本、参数、Prompt 版本、调用时间、token 数和成本。
+上线系统要记录模型名称、版本、参数、`Prompt` 版本、调用时间、`token` 数和成本。
 
 ## 6. 常见坑
 
@@ -111,14 +111,14 @@ python docs/public/langchain-examples/03_models/model_selection.py
 python docs/public/langchain-examples/03_model_calling.py
 ~~~
 
-该脚本通过 `ChatOpenAI` 调用 OpenAI ChatGPT，并依次演示 `.invoke()`、`.stream()`、
+该脚本通过 `ChatOpenAI` 调用 `OpenAI` ChatGPT，并依次演示 `.invoke()`、`.stream()`、
 `.batch()` 和 `OpenAIEmbeddings.embed_query()`。
 
 ## 8. 本模块自测
 
-1. Chat Model 和 Embedding Model 有什么区别？
-    + Chat Model 是聊天模型封装，Embedding Model 是文本向量模型封装。
-2. 为什么 RAG 入库和查询最好使用同一个 embedding 模型？
+1. Chat Model 和 `Embedding` Model 有什么区别？
+    + Chat Model 是聊天模型封装，`Embedding` Model 是文本向量模型封装。
+2. 为什么 `RAG` 入库和查询最好使用同一个 embedding 模型？
     + 不同的 embedding 模型会生成不同的向量，导致检索结果不准确。
 3. temperature 对回答有什么影响？
     + temperature 控制发散程度，低一些回答更确定，高一些回答更开放。

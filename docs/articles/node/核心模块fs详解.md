@@ -9,7 +9,7 @@ note: 核心模块fs详解
 
 ### 1、文件的权限位 `mode`
 
-&#8195;&#8195;权限参数 mode 主要针对 Linux 和 Unix 操作系统，Window 的权限默认是可读、可写、不可执行
+&#8195;&#8195;权限参数 mode 主要针对 `Linux` 和 Unix 操作系统，Window 的权限默认是可读、可写、不可执行
 <table border="1">
     <caption>文件权限表</caption>
 	<tr>
@@ -90,7 +90,7 @@ ax+	| 与 a+ 类似，排他方式打开。|
 + `x` 其他方式
 > **注意** `r+` 和 `w+` 的区别，当文件不存在时，`r+` 不会创建文件，而会抛出异常，但 `w+` 会创建文件；如果文件存在，`r+` 不会自动清空文件，但 `w+` 会自动把已有文件的内容清空。
 ## 3、`fs` 模块中的文件操作方法
-### 3.1 文件读取- `fs.readFile`
+### 1.1 `3.1` 文件读取- `fs.readFile`
 `fs.readFile(filename,[,options],[callback(error,data)]`    
 `fs.readFileSync(filename[, options])`
 + `filename`表示读取的文件名或文件描述符。
@@ -107,7 +107,7 @@ fs.readFile("./copy.js", "utf-8", (err, data) => {
 //同步读取文件
 const data=fs.readFile("./copy.js", "utf-8");
 ```
-### 3.2 文件写入- `fs.writeFile`
+### 1.2 `3.2` 文件写入- `fs.writeFile`
 
 `fs.writeFile(filename,data,[options],callback(err))`   
 `fs.writeFileSync(file, data[, options])`
@@ -137,7 +137,7 @@ fs.writeFile('./index.txt', "这是测试数据", (err) => {
 //同步写入数据
 fs.writeFileSync('./index.txt', "这是测试数据");
 ```
-### 3.3 文件追加- `fs.appendFile`
+### 1.3 `3.3` 文件追加- `fs.appendFile`
 
 `fs.appendFile(path, data[, options], callback)`    
 `fs.appendFileSync(path, data[, options])`
@@ -167,7 +167,7 @@ fs.open('message.txt', 'a', (err, fd) => {
   });
 });
 ```
-### 3.3 获取文件信息=`fs.stat`
+### 1.4 `3.3` 获取文件信息=`fs.stat`
 `fs.stat(path, callback)`
 + `path` - 文件路径。
 + `callback` - 回调函数，带有两个参数如：`(err, stats), stats` 是 `fs.Stats` 对象。
@@ -183,7 +183,7 @@ stats.isSymbolicLink()|	如果是软链接返回 true，否则返回 false。
 stats.isFIFO()|	如果是FIFO，返回true，否则返回 false。FIFO是UNIX中的一种特殊类型的命令管道。
 stats.isSocket()|	如果是 Socket 返回 true，否则返回 false。
 
-### 3.4 在特定文件中进行读写操作
+### 1.5 `3.4` 在特定文件中进行读写操作
 > 1、打开文件——`fs.open(path,flags[,mode],callback(err,fd))`
 + path - 文件的路径。
 + flags - 文件打开的行为。具体值详见下文。
@@ -242,7 +242,7 @@ fs.open('./index.txt', 'r+', function(err, fd) {
 });
 ```
 
-### 3.5 删除文件-`fs.unlink`
+### 1.6 `3.5` 删除文件-`fs.unlink`
 `fs.unlink(filename,callback)`  
 `fs.unlinkSync(path)`
 + `path <string> | <Buffer> | <URL>`
@@ -254,7 +254,7 @@ fs.unlink('./file.txt', (err) => {
   console.log('文件已删除');
 });
 ```
-### 3.6 目录操作
+### 1.7 `3.6` 目录操作
 > 1、新建目录——`fs.mkdir(path[, options], callback)`
 + `path <string> | <Buffer> | <URL>`
 + `options <Object> | <integer>`
@@ -274,7 +274,7 @@ fs.readdir("./",(err,data)=>{
     console.log(data)//data是当前文件夹的所有文件名称的集合
 })
 ```
-### 3.7 监听文件——`fs.watch()`
+### 1.8 `3.7` 监听文件——`fs.watch()`
 `fs.watch(filename[, options][, listener])`
 + `filename <string> | <Buffer> | <URL>`:`filename` 是文件或目录。
 + `options <string> | <Object>`
@@ -307,7 +307,7 @@ fs.watch('./', (eventType, filename) => {
 // change
 // 提供的文件名: copy-file.js
 ```
-### 3.8 拷贝文件——`fs.copyFile`
+### 1.9 `3.8` 拷贝文件——`fs.copyFile`
 `fs.copyFile(src, dest[, flags], callback)`
 + `src <string> | <Buffer> | <URL>` 要拷贝的源文件名。
 + `dest <string> | <Buffer> | <URL>` 拷贝操作的目标文件名。

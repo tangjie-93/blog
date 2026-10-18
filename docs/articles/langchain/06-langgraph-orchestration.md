@@ -6,11 +6,11 @@ tags: LangChain|LangGraph
 note: 用 State、Node、Edge 和 Checkpointer 编排复杂流程。
 ---
 
-# 06. LangGraph 编排
+# 06. `LangGraph` 编排
 
 ## 1. 这一模块解决什么问题
 
-LangGraph 用来控制复杂 Agent 流程。
+`LangGraph` 用来控制复杂 `Agent` 流程。
 
 它适合处理：
 
@@ -19,7 +19,7 @@ LangGraph 用来控制复杂 Agent 流程。
 - 循环
 - 状态持久化
 - 人工审批
-- 多 Agent 协作
+- 多 `Agent` 协作
 
 ## 2. 核心思想
 
@@ -122,9 +122,9 @@ Checkpointer 用来保存执行状态。
 3. 保存敏感信息没有脱敏。
 4. State 结构升级后旧数据不兼容。
 
-## 7. Human-in-the-loop
+## 7. `Human-in-the-loop`
 
-Human-in-the-loop 是流程中途暂停，等人确认、审批或修改后再继续。
+`Human-in-the-loop` 是流程中途暂停，等人确认、审批或修改后再继续。
 
 适合场景：
 
@@ -143,7 +143,7 @@ Human-in-the-loop 是流程中途暂停，等人确认、审批或修改后再�
 4. 审批结果写回 State。
 5. 通过和拒绝走不同分支。
 
-## 8. 一个企业 RAG Graph 示例
+## 8. 一个企业 `RAG` Graph 示例
 
 ```text
 START
@@ -181,7 +181,7 @@ python docs/public/langchain-examples/06_langgraph.py
 ```
 
 该脚本定义 State、模型 Node 和 `START -> Node -> END` 边，并在 Node 内由
-`ChatOpenAI` 调用 OpenAI ChatGPT。
+`ChatOpenAI` 调用 `OpenAI` ChatGPT。
 
 ## 10. 本模块自测
 
@@ -199,15 +199,15 @@ python docs/public/langchain-examples/06_langgraph.py
   + 人工审批
   + 工具调用中断
   + 服务重启后继续任务
-4. Human-in-the-loop 适合哪些场景？
+4. `Human-in-the-loop` 适合哪些场景？
   + 合同风险确认
   + 财务审批
   + 人事制度解释
   + 高风险操作
   + 对外发送邮件
   + 修改生产数据
-5. 为什么 LangGraph 比普通链更适合复杂 Agent？
-  + LangGraph 可以处理多步骤任务、条件分支、循环、状态持久化、人工审批等场景。
+5. 为什么 `LangGraph` 比普通链更适合复杂 `Agent`？
+  + `LangGraph` 可以处理多步骤任务、条件分支、循环、状态持久化、人工审批等场景。
   + 普通链只能处理线性流程，不能处理复杂场景。
 
 

@@ -8,11 +8,11 @@ note: "整理 Poetry 项目创建、依赖管理、打包发布与常见工作�
 
 # Poetry 命令详解
 
-> Python 现代依赖管理工具
+> `Python` 现代依赖管理工具
 
 ---
 
-## 📋 目录
+## 1、📋 目录
 
 - [🚀 项目生命周期管理](#_1️⃣-项目生命周期管理)
 - [📦 依赖管理](#_2️⃣-依赖管理)
@@ -23,7 +23,7 @@ note: "整理 Poetry 项目创建、依赖管理、打包发布与常见工作�
 
 ---
 
-## 1️⃣ 项目生命周期管理
+## 2、1️⃣ 项目生命周期管理
 
 | 命令 | 作用 | 典型使用场景 | 与 pip/venv 对比 |
 | :--- | :--- | :--- | :--- |
@@ -31,13 +31,13 @@ note: "整理 Poetry 项目创建、依赖管理、打包发布与常见工作�
 | `poetry init` | 在**现有项目**中**交互式**地生成 `pyproject.toml` 文件 | 当你有一个旧项目，想改用Poetry管理时 | 替代手动编写 `requirements.txt` |
 | `poetry install` | **安装** `pyproject.toml` 中的所有依赖 | 当你刚克隆一个Poetry项目，或需要同步队友添加的依赖时 | 相当于 `pip install -r requirements.txt`，但更智能，会自动创建虚拟环境 |
 | `poetry update` | **更新所有依赖**到最新版本，并更新 `poetry.lock` 文件 | 定期批量升级项目依赖包 | 相当于 `pip install --upgrade` 批量操作 |
-| `poetry shell` | **激活**当前项目的虚拟环境 | 你想在项目环境下连续运行多个命令 | 相当于 `venv\Scripts\activate` (Windows) 或 `source venv/bin/activate` (Linux/macOS) |
+| `poetry shell` | **激活**当前项目的虚拟环境 | 你想在项目环境下连续运行多个命令 | 相当于 `venv\Scripts\activate` (Windows) 或 `source venv/bin/activate` (`Linux`/macOS) |
 | `poetry run <command>` | 在虚拟环境中**运行单个命令**，无需先激活环境 | 运行脚本 `poetry run python app.py` 或执行测试 `poetry run pytest` | 无需手动激活环境，非常方便 |
 | `poetry env info` | 查看当前项目虚拟环境的**详细信息**（路径、Python版本等） | 当你在IDE（如VSCode）中需要手动指定解释器路径时 | `pip` 无此功能 |
 
 ---
 
-## 2️⃣ 依赖管理
+## 3、2️⃣ 依赖管理
 
 | 命令 | 作用 | 典型使用场景 | 与 pip/venv 对比 |
 | :--- | :--- | :--- | :--- |
@@ -50,7 +50,7 @@ note: "整理 Poetry 项目创建、依赖管理、打包发布与常见工作�
 
 ---
 
-## 3️⃣ 打包与发布
+## 4、3️⃣ 打包与发布
 
 | 命令 | 作用 | 典型使用场景 | 与 pip/venv 对比 |
 | :--- | :--- | :--- | :--- |
@@ -59,7 +59,7 @@ note: "整理 Poetry 项目创建、依赖管理、打包发布与常见工作�
 
 ---
 
-## 4️⃣ 配置与维护
+## 5、4️⃣ 配置与维护
 
 | 命令 | 作用 | 典型使用场景 | 与 pip/venv 对比 |
 | :--- | :--- | :--- | :--- |
@@ -70,7 +70,7 @@ note: "整理 Poetry 项目创建、依赖管理、打包发布与常见工作�
 
 ---
 
-## 5️⃣ 核心工作流示例
+## 6、5️⃣ 核心工作流示例
 
 ### 1. 接手一个 Poetry 项目
 
@@ -123,7 +123,7 @@ poetry run python my_awesome_tool/main.py
 
 ---
 
-## 📝 常用命令速记口诀
+## 7、📝 常用命令速记口诀
 
 | 操作 | 命令 |
 | :--- | :--- |
@@ -139,9 +139,9 @@ poetry run python my_awesome_tool/main.py
 
 ---
 
-## 6️⃣ 配置文件说明
+## 8、6️⃣ 配置文件说明
 
-### pyproject.toml（项目声明文件）
+### 8.1 pyproject.toml（项目声明文件）
 
 ```bash
 [tool.poetry]
@@ -160,7 +160,7 @@ pytest = "^7.0.0"
 black = "^22.0.0"
 ```
 
-### poetry.lock（版本锁定文件）
+### 8.2 poetry.lock（版本锁定文件）
 
 - 记录了所有依赖的**精确版本号**
 - 必须提交到版本控制系统（git）
@@ -168,4 +168,4 @@ black = "^22.0.0"
 
 ---
 
-*更新时间：2026-03-17*
+*更新时间：`2026-03-17`*

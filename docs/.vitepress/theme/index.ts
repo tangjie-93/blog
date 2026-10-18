@@ -7,13 +7,41 @@ import Valine from './components/Valine.vue'
 import HomePage from './components/HomePage.vue'
 import './style.css'
 
+function numberDocumentOutline() {
+    const links = document.querySelectorAll<HTMLElement>('.VPDocOutlineItem.root > li > .outline-link')
+    links.forEach((link, index) => {
+        const text = link.textContent?.trim() || ''
+        if (/^(?:\d+[.、)）]|[一二三四五六七八九十]+、)/u.test(text)) return
+        link.textContent = `${index + 1}、${text}`
+    })
+}
+
+function numberDocumentHeadings() {
+    const headings = document.querySelectorAll<HTMLElement>('.vp-doc h2, .vp-doc h3')
+    let section = 0
+    let subsection = 0
+    headings.forEach((heading) => {
+        const text = heading.textContent?.trim() || ''
+        const isSubsection = heading.tagName === 'H3'
+        if (!isSubsection) {
+            section += 1
+            subsection = 0
+        } else {
+            subsection += 1
+        }
+        if (/^(?:\d+(?:[.、)）]|\s+)|[一二三四五六七八九十]+、)/u.test(text)) return
+        const prefix = isSubsection ? `${section}.${subsection} ` : `${section}、`
+        heading.insertBefore(document.createTextNode(prefix), heading.firstChild)
+    })
+}
+
 export default {
     extends: DefaultTheme,
     Layout: () => h(DefaultTheme.Layout, null, {
         'doc-after': () => h(Valine),
     }),
     /** 保留旧文章中的组件标签，使迁移无需修改正文。 */
-    enhanceApp({ app }) {
+    enhanceApp({ app, router }) {
         app.component('BlogList', BlogList)
         app.component('Tags', Tags)
         app.component('Valine', Valine)
@@ -32,6 +60,12 @@ export default {
                 enumerable: false,
                 writable: false,
             })
+        }
+        router.onAfterRouteChanged = () => {
+            if (typeof window !== 'undefined') window.setTimeout(() => {
+                numberDocumentHeadings()
+                numberDocumentOutline()
+            }, 0)
         }
     },
 } satisfies Theme

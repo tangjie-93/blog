@@ -17,19 +17,19 @@ s01 → ... → s07 → s08 → `s09` → [s10](./10%E3%80%81System%20Prompt%20%
 
 ***
 
-## 问题
+## 1、问题
 
 s08 的 autoCompact 会把当前目标、剩余工作、用户约束写进摘要，但细节会丢失："用 tab 缩进不要用空格"可能被简化成"用户有代码风格偏好"。而且新开一个会话，连摘要也没了。
 
-LLM 没有持久状态，所有信息都在上下文窗口里。上下文满了要压缩，压缩就有损。需要一层不参与压缩、跨会话保留的存储。
+`LLM` 没有持久状态，所有信息都在上下文窗口里。上下文满了要压缩，压缩就有损。需要一层不参与压缩、跨会话保留的存储。
 
 ***
 
-## 解决方案
+## 2、解决方案
 
 ![Memory Overview](/image/agent-course/s09_memory/memory-overview.svg)
 
-s08 的压缩管线保留，聚焦记忆。存储选文件系统：`.memory/` 目录下，每个记忆一个 `.md` 文件，带 YAML frontmatter（`name` / `description` / `type`）。文件多了需要索引：`MEMORY.md` 一行一个链接，注入 SYSTEM。
+s08 的压缩管线保留，聚焦记忆。存储选文件系统：`.memory/` 目录下，每个记忆一个 `.md` 文件，带 `YAML` frontmatter（`name` / `description` / `type`）。文件多了需要索引：`MEMORY.md` 一行一个链接，注入 SYSTEM。
 
 关键设计：索引常驻 SYSTEM prompt（可被 prompt cache 缓存），文件内容按需注入到当前 user turn（按 filename/description 匹配当前对话，不破坏 cache）。写入由每轮结束后的提取器完成：用户显式说"记住"或表达稳定偏好时，提取器会保存为记忆。文件积累多了，定期整理去重。
 
@@ -44,13 +44,13 @@ s08 的压缩管线保留，聚焦记忆。存储选文件系统：`.memory/` �
 
 ***
 
-## 工作原理
+## 3、工作原理
 
 ![Memory Subsystems](/image/agent-course/s09_memory/memory-subsystems.svg)
 
-### 存储：Markdown 文件 + 索引
+### 3.1 存储：`Markdown` 文件 + 索引
 
-每个记忆是一个 `.md` 文件，YAML frontmatter 记录元数据：
+每个记忆是一个 `.md` 文件，`YAML` frontmatter 记录元数据：
 
 ```markdown
 ---
@@ -83,13 +83,13 @@ def write_memory_file(name, mem_type, description, body):
     _rebuild_index()
 ```
 
-### 加载：两条路径
+### 3.2 加载：两条路径
 
 **路径一：索引常驻 SYSTEM。** `build_system()` 在每次用户请求开始时读取 `MEMORY.md`，把记忆清单注入。记忆提取和整理只在本轮结束时触发，因此同一轮用户请求中不需要重复重建 SYSTEM。
 
 **路径二：相关记忆按需注入。** 每次用户请求开始时，`load_memori`
 
-`es()` 把最近对话和记忆目录（name + description）一起发给 LLM 做一次轻量 side-query，选出相关的文件名，再读文件内容临时注入到当前 user turn。最多 5 条，控制开销。
+`es()` 把最近对话和记忆目录（name + description）一起发给 `LLM` 做一次轻量 side-query，选出相关的文件名，再读文件内容临时注入到当前 user turn。最多 5 条，控制开销。
 
 ```python
 def select_relevant_memories(messages,  =5):
@@ -109,9 +109,9 @@ def select_relevant_memories(messages,  =5):
     return [files[i]["filename"] for i in indices if 0 <= i < len(files)]
 ```
 
-如果 side-query 失败（API 错误、JSON 解析失败），降级到关键词匹配 name + description。
+如果 side-query 失败（`API` 错误、`JSON` 解析失败），降级到关键词匹配 name + description。
 
-### 写入：每轮结束后提取
+### 3.3 写入：每轮结束后提取
 
 用户不会每次都说"记住这个"。偏好通常散落在正常对话中："用 tab 比空格好"、"以后都用单引号"。
 
@@ -125,7 +125,7 @@ if response.stop_reason != "tool_use":
     return
 ```
 
-提取前先检查已有记忆，避免重复。提取 prompt 要求 LLM 返回 `{name, type, description, body}` 的 JSON 数组，只有确实有新信息时才写文件。
+提取前先检查已有记忆，避免重复。提取 prompt 要求 `LLM` 返回 `{name, type, description, body}` 的 `JSON` 数组，只有确实有新信息时才写文件。
 
 ```python
 def extract_memories(messages):
@@ -141,9 +141,9 @@ def extract_memories(messages):
     # ... parse response, write files ...
 ```
 
-### 整理：低频合并去重
+### 3.4 整理：低频合并去重
 
-记忆文件会积累。`consolidate_memories()` 在文件数达到阈值（默认 10）时触发，让 LLM 去重、合并矛盾、淘汰过时记忆：
+记忆文件会积累。`consolidate_memories()` 在文件数达到阈值（默认 10）时触发，让 `LLM` 去重、合并矛盾、淘汰过时记忆：
 
 ```python
 CONSOLIDATE_THRESHOLD = 10
@@ -158,7 +158,7 @@ def consolidate_memories():
 
 CC 把这个过程叫 Dream，实际有四层门控：时间间隔、扫描节流、会话数、文件锁。教学版简化为文件数阈值。
 
-### Memory 适合保存什么
+### 3.5 Memory 适合保存什么
 
 Memory 保存跨会话仍然有用的信息：用户偏好、反复出现的反馈、项目背景、常用入口和排查线索。它关注“以后还会用到什么”，并通过索引 + 按需加载把这些信息带回当前对话。
 
@@ -166,7 +166,7 @@ session memory 关注同一会话内的连续性：compact 之后，当前会话
 
 ***
 
-## 相对 s08 的变更
+## 4、相对 s08 的变更
 
 | 组件   | 之前 (s08)                                                                   | 之后 (s09)                                                                                                  |
 | ---- | -------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
@@ -178,7 +178,7 @@ session memory 关注同一会话内的连续性：compact 之后，当前会话
 
 ***
 
-## 试一下
+## 5、试一下
 
 ```sh
 cd learn-claude-code
@@ -188,26 +188,26 @@ python s09_memory/code.py
 试试这些 prompt（分多轮输入，观察记忆的累积和加载）：
 
 1. `I prefer using tabs for indentation, not spaces. Remember that.`
-2. `Create a Python file called test.py`（观察 Agent 是否用了 tab）
-3. `What did I tell you about my preferences?`（观察 Agent 是否记得）
+2. `Create a Python file called test.py`（观察 `Agent` 是否用了 tab）
+3. `What did I tell you about my preferences?`（观察 `Agent` 是否记得）
 4. `I also prefer single quotes over double quotes for strings.`
 
-观察重点：每轮结束后是否出现 `[Memory: extracted N new memories]`？`.memory/` 目录下是否生成了 `.md` 文件？`MEMORY.md` 索引是否更新？新一轮对话时 Agent 是否自动加载了之前的记忆？
+观察重点：每轮结束后是否出现 `[Memory: extracted N new memories]`？`.memory/` 目录下是否生成了 `.md` 文件？`MEMORY.md` 索引是否更新？新一轮对话时 `Agent` 是否自动加载了之前的记忆？
 
 ***
 
-## 接下来
+## 6、接下来
 
 记忆、压缩、工具都已就绪。但 system prompt 还是硬编码的一大段字符串。加了新工具要手动加描述，换了项目要重写整个 prompt。prompt 应该运行时组装。
 
-s10 System Prompt → 分段 + 运行时组装。不同项目、不同工具，拼出不同的 prompt。
+s10 `System Prompt` → 分段 + 运行时组装。不同项目、不同工具，拼出不同的 prompt。
 
 <details>
 <summary>深入 CC 源码</summary>
 
 > 以下基于 CC 源码 `src/` 下 `memdir/`、`services/`、`utils/`、`query/` 的分析，行号已对照核实。
 
-### 源码路径
+### 6.1 源码路径
 
 | 文件                                            | 行数  | 职责                                                                                                  |
 | --------------------------------------------- | --- | --------------------------------------------------------------------------------------------------- |
@@ -223,7 +223,7 @@ s10 System Prompt → 分段 + 运行时组装。不同项目、不同工具，�
 | `query.ts`                                    | —   | memory prefetch 每轮启动（`301-304`），非阻塞收集（`1592-1614`）                                                  |
 | `query/stopHooks.ts`                          | —   | stop hook fire-and-forget 触发提取和 Dream（`141-155`）                                                    |
 
-### 记忆选择：LLM 选，不是 embedding
+### 6.2 记忆选择：`LLM` 选，不是 embedding
 
 CC 用 **Sonnet 本身来选**（`findRelevantMemories.ts`），不是 embedding 向量相似度：
 
@@ -235,19 +235,19 @@ CC 用 **Sonnet 本身来选**（`findRelevantMemories.ts`），不是 embedding
 
 每轮用户 turn 开始时，`query.ts:301-304` 启动 memory prefetch（异步）；工具执行后 `1592-1614` 非阻塞收集结果，不卡主流程。
 
-### 提取时机：stop hook，不是 autoCompact 后
+### 6.3 提取时机：stop hook，不是 autoCompact 后
 
 触发位置（`stopHooks.ts:141-155`）：在 `handleStopHooks()` 中，fire-and-forget 触发提取和 Dream。教学版把提取放在 `stop_reason != "tool_use"` 分支里，方向一致。
 
-CC 的提取通过 forked agent 执行（`extractMemories.ts:371-427`）：受限权限、`skipTranscript: true`、`maxTurns: 5`。还有重叠保护：如果主 Agent 已经写入了记忆文件，跳过提取。
+CC 的提取通过 forked agent 执行（`extractMemories.ts:371-427`）：受限权限、`skipTranscript: true`、`maxTurns: 5`。还有重叠保护：如果主 `Agent` 已经写入了记忆文件，跳过提取。
 
-### 记忆文件格式
+### 6.4 记忆文件格式
 
-CC 用 Markdown + YAML frontmatter，和教学版一致。四种类型：`user`、`feedback`、`project`、`reference`。
+CC 用 `Markdown` + `YAML` frontmatter，和教学版一致。四种类型：`user`、`feedback`、`project`、`reference`。
 
 `memdir.ts:34-38` 定义索引约束：`MEMORY.md` 最多 200 行 / 25KB。`memdir.ts:199-266` 构建记忆行为指令，明确区分 memory、plan、tasks。存储位置：`~/.claude/projects/<sanitized-git-root>/memory/`。
 
-### Dream：四层门控
+### 6.5 Dream：四层门控
 
 不是"空闲时触发"或"数量够了就合并"，而是四层门控（`autoDream.ts`，默认值 `63-66`，门控逻辑 `130-190`）：
 
@@ -258,7 +258,7 @@ CC 用 Markdown + YAML frontmatter，和教学版一致。四种类型：`user`�
 
 合并本身通过 forked agent 执行（`224-233`）：定位 → 收集近期信号 → 合并写文件 → 剪枝更新索引。锁文件 mtime 就是 lastConsolidatedAt。崩溃恢复：1 小时后锁自动过期。
 
-### User Memory vs Session Memory
+### 6.6 User Memory vs Session Memory
 
 | <br /> | User Memory          | Session Memory                  |
 | ------ | -------------------- | ------------------------------- |
@@ -267,21 +267,21 @@ CC 用 Markdown + YAML frontmatter，和教学版一致。四种类型：`user`�
 | 加载到    | system prompt        | compact 摘要                      |
 | 用途     | 跨会话的知识积累             | 跨 compact 的上下文连续性               |
 
-sessionMemoryCompact（s08 中提到的机制）正是使用了 Session Memory：autoCompact 前先读 session memory 文件，如果内容足够（≥ 10K token、≥ 5 条文本消息、≤ 40K token，`sessionMemoryCompact.ts:56-61`），就用它做摘要，不调 LLM。
+sessionMemoryCompact（s08 中提到的机制）正是使用了 Session Memory：autoCompact 前先读 session memory 文件，如果内容足够（≥ 10K `token`、≥ 5 条文本消息、≤ 40K `token`，`sessionMemoryCompact.ts:56-61`），就用它做摘要，不调 `LLM`。
 
-### 真实实现比教学版复杂的地方
+### 6.7 真实实现比教学版复杂的地方
 
 - **Feature flags**：记忆相关功能有多层 feature gate 控制
 - **Team memory**：团队共享记忆，`loadMemoryPrompt()` 有专门路径（教学版未涉及）
 - **KAIROS**：时机感知的记忆提取策略，`loadMemoryPrompt()` 中 daily-log 模式
-- **Prompt cache**：记忆注入需要考虑 prompt cache 的 TTL，避免每次都重写 system prompt 的大段内容
+- **`Prompt` cache**：记忆注入需要考虑 prompt cache 的 TTL，避免每次都重写 system prompt 的大段内容
 - **文件锁**：多进程并发时的锁机制
 - **Memory prefetch**：异步预取，不阻塞主流程
 
-### 教学版的简化是刻意的
+### 6.8 教学版的简化是刻意的
 
-- LLM side-query → LLM side-query + 关键词降级：教学版保留了 LLM 选择，加了降级路径
-- 记忆 JSON → Markdown + frontmatter：教学版与 CC 一致
+- `LLM` side-query → `LLM` side-query + 关键词降级：教学版保留了 `LLM` 选择，加了降级路径
+- 记忆 `JSON` → `Markdown` + frontmatter：教学版与 CC 一致
 - stop hook 触发 → `stop_reason != "tool_use"` 分支：方向一致
 - 四层门控 → 文件数阈值：教学版没有 transcript 系统和多会话概念
 - forked agent + 受限权限 → 直接调用：教学版没有子进程隔离

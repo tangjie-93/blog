@@ -6,7 +6,7 @@ tags: "Agent|AI Coding"
 note: "为并行任务创建独立 worktree 和分支，隔离文件修改并降低协作冲突。"
 ---
 
-# s18: Worktree Isolation — 各干各的，互不干扰
+# s18: `Worktree Isolation` — 各干各的，互不干扰
 
 
 s01 → ... → s16 → s17 → `s18` → [s19](./19%E3%80%81MCP%20Tools%20%E2%80%94%20%E5%A4%96%E6%8E%A5%E5%B7%A5%E5%85%B7%EF%BC%8C%E6%A0%87%E5%87%86%E5%8D%8F%E8%AE%AE.md) → s20
@@ -17,7 +17,7 @@ s01 → ... → s16 → s17 → `s18` → [s19](./19%E3%80%81MCP%20Tools%20%E2%8
 
 ---
 
-## 问题
+## 1、问题
 
 s17 中，Alice 和 Bob 都在同一个目录下工作。Alice 的任务是"重构认证模块"，Bob 的任务是"重构 UI 登录页"。
 
@@ -27,11 +27,11 @@ s15-s17 解决了"谁干什么"（任务系统）和"怎么通信"（消息总�
 
 ---
 
-## 解决方案
+## 2、解决方案
 
 ![Worktree Overview](/image/agent-course/s18_worktree_isolation/worktree-overview.svg)
 
-Git worktree 让你在同一仓库中创建多个独立的工作目录，每个有自己的分支。Alice 在 `.worktrees/auth-refactor/` 下工作，Bob 在 `.worktrees/ui-login/` 下工作——互不干扰。
+`Git` worktree 让你在同一仓库中创建多个独立的工作目录，每个有自己的分支。Alice 在 `.worktrees/auth-refactor/` 下工作，Bob 在 `.worktrees/ui-login/` 下工作——互不干扰。
 
 沿用 S17 的教学版 MessageBus、协议和自治认领机制。本章新增：
 
@@ -44,9 +44,9 @@ Git worktree 让你在同一仓库中创建多个独立的工作目录，每个�
 
 ---
 
-## 工作原理
+## 3、工作原理
 
-### 创建：任务-Worktree 绑定
+### 3.1 创建：任务-Worktree 绑定
 
 ```python
 def create_worktree(name: str, task_id: str = "") -> str:
@@ -68,7 +68,7 @@ def bind_task_to_worktree(task_id: str, worktree_name: str):
 
 绑定规则：一个任务绑定一个 worktree。绑定不改任务状态——任务仍是 `pending`，队友自动认领时才推进到 `in_progress`。这样 Lead 可以提前创建任务和 worktree，队友 idle 时自然认领带 worktree 的任务。
 
-### 队友工具的 cwd 切换
+### 3.2 队友工具的 cwd 切换
 
 教学版给每个队友维护一个 `wt_ctx` 字典，记录当前 worktree 路径。队友认领带 worktree 的任务时，`wt_ctx` 自动设置为 worktree 路径；队友的 `bash`、`read_file`、`write_file` 在 worktree 目录下执行：
 
@@ -90,7 +90,7 @@ def _run_bash(command):
 
 这是教学简化。真实 CC 的 EnterWorktree 用 `process.chdir()` 切换整个进程目录，AgentTool isolation 用 `cwdOverride` 包住子 agent 执行。
 
-### 收尾：Keep 还是 Remove
+### 3.3 收尾：Keep 还是 Remove
 
 任务完成后，两个选择：
 
@@ -114,7 +114,7 @@ def keep_worktree(name: str) -> str:
 
 Keep = 留着分支，等人工 review 后合并到主分支。Remove = 有改动时默认拒绝，需要 `discard_changes=true` 确认。不自动 complete task——任务完成由队友的 `complete_task` 显式触发。
 
-### 事件流：可审计
+### 3.4 事件流：可审计
 
 每次生命周期操作写入日志，方便排查：
 
@@ -127,7 +127,7 @@ def log_event(event_type: str, worktree_name: str, task_id: str = ""):
 
 事件类型：`create`（创建）、`remove`（删除）、`keep`（保留）。教学版只记录事件用于人工排查；完整恢复还需要 index 或 `git worktree list` 扫描。
 
-### run_git：返回成功/失败
+### 3.5 run_git：返回成功/失败
 
 ```python
 def run_git(args: list[str]) -> tuple[bool, str]:
@@ -139,11 +139,11 @@ def run_git(args: list[str]) -> tuple[bool, str]:
 
 ---
 
-## 相对 s17 的变更
+## 4、相对 s17 的变更
 
 | 组件 | 之前 (s17) | 之后 (s18) |
 |------|-----------|-----------|
-| 工作目录 | 所有 Agent 共享 WORKDIR | 每个任务可绑定独立 git worktree |
+| 工作目录 | 所有 `Agent` 共享 WORKDIR | 每个任务可绑定独立 git worktree |
 | Task 数据 | id/subject/status/owner/blockedBy | + worktree 字段 |
 | 队友工具 cwd | 始终 WORKDIR | 认领带 worktree 的任务时自动切换 |
 | 新函数 | — | create_worktree, bind_task_to_worktree, remove_worktree, keep_worktree, validate_worktree_name |
@@ -154,7 +154,7 @@ def run_git(args: list[str]) -> tuple[bool, str]:
 
 ---
 
-## 试一下
+## 5、试一下
 
 ```sh
 cd learn-claude-code
@@ -169,46 +169,46 @@ python s18_worktree_isolation/code.py
 
 ---
 
-## 接下来
+## 6、接下来
 
-Agent 团队能在隔离的工作空间中自组织了。但 Agent 的能力受限于我们给它写的工具——bash、read、write、task...
+`Agent` 团队能在隔离的工作空间中自组织了。但 `Agent` 的能力受限于我们给它写的工具——bash、read、write、task...
 
-如果用户已经有了自己的工具怎么办？比如一个公司内部的 Jira API、一个自建的部署系统？
+如果用户已经有了自己的工具怎么办？比如一个公司内部的 Jira `API`、一个自建的部署系统？
 
-s19 MCP Plugin → 给 Agent 装一个插件系统。外部工具通过标准协议接入，Agent 不需要知道它们是谁写的。
+s19 `MCP` Plugin → 给 `Agent` 装一个插件系统。外部工具通过标准协议接入，`Agent` 不需要知道它们是谁写的。
 
 <details>
 <summary>深入 CC 源码</summary>
 
 CC 的 worktree 系统有两条路径：**EnterWorktree**（当前会话切入）和 **AgentTool isolation**（子 agent 隔离）。
 
-### EnterWorktree：当前会话切换
+### 6.1 EnterWorktree：当前会话切换
 
 `EnterWorktreeTool.ts:92-97` 创建 worktree 后立即 `process.chdir(worktreePath)`、`setCwd()`、`setOriginalCwd()`、`saveWorktreeState()`。当前会话的工作目录直接切换到 worktree——不是 prompt 提醒，而是进程级目录变更。
 
 `ExitWorktreeTool.ts:261-320` 的 keep/remove 都会 `restoreSessionToOriginalCwd()` 恢复原目录。Remove 时检查未提交改动（`ExitWorktreeTool.ts:190-220`），没有 `discard_changes: true` 就拒绝删除。
 
-### AgentTool isolation：子 agent 隔离
+### 6.2 AgentTool isolation：子 agent 隔离
 
 `AgentTool.tsx:590-641` 在 `isolation: "worktree"` 时调用 `createAgentWorktree()` 创建 worktree，用 `cwdOverridePath` 包住子 agent 执行。子 agent 的所有操作自动在 worktree 目录下进行。`AgentTool/prompt.ts:272` 告诉模型：这是临时 worktree，无改动自动清理，有改动返回路径和分支。
 
 `worktree.ts:902-951` 的 `createAgentWorktree()` 不修改全局 session cwd，只给子 agent 用。`worktree.ts:961-1020` 的 `removeAgentWorktree()` 从主 repo root 删除。
 
-### name 校验
+### 6.3 name 校验
 
 `worktree.ts:76-84` 校验 slug：拒绝 `.`/`..`，允许 `[a-zA-Z0-9._-]`。`worktree.ts:48` 定义 `VALID_WORKTREE_SLUG_SEGMENT`。教学版的 `validate_worktree_name` 用同样的规则。
 
-### 路径和分支命名
+### 6.4 路径和分支命名
 
 真实路径是 `.claude/worktrees/`，分支名 `worktree-{slug}`（`worktree.ts:204-227`，斜杠用 `+` 替代）。教学版用 `.worktrees/` 和 `wt/{name}` 简化。
 
 创建时用 `git worktree add -B`（`worktree.ts:326-328`），优先基于 `origin/<defaultBranch>` 而非当前 HEAD。
 
-### 状态管理
+### 6.5 状态管理
 
 CC 没有 task-worktree 绑定。Worktree 状态通过 `PersistedWorktreeSession`（`worktree.ts:756-768`）管理，字段包括 `originalCwd`、`worktreePath`、`worktreeName`、`worktreeBranch`、`originalBranch`、`originalHeadCommit`、`sessionId` 等——没有 taskId。`saveWorktreeState()`（`sessionStorage.ts:2883-2920`）以 `type: 'worktree-state'` 写入 session transcript。
 
-教学版用 task 的 `worktree` 字段做绑定，是教学简化。CC 把 worktree 和 task 作为两个独立系统，通过 Agent 理解上下文来关联。
+教学版用 task 的 `worktree` 字段做绑定，是教学简化。CC 把 worktree 和 task 作为两个独立系统，通过 `Agent` 理解上下文来关联。
 
 </details>
 

@@ -248,8 +248,8 @@ setTimeout(function() {
 **最后：** `node`中的 `eventLoop`运行机制比较复杂，所以还需要花费更多的时间去多多研究。
 
 参考文档    
-[1、这一次，彻底弄懂 JavaScript 执行机制](https://juejin.im/post/59e85eebf265da430d571f89)  
-[2、JavaScript 运行机制详解：再谈Event Loop](http://www.ruanyifeng.com/blog/2014/10/event-loop.html)   
+[1、这一次，彻底弄懂 `JavaScript` 执行机制](https://juejin.im/post/59e85eebf265da430d571f89)  
+[2、`JavaScript` 运行机制详解：再谈Event Loop](http://www.ruanyifeng.com/blog/2014/10/event-loop.html)   
 [3、Eventloop不可怕，可怕的是遇上Promise](https://juejin.im/post/5c9a43175188252d876e5903)    
 [4、浏览器说：虽然都叫event loop，但是我和node不一样](https://juejin.im/post/5b0ab722f265da0dbd7a646f)
 

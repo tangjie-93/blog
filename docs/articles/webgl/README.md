@@ -433,7 +433,7 @@ vec3 lightDirection = u_LightPosition - v_Position;
     + 坐标范围是
         + X轴：【-1, 1】。
         + Y轴：【-1, 1】。
-#### 2、WebGL API
+#### 2、WebGL `API`
 + shader：着色器对象
     + gl.createShader：创建着色器。
     + gl.shaderSource：指定着色器源码。

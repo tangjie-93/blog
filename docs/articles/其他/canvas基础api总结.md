@@ -30,7 +30,7 @@ ctx.strokeStyle=color|gradient|pattern;
 + gradient：用于填充绘图的[渐变对象](https://www.w3school.com.cn/tags/canvas_createlineargradient.asp)（线性或放射性）
 + pattern：用于创建pattern笔触的pattern对象。与设置样式配合使用的方法是填充绘制和边绘制。
 
-### **2、线条样式设置**
+### 1 **2、线条样式设置**
 属性 | 描述
 -- | --
 lineCap | 设置或返回线条的结束端点样式。属性可以是round（末端为圆形）、butt（默认值，末端为平直的边缘）以及square（线条末端为正方向线帽）。
@@ -47,7 +47,7 @@ miterLimit | 设置或返回最大的斜接长度。斜接长度值的是两条�
     ctx.lineTo(100,100);
     ctx.closePath(); //或者ctx.stroke()
 ```
-### **3、常与设置样式配合使用的方法**
+### 2 **3、常与设置样式配合使用的方法**
 
  方法 | 描述 
  -- | -- 
@@ -57,7 +57,7 @@ createRadialGradient(x0，y0，r0，x1，y1，r1) | 创建放射状/环形的渐
 addColorStop(0-1，color) | 规定渐变对象中的颜色和停止位置，第一个参数的范围为0-1，第二个参数为颜色值。
 
 
-###  **4、形状设置**
+### 3 **4、形状设置**
 
 方法 | 描述
 -- | --
@@ -143,7 +143,7 @@ ctx.arcTo(150,20,150,70,50); // 创建弧
 ctx.lineTo(150,120);         // 创建垂直线
 ctx.stroke();
  ```
-### **5、转换设置**
+### 4 **5、转换设置**
 方法 | 描述
 -- | --
 scale(scalewidth,scaleheight) | 缩放当前绘图至更大或更小。`对绘图进行缩放，所有之后的绘图也会被缩放，定位也会被缩放，线框也会被缩放，都是在原来的基础上进行缩放的`
@@ -185,7 +185,7 @@ setTransform(ab,c,d,ef) | 将当前转换设置为单位矩阵。然后运行tra
     ctx.fillStyle="blue";
     ctx.fillRect(0,0,250,100);
 ```
-### **6、文本设置**
+### 5 **6、文本设置**
 属性 | 描述
 -- | --
 font | 设置或返回文本内容的当前属性
@@ -214,7 +214,7 @@ fillText(text,x,y,maxWidth) | 在画布上绘制"被填充的"文本。（x,y）
 strokeText() | 在画布上绘制文本(无填充)
 measureText(txt) | 返回包含指定文本宽度的对象。
 
-### **7、图像操作**
+### 6 **7、图像操作**
 方法 | 描述
 -- | --
 drawImage() | 在画布上绘制图像、画布或视频
@@ -222,7 +222,7 @@ createImageData() | 创建新的、空白的imageData对象。
 getImageData（） | 返回ImageData对象，该对象为画布上指定的矩形复制像素元素。
 putImageData() | 把图像数据 （从指定的ImageData对象）放回画布上。
 
-### **8、状态保存及恢复**
+### 7 **8、状态保存及恢复**
 方法 | 描述
 -- | --
 save() |  保存当前Canvas画布状态并放在栈的最上面，可以使用restore()方法依次取出。绘图效果本身不会被保存，保存的只是绘画状态。包括当前矩阵变换、当前裁剪区域以及当前虚线设置和一些属性值。

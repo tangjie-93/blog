@@ -6,7 +6,7 @@ tags: "Agent|AI Coding"
 note: "按工作区、技能、记忆和运行状态动态组装系统提示词，而不是写死一份。"
 ---
 
-# s10: System Prompt — 运行时组装，不硬编码
+# s10: `System Prompt` — 运行时组装，不硬编码
 
 
 s01 → ... → s08 → s09 → `s10` → [s11](./11%E3%80%81Error%20Recovery%20%E2%80%94%20%E9%94%99%E8%AF%AF%E4%B8%8D%E6%98%AF%E7%BB%93%E6%9D%9F%EF%BC%8C%E6%98%AF%E9%87%8D%E8%AF%95%E7%9A%84%E5%BC%80%E5%A7%8B.md) → s12 → ... → s20
@@ -16,7 +16,7 @@ s01 → ... → s08 → s09 → `s10` → [s11](./11%E3%80%81Error%20Recovery%20
 
 ---
 
-## 问题
+## 1、问题
 
 从 s01 到 s09，system prompt 都是一行硬编码：
 
@@ -24,7 +24,7 @@ s01 → ... → s08 → s09 → `s10` → [s11](./11%E3%80%81Error%20Recovery%20
 SYSTEM = f"You are a coding agent at {WORKDIR}. Use tools to solve tasks."
 ```
 
-s01 够用，只有 bash、read、write 三个工具。但到 s09，Agent 已经有记忆、有压缩、有技能加载。prompt 该提的能力越来越多：
+s01 够用，只有 bash、read、write 三个工具。但到 s09，`Agent` 已经有记忆、有压缩、有技能加载。prompt 该提的能力越来越多：
 
 ```python
 SYSTEM = (
@@ -41,15 +41,15 @@ SYSTEM = (
 
 1. **换项目要重写整个 prompt**，不知道哪些该改、哪些该留
 2. **修改一处可能影响全局**，加一段工具描述可能跟前面的指令冲突
-3. **每次请求都带全部内容**，即使当前对话用不到某些段落也浪费 token
+3. **每次请求都带全部内容**，即使当前对话用不到某些段落也浪费 `token`
 
 System prompt 应该是运行时根据当前状态组装的配置：哪些工具启用、哪些上下文可见、哪些记忆相关、哪些内容必须保持稳定以命中 prompt cache。
 
 ---
 
-## 解决方案
+## 2、解决方案
 
-![System Prompt Overview](/image/agent-course/s10_system_prompt/system-prompt-overview.svg)
+![`System Prompt` Overview](/image/agent-course/s10_system_prompt/system-prompt-overview.svg)
 
 s10 聚焦 prompt 组装机制。以 s08-s09 的能力为背景，但不重复实现压缩和记忆系统。核心变动：把硬编码的 `SYSTEM` 拆成独立段落（section），运行时根据真实状态按需拼接，缓存结果避免重复组装。
 
@@ -66,9 +66,9 @@ s10 聚焦 prompt 组装机制。以 s08-s09 的能力为背景，但不重复�
 
 ---
 
-## 工作原理
+## 3、工作原理
 
-### PROMPT_SECTIONS: 分段定义
+### 3.1 PROMPT_SECTIONS: 分段定义
 
 把一大段字符串拆成字典，每个 key 是一个主题：
 
@@ -83,9 +83,9 @@ PROMPT_SECTIONS = {
 
 每个 section 独立维护。修改 `tools` 不影响 `identity`，新增 `memory` 不动 `workspace`。
 
-### assemble_system_prompt: 按需拼接
+### 3.2 assemble_system_prompt: 按需拼接
 
-不是所有 section 每次都需要。当前没有记忆文件，加载 memory section 只是浪费 token。根据 context 的真实状态决定加载哪些：
+不是所有 section 每次都需要。当前没有记忆文件，加载 memory section 只是浪费 `token`。根据 context 的真实状态决定加载哪些：
 
 ```python
 def assemble_system_prompt(context: dict) -> str:
@@ -106,11 +106,11 @@ def assemble_system_prompt(context: dict) -> str:
 
 "始终加载"的是每轮都需要的：身份、工具、工作目录。"按需加载"的只在特定条件下才有用。
 
-为什么不全加载？token 有成本（system prompt 每轮计费），信息越少 LLM 越专注（无关指令是噪音）。
+为什么不全加载？`token` 有成本（system prompt 每轮计费），信息越少 `LLM` 越专注（无关指令是噪音）。
 
-### get_system_prompt: 缓存避免重复拼接
+### 3.3 get_system_prompt: 缓存避免重复拼接
 
-上下文没变时（同一轮对话的多次 LLM 调用，context 相同），重新拼接是浪费。用确定性序列化检测变化，命中缓存直接返回：
+上下文没变时（同一轮对话的多次 `LLM` 调用，context 相同），重新拼接是浪费。用确定性序列化检测变化，命中缓存直接返回：
 
 ```python
 def get_system_prompt(context: dict) -> str:
@@ -123,11 +123,11 @@ def get_system_prompt(context: dict) -> str:
     return _last_prompt
 ```
 
-用 `json.dumps` 而不是 `hash()`：Python 内置 `hash()` 有进程随机化，不适合做稳定 cache key，而且遇到 list/dict 会报 `unhashable type`。
+用 `json.dumps` 而不是 `hash()`：`Python` 内置 `hash()` 有进程随机化，不适合做稳定 cache key，而且遇到 list/dict 会报 `unhashable type`。
 
-注意：这里的缓存只是"避免重复拼接字符串"，和 CC 的 API prompt cache 不是一回事。CC 的 prompt cache 通过 `SYSTEM_PROMPT_DYNAMIC_BOUNDARY` 分隔静态和动态部分，静态部分命中 global cache，不因动态内容变化而失效。
+注意：这里的缓存只是"避免重复拼接字符串"，和 CC 的 `API` prompt cache 不是一回事。CC 的 prompt cache 通过 `SYSTEM_PROMPT_DYNAMIC_BOUNDARY` 分隔静态和动态部分，静态部分命中 global cache，不因动态内容变化而失效。
 
-### context: 真实状态，不是关键词猜测
+### 3.4 context: 真实状态，不是关键词猜测
 
 context 反映当前运行态的真实状态：
 
@@ -147,7 +147,7 @@ def update_context(context: dict, messages: list) -> dict:
 
 `enabled_tools` 列出实际注册的工具。`memories` 检查 `.memory/MEMORY.md` 是否存在。section 加载基于这些真实状态，不在消息里搜关键词。
 
-### 合起来跑
+### 3.5 合起来跑
 
 ```python
 def agent_loop(messages: list, context: dict):
@@ -165,7 +165,7 @@ def agent_loop(messages: list, context: dict):
 
 ---
 
-## 相对 s09 的变更
+## 4、相对 s09 的变更
 
 | 组件 | 之前 (s09) | 之后 (s10) |
 |------|-----------|-----------|
@@ -177,7 +177,7 @@ def agent_loop(messages: list, context: dict):
 
 ---
 
-## 试一下
+## 5、试一下
 
 ```sh
 cd learn-claude-code
@@ -198,28 +198,28 @@ python s10_system_prompt/code.py
 
 ---
 
-## 接下来
+## 6、接下来
 
-System prompt 可以运行时组装了，但 Agent 碰到错误还是会崩。网络抖动、API 限流、输出被截断、上下文超限，这些不是 bug，是常态。
+System prompt 可以运行时组装了，但 `Agent` 碰到错误还是会崩。网络抖动、`API` 限流、输出被截断、上下文超限，这些不是 bug，是常态。
 
-s11 Error Recovery → 四条恢复路径。升级 token、压缩上下文、指数退避、切换模型。
+s11 Error Recovery → 四条恢复路径。升级 `token`、压缩上下文、指数退避、切换模型。
 
 <details>
 <summary>深入 CC 源码</summary>
 
 > 以下基于 CC 源码 `constants/prompts.ts`（914 行）、`constants/systemPromptSections.ts`（68 行）、`context.ts`（189 行）、`utils/api.ts`（718 行）、`utils/systemPrompt.ts`（123 行）、`bootstrap/state.ts` 的分析。
 
-### CC 的 system prompt 有多少 section？
+### 6.1 CC 的 system prompt 有多少 section？
 
-数量不固定，受 feature flag、output style、KAIROS/Proactive 模式、用户类型、token 预算等影响。大致分两类：
+数量不固定，受 feature flag、output style、KAIROS/Proactive 模式、用户类型、`token` 预算等影响。大致分两类：
 
 **静态 section**（始终加载）：identity、system、doing_tasks、actions、using_tools、tone_style、output_efficiency 等。
 
 **动态 section**（按状态加载）：session_guidance、memory、ant_model_override、env_info_simple、language、output_style、mcp_instructions、scratchpad、frc、summarize_tool_results、numeric_length_anchors、token_budget、brief 等。
 
-`mcp_instructions` 是唯一的易失性 section（通过 `DANGEROUS_uncachedSystemPromptSection()` 创建），因为 MCP server 可以在轮次间连接和断开。
+`mcp_instructions` 是唯一的易失性 section（通过 `DANGEROUS_uncachedSystemPromptSection()` 创建），因为 `MCP` server 可以在轮次间连接和断开。
 
-### 组装函数
+### 6.2 组装函数
 
 ```typescript
 getSystemPrompt(tools, model, additionalWorkingDirs?, mcpClients?): Promise<string[]>
@@ -227,7 +227,7 @@ getSystemPrompt(tools, model, additionalWorkingDirs?, mcpClients?): Promise<stri
 
 返回 `string[]`（每个元素是一个 section），由 `SYSTEM_PROMPT_DYNAMIC_BOUNDARY` 分隔静态和动态部分。
 
-### cache scope
+### 6.3 cache scope
 
 启用 global cache boundary 时，静态 section 合并成一个 global cache block，动态 section 不使用 global cache（`cacheScope: null`）。没有 boundary 或跳过 global cache 的路径才会走 org scope。
 
@@ -235,9 +235,9 @@ getSystemPrompt(tools, model, additionalWorkingDirs?, mcpClients?): Promise<stri
 
 1. **lodash memoize**：`getSystemContext` 和 `getUserContext` 在会话中缓存（`context.ts`）
 2. **section 注册缓存**：`STATE.systemPromptSectionCache` 缓存动态 section 结果，`/clear` 或 `/compact` 时清除
-3. **API 级缓存**：`splitSysPromptPrefix()`（`api.ts`）把 prompt 按 boundary 分成不同 cache scope 的块
+3. **`API` 级缓存**：`splitSysPromptPrefix()`（`api.ts`）把 prompt 按 boundary 分成不同 cache scope 的块
 
-### getUserContext vs getSystemContext
+### 6.4 getUserContext vs getSystemContext
 
 | | getSystemContext | getUserContext |
 |---|---|---|
@@ -245,14 +245,14 @@ getSystemPrompt(tools, model, additionalWorkingDirs?, mcpClients?): Promise<stri
 | 注入方式 | 追加到 system prompt 数组 | 前置为 `<system-reminder>` 用户消息 |
 | 何时跳过 | 自定义 system prompt 时 | 始终运行 |
 
-### 模式如何改变 prompt
+### 6.5 模式如何改变 prompt
 
 - **CLAUDE_CODE_SIMPLE**：整个 prompt 只有 2 行
 - **Proactive/KAIROS**：用紧凑版 prompt 替换所有标准 section
 - **Coordinator**：用协调器专用 prompt 完全替换
-- **Agent 模式**：Agent 定义的 prompt 替换或追加到默认 prompt
+- **`Agent` 模式**：`Agent` 定义的 prompt 替换或追加到默认 prompt
 
-### 总大小
+### 6.6 总大小
 
 标准交互模式下 system prompt 核心约 20-30KB 文本。CLAUDE_CODE_SIMPLE 约 150 字符。用户上下文（CLAUDE.md）和系统上下文（git status）在此基础上累加。
 

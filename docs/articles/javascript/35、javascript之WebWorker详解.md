@@ -32,7 +32,7 @@ note: 我们知道js的最大特点就是单线程，就是同一时间只能做
 &#8195;&#8195;当需要在调用 `ajax`后处理大量的数据，如果处理这些数据所需的时间长短非常重要，可以在  `Web Worker` 中来做这些，避免冻结 `UI` 线程。当用户打字时后台在词典中进行查找，帮助用户自动纠错等等。
 &#8195;&#8195;
 ## 2、基本用法
-#### 2.1 主线程
+#### `2.1` 主线程
 > 1、创建 `worker` 子线程。          
 ```js
 const worker=new Worker(jsUrl,options);
@@ -90,7 +90,7 @@ function stopWorker() {
 document.querySelector("#start").onclick = startWorker
 document.querySelector("#stop").onclick = stopWorker
 ```
-#### 2.1 Worker子线程
+#### `2.1` Worker子线程
 &#8195;&#8195;`Web Worker` 有自己的全局对象，不是主线程的 `window`，而是一个专门为 `Worker` 定制的全局对象——`self`。因此定义在 `window` 上面的对象和方法**不是全部**都可以使用。`Worker` 线程有一些自己的全局属性和方法。
 + `self.name`： `Worker` 的名字。该属性只读，由构造函数指定。
 + `self.onmessage`：指定message事件的监听函数。

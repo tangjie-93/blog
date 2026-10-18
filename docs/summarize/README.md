@@ -3,9 +3,9 @@
 ### web知识相关的github地址
 [1、前端面试手册](https://github.com/yangshun/front-end-interview-handbook/blob/master/Translations/Chinese/README.md)
 
-[2、JavaScript 算法与数据结构](https://github.com/trekhleb/javascript-algorithms/blob/master/README.zh-CN.md)
+[2、`JavaScript` 算法与数据结构](https://github.com/trekhleb/javascript-algorithms/blob/master/README.zh-CN.md)
 
-[3、JavaScript 资源大全中文版](https://github.com/jobbole/awesome-javascript-cn#scroll)
+[3、`JavaScript` 资源大全中文版](https://github.com/jobbole/awesome-javascript-cn#scroll)
 
 [4、令人敬畏的javascript](https://github.com/sorrycc/awesome-javascript)
 
@@ -19,7 +19,7 @@
 
 [9、组件设计-渲染器](http://hcysun.me/vue-design/zh/)
 
-[10、What the f*ck JavaScript?](https://github.com/denysdovhan/wtfjs/blob/master/README-zh-cn.md)
+[10、What the f*ck `JavaScript`?](https://github.com/denysdovhan/wtfjs/blob/master/README-zh-cn.md)
 
 ### 大佬github地址
 [花裤衩](https://github.com/PanJiaChen)
@@ -67,8 +67,8 @@
 
 ### 一些好的nodejs学习地址
 
-[1、一起学 Node.js](https://github.com/nswbmw/N-blog)
+[1、一起学 `Node.js`](https://github.com/nswbmw/N-blog)
 
-[2、Node.js 最佳实践](https://github.com/goldbergyoni/nodebestpractices/blob/master/README.chinese.md)
+[2、`Node.js` 最佳实践](https://github.com/goldbergyoni/nodebestpractices/blob/master/README.chinese.md)
 
 [3、nodejs概述](http://javascript.ruanyifeng.com/nodejs/basic.html#)

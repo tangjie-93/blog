@@ -28,14 +28,14 @@ gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA)
 在进行 $\alpha$ 混合时，会用到了两个颜色，源颜色和目标颜色，前者是**待混合进去**的颜色，后者是**已经在帧缓冲区中的颜色**。通过设置混合模式，可以实现各种透明效果。
 
 比如我们先绘制了一个三角形，然后在这个三角形之上又绘制了一个三角形，如果有重叠的我操作，就会设计混合操作。需要把后者的颜色混入到前者中，后者的颜色就是源颜色，前者的颜色就是目标颜色。
-#### 2.1、基本用法
+#### `2.1`、基本用法
 `gl.blendFunc(sfactor, dfactor)` 用于指定源因子和目标因子的混合方式。函数的两个参数分别表示源因子`（source factor）`和目标因子`（destination factor）`。
 ```js
 gl.blendFunc(src_factor,dst_factor)
 ```
 `gl.blendFunc` 函数用于指定混合因子,混合因子不一样，最终的效果也会不一样。
 
-#### 2.2、**参数说明**
+#### `2.2`、**参数说明**
 + `src_factor`：源因子，指定源颜色应如何影响最终颜色。
 + `dst_factor`：目标因子，指定目标颜色应如何影响最终颜色。
 
@@ -51,7 +51,7 @@ gl.blendFunc(src_factor,dst_factor)
 + `gl.ONE_MINUS_SRC_ALPHA`：使用 `1` 减去源颜色的`alpha`值。
 + `gl.DST_ALPHA`：使用目标颜色的`alpha`值。
 + `gl.ONE_MINUS_DST_ALPHA`：使用`1` 减去目标颜色的`alpha`值。
-####  2.3、**示例**
+####  `2.3`、**示例**
 ```JS
 // 初始化WebGL上下文
 var canvas = document.getElementById("canvas");
@@ -79,13 +79,13 @@ gl.end();
 ```
 在这个示例中，我们启用了混合功能，并设置了源因子为 `gl.SRC_ALPHA（源颜色的alpha值）`，目标因子为 `gl.ONE_MINUS_SRC_ALPHA（1减去源颜色的alpha值）`。这意味着源颜色的 `alpha` 值决定了新颜色的影响程度，而`(1 - 源颜色的alpha值) `决定了现有颜色的影响程度。结果是常见的半透明效果。
 最终的计算公式如下所示：
-#### 2.4、混合公式
+#### `2.4`、混合公式
 混合公式的基本形式为:
 ```js
 混合后颜色 = 源颜色 * src_factor + 目标颜色*dts_factor
 ```
 通过调整源因子和目标因子的值，可以实现不同的透明和混合效果。
-#### 2.5、**混合模式**
+#### `2.5`、**混合模式**
 + `Alpha` 混合：
 ```JS
 gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);

@@ -6,7 +6,7 @@ tags: vue
 note: Vue.component(name,Comp)是怎么注册全局组件的？
 ---
 
-## 全局组件注册原理
+## 1、全局组件注册原理
 
 在平时工作中，我们有时候会通过 `Vue.component(name,comp)` 来注册全局组件。但是你了解它注册的原理吧，下面我们将深入源码来解密。
 ```js

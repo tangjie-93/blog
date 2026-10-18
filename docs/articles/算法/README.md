@@ -444,4 +444,4 @@ bucketSort(array);
 [2、js实现堆排序](https://www.cnblogs.com/helloMySir/p/8057701.html)  
 3、大话数据结构     
 4、数据结构与算法JavaScript描述     
-[5、JavaScript 数据结构与算法之美 - 桶排序、计数排序、基数排序](https://juejin.im/post/5d3da990f265da1ba84ada22#heading-1)
+[5、`JavaScript` 数据结构与算法之美 - 桶排序、计数排序、基数排序](https://juejin.im/post/5d3da990f265da1ba84ada22#heading-1)

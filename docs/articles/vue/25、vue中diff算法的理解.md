@@ -7,7 +7,7 @@ note: vue中diff算法的理解
 ---
 `diff` 算法主要与以下的几个函数有关。
 
-## [`patchVnode`](https://github.com/vuejs/vue/blob/dev/src/core/vdom/patch.js)
+## 1、[`patchVnode`](https://github.com/vuejs/vue/blob/dev/src/core/vdom/patch.js)
 
 ```js
 //正真的替换节点操作
@@ -65,7 +65,7 @@ note: vue中diff算法的理解
   }
 ```
 
-## [`updateChildren`](https://github.com/vuejs/vue/blob/dev/src/core/vdom/patch.js)
+## 2、[`updateChildren`](https://github.com/vuejs/vue/blob/dev/src/core/vdom/patch.js)
 
 ```js
  function updateChildren (parentElm, oldCh, newCh, insertedVnodeQueue, removeOnly) {
@@ -154,7 +154,7 @@ note: vue中diff算法的理解
   }
 ```
 
-## `diff` 算法的原理总结
+## 3、`diff` 算法的原理总结
 
 主要可以从以下几个方面来讲述。
 + 1、`diff`算法是虚拟 `DOM` 技术的必然产物：通过新旧虚拟 `DOM` 做对比(`diff`),将变化的地方更新在真实 `DOM` 上；也需要 `diff` 高效的执行对比过程，从而降低时间复杂度为`O(n)`。(**定义**)

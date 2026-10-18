@@ -442,7 +442,7 @@ setTimeout(function(){
 });
 ```
 
-### &#8195;2、Promise.race(iterable)
+### 4.2 &#8195;2、Promise.race(iterable)
 
 
 &#8195;&#8195;原码实现如下：
@@ -548,7 +548,7 @@ console.log(p);//Promise {<resolved>: undefined}
 ```
 
 
-### &#8195;4、Promise.rejected(value)
+### 4.4 &#8195;4、Promise.rejected(value)
 
 &#8195;&#8195;返回一个新的 Promise 实例，该实例的状态为rejected。
 
@@ -985,5 +985,5 @@ console.log('全局执行栈中同步代码');
 [1、ECMAScript入门](http://es6.ruanyifeng.com/#docs/promise)    
 [2、Promise——MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise)   
 [3、Promise原理讲解 && 实现一个Promise对象 (遵循Promise/A+规范)](https://juejin.im/post/5aa7868b6fb9a028dd4de672#heading-9)  
-[4、这一次，彻底弄懂 JavaScript 执行机制](https://juejin.im/post/59e85eebf265da430d571f89#heading-4)    
+[4、这一次，彻底弄懂 `JavaScript` 执行机制](https://juejin.im/post/59e85eebf265da430d571f89#heading-4)    
 [5、Promise 必知必会（十道题）](https://juejin.im/post/5a04066351882517c416715d)

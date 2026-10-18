@@ -125,7 +125,7 @@ note: let、const和var的区别
 	``` 
 + `let`的常见使用场景是`声明变量`。 `const`的常见使用场景是`声明常量、匿名函数和箭头函数` 
 
-## 3 let VS var
+## 3、3 let VS var
 + `var`存在变量声明提升,`let`不存在。
 ```js      
 // var 的情况

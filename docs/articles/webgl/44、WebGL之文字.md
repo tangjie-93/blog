@@ -7,7 +7,7 @@ tags: WebGL
 note: WebGL之文字
 ---
 
-## 1. WebGL之文字-HTML
+## 1. WebGL之文字-`HTML`
 
 这里的核心就是如何将`html`的位置跟三维场景中的东西关联。
 
@@ -47,7 +47,7 @@ textNode.nodeValue = clock.toFixed(2);
 
 <img width = 300 src='../../images/webgl/webgl文字-html.png'>
 
-`demo`地址 [WebGL之文字-HTML](https://github.com/tangjie-93/WebGL/blob/main/fundmantalExamples/%E6%96%87%E5%AD%97/html%E6%96%87%E5%AD%97.html)
+`demo`地址 [WebGL之文字-`HTML`](https://github.com/tangjie-93/WebGL/blob/main/fundmantalExamples/%E6%96%87%E5%AD%97/html%E6%96%87%E5%AD%97.html)
 
 
 ## 2. WebGL之文字-二维Canvas
@@ -362,6 +362,6 @@ textMatrix = m4.scale(textMatrix, textWidth * scale, textHeight * scale, 1);
 
 **参考文档**
 
-[WebGL文字 - HTML](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-text-html.html)<br>
+[WebGL文字 - `HTML`](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-text-html.html)<br>
 [WebGL 文字 - 二维Canvas](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-text-canvas2d.html)<br>
 [WebGL 文字 - 使用纹理](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-text-texture.html)<br>

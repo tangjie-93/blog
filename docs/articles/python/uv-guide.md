@@ -8,12 +8,12 @@ note: "从安装到项目、依赖、虚拟环境和脚本管理的 uv 使用指
 
 # uv 完全使用指南（详尽版）
 
-> [uv](https://docs.astral.sh/uv/) 是由 Astral 团队（ruff 作者）用 Rust 重写的 Python 包管理器，替代 pip、pip-tools、virtualenv、poetry 等工具链。
+> [uv](https://docs.astral.sh/uv/) 是由 Astral 团队（ruff 作者）用 Rust 重写的 `Python` 包管理器，替代 pip、pip-tools、virtualenv、poetry 等工具链。
 > **前端类比**：uv ≈ pnpm + nvm + npm scripts 三合一
 
 ---
 
-## 安装
+## 1、安装
 
 ```bash
 # macOS / Linux
@@ -35,17 +35,17 @@ uv --help
 
 ---
 
-## `uv init` - 项目初始化（详解）
+## 2、`uv init` - 项目初始化（详解）
 
-初始化指的是在当前目录或新建目录创建一个 Python 项目骨架，包含 `pyproject.toml`、虚拟环境、`README.md` 等。
+初始化指的是在当前目录或新建目录创建一个 `Python` 项目骨架，包含 `pyproject.toml`、虚拟环境、`README.md` 等。
 
-### 完整语法
+### 2.1 完整语法
 
 ```
 uv init [OPTIONS] [PATH]
 ```
 
-### 所有参数
+### 2.2 所有参数
 
 | 参数/选项 | 说明 | 前端类比 |
 |-----------|------|----------|
@@ -56,23 +56,23 @@ uv init [OPTIONS] [PATH]
 | `--package` | 同 `--lib` 的别名 | — |
 | `--no-readme` | 不生成 README.md | — |
 | `--no-workspace` | 不和已有的 workspace 关联 | — |
-| `--python` / `-p` | 指定 Python 版本，如 `--python 3.12` | `nvm use 20` |
+| `--python` / `-p` | 指定 `Python` 版本，如 `--python 3.12` | `nvm use 20` |
 | `--no-pin-python` | 不创建 `.python-version` 文件 | — |
 | `--vcs` | 版本控制系统，默认 `git`，可选 `none` | — |
 | `--no-package` | 不创建包结构（纯脚本项目） | — |
 | `--build-backend` | 指定构建后端：`hatchling`(默认) / `setuptools` / `flit-core` / `pdm-backend` | — |
 
-### 三种项目类型对比
+### 2.3 三种项目类型对比
 
 | | `uv init`（--app，默认） | `uv init --lib` | `uv init --no-package` |
 |---|---|---|---|
-| **用途** | 独立应用（FastAPI、脚本等） | 可发布的 Python 库/包 | 纯脚本/实验性项目 |
+| **用途** | 独立应用（`FastAPI`、脚本等） | 可发布的 `Python` 库/包 | 纯脚本/实验性项目 |
 | **入口文件** | `hello.py` | 无（需手动创建） | 无 |
 | **pyproject.toml** | 有 `[project.scripts]` | 有 `[build-system]` | 极简，无 `[build-system]` |
 | **可 pip install** | 可以 | 可以 | 不可以 |
-| **适用场景** | Web API、CLI 工具 | SDK、工具库 | jupyter notebook、临时实验 |
+| **适用场景** | Web `API`、`CLI` 工具 | `SDK`、工具库 | jupyter notebook、临时实验 |
 
-### init 生成的 `hello.py` 差异
+### 2.4 init 生成的 `hello.py` 差异
 
 **`uv init`（--app）生成：**
 ```python
@@ -83,7 +83,7 @@ def main():
 if __name__ == "__main__":
     main()
 ```
-> 这是标准的应用入口脚本，可通过 `pyproject.toml` 中的 `[project.scripts]` 注册为 CLI 命令。
+> 这是标准的应用入口脚本，可通过 `pyproject.toml` 中的 `[project.scripts]` 注册为 `CLI` 命令。
 
 **`uv init --lib` 不生成 hello.py**，只生成基本目录：
 ```
@@ -96,7 +96,7 @@ my-lib/
 └── .python-version
 ```
 
-### init 生成的 `pyproject.toml` 对比
+### 2.5 init 生成的 `pyproject.toml` 对比
 
 **`uv init my-app`（--app）生成：**
 ```toml
@@ -141,7 +141,7 @@ dependencies = []
 ```
 > 极简版本，无 `[project.scripts]` 也无 `[build-system]`。
 
-### init 常见用法组合
+### 2.6 init 常见用法组合
 
 ```bash
 # 1. 新建 FastAPI 应用（最常用）
@@ -177,15 +177,15 @@ uv init my-lib --lib --build-backend setuptools
 
 ---
 
-## `uv add` - 添加依赖（详解）
+## 3、`uv add` - 添加依赖（详解）
 
-### 完整语法
+### 3.1 完整语法
 
 ```
 uv add [OPTIONS] <PACKAGES>...
 ```
 
-### 版本指定方式
+### 3.2 版本指定方式
 
 ```bash
 # 精确版本（≈ package.json 的 "1.0.0"）
@@ -213,7 +213,7 @@ uv add "../my-other-project"
 uv add "https://files.pythonhosted.org/packages/.../package-1.0-py3-none-any.whl"
 ```
 
-### 所有选项
+### 3.3 所有选项
 
 | 选项 | 说明 | 示例 |
 |------|------|------|
@@ -229,7 +229,7 @@ uv add "https://files.pythonhosted.org/packages/.../package-1.0-py3-none-any.whl
 | `--tag <TAG>` | git 标签 | `uv add --tag v1.0 git+...` |
 | `--branch <BRANCH>` | git 分支 | `uv add --branch main git+...` |
 
-### 添加可选依赖（extras）
+### 3.4 添加可选依赖（extras）
 
 ```bash
 # 安装 uvicorn 的标准扩展（含 websockets、httptools 等）
@@ -239,7 +239,7 @@ uv add "uvicorn[standard]"
 uv add "pydantic[email]"
 ```
 
-### 依赖组（dependency-groups）实战
+### 3.5 依赖组（dependency-groups）实战
 
 ```bash
 uv add --dev pytest ruff mypy            # 开发组
@@ -250,7 +250,7 @@ uv add --optional redis redis hiredis    # 可选依赖组（用户 pip install 
 
 ---
 
-## `uv remove` - 移除依赖
+## 4、`uv remove` - 移除依赖
 
 ```bash
 # 移除生产依赖
@@ -271,14 +271,14 @@ uv remove --optional redis redis
 
 ---
 
-## `uv sync` - 同步环境（详解）
+## 5、`uv sync` - 同步环境（详解）
 
 `uv sync` 是 uv 的核心命令之一，它会：
 1. 如果 `.venv` 不存在，自动创建虚拟环境
 2. 按照 `uv.lock` 文件精确安装所有依赖
 3. 安装当前项目自身（editable 模式）
 
-### 所有选项
+### 5.1 所有选项
 
 | 选项 | 说明 | 前端类比 |
 |------|------|----------|
@@ -294,7 +294,7 @@ uv remove --optional redis redis
 | `--reinstall` | 强制重装所有包 | `rm -rf node_modules && install` |
 | `--reinstall-package <PKG>` | 仅重装指定包 | — |
 | `--no-install-project` | 不安装当前项目自身 | — |
-| `--python <VERSION>` | 使用指定 Python | — |
+| `--python <VERSION>` | 使用指定 `Python` | — |
 
 ```bash
 # 生产环境（跳过 dev 依赖）
@@ -318,7 +318,7 @@ uv sync --frozen
 
 ---
 
-## `uv lock` - 锁定依赖
+## 6、`uv lock` - 锁定依赖
 
 ```bash
 # 解析并生成 uv.lock
@@ -338,15 +338,15 @@ uv lock --verbose
 ```
 
 `uv.lock` 文件内容：
-- 跨平台锁定（可在 macOS 生成，Linux 使用）
+- 跨平台锁定（可在 macOS 生成，`Linux` 使用）
 - 记录所有依赖的精确版本和 hash
-- 应提交到 Git
+- 应提交到 `Git`
 
 ---
 
-## `uv run` / `uvx` - 运行命令（详解）
+## 7、`uv run` / `uvx` - 运行命令（详解）
 
-### `uv run` — 在项目环境中运行
+### 7.1 `uv run` — 在项目环境中运行
 
 ```
 uv run [OPTIONS] <COMMAND>
@@ -373,7 +373,7 @@ uv run --python 3.12 pytest    # 指定 Python
 uv run --isolated pytest       # 隔离运行（忽略项目配置）
 ```
 
-### `uvx` — 运行一次性工具（不装到项目）
+### 7.2 `uvx` — 运行一次性工具（不装到项目）
 
 `uvx` 是 `uv tool run` 的简写，等价于 `npx`。
 
@@ -392,11 +392,11 @@ uvx ruff check .   # 如果全局已装过，直接用全局版
 
 ---
 
-## `uv python` - Python 版本管理（详解）
+## 8、`uv python` - `Python` 版本管理（详解）
 
-uv 内置了 Python 版本管理，无需额外安装 pyenv 或 nvm 类比工具。
+uv 内置了 `Python` 版本管理，无需额外安装 pyenv 或 nvm 类比工具。
 
-### 子命令一览
+### 8.1 子命令一览
 
 ```bash
 # 列出所有可安装的 Python 版本（远端）
@@ -428,13 +428,13 @@ uv python pin --resolved 3.12   # 解析到精确版本号
 uv python which                 # 等价于 which python
 ```
 
-### 支持的 Python 实现
+### 8.2 支持的 `Python` 实现
 
 | 实现 | 说明 |
 |------|------|
-| CPython (`cpython-3.12`) | 默认，标准 Python |
-| PyPy (`pypy-3.10`) | JIT 加速的 Python |
-| GraalPy (`graalpy-3.12`) | Oracle GraalVM Python |
+| CPython (`cpython-3.12`) | 默认，标准 `Python` |
+| PyPy (`pypy-3.10`) | JIT 加速的 `Python` |
+| GraalPy (`graalpy-3.12`) | Oracle GraalVM `Python` |
 
 ```bash
 # 安装 PyPy
@@ -443,7 +443,7 @@ uv python install pypy@3.10
 
 ---
 
-## `uv venv` - 虚拟环境管理
+## 9、`uv venv` - 虚拟环境管理
 
 ```bash
 # 创建虚拟环境（默认 .venv）
@@ -472,7 +472,7 @@ deactivate
 
 ---
 
-## `uv tree` - 依赖树
+## 10、`uv tree` - 依赖树
 
 ```bash
 # 显示完整依赖树
@@ -496,7 +496,7 @@ uv tree --frozen
 
 ---
 
-## `uv build` / `uv publish` - 构建与发布
+## 11、`uv build` / `uv publish` - 构建与发布
 
 ```bash
 # 构建源码分发包 (sdist) 和 wheel
@@ -523,9 +523,9 @@ uv publish --token pypi-xxxx
 
 ---
 
-## `uv tool` - 全局工具管理
+## 12、`uv tool` - 全局工具管理
 
-用于全局安装 CLI 工具（类似 `npm install -g` + `npx`）。
+用于全局安装 `CLI` 工具（类似 `npm install -g` + `npx`）。
 
 ```bash
 # 安装全局工具
@@ -554,7 +554,7 @@ uv tool dir
 
 ---
 
-## `uv cache` - 缓存管理
+## 13、`uv cache` - 缓存管理
 
 ```bash
 # 查看缓存目录路径
@@ -569,7 +569,7 @@ uv cache clean fastapi
 
 ---
 
-## `uv pip` - pip 兼容层
+## 14、`uv pip` - pip 兼容层
 
 uv 提供了完整的 `pip` 兼容接口，适合渐进式迁移。
 
@@ -595,7 +595,7 @@ uv pip list
 
 ---
 
-## `uv export` - 导出依赖
+## 15、`uv export` - 导出依赖
 
 ```bash
 # 导出为 requirements.txt（给不用 uv 的队友/CI）
@@ -610,9 +610,9 @@ uv export --group test --format requirements-txt
 
 ---
 
-## 实战工作流总结
+## 16、实战工作流总结
 
-### 场景 1：从零开始 FastAPI 项目
+### 16.1 场景 1：从零开始 `FastAPI` 项目
 
 ```bash
 uv init my-api
@@ -622,7 +622,7 @@ uv add --dev pytest httpx ruff mypy
 uv run uvicorn app:app --reload
 ```
 
-### 场景 2：克隆已有 uv 项目
+### 16.2 场景 2：克隆已有 uv 项目
 
 ```bash
 git clone <repo>
@@ -631,7 +631,7 @@ uv sync              # 一键创建 .venv + 安装全部依赖
 uv run pytest        # 跑测试验证
 ```
 
-### 场景 3：CI/CD (GitHub Actions)
+### 16.3 场景 3：CI/CD (`GitHub` Actions)
 
 ```yaml
 steps:
@@ -643,14 +643,14 @@ steps:
   - run: uv run pytest -v
 ```
 
-### 场景 4：给已有项目快速加 lint
+### 16.4 场景 4：给已有项目快速加 lint
 
 ```bash
 uv add --dev ruff
 uv run ruff check . --fix    # 自动修复
 ```
 
-### 场景 5：运行别人的脚本
+### 16.5 场景 5：运行别人的脚本
 
 ```bash
 # 免安装，直接用
@@ -661,7 +661,7 @@ uvx cookiecutter gh:user/template
 
 ---
 
-## 完整命令速查表
+## 17、完整命令速查表
 
 | 命令 | 用途 | 最常用 |
 |------|------|--------|
@@ -670,7 +670,7 @@ uvx cookiecutter gh:user/template
 | `uv sync` | 同步环境 | ⭐⭐⭐⭐⭐ |
 | `uv run` | 运行命令 | ⭐⭐⭐⭐⭐ |
 | `uvx` | 运行一次性工具 | ⭐⭐⭐⭐ |
-| `uv python install` | 安装 Python | ⭐⭐⭐⭐ |
+| `uv python install` | 安装 `Python` | ⭐⭐⭐⭐ |
 | `uv remove` | 移除依赖 | ⭐⭐⭐ |
 | `uv lock` | 锁定依赖 | ⭐⭐⭐ |
 | `uv tree` | 查看依赖树 | ⭐⭐⭐ |
@@ -684,8 +684,8 @@ uvx cookiecutter gh:user/template
 
 ---
 
-## 更多资源
+## 18、更多资源
 
 - 官方文档：[docs.astral.sh/uv](https://docs.astral.sh/uv/)
-- GitHub：[astral-sh/uv](https://github.com/astral-sh/uv)
+- `GitHub`：[astral-sh/uv](https://github.com/astral-sh/uv)
 - 迁移指南：[docs.astral.sh/uv/guides](https://docs.astral.sh/uv/guides/)

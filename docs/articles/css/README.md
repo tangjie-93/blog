@@ -6,7 +6,7 @@ tags: css
 note: css有两种常见的盒模型，W3C标准盒模型和 IE怪异盒模型
 ---
 
-## 盒模型与 `box-sizing`
+## 1、盒模型与 `box-sizing`
 
 ```html
 ```
@@ -16,7 +16,7 @@ note: css有两种常见的盒模型，W3C标准盒模型和 IE怪异盒模型
 > `css3`属性`box-sizing`的`content-box`属性对应着`W3C`标准盒模型；  
 > `css3`属性`box-sizing`的`border-box`(宽、高包括`border`)属性对应着IE标准盒模型；
 
-## `W3C` 标准盒模型：`content-box`（默认）
+## 2、`W3C` 标准盒模型：`content-box`（默认）
 
 在W3C标准下,我们定义的元素的`width`值即为盒模型中的`content`的宽度值，`style`中定义的`height`即为盒模型中的`content`的高度值。
 <img src="../../images/css/w3c标准盒模型.png">
@@ -28,7 +28,7 @@ note: css有两种常见的盒模型，W3C标准盒模型和 IE怪异盒模型
 元素的高 = height(content的高) + padding-top + padding-bottom + border-top + border-bottom
 ```
 
-## `IE` 盒模型：`border-box`
+## 3、`IE` 盒模型：`border-box`
 
 <img src="../../images/css/ie标准盒模型.png" alt="暂无数据">
 <!-- ![](https://user-gold-cdn.xitu.io/2019/4/7/169f7d442ca565ab?w=1901&h=978&f=png&s=112557) -->

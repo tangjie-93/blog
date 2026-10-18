@@ -8,7 +8,7 @@ note: jquery整体封装设计总结
 
 `jquery`的整个代码的封装就是以自执行函数的形式来封装的，自执行函数在执行的过程中会形成闭包。下面将对`jQuery`整体封装设计进行大概的分析。可以总结出如下亮点。
 
-## `jQuery` 的闭包封装
+## 1、`jQuery` 的闭包封装
 
 ```js
 const params1 = typeof window !== 'undefined' ? window : this;
@@ -47,7 +47,7 @@ const params2 = function (window, noGlobal) {
 $(".box");//每调用一次会创建一个实例
 ```
 
-## `jQuery` 的无 `new` 构建
+## 2、`jQuery` 的无 `new` 构建
 
 + 在调用`jQuery()` 将`jQuery.fn.init`看成一个构造函数,并返回它的实例。
 + 将`jQuery.fn.init`的原型对象指向 `jQuery` 的原型对象,这样`jQuery()` 对象就能调用 `jQuery`上的共有属性和方法。
@@ -75,7 +75,7 @@ jQuery.fn.init.prototype = jQuery.fn;
 $("#box");//返回一个实例，并能调用jQuery原型对象上的属性和方法
 ```
 
-## 链式调用与扩展机制
+## 3、链式调用与扩展机制
 
 + `jQuery`的链式调用
 + 通过`jQuery.extend = jQuery.fn.extend=function()` 来扩展`jQuery`自身及其原型对象。
@@ -108,7 +108,7 @@ jQuery.extend({
 })
 ```
 
-## 使 `jQuery` 实例支持迭代
+## 4、使 `jQuery` 实例支持迭代
 
 ```js
 if (typeof Symbol === "function") {
@@ -117,7 +117,7 @@ if (typeof Symbol === "function") {
 }
 ```
 
-## `jQuery` 和 `$` 的命名冲突解决方式
+## 5、`jQuery` 和 `$` 的命名冲突解决方式
 
 ```js
 //为了防止暴露到全局的jQuery和$命名冲突，可以提供$等使用权限的转让
