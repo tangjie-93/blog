@@ -16,7 +16,7 @@ const agentGroups = [
 ]
 
 const labels = {
-  ai: 'AI 基础', agent: 'Agent 架构', 'ai-rag-agent': 'AI 全栈路线', 'ai-coding': 'AI Coding',
+  ai: 'AI 基础', agent: 'Agent 架构', jev: 'Jev 专题', 'ai-coding': 'AI Coding',
   css: 'CSS', es6: 'ES6', http: 'HTTP', javascript: 'JavaScript',
   java: 'Java', langchain: 'LangChain',
   'jquery-source-analysis': 'jQuery 源码', linux: 'Linux', node: 'Node.js',

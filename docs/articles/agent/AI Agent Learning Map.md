@@ -14,7 +14,6 @@ note: "按基础概念、核心机制、工程化、前端结合与项目实践�
 - [x] `Prompt Engineering`（见 [`LLM` 与 `Agent` 基础](./01-LLM%E4%B8%8EAgent%E5%9F%BA%E7%A1%80.md)）
 - [x] `Tool Calling` / `Function Calling`（见 [`Tool` Use](./02%E3%80%81Tool%20Use%20%E2%80%94%20%E5%A4%9A%E5%8A%A0%E4%B8%80%E4%B8%AA%E5%B7%A5%E5%85%B7%EF%BC%8C%E5%8F%AA%E5%8A%A0%E4%B8%80%E8%A1%8C.md)）
 - [x] `Structured Output`（见 [`LLM` 与 `Agent` 基础](./01-LLM%E4%B8%8EAgent%E5%9F%BA%E7%A1%80.md)）
-- [x] `System One` 决策模型与 typed answers（见 [`Jev` 与 `System One`](./27%E3%80%81Jev%E4%B8%8ESystem%20One%20%E2%80%94%20让模型只做可执行判断.md)）
 - [x] `Embeddings` / `RAG`（见 [`AI` 知识图谱](/articles/ai/)）
 
 ## 2、阶段 2：`Agent` 核心机制
