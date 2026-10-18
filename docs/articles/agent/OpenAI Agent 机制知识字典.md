@@ -7,7 +7,7 @@ note: "从 Agent Loop 到综合系统，查阅 20 个章节的核心机制与代
 ---
 
 <script setup>
-`import` { withBase } from 'vitepress'
+import { withBase } from 'vitepress'
 </script>
 
 # `Agent` 架构全景：20 章核心机制回顾
