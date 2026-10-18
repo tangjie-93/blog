@@ -38,4 +38,26 @@ note: 把原始数据加工成可训练、可检索、可审计的资产。
 - 用两个 embedding 模型建立索引，验证模型不匹配检查。
 - 为一条用户数据删除请求画出派生数据清理链路。
 
+## 6、可复现实验：检查索引是否可重建
+
+把 `Embedding` 当成可删除、可重建的派生物，而不是“上传后就永久存在”的黑盒。对一批文档记录以下元数据：`document_id`、内容 `hash`、切分参数、模型名和索引版本。然后故意用另一模型查询，观察相似度分布是否明显变化；若变化，查询端和索引端必须同时切换并重建。
+
+```python
+from hashlib import sha256
+
+text = "报销申请需要直属主管审批。"
+record = {
+    "document_id": "hr-001",
+    "content_hash": sha256(text.encode()).hexdigest(),
+    "embedding_model": "model-v1",
+    "index_version": "2026-10-18",
+}
+assert record["content_hash"] == sha256(text.encode()).hexdigest()
+print(record)
+```
+
+验收时提交：一份数据字典、一张删除链路图，以及一次“模型不匹配后拒绝查询或重建索引”的运行记录。注意：只删向量库记录而保留缓存、评估集或备份，仍然不算完成删除。
+
+深入阅读：[RAG 数据摄取](../rag/02-数据摄取.md)、[RAG 生产化](../rag/07-生产化.md)。
+
 参考：[Qdrant](https://github.com/qdrant/qdrant)、[Milvus](https://github.com/milvus-io/milvus)、[FAISS](https://github.com/facebookresearch/faiss)。
