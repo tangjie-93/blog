@@ -6,7 +6,7 @@ const source = resolve('docs')
 const output = resolve('docs/.vitepress/dist')
 const base = process.env.VITEPRESS_BASE || '/'
 const pages = readdirSync(source, { recursive: true }).filter(path =>
-  path.endsWith('.md') && !path.startsWith('.'))
+  path.endsWith('.md') && !path.startsWith('.') && !path.startsWith('public/'))
 const failures = []
 for (const page of pages) {
   const route = page.replace(/(^|\/)README\.md$/, '$1index.md').replace(/\.md$/, '.html')

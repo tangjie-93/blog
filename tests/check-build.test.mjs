@@ -15,6 +15,10 @@ for (const base of ['/', '/blog/']) {
       const output = join(root, 'docs/.vitepress/dist')
       mkdirSync(join(output, 'articles'), { recursive: true })
       writeFileSync(join(root, 'docs/README.md'), '# Home')
+      mkdirSync(join(root, 'docs/public/java-examples'), { recursive: true })
+      writeFileSync(join(root, 'docs/public/java-examples/README.md'), '# Example source')
+      mkdirSync(join(output, 'java-examples'))
+      writeFileSync(join(output, 'java-examples/README.md'), '# Example source')
       writeFileSync(join(output, 'articles/中文.html'), '<div class="vp-doc">Article</div>')
       mkdirSync(join(output, 'assets'))
       writeFileSync(join(output, 'assets/style.test.css'), '.VPNav{display:flex}')
@@ -25,7 +29,7 @@ for (const base of ['/', '/blog/']) {
           cwd: root, env: { ...process.env, VITEPRESS_BASE: base }, encoding: 'utf8'
         })
       }
-      for (const href of [`${base}articles/%E4%B8%AD%E6%96%87.html`, 'articles/中文.html']) {
+      for (const href of [`${base}articles/%E4%B8%AD%E6%96%87.html`, 'articles/中文.html', `${base}java-examples/README.md`]) {
         const result = check(href)
         assert.equal(result.status, 0, result.stderr)
       }

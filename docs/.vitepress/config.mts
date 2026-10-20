@@ -35,6 +35,7 @@ export default defineConfig({
   title: '前端技术积累',
   description: '记录前端学习与实践，分享 JavaScript、Vue、WebGL、工程化和算法的深入思考。',
   base,
+  srcExclude: ['public/**'],
   vite: {
     optimizeDeps: { exclude: ['waline-script-asset?url', 'waline-style-asset?inline'] },
     envDir: fileURLToPath(new URL('../../', import.meta.url)),

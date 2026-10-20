@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "vitepress dev docs",
     "inject:git-info": "node scripts/inject-git-info.mjs",
-    "build": "pnpm run inject:git-info && vitepress build docs && node scripts/check-build.mjs",
+    "build": "pnpm run inject:git-info && node --max-old-space-size=4096 node_modules/vitepress/bin/vitepress.js build docs && node scripts/check-build.mjs",
     "docs:dev": "vitepress dev docs",
     "docs:build": "pnpm run build",
     "docs:preview": "vitepress preview docs",
