@@ -1,0 +1,10 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        enabled: true
+
+demo:
+  clients:
+    user-url: ""
+    product-url: ""

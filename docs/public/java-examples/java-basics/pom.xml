@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    pom.xml 是 Maven 项目的核心配置文件。
+
+    可以把它类比成前端项目里的 package.json + 构建配置文件：
+    - package.json 负责声明项目名、版本、依赖、scripts。
+    - pom.xml 负责声明项目坐标、依赖、插件和构建生命周期。
+
+    Maven 会根据这个文件完成这些工作：
+    1. 识别当前项目是谁：groupId、artifactId、version。
+    2. 管理项目依赖：例如测试框架 JUnit。
+    3. 管理构建过程：例如用哪个 Java 版本编译、如何运行测试、如何启动主类。
+
+    这个项目是 Java 基础学习项目，所以配置保持简单，只保留学习和运行代码需要的内容。
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <!--
+        project 是 pom.xml 的根标签。
+
+        xmlns 和 xsi:schemaLocation 用来告诉 IDE 和 Maven：
+        1. 这个 XML 遵循 Maven POM 4.0.0 规范。
+        2. 可以用对应的 XSD 文件校验标签是否合法。
+
+        平时不需要手动改这些命名空间配置。
+    -->
+    <!--
+        POM 模型版本，固定写 4.0.0。
+        这不是项目版本，而是 Maven 当前使用的 POM 配置模型版本。
+    -->
+    <modelVersion>4.0.0</modelVersion>
+
+    <!--
+        项目坐标：用于唯一标识当前 Maven 项目。
+
+        groupId    通常是公司、组织或个人域名倒写，例如 com.example。
+                   类比 npm 包名里的组织作用域，例如 @company。
+
+        artifactId 通常是项目或模块名称，例如 java-basics。
+                   类比 npm package.json 里的 name。
+
+        version    当前项目版本，例如 1.0.0。
+                   类比 npm package.json 里的 version。
+
+        依赖别人项目时，Maven 也是通过这三个值定位具体 jar 包的。
+        完整坐标可以理解为：com.example:java-basics:1.0.0。
+    -->
+    <groupId>com.example</groupId>
+    <artifactId>java-basics</artifactId>
+    <version>1.0.0</version>
+
+    <!--
+        打包方式。
+
+        jar 表示当前项目最终会被打成一个 .jar 文件，适合普通 Java 程序和工具库。
+        如果是 Web 项目，可能会用 war；如果是父工程，可能会用 pom。
+    -->
+    <packaging>jar</packaging>
+
+    <!--
+        项目展示信息。
+
+        name 和 description 主要给 Maven 插件、IDE、构建报告或仓库页面展示用，
+        不影响 Java 代码编译和运行。
+    -->
+    <name>Java Basics Demo</name>
+    <description>面向前端开发者的 Java 基础学习项目</description>
+
+    <!--
+        properties 用来集中管理可复用的配置值，类似前端项目里的常量区。
+
+        好处：
+        1. 版本号只写一处，后面通过 ${属性名} 引用。
+        2. 升级 Java、JUnit 或插件版本时，不需要到处查找。
+        3. 避免同一个版本在多个位置写得不一致。
+    -->
+    <properties>
+        <!-- 当前项目使用 Java 21 作为源码和编译目标版本。 -->
+        <java.version>21</java.version>
+
+        <!--
+            源码文件编码。
+
+            设置为 UTF-8 后，Java 源码、资源文件里的中文注释和字符串在不同电脑上更稳定。
+        -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- 构建报告输出编码，同样使用 UTF-8，避免报告或日志里中文乱码。 -->
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <!--
+            Maven 编译 release 版本。
+
+            release 比 source + target 更严格：
+            它不仅控制生成的字节码版本，还会限制只能使用对应 Java 版本存在的标准库 API。
+        -->
+        <maven.compiler.release>${java.version}</maven.compiler.release>
+
+        <!-- JUnit 5 版本，用于编写和运行单元测试。 -->
+        <junit.version>5.10.0</junit.version>
+
+        <!-- maven-compiler-plugin 版本，负责调用 javac 编译 Java 源码。 -->
+        <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
+
+        <!-- maven-surefire-plugin 版本，负责在 mvn test 阶段运行测试。 -->
+        <maven.surefire.plugin.version>3.2.5</maven.surefire.plugin.version>
+
+        <!-- exec-maven-plugin 版本，负责通过 mvn exec:java 运行 main 方法。 -->
+        <exec.maven.plugin.version>3.1.0</exec.maven.plugin.version>
+    </properties>
+
+    <!--
+        dependencies 用来声明项目依赖，类似 package.json 里的 dependencies/devDependencies。
+
+        Maven 会自动下载这些依赖，并在编译、测试或运行时放到对应的 classpath 中。
+        依赖是否进入最终产物，主要由 scope 决定。
+
+        常见 scope：
+        1. compile：默认值，编译、测试、运行都可用，通常会参与最终产物依赖。
+        2. test：只给测试代码使用，正式代码不能依赖它，例如 JUnit。
+        3. provided：编译时需要，但运行环境会提供，最终 jar 不会携带。
+           典型例子是 Servlet API，或者某些只在编译期生成代码的工具。
+        4. runtime：编译时不需要，运行时才需要，例如某些数据库驱动。
+
+        之前看到的 <scope>provided</scope> 就是第 3 类：
+        “我写代码时要用它，但打包时不要把它带进去，因为运行环境会提供或编译后已经不需要。”
+    -->
+    <dependencies>
+        <!--
+            JUnit Jupiter 是 JUnit 5 的核心测试依赖。
+
+            scope=test 表示：
+            1. 只在测试代码中可用，例如 src/test/java。
+            2. 不会进入正式运行环境。
+            3. 不会被打进最终 jar。
+
+            当前项目暂时没有测试类，但保留 JUnit 方便后续给基础示例补测试。
+        -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <!--
+        build 用来配置项目如何构建，类似 Vite/Webpack/Babel/Jest 等工具配置的集合。
+
+        这里主要配置三个插件：
+        1. compiler：编译 Java 代码。
+        2. surefire：执行单元测试。
+        3. exec：直接运行项目里的 main 方法。
+
+        常用 Maven 命令和生命周期：
+        1. mvn validate：检查 pom.xml 是否基本有效。
+        2. mvn compile：编译 src/main/java 里的正式代码。
+        3. mvn test：编译并运行 src/test/java 里的测试代码。
+        4. mvn package：编译、测试并打包生成 target/*.jar。
+        5. mvn exec:java：使用 exec 插件运行 mainClass 指定的主程序。
+    -->
+    <build>
+        <plugins>
+            <!--
+                Java 编译插件。
+
+                Maven 默认也能编译 Java，但显式配置插件后，可以清楚地控制：
+                1. 使用哪个 Java release。
+                2. 使用什么文件编码。
+                3. 是否保留方法参数名。
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.plugin.version}</version>
+                <configuration>
+                    <!--
+                        编译目标版本。
+
+                        当前值最终来自 java.version，所以把 java.version 改成 17 或 21，
+                        这里会自动跟着变化。
+                    -->
+                    <release>${maven.compiler.release}</release>
+
+                    <!-- 告诉编译器源码按 UTF-8 读取，避免中文注释和字符串乱码。 -->
+                    <encoding>${project.build.sourceEncoding}</encoding>
+
+                    <!--
+                        保留方法参数名到字节码中。
+
+                        对基础学习影响不大，但对反射、框架绑定参数、调试信息更友好。
+                    -->
+                    <parameters>true</parameters>
+                </configuration>
+            </plugin>
+
+            <!--
+                测试执行插件。
+
+                mvn test 时，Maven 会使用 Surefire 扫描并运行测试类。
+                对 JUnit 5 项目来说，显式配置较新的 Surefire 版本可以避免测试发现不稳定的问题。
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven.surefire.plugin.version}</version>
+            </plugin>
+
+            <!--
+                main 方法运行插件。
+
+                配置后可以在项目目录执行：
+                mvn exec:java
+
+                Maven 会启动下面 mainClass 指定的主类，适合这个学习项目里的交互式菜单程序。
+            -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>${exec.maven.plugin.version}</version>
+                <configuration>
+                    <!-- 项目入口类，必须是包含 public static void main(String[] args) 的完整类名。 -->
+                    <mainClass>learn.JavaBasicsApplication</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

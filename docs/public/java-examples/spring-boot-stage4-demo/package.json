@@ -1,0 +1,8 @@
+{
+  "name": "spring-boot-stage4-demo-fullstack",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "C:\\Progra~1\\Git\\bin\\bash.exe ./start-fullstack.sh"
+  }
+}

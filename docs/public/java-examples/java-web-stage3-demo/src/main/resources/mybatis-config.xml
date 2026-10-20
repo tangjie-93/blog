@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<!--
+    MyBatis 全局配置 — 由 WebConfig 中的 SqlSessionFactory @Bean 加载
+
+    注意：DataSource 在 WebConfig 中直接配置（HikariCP），这里只放 MyBatis 行为设置
+-->
+<configuration>
+    <settings>
+        <!-- created_at → createdAt：下划线列名自动转驼峰属性名 -->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <!-- 打印 SQL 语句（调试用，生产环境应关闭） -->
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+    </settings>
+</configuration>

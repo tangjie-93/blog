@@ -1,0 +1,51 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_SERVER:127.0.0.1:8848}
+        enabled: ${NACOS_ENABLED:false}
+    sentinel:
+      transport:
+        dashboard: ${SENTINEL_DASHBOARD:127.0.0.1:8080}
+      eager: false
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowed-origin-patterns: "*"
+            allowed-methods: "*"
+            allowed-headers: "*"
+            allow-credentials: true
+      default-filters:
+        - AddResponseHeader=X-Gateway-Source, spring-cloud-stage5-demo
+      routes:
+        - id: service-user
+          uri: ${USER_SERVICE_URI:http://127.0.0.1:8081}
+          predicates:
+            - Path=/api/users/**
+        - id: service-product
+          uri: ${PRODUCT_SERVICE_URI:http://127.0.0.1:8083}
+          predicates:
+            - Path=/api/products/**
+        - id: service-order
+          uri: ${ORDER_SERVICE_URI:http://127.0.0.1:8082}
+          predicates:
+            - Path=/api/orders/**
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+demo:
+  gateway:
+    auth-enabled: ${GATEWAY_AUTH_ENABLED:false}
