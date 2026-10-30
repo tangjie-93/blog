@@ -71,7 +71,6 @@ export default defineConfig({
     } } } } },
     outline: { level: [2, 3], label: '文章目录' },
     docFooter: { prev: '上一篇', next: '下一篇' },
-    footer: { copyright: '前端技术积累' },
     returnToTopLabel: '返回顶部',
     sidebarMenuLabel: '文章导航',
     darkModeSwitchLabel: '外观',

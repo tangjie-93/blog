@@ -2,5 +2,10 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "vitepress",
   "buildCommand": "pnpm run build",
-  "outputDirectory": "docs/.vitepress/dist"
+  "outputDirectory": "docs/.vitepress/dist",
+  "redirects": [
+    { "source": "/blog", "destination": "/", "permanent": true },
+    { "source": "/blog/", "destination": "/", "permanent": true },
+    { "source": "/blog/:path*", "destination": "/:path*", "permanent": true }
+  ]
 }
