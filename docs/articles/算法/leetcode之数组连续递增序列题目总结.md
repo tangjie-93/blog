@@ -1,103 +1,84 @@
 ---
-title: leetcode之数组连续递增序列题目总结
+title: 递增序列：连续、非连续与方案计数
 date: '2020-12-14'
 type: 技术
 tags: 算法
-note: leetcode之数组连续递增序列题目总结
+note: 明确以某位置结尾的状态，比较扫描与动态规划。
 ---
-## 1、[1、最长连续递增子序列](https://leetcode-cn.com/problems/longest-continuous-increasing-subsequence/)
 
-给定一个未经排序的整数数组，找到最长且 **连续递增的子序列**，并返回该序列的长度。
- **连续递增的子序列：** 可以由两个下标 `l` 和 `r（l < r）` 确定，如果对于每个 `l <= i < r`，都有 `nums[i] < nums[i + 1]` ，那么子序列 `[nums[l], nums[l + 1], ..., nums[r - 1], nums[r]]` 就是连续递增子序列。
+## 1. 连续与非连续先分清
 
-**示例1**
+输入为有限数值数组，所有比较严格使用“大于”，不修改输入。连续区间不能跳过元素；子序列可以跳过但不能改变顺序。`[1,3,5,4,7]` 的最长连续递增长度为 `3`，最长递增子序列长度为 `4`。
+
+## 2. 连续递增：只看前一个位置
+
+处理当前位置时，`current` 表示**以当前位置结尾**的连续递增长度；当前值大于前一个值则延长，否则重新开始。全局答案另存，不能把局部状态解释为“到目前为止的最大值”。
+
 ```js
-输入：nums = [1,3,5,4,7]
-输出：3
-解释：最长连续递增序列是 [1,3,5], 长度为3。
-尽管 [1,3,5,7] 也是升序的子序列, 但它不是连续的，因为 5 和 7 在原数组里被 4 隔开。
-```
-**题解**
-```js
-//使用动态规划
-const findLengthOfLCIS=function(nums) {
-    const len=nums.length;
-    if(len<2) return len;
-    //动态规划初始化 设置值为1 因为至少可以与其自身形成递增子序列
-    const dp=new Array(len).fill(1);
-    let max=1;
-    for(let i=1;i<len;i++){
-        //如果存在当前值的大小大于上一个值，则初始位置到当前位置的序列长度加1，否则序列长度不变
-        if(nums[i]>nums[i-1]){
-            dp[i]=dp[i-1]+1;
-            max=Math.max(max,dp[i]);
-        }
+function findLengthOfLCIS(nums) {
+    let current = 0;
+    let best = 0;
+    for (let i = 0; i < nums.length; i++) {
+        current = i > 0 && nums[i] > nums[i - 1] ? current + 1 : 1;
+        best = Math.max(best, current);
     }
-    return max;
+    return best;
 }
 ```
 
-## 2、[2、最长递增子序列的个数](https://leetcode-cn.com/problems/number-of-longest-increasing-subsequence/)
-给定一个未排序的整数数组，找到最长递增子序列的个数。
+空数组返回 `0`，全相等非空数组返回 `1`。时间为 `O(n)`，辅助空间为 `O(1)`。扫描足够时不必建立整张状态表。
 
-**示例1**
+## 3. 非连续递增：考虑所有可接的前驱
+
+定义 `length[i]` 为以 `i` 结尾的最长严格递增子序列长度。所有满足 `j < i` 且 `nums[j] < nums[i]` 的位置都可能是前驱；每个元素自身至少形成长度为一的序列。
+
 ```js
-输入: [1,3,5,4,7]
-输出: 2
-解释: 有两个最长递增子序列，分别是 [1, 3, 4, 7] 和[1, 3, 5, 7]。
-```
-**示例2**
-```js
-输入: [2,2,2,2,2]
-输出: 5
-解释: 最长递增子序列的长度是1，并且存在5个子序列的长度为1，因此输出5。
-```
-**题解**
-```js
-var findNumberOfLIS = function(nums) {
-   const len=nums.length;
-   if(len<2) return len;
-   //dp[i] 表示初始位置到i位置的最大递增序列的长度
-   const dp=new Array(len).fill(1);
-   //counter[i]表示初始位置到i位置的最大递增序列的个数
-   const counter=new Array(len).fill(1);
-   let max=0;
-    for(let i=1;i<len;i++){
-      for(let j=0;j<i;j++){
-        if(nums[i]>nums[j]){
-          if(dp[i]<dp[j]+1){
-            /**
-             * 当i=1时 num[1]>num[0]
-             * 	j=0;dp[1]<dp[0]+1=2,dp[1]=2 counter[1]=counter[0]=1
-             * 	循环结束
-             * 当i=2时 num[2]>num[0],num[1]
-			 * 	j=0;dp[2]<dp[0]+1=2,dp[2]=2 counter[2]=counter[0]=1
-			 * 	j=1;dp[2]<dp[1]+1=3,dp[2]=3 counter[2]=counter[1]=1
-			 * 当i=3,num[3]>num[0],num[1]
-			 * 	j=0;dp[3]<dp[0]+1=2,dp[3]=2 counter[3]=counter[0]=1
-			 * 	j=1;dp[3]<dp[1]+1=3,dp[3]=3 counter[3]=counter[1]=1
-			 * 当i=4,num[4]>num[3],num[2],num[1],num[0]
-			 * 	j=0，dp[4]<dp[0]+1=2,dp[4]=2 counter[4]=counter[0]=1
-			 * 	j=1，dp[4]<dp[1]+1=3,counter[4]=counter[1]=1
-			 * 	j=2，dp[4]<dp[2]+1=4,counter[4]=counter[2]=1
-			 * 	j=3, dp[4]=dp[3]+1=4,counter[4]+=counter[3]=2
-             */	
-            dp[i]=dp[j]+1;
-            counter[i]=counter[j];
-          }else if(dp[i]===dp[j]+1){
-            //表示j位置的
-            counter[i]+=counter[j];
-          }
+function lengthOfLIS(nums) {
+    const length = new Array(nums.length).fill(1);
+    let best = 0;
+    for (let i = 0; i < nums.length; i++) {
+        for (let j = 0; j < i; j++) {
+            if (nums[j] < nums[i]) length[i] = Math.max(length[i], length[j] + 1);
         }
-      }
-      max=Math.max(max,dp[i]);
+        best = Math.max(best, length[i]);
     }
-    let count=0;
-    for(let i=0;i<len;i++){
-      if(dp[i]===max) count+=counter[i];
-    }
-    return count;
-
-};
-findNumberOfLIS( [1,3,5,4,7])
+    return best;
+}
 ```
+
+时间为 `O(n²)`，辅助空间为 `O(n)`。先掌握状态，再选学二分维护最小结尾的 `O(n log n)` 方法；那份最小结尾数组本身不一定是一条真实子序列。
+
+## 4. 最长方案有多少条
+
+再定义 `count[i]` 为以 `i` 结尾且达到 `length[i]` 的方案数。发现更长的候选时替换计数；发现同样长的候选时累加；更短的候选不贡献。
+
+```js
+function findNumberOfLIS(nums) {
+    const length = new Array(nums.length).fill(1);
+    const count = new Array(nums.length).fill(1);
+    let best = 0;
+    for (let i = 0; i < nums.length; i++) {
+        for (let j = 0; j < i; j++) {
+            if (nums[j] >= nums[i]) continue;
+            if (length[j] + 1 > length[i]) {
+                length[i] = length[j] + 1;
+                count[i] = count[j];
+            } else if (length[j] + 1 === length[i]) count[i] += count[j];
+        }
+        best = Math.max(best, length[i]);
+    }
+    let total = 0;
+    for (let i = 0; i < nums.length; i++) {
+        if (length[i] === best) total += count[i];
+    }
+    return total;
+}
+```
+
+按下标选择不同算不同方案，故 `[2,2,2]` 的答案为 `3`，不是 `1`；空数组约定返回 `0`。输入规模须保证计数在安全整数范围内。时间为 `O(n²)`，辅助空间为 `O(n)`。
+
+## 5. 验证与复盘
+
+运行 `node --test tests/algorithm-strategies-examples.test.mjs`。用空数组、全等、下降、重复前驱和 `[1,3,5,4,7]` 核对；小输入枚举所有下标子集可作为计数的独立对照。
+
+闭卷追问：为什么连续版本只看相邻位置，而非连续版本要看所有前驱？为什么找到更长序列时必须覆盖旧计数？动态规划原理见[主文](./算法基本思想之动态规划.md)。
