@@ -71,23 +71,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--vp-c-brand-1); 
         & .VPMenuGroup .VPMenuLink .link { min-height: 30px; padding: 0; font-size: 13px; }
     }
 }
-/* 桌面端让正文成为独立滚动区，滚动条从导航栏下方开始。 */
-@media (min-width: 960px) {
-    html, body { overflow: hidden; height: 100%; }
-    .Layout { min-height: 0; height: 100vh; overflow: hidden; }
-    .Layout > .VPContent {
-        flex: 1 1 0;
-        min-height: 0;
-        margin-top: var(--vp-nav-height);
-        padding-top: 0;
-        overflow-x: hidden;
-        overflow-y: auto;
-        overscroll-behavior: contain;
-        scrollbar-color: var(--blog-border) transparent;
-        scrollbar-width: thin;
-    }
-    .Layout > .VPContent.has-sidebar { margin-top: var(--vp-nav-height); }
-}
+/* 保留整页滚动：VitePress 的锚点跳转和目录高亮依赖 window 滚动。 */
 @media (min-width: 768px) and (max-width: 959px) {
     .VPNavBar .VPNavBarMenuLink { padding-inline: 8px; }
     .VPNavBar .VPNavBarSearch { padding-left: 12px; }
