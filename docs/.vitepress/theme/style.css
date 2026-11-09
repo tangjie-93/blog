@@ -1,4 +1,6 @@
 :root {
+    --blog-radius: 12px;
+    --blog-page-gutter: clamp(16px, 2vw, 32px);
     --vp-c-brand-1: #087d70;
     --vp-c-brand-2: #0b9484;
     --vp-c-brand-3: #087d70;
@@ -189,6 +191,11 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--vp-c-brand-1); 
 .blog-archive .vp-doc > div {
     & > h1 { text-align: center; font-size: 28px; }
     & > p { margin: 8px 0 20px; text-align: center; color: var(--vp-c-text-2); font-size: 15px; }
+}
+.blog-mindmap .VPDoc:not(.has-sidebar) {
+    padding: 0;
+    & > .container, & > .container > .content, & .content-container { max-width: none; width: 100%; padding: 0; }
+    & .VPDocFooter { display: none; }
 }
 /* Markdown 页面根节点随路由替换，动画无需接管路由或重复挂载导航。 */
 .vp-doc > div, .VPPage > div > div { animation: blog-content-enter 200ms ease-out; }

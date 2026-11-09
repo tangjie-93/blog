@@ -57,6 +57,7 @@ export default defineConfig({
     nav: [
       { text: '首页', link: '/' },
       { text: '文章', link: '/timeline/' },
+      { text: '脑图', link: '/mindmap/' },
       { text: '技术栈', items: groupedNav },
       { text: '标签', link: '/tags/' },
       { text: '充电站', link: '/summarize/' },
