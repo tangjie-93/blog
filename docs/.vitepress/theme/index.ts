@@ -5,6 +5,7 @@ import BlogList from './components/BlogList.vue'
 import Tags from './components/Tags.vue'
 import Valine from './components/Valine.vue'
 import HomePage from './components/HomePage.vue'
+import RunnableExample from './components/RunnableExample.vue'
 import './style.css'
 
 function numberDocumentOutline() {
@@ -46,6 +47,7 @@ export default {
         app.component('Tags', Tags)
         app.component('Valine', Valine)
         app.component('HomePage', HomePage)
+        app.component('RunnableExample', RunnableExample)
         if (import.meta.env.PROD && typeof window !== 'undefined') {
             Object.defineProperty(window, '__GIT_INFO__', {
                 value: Object.freeze({
@@ -65,6 +67,9 @@ export default {
             if (typeof window !== 'undefined') window.setTimeout(() => {
                 numberDocumentHeadings()
                 numberDocumentOutline()
+                document.querySelectorAll<HTMLElement>('.VPSidebarItem .text').forEach((title) => {
+                    title.title = title.textContent?.trim() || ''
+                })
             }, 0)
         }
     },

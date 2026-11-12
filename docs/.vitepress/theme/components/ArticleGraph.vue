@@ -7,21 +7,32 @@
         <div class="article-graph__toolbar">
             <input v-model="query" type="search" aria-label="搜索文章、标签或分类" placeholder="搜索文章、标签或分类…" />
             <select v-model="category" aria-label="筛选技术分类"><option value="">全部技术分类</option><option v-for="item in graph.categories" :key="item.id" :value="item.id">{{ item.label }} · {{ item.count }}</option></select>
-            <div class="article-graph__controls"><button type="button" aria-label="缩小脑图" :disabled="zoom <= 0.5" @click="changeZoom(1 / 1.25)">−</button><button type="button" aria-label="放大脑图" :disabled="zoom >= 4" @click="changeZoom(1.25)">＋</button><button type="button" @click="resetViewport">适应屏幕</button><button type="button" :aria-pressed="showLabels" @click="showLabels = !showLabels">{{ showLabels ? '隐藏标签' : '显示标签' }}</button><button v-if="query || category" type="button" @click="clearFilters">清除筛选</button></div>
+            <div class="article-graph__controls"><button type="button" aria-label="缩小脑图" :disabled="zoom <= 0.5" @click="changeZoom(1 / 1.25)">−</button><button type="button" aria-label="放大脑图" :disabled="zoom >= 4" @click="changeZoom(1.25)">＋</button><button type="button" @click="resetViewport">适应屏幕</button><button type="button" :aria-pressed="showLabels" @click="showLabels = !showLabels">{{ showLabels ? '隐藏标签' : '显示标签' }}</button><button type="button" :aria-pressed="motionPaused" @click="motionPaused = !motionPaused">{{ motionPaused ? '播放动画' : '暂停动画' }}</button><button v-if="query || category" type="button" @click="clearFilters">清除筛选</button></div>
         </div>
         <div class="article-graph__body">
-            <div class="article-graph__canvas">
+            <div class="article-graph__canvas" :class="{ 'is-paused': motionPaused }">
                 <svg ref="canvas" viewBox="-520 -520 1040 1040" aria-label="文章关系图，点击分类筛选，点击文章阅读" @wheel.prevent="onWheel" @pointerdown="startPan" @pointermove="movePan" @pointerup="endPan" @pointercancel="endPan" @lostpointercapture="endPan" @dblclick.self="resetViewport">
                     <g :transform="`translate(${pan.x} ${pan.y}) scale(${zoom})`">
-                        <g aria-hidden="true"><line v-for="edge in graph.edges" :key="edge.id" :x1="edge.source.x" :y1="edge.source.y" :x2="edge.target.x" :y2="edge.target.y" :class="{ highlighted: hovered === edge.target.id || hovered === edge.source.id }" /></g>
+                        <g aria-hidden="true">
+                            <g v-for="(edge, index) in graph.edges" :key="edge.id">
+                                <line :x1="edge.source.x" :y1="edge.source.y" :x2="edge.target.x" :y2="edge.target.y" :class="{ highlighted: hovered === edge.target.id || hovered === edge.source.id }" />
+                                <line v-if="graph.articles.length <= 60 || edge.target.kind === 'category' || hovered === edge.target.id || hovered === edge.source.id" class="article-graph__flow" pathLength="100" :style="{ animationDelay: `${-(index % 7) * 0.4}s` }" :x1="edge.source.x" :y1="edge.source.y" :x2="edge.target.x" :y2="edge.target.y" />
+                            </g>
+                        </g>
+                        <g v-if="graph.nodes.length" class="article-graph__core" aria-hidden="true">
+                            <circle class="article-graph__orbit" r="36" />
+                            <circle class="article-graph__orbit article-graph__orbit--outer" r="47" />
+                            <circle class="article-graph__pulse" r="32" />
+                            <circle class="article-graph__pulse article-graph__pulse--echo" r="32" />
+                        </g>
                         <g v-for="node in graph.nodes" :key="node.id" :transform="`translate(${node.x} ${node.y})`" class="article-graph__node" :class="[node.kind, { hovered: hovered === node.id }]" @mouseenter="hovered = node.id" @mouseleave="hovered = ''" @focusin="hovered = node.id" @focusout="hovered = ''">
                             <g v-if="node.kind === 'article'">
                                 <circle r="5" /><text v-if="showLabels || hovered === node.id" y="-16">{{ shortLabel(node.label) }}</text>
                                 <!-- VitePress 预加载读取 HTMLAnchorElement.pathname，SVG 链接没有此属性。 -->
                                 <foreignObject x="-14" y="-14" width="28" height="28"><a class="article-graph__hit" :href="withBase(node.url!)" :aria-label="node.label" :title="node.label"></a></foreignObject>
                             </g>
-                            <g v-else-if="node.kind === 'category'" role="button" tabindex="0" :aria-label="`${node.label}，${node.count} 篇文章，点击筛选`" @click="category = node.category!" @keydown.enter.prevent="category = node.category!" @keydown.space.prevent="category = node.category!"><title>{{ node.label }} · {{ node.count }} 篇</title><circle r="13" /><text y="-24">{{ node.label }}</text></g>
-                            <g v-else aria-hidden="true"><circle r="25" /><text y="44">前端技术积累</text></g>
+                            <g v-else-if="node.kind === 'category'" role="button" tabindex="0" :aria-label="`${node.label}，${node.count} 篇文章，点击筛选`" @click="category = node.category!" @keydown.enter.prevent="category = node.category!" @keydown.space.prevent="category = node.category!"><title>{{ node.label }} · {{ node.count }} 篇</title><circle class="article-graph__halo" r="20" aria-hidden="true" /><circle r="13" /><text y="-24">{{ node.label }}</text></g>
+                            <g v-else aria-hidden="true"><circle r="25" /><text y="68">前端技术积累</text></g>
                         </g>
                     </g>
                 </svg>
@@ -48,6 +59,7 @@ const query = ref('')
 const category = ref('')
 const hovered = ref('')
 const showLabels = ref(false)
+const motionPaused = ref(false)
 const canvas = ref<SVGSVGElement | null>(null)
 const zoom = ref(1)
 const pan = ref({ x: 0, y: 0 })
@@ -143,19 +155,30 @@ watch([query, category], () => { hovered.value = ''; resetViewport() })
     & input:focus-visible, & select:focus-visible { outline: 2px solid var(--vp-c-brand-1); outline-offset: 2px; }
     & .article-graph__controls { display: flex; flex-wrap: wrap; gap: 8px; }
     & .article-graph__body { display: grid; grid-template-columns: minmax(0, 1fr) clamp(260px, 23vw, 360px); border: 1px solid var(--blog-border); border-radius: var(--blog-radius); overflow: hidden; }
-    & .article-graph__canvas { position: relative; height: max(480px, calc(100dvh - 300px)); background: radial-gradient(ellipse at center, var(--vp-c-brand-soft), transparent 70%); }
+    & .article-graph__canvas { position: relative; height: max(480px, calc(100dvh - 300px)); overflow: hidden; isolation: isolate; background: radial-gradient(ellipse at center, var(--vp-c-brand-soft), transparent 70%); }
+    & .article-graph__canvas::before { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: .3; background-image: linear-gradient(var(--blog-border) 1px, transparent 1px), linear-gradient(90deg, var(--blog-border) 1px, transparent 1px); background-size: 40px 40px; mask-image: radial-gradient(ellipse, #000, transparent 75%); }
     & svg { display: block; width: 100%; height: 100%; touch-action: none; cursor: grab; }
     & svg:active { cursor: grabbing; }
-    & line { stroke: var(--blog-border); stroke-width: 1; pointer-events: none; }
+    & line { stroke: var(--blog-border); stroke-width: 1; pointer-events: none; animation: graph-fade-in 600ms ease-out; transition: stroke 180ms ease, stroke-width 180ms ease; }
     & line.highlighted { stroke: var(--vp-c-brand-1); stroke-width: 2; }
-    & .article-graph__node { cursor: pointer; }
-    & .article-graph__node circle { fill: var(--vp-c-brand-1); stroke: var(--vp-c-bg); stroke-width: 2; }
+    & line.article-graph__flow { stroke: var(--vp-c-brand-1); stroke-width: 2.5; stroke-linecap: round; stroke-dasharray: 4 96; animation: graph-data-flow 2.8s linear infinite; }
+    & .article-graph__core { color: var(--vp-c-brand-1); pointer-events: none; }
+    & .article-graph__orbit { fill: none; stroke: currentColor; stroke-width: 2; stroke-dasharray: 42 14 8 14; transform-origin: 0 0; animation: graph-orbit 12s linear infinite; }
+    & .article-graph__orbit--outer { stroke: #567de8; stroke-width: 1.5; stroke-dasharray: 70 22 5 22; animation-direction: reverse; animation-duration: 18s; }
+    & .article-graph__pulse { fill: none; stroke: currentColor; stroke-width: 2; transform-origin: 0 0; animation: graph-pulse 3.6s ease-out infinite; }
+    & .article-graph__pulse--echo { stroke: #567de8; animation-delay: -1.8s; }
+    & .article-graph__node { --node-delay: 0ms; cursor: pointer; animation: graph-fade-in 400ms ease-out var(--node-delay) backwards; }
+    & .article-graph__node.category { --node-delay: 80ms; }
+    & .article-graph__node.article { --node-delay: 160ms; }
+    & .article-graph__node circle { fill: var(--vp-c-brand-1); stroke: var(--vp-c-bg); stroke-width: 2; transform-box: fill-box; transform-origin: center; animation: graph-node-in 400ms ease-out var(--node-delay) backwards; transition: transform 180ms ease, stroke 180ms ease, stroke-width 180ms ease; }
     & .article-graph__node.category circle { fill: #d58b21; }
-    & .article-graph__node.root circle { fill: #567de8; }
+    & .article-graph__node.root circle { fill: #567de8; filter: drop-shadow(0 0 10px #567de8); animation: graph-core-breathe 3.6s ease-in-out infinite; }
+    & .article-graph__node.category circle.article-graph__halo { fill: none; stroke: #d58b21; stroke-width: 2; filter: drop-shadow(0 0 4px #d58b21); opacity: .5; pointer-events: none; animation: graph-breathe 3s ease-in-out infinite; }
+    & .article-graph__node.hovered circle:not(.article-graph__halo) { filter: drop-shadow(0 0 6px var(--vp-c-brand-1)); }
     & .article-graph__node .article-graph__hit { display: block; width: 100%; height: 100%; border-radius: 50%; }
-    & .article-graph__node text { fill: var(--vp-c-text-1); font-size: 13px; font-weight: 500; text-anchor: middle; paint-order: stroke; stroke: var(--vp-c-bg); stroke-width: 5px; stroke-linejoin: round; pointer-events: none; }
+    & .article-graph__node text { fill: var(--vp-c-text-1); font-size: 13px; font-weight: 500; text-anchor: middle; paint-order: stroke; stroke: var(--vp-c-bg); stroke-width: 5px; stroke-linejoin: round; pointer-events: none; animation: graph-fade-in 180ms ease-out; }
     & .article-graph__node.root text { font-size: 16px; font-weight: 700; }
-    & .article-graph__node.hovered circle:not(.article-graph__hit), & .article-graph__node :focus-visible circle:not(.article-graph__hit) { stroke: var(--vp-c-text-1); stroke-width: 3; }
+    & .article-graph__node.hovered circle:not(.article-graph__hit):not(.article-graph__halo), & .article-graph__node :focus-visible circle:not(.article-graph__hit):not(.article-graph__halo) { stroke: var(--vp-c-text-1); stroke-width: 3; transform: scale(1.25); }
     & .article-graph__legend { position: absolute; left: 16px; top: 14px; display: flex; gap: 14px; font-size: 12px; pointer-events: none; }
     & .article-graph__legend span:first-child { color: #567de8; }
     & .article-graph__legend span:nth-child(2) { color: #d58b21; }
@@ -179,5 +202,41 @@ watch([query, category], () => { hovered.value = ''; resetViewport() })
         & .article-graph__canvas { height: 440px; }
         & .article-graph__results { max-height: 320px; border-left: 0; border-top: 1px solid var(--blog-border); }
     }
+    & .article-graph__canvas.is-paused svg :is(.article-graph__flow, .article-graph__orbit, .article-graph__pulse, .article-graph__halo) { animation-play-state: paused; }
+    & .article-graph__canvas.is-paused .article-graph__node.root circle { animation-play-state: paused; }
+    @media (prefers-reduced-motion: reduce) {
+        & .article-graph__canvas * { animation: none !important; transition: none !important; }
+        & .article-graph__flow, & .article-graph__pulse { display: none; }
+        & line, & .article-graph__node, & .article-graph__node circle, & .article-graph__node text { animation: none; transition: none; }
+        & .article-graph__node.hovered circle:not(.article-graph__hit):not(.article-graph__halo), & .article-graph__node :focus-visible circle:not(.article-graph__hit):not(.article-graph__halo) { transform: none; }
+    }
+}
+
+@keyframes graph-data-flow {
+    to { stroke-dashoffset: -100; }
+}
+@keyframes graph-orbit {
+    to { transform: rotate(360deg); }
+}
+@keyframes graph-pulse {
+    from { transform: scale(1); opacity: .85; }
+    to { transform: scale(2.8); opacity: 0; }
+}
+@keyframes graph-core-breathe {
+    0%, 100% { transform: scale(.94); filter: drop-shadow(0 0 6px #567de8); }
+    50% { transform: scale(1.1); filter: drop-shadow(0 0 18px #567de8); }
+}
+@keyframes graph-breathe {
+    0%, 100% { transform: scale(.85); opacity: .25; }
+    50% { transform: scale(1.4); opacity: .85; }
+}
+@keyframes graph-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes graph-node-in {
+    from { transform: scale(.55); }
+    to { transform: scale(1); }
 }
 </style>

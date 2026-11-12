@@ -25,7 +25,7 @@ const tags = [...new Set(posts.flatMap(post => post.tags))].sort((a, b) => a.loc
         align-items: center;
         justify-content: space-between;
         gap: 16px;
-        margin: 16px 0 12px;
+        margin: 0 0 16px;
         color: var(--vp-c-text-2);
         font-size: 14px;
 
@@ -34,10 +34,12 @@ const tags = [...new Set(posts.flatMap(post => post.tags))].sort((a, b) => a.loc
     & .blog-tags__buttons {
         display: flex;
         flex-wrap: wrap;
-        gap: 10px;
+        gap: 8px;
         margin-bottom: 18px;
-        padding-bottom: 16px;
-        border-bottom: 1px solid var(--blog-border, var(--vp-c-divider));
+        padding: 20px;
+        border: 1px solid var(--blog-border);
+        border-radius: var(--blog-radius);
+        background: var(--blog-panel);
     }
     & button {
         display: inline-flex;
@@ -46,10 +48,10 @@ const tags = [...new Set(posts.flatMap(post => post.tags))].sort((a, b) => a.loc
         min-height: 40px;
         padding: 7px 15px;
         border: 1px solid var(--blog-border, var(--vp-c-divider));
-        border-radius: 24px;
+        border-radius: 7px;
         background: var(--blog-panel, var(--vp-c-bg-soft));
         color: var(--vp-c-text-1);
-        font-size: 15px;
+        font-size: 14px;
         font-weight: 500;
         line-height: 1.5;
         transition: color 180ms ease, border-color 180ms ease, background 180ms ease;
@@ -59,7 +61,7 @@ const tags = [...new Set(posts.flatMap(post => post.tags))].sort((a, b) => a.loc
             color: var(--vp-c-brand-1);
             background: var(--vp-c-brand-soft);
         }
-        &[aria-pressed="true"] { box-shadow: 0 0 16px var(--vp-c-brand-soft); }
+        &[aria-pressed="true"] { font-weight: 650; }
         &:focus-visible { outline: 2px solid var(--vp-c-brand-1); outline-offset: 4px; }
     }
     & .blog-tags__hash { color: var(--vp-c-brand-1); font-family: var(--vp-font-family-mono); font-size: 12px; opacity: 0.8; }
@@ -69,7 +71,7 @@ const tags = [...new Set(posts.flatMap(post => post.tags))].sort((a, b) => a.loc
         border-radius: 14px;
         background: var(--blog-panel, var(--vp-c-bg-soft));
         color: var(--vp-c-text-2);
-        font-size: 15px;
+        font-size: 14px;
         text-align: center;
     }
     @media (max-width: 640px) {

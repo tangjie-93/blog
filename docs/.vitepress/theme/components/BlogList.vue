@@ -77,9 +77,9 @@ watch([() => props.tag, () => props.type], () => { page.value = 1 })
         margin-bottom: 16px;
         padding: 12px 16px;
         border: 1px solid var(--blog-border, var(--vp-c-divider));
-        border-radius: 10px;
+        border-radius: var(--blog-radius);
         background: var(--vp-c-bg);
-        box-shadow: 0 4px 16px var(--vp-c-brand-soft);
+        box-shadow: 0 4px 12px rgb(0 0 0 / .04);
     }
     & .blog-list__count {
         display: flex;
@@ -95,17 +95,17 @@ watch([() => props.tag, () => props.type], () => { page.value = 1 })
     }
     & .blog-list__grid {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 12px;
+        grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+        gap: 16px;
         animation: blog-content-enter 200ms ease-out;
     }
     & .blog-list__card {
         display: flex;
         flex-direction: column;
         position: relative;
-        padding: 16px 18px;
+        padding: 22px;
         border: 1px solid var(--blog-border, var(--vp-c-divider));
-        border-radius: 10px;
+        border-radius: var(--blog-radius);
         background: var(--blog-panel, var(--vp-c-bg-soft));
         overflow-wrap: anywhere;
         transition: border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
@@ -123,7 +123,7 @@ watch([() => props.tag, () => props.type], () => { page.value = 1 })
         align-items: center;
         justify-content: space-between;
         gap: 12px;
-        margin-bottom: 8px;
+        margin-bottom: 14px;
         color: var(--vp-c-brand-1);
         font-size: 12px;
         font-weight: 600;
@@ -140,7 +140,7 @@ watch([() => props.tag, () => props.type], () => { page.value = 1 })
         margin: 0;
         padding: 0;
         border: 0;
-        font-size: 16px;
+        font-size: 18px;
         line-height: 1.55;
         letter-spacing: -0.02em;
 
@@ -176,7 +176,7 @@ watch([() => props.tag, () => props.type], () => { page.value = 1 })
         align-items: center;
         gap: 8px;
         margin-top: auto;
-        padding-top: 12px;
+        padding-top: 20px;
         font-size: 12px;
         color: var(--blog-muted, var(--vp-c-text-2));
 
@@ -222,10 +222,6 @@ watch([() => props.tag, () => props.type], () => { page.value = 1 })
     }
     @media (min-width: 641px) and (max-width: 1023px) {
         & .blog-list__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    }
-    @media (min-width: 960px) {
-        scroll-margin-top: 12px;
-        & .blog-list__toolbar { top: 8px; }
     }
     @media (max-width: 640px) {
         & .blog-list__grid { grid-template-columns: 1fr; gap: 10px; }
