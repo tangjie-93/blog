@@ -6,6 +6,15 @@ tags: css
 note: css选择器的优先级
 ---
 
+<script setup>
+import demoSource from '../../.vitepress/theme/examples/css-specificity.html?raw'
+</script>
+
+点击“运行”，观察文字最终呈蓝色：在这些规则的来源和重要性相同时，`#test` 的优先级高于另外两个选择器，即使 `.span` 写在后面也不会覆盖它。
+
+<RunnableExample title="比较选择器优先级" :source="demoSource" />
+
+
 ## 1、选择器优先级与权重
 
 `CSS`选择器的优先级是:`内联>ID选择器>类选择器>标签选择器`。

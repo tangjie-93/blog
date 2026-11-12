@@ -19,7 +19,7 @@ const labels = {
   ai: 'AI 基础', agent: 'Agent 架构', 'agent-projects': 'Agent 项目', jev: 'Jev 专题', 'ai-coding': 'AI Coding',
   css: 'CSS', es6: 'ES6', http: 'HTTP', javascript: 'JavaScript',
   java: 'Java', database: 'DataBase', langchain: 'LangChain',
-  'jquery-source-analysis': 'jQuery 源码', linux: 'Linux', node: 'Node.js',
+  'jquery-source-analysis': 'jQuery 源码', linux: 'Linux', node: 'Node.js', git: 'Git',
   python: 'Python', rag: 'RAG', react: 'React', threejs: 'Three.js', typescript: 'TypeScript',
   vue: 'Vue', vue3: 'Vue 3', webgl: 'WebGL', webpack: 'Webpack'
 }

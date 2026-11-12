@@ -6,6 +6,15 @@ tags: javascript
 note: 我们知道js的最大特点就是单线程，就是同一时间只能做一件事。即便HTML5提出Web Worker允许JavaScript脚本创建多个线程，但是子线程完全受主线程控制，且不得操作DOM。所以，这个新标准并没有改变JavaScript单线程的本质。
 ---
 
+<script setup>
+import demoSource from '../../.vitepress/theme/examples/event-loop.html?raw'
+</script>
+
+点击“运行”，执行下文“例子 2”的完整版本。预期顺序为：`promise1` → `promise2` → 我是主线程 → 我是微任务1 → 我是微任务2 → 我是宏任务1 → 我是宏任务2。输出直接显示在结果区，无需打开浏览器控制台。
+
+<RunnableExample title="观察事件循环输出" :source="demoSource" />
+
+
 **到底是将异步任务直接放到任务队列，还是将异步任务的回调放到任务队列?**<br>
 ​		
 ​&#8195;&#8195;我们知道 `js` 的最大特点就是单线程，就是同一时间只能做一件事。即便`HTML5` 提出 `Web Worker` 允许 `JavaScript` 脚本创建多个线程，但是子线程完全受主线程控制，且不得操作 `DOM`。所以，这个新标准并没有改变`JavaScript`单线程的本质。

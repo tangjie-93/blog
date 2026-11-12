@@ -8,14 +8,14 @@ const base = process.env.VITEPRESS_BASE || '/'
 
 const navGroups = [
   { text: '语言与标准', categories: ['javascript', 'es6', 'typescript', 'css', 'http'] },
-  { text: '框架与工程', categories: ['vue', 'vue3', 'react', 'node', 'webpack'] },
+  { text: '框架与工程', categories: ['vue', 'vue3', 'react', 'node', 'webpack', 'git'] },
   { text: 'AI', categories: ['ai', 'agent', 'agent-projects', 'rag', 'jev'] },
   { text: '后端', categories: ['python', 'java', 'linux', 'database', 'langchain'] },
   { text: '图形与交互', categories: ['webgl', 'threejs'] },
   { text: '源码与算法', categories: ['jquery-source-analysis', '算法', '其他'] }
 ]
 const navByCategory = new Map(nav.map(item => [decodeURIComponent(item.link.split('/')[2] || ''), item]))
-const groupedNav = navGroups.flatMap(({ text, categories }) => {
+const topicNav = navGroups.flatMap(({ text, categories }) => {
   const items = categories.flatMap(category => {
     const item = navByCategory.get(category)
     return item ? [item] : []
@@ -28,7 +28,7 @@ const remainingNav = nav.filter(item => {
   const category = decodeURIComponent(item.link.split('/')[2] || '')
   return !groupedCategories.has(category) && !hiddenNavCategories.has(category)
 })
-if (remainingNav.length) groupedNav.push({ text: '更多专题', items: remainingNav })
+if (remainingNav.length) topicNav.push({ text: '更多专题', items: remainingNav })
 
 export default defineConfig({
   lang: 'zh-CN',
@@ -58,7 +58,7 @@ export default defineConfig({
       { text: '首页', link: '/' },
       { text: '文章', link: '/timeline/' },
       { text: '脑图', link: '/mindmap/' },
-      { text: '技术栈', items: groupedNav },
+      ...topicNav,
       { text: '标签', link: '/tags/' },
       { text: '充电站', link: '/summarize/' },
       { text: '留言', link: '/comments/' }
