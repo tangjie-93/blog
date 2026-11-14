@@ -58,6 +58,6 @@ print(record)
 
 验收时提交：一份数据字典、一张删除链路图，以及一次“模型不匹配后拒绝查询或重建索引”的运行记录。注意：只删向量库记录而保留缓存、评估集或备份，仍然不算完成删除。
 
-深入阅读：[`RAG` 数据摄取](../rag/02-数据摄取.md)、[`RAG` 生产化](../rag/07-生产化.md)。
+深入阅读：[`RAG` 数据摄取](../rag/04-数据摄取.md)、[`RAG` 向量化与索引](../rag/05-向量化与索引.md)、[`RAG` 生产化](../rag/10-生产化.md)。
 
 参考：[Qdrant](https://github.com/qdrant/qdrant)、[Milvus](https://github.com/milvus-io/milvus)、[FAISS](https://github.com/facebookresearch/faiss)。
