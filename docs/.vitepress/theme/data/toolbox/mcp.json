@@ -1,0 +1,92 @@
+[
+  {
+    "id": "mcp:codex_app",
+    "name": "codex_app · Codex 桌面工具",
+    "kind": "mcp",
+    "summary": "插件声明的本地进程服务，用于提供桌面线程及自动化操作工具。",
+    "scenarios": [
+      "检查桌面任务工具是否加载",
+      "规划跨线程任务协作"
+    ],
+    "requirements": "需要 Codex 桌面宿主及匹配的内置服务；不公开本机命令、环境变量或路径。",
+    "setup": "由 Codex App Tools 插件管理本地进程。先查看服务状态和工具列表，再执行一个不改动数据的检查。",
+    "prompt": "请检查 codex_app MCP 的连接状态及当前工具列表，说明它们各自的用途；不创建线程、不发送消息、不修改自动化。",
+    "status": "插件已声明 · 连接未验证",
+    "source": "codex-app-tools 插件"
+  },
+  {
+    "id": "mcp:github",
+    "name": "github · GitHub 远程服务",
+    "kind": "mcp",
+    "summary": "GitHub 插件声明的远程 MCP，可在授权范围内接入仓库协作工具。",
+    "scenarios": [
+      "读取 PR 与议题上下文",
+      "调查仓库检查结果"
+    ],
+    "requirements": "需要远程服务可达、账号授权和仓库权限；实际工具取决于服务返回列表。",
+    "setup": "通过 GitHub 插件提供的官方流程完成远程授权，然后确认 MCP 状态和可访问仓库；不要在公开配置里写令牌。",
+    "prompt": "请通过 github MCP 只读查看【仓库】的【PR 或议题】，总结背景、当前状态与需要我处理的问题；若无法连接，明确指出缺少的授权。",
+    "status": "插件已声明 · 连接未验证",
+    "source": "github 插件"
+  },
+  {
+    "id": "mcp:cloudflare-api",
+    "name": "cloudflare-api · Cloudflare API",
+    "kind": "mcp",
+    "summary": "Cloudflare 插件声明的远程 MCP，用于连接 Cloudflare 账户与平台 API 能力。",
+    "scenarios": [
+      "查看相关云资源配置",
+      "核对部署所需的账户权限"
+    ],
+    "requirements": "需要服务可达和 Cloudflare 授权；账户范围与可执行操作取决于授权和工具列表。",
+    "setup": "通过 Cloudflare 插件与官方服务文档完成连接，先核对账户及权限，再进行只读资源查询。",
+    "prompt": "请检查 cloudflare-api MCP 是否连接，在授权范围内只读查看【Cloudflare 项目】的【资源配置】，说明发现的问题，不创建、修改或删除资源。",
+    "status": "插件已声明 · 连接未验证",
+    "source": "cloudflare 插件"
+  },
+  {
+    "id": "mcp:computer-use",
+    "name": "computer-use · 本地电脑操作配置",
+    "kind": "mcp",
+    "summary": "本机存在一项名为 computer-use 的进程式 MCP 配置，目前已禁用；具体工具尚未核验。",
+    "scenarios": [
+      "确认旧的电脑操作配置是否仍需要",
+      "检查启用前缺少的本地运行条件"
+    ],
+    "requirements": "当前禁用，不能直接使用；名称不能证明提供了哪些截图或点击能力。",
+    "setup": "先核对你自己的服务来源、运行程序与操作系统权限；需要使用时再启用并查看工具列表，不照抄他人电脑的路径。",
+    "prompt": "请检查名为 computer-use 的 MCP 配置是否启用，列出恢复连接前需要核实的项目；不要直接启用服务或操作桌面。",
+    "status": "配置未启用 · 工具未验证",
+    "source": "本地显式配置"
+  },
+  {
+    "id": "mcp:cua_repl",
+    "name": "cua_repl · 本地交互服务配置",
+    "kind": "mcp",
+    "summary": "本机存在一项名为 cua_repl 的进程式 MCP 配置，目前已禁用；仅凭名称无法确认具体能力。",
+    "scenarios": [
+      "清点未启用的本地服务",
+      "调查旧配置是否与当前宿主兼容"
+    ],
+    "requirements": "当前禁用，服务实现与工具列表尚未验证；不把它当作已可用的电脑控制能力。",
+    "setup": "核对本地服务的来源、安装位置和启动条件；确有需求时通过自己的配置启用，再检查连接和工具列表。",
+    "prompt": "请只读检查 cua_repl MCP 的启用状态与启动条件，指出哪些信息还需要验证，不运行服务、不执行电脑操作。",
+    "status": "配置未启用 · 工具未验证",
+    "source": "本地显式配置"
+  },
+  {
+    "id": "mcp:vercel-package",
+    "name": "vercel · 包内服务文件",
+    "kind": "mcp",
+    "summary": "Vercel 插件包内存在远程 MCP 配置文件，但当前插件清单没有声明加载它。",
+    "scenarios": [
+      "排查为什么文件存在却没有 MCP 工具",
+      "区分 Vercel 连接器与 MCP 服务"
+    ],
+    "requirements": "不能据包内文件推断服务已启用；当前插件清单声明的是应用连接器。",
+    "setup": "先检查客户端实际加载的工具来源。需要 MCP 时按当前 Vercel 官方连接说明配置，不因为缓存文件存在就复制或启用它。",
+    "prompt": "请确认当前 Vercel 工具来自应用连接器还是 MCP。若没有加载 MCP，请说明配置缺口，不把包内文件当成已建立的连接。",
+    "status": "包内发现 · 清单未声明",
+    "source": "vercel 插件包内文件"
+  }
+]

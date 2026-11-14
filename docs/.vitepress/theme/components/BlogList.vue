@@ -6,11 +6,11 @@
                 <span v-if="filteredPosts.length">当前 {{ (page - 1) * PAGE_SIZE + 1 }}–{{ Math.min(page * PAGE_SIZE, filteredPosts.length) }} 篇</span>
             </p>
             <nav v-if="pageCount > 1" class="blog-list__pagination" aria-label="文章分页">
-                <button type="button" :disabled="page === 1" @click="changePage(page - 1)">上一页</button>
-                <select :value="page" aria-label="选择页码" @change="changePage(Number(($event.target as HTMLSelectElement).value))">
-                    <option v-for="number in pageCount" :key="number" :value="number">第 {{ number }} / {{ pageCount }} 页</option>
-                </select>
-                <button type="button" :disabled="page === pageCount" @click="changePage(page + 1)">下一页</button>
+                <ElButton native-type="button" :disabled="page === 1" @click="changePage(page - 1)">上一页</ElButton>
+                <ElSelect :model-value="page" class="blog-list__page-select" aria-label="选择页码" @change="changePage">
+                    <ElOption v-for="number in pageCount" :key="number" :value="number" :label="`第 ${number} / ${pageCount} 页`" />
+                </ElSelect>
+                <ElButton native-type="button" :disabled="page === pageCount" @click="changePage(page + 1)">下一页</ElButton>
             </nav>
         </div>
         <div :key="`${props.tag || ''}-${props.type || ''}-${page}`" class="blog-list__grid">
@@ -34,6 +34,7 @@
 <script setup lang="ts">
 import type { BlogListProps } from '../../../../src/types/blog'
 import { computed, nextTick, ref, watch } from 'vue'
+import { ElButton, ElSelect, ElOption } from 'element-plus'
 import { withBase } from 'vitepress'
 import { data as posts } from '../../posts.data'
 import { filterPosts } from '../blog'
@@ -201,25 +202,10 @@ watch([() => props.tag, () => props.type], () => { page.value = 1 })
         gap: 8px;
         font-variant-numeric: tabular-nums;
 
-        & select { appearance: auto; }
     }
-    & button, & select {
-        min-height: 44px;
-        padding: 8px 14px;
-        border: 1px solid var(--blog-border, var(--vp-c-divider));
-        border-radius: 8px;
-        background: var(--blog-panel, var(--vp-c-bg-soft));
-        color: var(--vp-c-text-1);
-        font-size: 14px;
-        line-height: 1.5;
-        white-space: nowrap;
-        cursor: pointer;
-        transition: color 180ms ease, border-color 180ms ease;
-
-        &:not(:disabled):hover { color: var(--vp-c-brand-1); border-color: var(--vp-c-brand-1); }
-        &:focus-visible { outline: 2px solid var(--vp-c-brand-1); outline-offset: 4px; }
-        &:disabled { opacity: 0.4; cursor: not-allowed; }
-    }
+    & .el-button { min-height: 44px; margin: 0; }
+    & .blog-list__page-select { width: 148px; }
+    & :deep(.el-select__wrapper) { min-height: 44px; }
     @media (min-width: 641px) and (max-width: 1023px) {
         & .blog-list__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
@@ -230,10 +216,11 @@ watch([() => props.tag, () => props.type], () => { page.value = 1 })
         & .blog-list__toolbar { gap: 10px; padding: 10px; }
         & .blog-list__count { width: 100%; justify-content: space-between; font-size: 13px; }
         & .blog-list__pagination { width: 100%; display: grid; grid-template-columns: 1fr auto 1fr; gap: 6px; }
-        & button, & select { min-width: 0; padding-inline: 8px; }
+        & .el-button { min-width: 0; padding-inline: 8px; }
+        & .blog-list__page-select { width: 130px; }
     }
     @media (prefers-reduced-motion: reduce) {
-        & .blog-list__card, & .blog-list__title a, & button, & select { transition: none; }
+        & .blog-list__card, & .blog-list__title a, & .el-button { transition: none; }
         & .blog-list__card:hover { transform: none; }
     }
 }

@@ -1,4 +1,6 @@
-### 以下是一些个人觉得比较好的网站或者博客，所以在此总结一下。
+---
+pageClass: blog-resources
+---
 
 ### web知识相关的github地址
 [1、前端面试手册](https://github.com/yangshun/front-end-interview-handbook/blob/master/Translations/Chinese/README.md)

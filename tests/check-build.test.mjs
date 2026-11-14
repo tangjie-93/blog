@@ -23,8 +23,8 @@ for (const base of ['/', '/blog/']) {
       mkdirSync(join(output, 'assets'))
       writeFileSync(join(output, 'assets/style.test.css'), '.VPNav{display:flex}')
       writeFileSync(join(output, 'assets/waline.test.css'), '.wl-panel{display:flex}')
-      const check = (href, stylesheet = 'style.test.css') => {
-        writeFileSync(join(output, 'index.html'), `<link rel="stylesheet" href="${base}assets/${stylesheet}"><div class="vp-doc"><a href="${href}">Article</a></div>`)
+      const check = (href, stylesheet = 'style.test.css', contentClass = 'vp-doc') => {
+        writeFileSync(join(output, 'index.html'), `<link rel="stylesheet" href="${base}assets/${stylesheet}"><div class="${contentClass}"><a href="${href}">Article</a></div>`)
         return spawnSync(process.execPath, [script], {
           cwd: root, env: { ...process.env, VITEPRESS_BASE: base }, encoding: 'utf8'
         })
@@ -34,6 +34,8 @@ for (const base of ['/', '/blog/']) {
         assert.equal(result.status, 0, result.stderr)
       }
       assert.notEqual(check(`${base}articles/中文.html`, 'waline.test.css').status, 0)
+      assert.equal(check(`${base}articles/中文.html`, 'style.test.css', 'skill-library').status, 0)
+      assert.notEqual(check(`${base}articles/中文.html`, 'style.test.css', 'empty-page').status, 0)
       assert.notEqual(check(`${base}missing.html`).status, 0)
       if (base !== '/') assert.notEqual(check('/articles/中文.html').status, 0)
     } finally {

@@ -1,6 +1,7 @@
 :root {
     --vp-layout-max-width: 100vw;
     --blog-page-gutter: clamp(16px, 2vw, 32px);
+    --blog-page-max-width: 1400px;
     --blog-radius: 12px;
     --vp-c-brand-1: #087d70;
     --vp-c-brand-2: #0b9484;
@@ -15,6 +16,10 @@
     --blog-border: #d5e2e3;
     --blog-muted: #597179;
     --blog-on-accent: #fff;
+    --blog-field-opacity: .42;
+    --blog-field-grid: rgba(33, 111, 137, .045);
+    --blog-field-glow: rgba(25, 156, 170, .09);
+    --blog-field-halo: rgba(103, 100, 202, .07);
     --vp-font-family-base: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
     --vp-button-brand-bg: var(--vp-c-brand-1);
     --vp-button-brand-text: var(--blog-on-accent);
@@ -37,16 +42,84 @@
     --blog-border: #344657;
     --blog-muted: #adbdcc;
     --blog-on-accent: #08241f;
+    --blog-field-opacity: .65;
+    --blog-field-grid: rgba(100, 190, 210, .045);
+    --blog-field-glow: rgba(28, 180, 184, .14);
+    --blog-field-halo: rgba(93, 92, 190, .12);
 }
 body { -webkit-font-smoothing: auto; }
 ::selection { background: var(--vp-c-brand-soft); color: var(--vp-c-brand-1); }
 a:focus-visible, button:focus-visible { outline: 2px solid var(--vp-c-brand-1); outline-offset: 5px; }
-.tech-home { background: var(--vp-c-bg); }
+/* 固定装饰层不接管滚动或鼠标事件，内容面板保持实色以保证可读性。 */
+.Layout {
+    position: relative;
+    isolation: isolate;
+    &::before, &::after {
+        content: '';
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+    }
+    &::before {
+        background:
+            radial-gradient(ellipse at 0% 30%, var(--blog-field-glow), transparent 48%),
+            radial-gradient(ellipse at 100% 70%, var(--blog-field-halo), transparent 48%),
+            linear-gradient(var(--blog-field-grid) 1px, transparent 1px),
+            linear-gradient(90deg, var(--blog-field-grid) 1px, transparent 1px);
+        background-size: 140% 140%, 140% 140%, 64px 64px, 64px 64px;
+        mask-image: linear-gradient(to right, #000, rgba(0, 0, 0, .2) 40%, rgba(0, 0, 0, .2) 60%, #000);
+        animation: blog-field-flow 20s ease-in-out infinite alternate;
+    }
+    &::after {
+        background: url('./assets/ai-field.svg') center / cover no-repeat;
+        opacity: var(--blog-field-opacity);
+        animation: blog-field-breathe 7s ease-in-out infinite alternate;
+    }
+    @media (max-width: 767px) {
+        --blog-field-opacity: .22;
+        &::before { background-size: 140% 140%, 140% 140%, 48px 48px, 48px 48px; }
+        &::after { background-size: auto 100%; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        &::before, &::after { animation: none; }
+    }
+}
+@keyframes blog-field-flow {
+    from { background-position: 0% 0%, 100% 100%, 0 0, 0 0; }
+    to { background-position: 100% 60%, 0% 40%, 64px 64px, 64px 64px; }
+}
+@keyframes blog-field-breathe {
+    from { opacity: calc(var(--blog-field-opacity) * .55); }
+    to { opacity: var(--blog-field-opacity); }
+}
 .VPNavBar {
+    & .VPNavBarMenu { gap: 4px; }
     & .content-body { background: var(--vp-c-bg) !important; }
     & .title { letter-spacing: .5px; font-size: 15px; }
     & .logo { width: 26px; height: 26px; border-radius: 7px; }
-    & .VPNavBarMenuLink.active { box-shadow: inset 0 -2px var(--vp-c-brand-1); }
+    & .VPNavBarMenuLink, & .VPNavBarMenuGroup > .button {
+        align-self: center;
+        height: 36px;
+        padding-inline: 10px;
+        border-radius: 6px;
+        line-height: 36px;
+        font-size: 14px;
+        transition: color .2s, background-color .2s;
+    }
+    & .VPNavBarMenuLink:is(:hover, :focus-visible, .active),
+    & .VPNavBarMenuGroup:is(:hover, .active) > .button,
+    & .VPNavBarMenuGroup > .button:is(:focus-visible, [aria-expanded='true']) {
+        color: var(--vp-c-brand-1);
+        background: var(--vp-c-brand-soft);
+    }
+    & .VPNavBarMenuGroup {
+        display: flex;
+        align-items: center;
+        height: var(--vp-nav-height);
+        & > .button > .text { color: inherit; font-size: inherit; line-height: inherit; }
+    }
+    & .VPNavBarMenuGroup > .button .text-icon { display: none; }
 }
 .VPNavBarSearch .DocSearch-Button { border: 1px solid var(--blog-border); border-radius: 6px; }
 .VPNavBarMenuGroup .VPMenuGroup .title {
@@ -68,19 +141,35 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--vp-c-brand-1); 
         & .VPMenu > .items > .VPMenuGroup + .VPMenuGroup { margin-top: 0; border-top: 0; border-left: 0; padding-top: 0; }
         & .VPMenuGroup .title { margin-bottom: 8px; padding-bottom: 8px; font-size: 14px; }
         & .VPMenuGroup .VPMenuLink { margin: 0; padding: 0; }
-        & .VPMenuGroup .VPMenuLink .link { min-height: 30px; padding: 0; font-size: 13px; }
+        & .VPMenuGroup .VPMenuLink .link { min-height: 34px; padding: 2px 8px; border-radius: 6px; font-size: 13px; }
+        & .VPMenuGroup .VPMenuLink .link:is(:hover, :focus-visible) { background: var(--vp-c-brand-soft); }
         & .VPMenuGroup .VPMenuLink .text { white-space: nowrap; }
     }
 }
 /* 保留整页滚动：VitePress 的锚点跳转和目录高亮依赖 window 滚动。 */
-@media (min-width: 768px) and (max-width: 959px) {
-    .VPNavBar .VPNavBarMenuLink { padding-inline: 8px; }
+html {
+    /* shortcut: 轨道偏移仅支持 Chromium / Safari，需兼容 Firefox 时再适配滚动容器。 */
+    &::-webkit-scrollbar { width: 10px; height: 10px; background: var(--vp-c-bg); }
+    &::-webkit-scrollbar-track:vertical {
+        margin-top: calc(var(--vp-nav-height) + var(--vp-layout-top-height, 0px));
+    }
+    &::-webkit-scrollbar-thumb {
+        border: 2px solid var(--vp-c-bg);
+        border-radius: 5px;
+        background: var(--blog-border);
+    }
+    &::-webkit-scrollbar-thumb:hover { background: var(--blog-muted); }
+}
+@media (min-width: 768px) and (max-width: 1279px) {
+    .VPNavBar .VPNavBarMenu { display: none; }
+    .VPNavBar .VPNavBarHamburger { display: flex; }
+    .VPNav .VPNavScreen { display: block; }
     .VPNavBar .VPNavBarSearch { padding-left: 12px; }
 }
 @media (min-width: 960px) and (max-width: 1399px) {
     /* 六个专题常驻一级导航时，给外观切换和菜单留出空间。 */
     .VPNavBar .VPNavBarMenuLink,
-    .VPNavBar .VPNavBarMenuGroup > .title { padding-inline: 6px; font-size: 13px; }
+    .VPNavBar .VPNavBarMenuGroup > .button { padding-inline: 6px; font-size: 13px; }
     .VPNavBar .VPNavBarSocialLinks { display: none; }
 }
 .VPDoc {
@@ -179,6 +268,11 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--vp-c-brand-1); 
         &.active { color: var(--vp-c-brand-1); background: var(--vp-c-brand-soft); font-weight: 600; }
     }
     & .nested { padding: 0 0 0 12px; }
+}
+.Layout:is(.blog-archive, .blog-guestbook, .blog-resources) .VPDoc {
+    width: 100%;
+    max-width: var(--blog-page-max-width);
+    margin-inline: auto;
 }
 .blog-archive .VPDoc, .blog-guestbook .VPDoc {
     & .vp-doc > div > h1 { margin: 0; padding: 0; font-size: clamp(26px, 2vw, 32px); letter-spacing: -.6px; line-height: 1.4; }

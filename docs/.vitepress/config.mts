@@ -36,6 +36,14 @@ export default defineConfig({
   description: '记录前端学习与实践，分享 JavaScript、Vue、WebGL、工程化和算法的深入思考。',
   base,
   srcExclude: ['public/**'],
+  postRender(context) {
+    // VitePress 只自动输出 body teleport，补上 Element Plus 下拉浮层的 SSR 容器。
+    for (const [target, content] of Object.entries(context.teleports ?? {})) {
+      if (/^#el-popper-container-\d+$/.test(target)) {
+        context.teleports!.body = `${context.teleports!.body ?? ''}<div id="${target.slice(1)}">${content}</div>`
+      }
+    }
+  },
   vite: {
     optimizeDeps: { exclude: ['waline-script-asset?url', 'waline-style-asset?inline'] },
     envDir: fileURLToPath(new URL('../../', import.meta.url)),
@@ -58,6 +66,7 @@ export default defineConfig({
       { text: '首页', link: '/' },
       { text: '文章', link: '/timeline/' },
       { text: '脑图', link: '/mindmap/' },
+      { text: 'AI 工具箱', link: '/skills/' },
       ...topicNav,
       { text: '标签', link: '/tags/' },
       { text: '充电站', link: '/summarize/' },

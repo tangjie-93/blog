@@ -1,5 +1,9 @@
-import type { Theme } from 'vitepress'
+import { useData, type Theme } from 'vitepress'
 import { h } from 'vue'
+import { ElConfigProvider, ID_INJECTION_KEY, ZINDEX_INJECTION_KEY } from 'element-plus'
+import zhCn from 'element-plus/es/locale/lang/zh-cn'
+import 'element-plus/dist/index.css'
+import 'element-plus/theme-chalk/dark/css-vars.css'
 import DefaultTheme from 'vitepress/theme'
 import BlogList from './components/BlogList.vue'
 import Tags from './components/Tags.vue'
@@ -7,6 +11,7 @@ import Valine from './components/Valine.vue'
 import HomePage from './components/HomePage.vue'
 import RunnableExample from './components/RunnableExample.vue'
 import './style.css'
+import './element.css'
 
 function numberDocumentOutline() {
     const links = document.querySelectorAll<HTMLElement>('.VPDocOutlineItem.root > li > .outline-link')
@@ -38,11 +43,16 @@ function numberDocumentHeadings() {
 
 export default {
     extends: DefaultTheme,
-    Layout: () => h(DefaultTheme.Layout, null, {
-        'doc-after': () => h(Valine),
-    }),
+    Layout: () => {
+        const { page } = useData()
+        return h(ElConfigProvider, { locale: zhCn }, () => h(DefaultTheme.Layout, null, {
+            'doc-after': () => page.value.relativePath.startsWith('articles/') ? h(Valine) : null,
+        }))
+    },
     /** 保留旧文章中的组件标签，使迁移无需修改正文。 */
     enhanceApp({ app, router }) {
+        app.provide(ID_INJECTION_KEY, { prefix: 1024, current: 0 })
+        app.provide(ZINDEX_INJECTION_KEY, { current: 0 })
         app.component('BlogList', BlogList)
         app.component('Tags', Tags)
         app.component('Valine', Valine)

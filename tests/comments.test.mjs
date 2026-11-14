@@ -1,7 +1,24 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
 import { runInNewContext } from 'node:vm'
+import { readFileSync } from 'node:fs'
+import * as Vue from 'vue'
+import { parse } from 'vue/compiler-sfc'
+import { renderToString } from 'vue/server-renderer'
 import { createCommentDocument } from '../docs/.vitepress/theme/comments.ts'
+
+test('explicit comment embeds render on the guestbook as well as articles', async () => {
+  const { descriptor } = parse(readFileSync(new URL('../docs/.vitepress/theme/components/Valine.vue', import.meta.url), 'utf8'))
+  const render = Vue.compile(descriptor.template.content)
+  for (const relativePath of ['comments/README.md', 'comments/index.md', 'articles/vue/test.md']) {
+    const html = await renderToString(Vue.createSSRApp({
+      render,
+      setup: () => ({ page: { relativePath }, error: '', documentHtml: '', commentPath: '', commentFrame: null, syncCommentTheme() {} }),
+    }))
+    assert.match(html, /class="blog-comments"/, relativePath)
+    assert.match(html, /正在加载评论/, relativePath)
+  }
+})
 
 /** 在隔离文档中模拟脚本加载与浏览器尺寸通知，不请求真实评论服务。 */
 function createFrameFixture(failInitialization = false) {

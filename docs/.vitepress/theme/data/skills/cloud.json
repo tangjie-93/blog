@@ -1,0 +1,884 @@
+[
+  {
+    "id": "vercel:agent-browser",
+    "title": "操作真实浏览器",
+    "category": "testing",
+    "summary": "让代理打开网页、点击按钮、填写表单并记录实际页面结果。",
+    "scenarios": [
+      "重复执行后台查询",
+      "验证搜索与分页交互"
+    ],
+    "inputs": "可访问网址、操作步骤、预期结果；登录页需测试账号。",
+    "output": "浏览器操作结果、页面快照与截图。",
+    "prompt": "请使用 vercel:agent-browser 技能，打开【页面地址】，按【操作步骤】验证搜索和分页，记录每一步实际结果，保存失败截图；不要提交真实业务数据。",
+    "requirements": "需要可运行的 agent-browser CLI 和浏览器；登录状态及外部网站权限需自行提供。"
+  },
+  {
+    "id": "vercel:agent-browser-verify",
+    "title": "检查开发页面是否正常",
+    "category": "testing",
+    "summary": "开发服务启动后，快速检查白屏、错误提示和关键元素是否正常显示。",
+    "scenarios": [
+      "启动项目后页面空白",
+      "修改页面后做快速冒烟检查"
+    ],
+    "inputs": "本地服务地址、应该出现的页面元素及启动日志。",
+    "output": "页面加载检查、控制台或错误覆盖层证据、通过或失败结论。",
+    "prompt": "请使用 vercel:agent-browser-verify 技能，检查【本地地址】是否正常加载，确认【关键元素】出现，并检查白屏、错误覆盖层和控制台；若页面一直加载，结合服务器日志定位。",
+    "requirements": "依赖 agent-browser 和已启动的开发服务；快速冒烟检查不替代完整业务验收。"
+  },
+  {
+    "id": "vercel:ai-elements",
+    "title": "搭建 AI 对话界面",
+    "category": "development",
+    "summary": "使用现成 React 组件展示流式回答、工具调用和对话记录。",
+    "scenarios": [
+      "聊天回答显示成原始 Markdown",
+      "新增工具调用结果面板"
+    ],
+    "inputs": "React 项目、AI SDK 版本、消息样例、期望界面。",
+    "output": "所需 AI Elements 组件及消息展示代码。",
+    "prompt": "请使用 vercel:ai-elements 技能，在【React 项目】中展示流式回答和工具调用结果，复用 AI Elements，处理加载与失败状态，只安装需要的组件。",
+    "requirements": "面向 React 与 shadcn/ui，不能直接套到 Vue；先核对组件文档和依赖版本，模型服务需另接。"
+  },
+  {
+    "id": "vercel:ai-gateway",
+    "title": "统一接入多个模型",
+    "category": "ai-cloud",
+    "summary": "通过 Vercel AI Gateway 管理模型调用、供应商路由和故障切换。",
+    "scenarios": [
+      "希望一个入口切换模型",
+      "模型供应商故障时切换备用服务"
+    ],
+    "inputs": "项目、候选模型、预算和故障切换要求。",
+    "output": "网关接入、模型路由配置、错误处理和成本记录方案。",
+    "prompt": "请使用 vercel:ai-gateway 技能，为【应用】配置主模型与备用模型，核实当前可用模型标识，记录调用成本，并演示主服务失败后的处理方式。",
+    "requirements": "需要网关访问权限及模型额度；模型列表、收费和路由规则应实时核验，技能不提供额度。"
+  },
+  {
+    "id": "vercel:ai-generation-persistence",
+    "title": "保存 AI 生成结果",
+    "category": "ai-cloud",
+    "summary": "为生成内容分配标识并保存正文、文件和元数据，刷新后仍可找回。",
+    "scenarios": [
+      "刷新页面后回答丢失",
+      "生成图片需要独立分享链接"
+    ],
+    "inputs": "生成接口、数据库或文件存储、用户身份和访问规则。",
+    "output": "持久化记录、可访问结果页、生成状态与元数据存储。",
+    "prompt": "请使用 vercel:ai-generation-persistence 技能，修复【生成页面】刷新后结果丢失的问题，为每次生成建立记录，保存正文与模型信息，提供独立链接并验证用户访问权限。",
+    "requirements": "需要数据库或文件存储；公开链接不代表允许所有人读取，须按内容归属控制访问。"
+  },
+  {
+    "id": "vercel:ai-sdk",
+    "title": "接入 AI SDK 能力",
+    "category": "ai-cloud",
+    "summary": "按已安装版本实现文本生成、流式回答、结构化输出和工具调用。",
+    "scenarios": [
+      "给应用增加问答接口",
+      "让模型调用业务工具"
+    ],
+    "inputs": "项目、AI SDK 版本、模型服务、输入输出要求。",
+    "output": "模型调用代码、流式或结构化结果处理及验证。",
+    "prompt": "请使用 vercel:ai-sdk 技能，在【项目】中实现【问答需求】，先查已安装 AI SDK 的文档，接入【模型服务】，处理取消、失败和工具输入校验。",
+    "requirements": "需要兼容运行环境及模型凭据；客户端包按框架选取，不能把 React 示例直接用于 Vue。"
+  },
+  {
+    "id": "vercel:auth",
+    "title": "接入用户登录",
+    "category": "development",
+    "summary": "为 Vercel 应用选择并集成 Clerk、Descope 或 Auth0 等身份服务。",
+    "scenarios": [
+      "网站需要注册登录",
+      "登录后部分页面仍未保护"
+    ],
+    "inputs": "应用框架、身份服务选择、角色与受保护路由。",
+    "output": "登录流程、会话接入及服务端访问校验。",
+    "prompt": "请使用 vercel:auth 技能，为【项目】接入【身份服务】，实现登录、退出和【受保护页面】，验证未登录访问与角色限制，保留现有用户数据。",
+    "requirements": "需相应身份服务账号和回调配置；示例偏向 Next.js，Vue 项目需使用对应 SDK。"
+  },
+  {
+    "id": "vercel:bootstrap",
+    "title": "准备 Vercel 项目环境",
+    "category": "getting-started",
+    "summary": "按顺序检查项目关联、云资源和环境变量，再启动依赖这些资源的应用。",
+    "scenarios": [
+      "新电脑克隆项目后无法启动",
+      "新项目缺数据库与登录配置"
+    ],
+    "inputs": "仓库、目标 Vercel 团队和项目、需要的外部服务。",
+    "output": "项目关联与环境检查结果、资源缺口及可启动的开发环境。",
+    "prompt": "请使用 vercel:bootstrap 技能，准备【仓库】的开发环境，先核对 Vercel 项目关联及所需变量名称，再验证数据库连接，最后启动应用；不要输出密钥值。",
+    "requirements": "需要 Vercel CLI、账号和项目权限；资源开通可能收费，数据库迁移需确认目标环境。"
+  },
+  {
+    "id": "vercel:cdn-caching",
+    "title": "排查网站缓存",
+    "category": "ai-cloud",
+    "summary": "区分 CDN、ISR 与渲染策略，定位旧页面、低命中率和重复计算原因。",
+    "scenarios": [
+      "上线后访客仍看到旧内容",
+      "缓存命中低导致费用上升"
+    ],
+    "inputs": "部署地址、缓存响应头、更新方式和异常时间。",
+    "output": "缓存层定位、失效策略及修改前后证据。",
+    "prompt": "请使用 vercel:cdn-caching 技能，调查【网址】更新后仍显示旧内容的问题，检查响应头和缓存层，说明失效发生在哪里，再给出最小修复与验证步骤。",
+    "requirements": "需要访问部署与日志；适用于 Vercel 上多种框架，不只 Next.js，实时数据不能随意公共缓存。"
+  },
+  {
+    "id": "vercel:chat-sdk",
+    "title": "开发多平台聊天机器人",
+    "category": "ai-cloud",
+    "summary": "用统一 TypeScript 事件模型编写可接入多个聊天平台的机器人。",
+    "scenarios": [
+      "同一个机器人服务 Slack 与 Discord",
+      "处理消息、按钮和对话线程"
+    ],
+    "inputs": "目标平台、机器人行为、事件样例和项目。",
+    "output": "平台适配器、事件处理逻辑及 webhook 接入。",
+    "prompt": "请使用 vercel:chat-sdk 技能，为【目标平台】实现一个机器人，在被提及时回答【业务问题】，处理重复事件和线程回复，并列出各平台需要配置的 webhook。",
+    "requirements": "需要各平台应用、权限和可访问回调地址；不同适配器能力不同，不能自动获得发送消息权限。"
+  },
+  {
+    "id": "vercel:cms",
+    "title": "接入内容管理后台",
+    "category": "development",
+    "summary": "让编辑人员通过 CMS 管理内容，并接入预览和发布更新流程。",
+    "scenarios": [
+      "博客内容希望交给非开发者维护",
+      "草稿预览与正式页面不一致"
+    ],
+    "inputs": "站点框架、内容类型、CMS 选择和编辑流程。",
+    "output": "内容模型、读取接口、草稿预览与发布刷新配置。",
+    "prompt": "请使用 vercel:cms 技能，把【站点】的【内容类型】接入【CMS】，支持草稿预览和发布后刷新，验证草稿不会被公开访客看到。",
+    "requirements": "需要 CMS 项目和访问权限；可涉及 Sanity 等服务，框架 SDK 与预览方式需匹配项目。"
+  },
+  {
+    "id": "vercel:cron-jobs",
+    "title": "安排定时任务",
+    "category": "ai-cloud",
+    "summary": "用 Vercel Cron 定时调用接口，处理时间、认证和重复执行问题。",
+    "scenarios": [
+      "每天生成一次摘要",
+      "定期清理过期记录"
+    ],
+    "inputs": "执行时间及时区、目标接口、任务重复执行规则。",
+    "output": "定时配置、接口鉴权和执行日志检查。",
+    "prompt": "请使用 vercel:cron-jobs 技能，为【任务】设置【时间及所在时区】执行的计划，换算调度时间，保护调用接口并验证重复触发不会重复处理数据。",
+    "requirements": "需要部署到 Vercel；计划频率与时长受当前套餐限制，Cron 不是长时间常驻进程。"
+  },
+  {
+    "id": "vercel:deployments-cicd",
+    "title": "发布与回滚网站",
+    "category": "ai-cloud",
+    "summary": "组织预览部署、正式发布、回滚和持续集成流水线。",
+    "scenarios": [
+      "每次提交自动生成预览",
+      "新版本异常需要回滚"
+    ],
+    "inputs": "仓库、构建命令、目标环境及现有 CI 配置。",
+    "output": "部署流程、预览验证、发布或回滚操作说明。",
+    "prompt": "请使用 vercel:deployments-cicd 技能，为【项目】配置预览部署流程，检查构建和环境变量，验证预览链接，并整理正式发布与回滚步骤；正式发布前给我确认结果。",
+    "requirements": "需要 Vercel 账号及仓库权限；发布与回滚影响线上状态，部署成功仍需页面验收。"
+  },
+  {
+    "id": "vercel:email",
+    "title": "发送业务邮件",
+    "category": "development",
+    "summary": "用 Resend 与邮件模板实现通知、验证等事务邮件。",
+    "scenarios": [
+      "订单完成后发送通知",
+      "邮件模板在不同客户端错位"
+    ],
+    "inputs": "邮件用途、模板内容、发件域名、测试收件地址。",
+    "output": "发送接口、邮件模板、域名验证及测试结果。",
+    "prompt": "请使用 vercel:email 技能，实现【业务场景】的通知邮件，使用【模板内容】，先验证发件域名并预览模板，只向【测试地址】发送一次验收邮件。",
+    "requirements": "需要 Resend 等服务账号及域名配置；真实发送需明确收件人，React Email 模板不等于 Vue 组件。"
+  },
+  {
+    "id": "vercel:env-vars",
+    "title": "管理环境变量",
+    "category": "ai-cloud",
+    "summary": "检查本地、预览和生产环境的变量来源、作用范围与同步方式。",
+    "scenarios": [
+      "本地能运行但线上缺配置",
+      "预览环境误连生产数据库"
+    ],
+    "inputs": "变量名称清单、环境分类、项目关联信息和错误日志。",
+    "output": "缺失或错配项、同步步骤及无需泄露值的验证结果。",
+    "prompt": "请使用 vercel:env-vars 技能，排查【项目】本地与预览环境行为不同的问题，只核对变量名称和是否设置，区分服务端与浏览器变量，修复作用范围配置。",
+    "requirements": "需要项目权限与 CLI；不得把私密值放进浏览器变量、提交记录或检查输出。"
+  },
+  {
+    "id": "vercel:eve",
+    "title": "组织持久运行的智能体",
+    "category": "ai-cloud",
+    "summary": "通过目录里的指令、工具、连接和调度文件组织 eve 后端智能体。",
+    "scenarios": [
+      "需要可持续运行的助手",
+      "部署后的智能体执行异常"
+    ],
+    "inputs": "eve 项目、智能体职责、工具连接和异常运行标识。",
+    "output": "智能体目录配置，或结合 Agent Runs 的运行诊断。",
+    "prompt": "请使用 vercel:eve 技能，检查【eve 项目】的【智能体】，梳理指令、工具和调度；对【异常运行】先查看执行轨迹，再定位停止位置并验证修复。",
+    "requirements": "需要 eve 对应版本、模型与工具连接；线上诊断需要 Vercel Agent Runs 访问能力。"
+  },
+  {
+    "id": "vercel:geist",
+    "title": "配置界面与代码字体",
+    "category": "development",
+    "summary": "为标题、正文和代码选择 Geist 字体并配置加载方式。",
+    "scenarios": [
+      "站点字体层次不清",
+      "代码字体或加载方式影响显示"
+    ],
+    "inputs": "应用框架、现有字体、品牌风格和支持语言。",
+    "output": "字体接入、字重层次和加载配置。",
+    "prompt": "请使用 vercel:geist 技能，为【站点】配置 Geist 正文与等宽代码字体，保留中文回退字体，检查字体加载和手机上的标题换行。",
+    "requirements": "需对应字体文件或包；Next.js 可用 next/font，其他框架使用自身加载方式，不覆盖缺失的中文字形。"
+  },
+  {
+    "id": "vercel:geistdocs",
+    "title": "创建技术文档站",
+    "category": "documents",
+    "summary": "使用 Geistdocs 模板搭建带导航、搜索和 MDX 内容的文档网站。",
+    "scenarios": [
+      "新产品需要开发者文档",
+      "希望文档支持多语言和搜索"
+    ],
+    "inputs": "文档目录、品牌信息、语言需求和部署环境。",
+    "output": "文档站结构、页面内容、导航与搜索配置。",
+    "prompt": "请使用 vercel:geistdocs 技能，基于 Geistdocs 为【产品】建立入门、安装和常见问题三类文档，接入【已有资料】，检查导航及本地搜索。",
+    "requirements": "基于 Next.js、React、MDX 与 Fumadocs；不是 VitePress 主题，迁移需评估，外部 AI 功能需独立配置。"
+  },
+  {
+    "id": "vercel:investigation-mode",
+    "title": "协调线上故障排查",
+    "category": "testing",
+    "summary": "按日志、执行状态和浏览器证据逐层调查卡住、超时或无响应的问题。",
+    "scenarios": [
+      "页面一直转圈",
+      "工作流启动后没有后续结果"
+    ],
+    "inputs": "异常链接、发生时间、复现步骤和可访问日志。",
+    "output": "有证据的故障链路、根因判断及下一步验证。",
+    "prompt": "请使用 vercel:investigation-mode 技能，调查【功能】一直卡住的问题，依次查看运行日志、任务状态和浏览器请求，每步报告发现，证据不足时明确还缺什么。",
+    "requirements": "需要对应服务日志或工具权限；没有证据时不能将猜测写成确定根因。"
+  },
+  {
+    "id": "vercel:json-render",
+    "title": "正确展示 AI 消息",
+    "category": "development",
+    "summary": "按消息分段类型显示文字、工具结果和流式状态，避免直接输出原始 JSON。",
+    "scenarios": [
+      "聊天工具结果显示为乱码",
+      "流式回答丢失部分消息类型"
+    ],
+    "inputs": "React 聊天组件、AI SDK 版本和真实消息样例。",
+    "output": "消息分段渲染、工具结果卡片及输入校验。",
+    "prompt": "请使用 vercel:json-render 技能，修复【聊天组件】把工具结果显示成原始 JSON 的问题，按消息 parts 渲染文字和工具状态，并验证流式更新与历史消息。",
+    "requirements": "主要面向 React 与 AI SDK 消息格式；需核对当前版本，模型返回内容仍需当作不可信输入。"
+  },
+  {
+    "id": "vercel:knowledge-update",
+    "title": "核对 Vercel 过时用法",
+    "category": "learning",
+    "summary": "帮助识别平台旧说法与迁移变化，再用当前官方资料确认适用做法。",
+    "scenarios": [
+      "旧教程推荐已退出的产品",
+      "不知道运行时建议是否过时"
+    ],
+    "inputs": "旧配置或教程片段、当前项目版本与待确认问题。",
+    "output": "逐项纠正说明、官方依据和适用范围。",
+    "prompt": "请使用 vercel:knowledge-update 技能，核对【旧教程或配置】中关于 Vercel 的说法，区分已经变化与仍适用的部分，查当前官方资料并注明日期，不直接照抄技能中的历史价格。",
+    "requirements": "这是知识校正入口；技能也有快照日期，产品状态、价格与限制必须再次核实。"
+  },
+  {
+    "id": "vercel:marketplace",
+    "title": "选择并连接云服务",
+    "category": "ai-cloud",
+    "summary": "从 Vercel Marketplace 找到合适的外部服务，理清开通和项目接入顺序。",
+    "scenarios": [
+      "网站需要商品目录与结账",
+      "需要为项目选择外部集成"
+    ],
+    "inputs": "业务需求、已有供应商、预算和目标 Vercel 项目。",
+    "output": "集成候选及取舍、开通前提和接入步骤。",
+    "prompt": "请使用 vercel:marketplace 技能，为【业务需求】寻找合适的 Marketplace 集成，比较与现有【服务】的关系，列出费用与权限前提，再给出接入计划。",
+    "requirements": "开通需要账号权限，可能产生费用；有商品目录的商城与只收款的按钮应区分服务选择。"
+  },
+  {
+    "id": "vercel:micro",
+    "title": "编写轻量 HTTP 接口",
+    "category": "development",
+    "summary": "使用 micro 编写单一用途的 Node.js 请求处理接口。",
+    "scenarios": [
+      "只需一个 webhook 接收端",
+      "小服务不需要完整框架"
+    ],
+    "inputs": "Node.js 项目、接口协议、请求样例和错误规则。",
+    "output": "请求处理代码、输入解析、状态码与验收样例。",
+    "prompt": "请使用 vercel:micro 技能，在【Node 项目】中用 micro 实现【接口】，验证请求格式、限制输入大小，按约定返回错误状态并提供可运行的调用示例。",
+    "requirements": "需要 Node.js 和 micro；需按已安装版本核对 API，不是浏览器端框架。"
+  },
+  {
+    "id": "vercel:microfrontends",
+    "title": "组合独立前端应用",
+    "category": "development",
+    "summary": "将多个独立部署的前端应用按路径组合为一个站点。",
+    "scenarios": [
+      "多个团队分别维护站点区域",
+      "子应用静态资源路径冲突"
+    ],
+    "inputs": "应用列表、路径归属、框架及部署方式。",
+    "output": "微前端路由配置、资源前缀和本地联调方案。",
+    "prompt": "请使用 vercel:microfrontends 技能，为【应用列表】规划微前端组合，把【路径】交给对应应用，检查默认路由、资源冲突和跨应用跳转。",
+    "requirements": "需要支持的框架及相应平台权限；与单项目多运行时服务不同，分组和删除配置会影响部署路由。"
+  },
+  {
+    "id": "vercel:ncc",
+    "title": "打包 Node.js 工具",
+    "category": "development",
+    "summary": "把 Node.js 模块及依赖编译成便于分发的产物。",
+    "scenarios": [
+      "命令行工具分发依赖太多",
+      "函数部署需要简化包结构"
+    ],
+    "inputs": "Node.js 入口、依赖清单、运行资源及输出要求。",
+    "output": "打包命令、产物和运行验证。",
+    "prompt": "请使用 vercel:ncc 技能，把【工具入口】用 ncc 打包到【输出目录】，检查动态加载、资源文件和原生依赖，运行产物验证功能并保留许可证信息。",
+    "requirements": "需要 Node.js 与 ncc；单文件目标不保证所有原生模块或动态资源都能内嵌。"
+  },
+  {
+    "id": "vercel:next-cache-components",
+    "title": "配置 Next.js 组件缓存",
+    "category": "development",
+    "summary": "划分静态、缓存和动态内容，让同一页面兼顾加载速度与实时数据。",
+    "scenarios": [
+      "列表可缓存但用户信息必须实时",
+      "启用缓存后动态读取报错"
+    ],
+    "inputs": "Next.js 版本、页面代码、数据更新频率和用户隔离要求。",
+    "output": "缓存边界、Suspense 动态区域及失效策略。",
+    "prompt": "请使用 vercel:next-cache-components 技能，分析【Next.js 页面】，缓存公共【数据】，将用户专属内容保留为动态区域，验证更新失效和不同用户之间的数据隔离。",
+    "requirements": "面向支持 Cache Components 的 Next.js 版本；不能把个性化敏感数据混入公共缓存，不适用普通 Vue 项目。"
+  },
+  {
+    "id": "vercel:next-forge",
+    "title": "搭建 SaaS 项目骨架",
+    "category": "development",
+    "summary": "理解并使用 next-forge 的多应用、共享包及可选服务集成结构。",
+    "scenarios": [
+      "启动包含官网和管理台的 SaaS",
+      "接手 next-forge 不清楚包职责"
+    ],
+    "inputs": "产品范围、数据库选择、已有 next-forge 项目及必需集成。",
+    "output": "适配产品的项目结构、环境配置和运行说明。",
+    "prompt": "请使用 vercel:next-forge 技能，为【产品】评估 next-forge，说明官网、业务应用和共享包如何分工，只配置【必需服务】，验证本地启动与数据库连接。",
+    "requirements": "基于 Next.js 与 Turborepo；需要数据库等实际资源，不适合直接套进 Vue 单应用。"
+  },
+  {
+    "id": "vercel:next-upgrade",
+    "title": "升级 Next.js 项目",
+    "category": "development",
+    "summary": "根据官方迁移指南逐步升级 Next.js 并处理破坏性变化。",
+    "scenarios": [
+      "旧版本需要升级",
+      "升级后异步路由参数报错"
+    ],
+    "inputs": "项目、当前与目标版本、测试命令和重要页面。",
+    "output": "迁移改动、依赖调整及构建与回归结果。",
+    "prompt": "请使用 vercel:next-upgrade 技能，将【项目】从【当前版本】升级到【目标版本】，先核对官方迁移路径，再处理相关 React 依赖和 API 变化，验证构建与【关键流程】。",
+    "requirements": "仅适用 Next.js；需联网查版本指南和可运行测试，自动代码转换后仍需人工检查行为。"
+  },
+  {
+    "id": "vercel:nextjs",
+    "title": "开发 Next.js 页面",
+    "category": "development",
+    "summary": "按 App Router 约定处理路由、服务端组件、数据读取和错误边界。",
+    "scenarios": [
+      "新增动态详情页",
+      "排查服务端与客户端组件边界"
+    ],
+    "inputs": "Next.js 项目、页面需求、数据接口和渲染要求。",
+    "output": "页面与路由实现、数据加载及错误状态。",
+    "prompt": "请使用 vercel:nextjs 技能，在【Next.js 项目】增加【详情页】，明确服务端与客户端边界，处理加载、空数据和错误，并检查 metadata 与构建结果。",
+    "requirements": "主要面向 Next.js App Router；不是 Vue 或 uni-app 规范，API 必须与项目版本一致。"
+  },
+  {
+    "id": "vercel:observability",
+    "title": "补齐日志与性能观测",
+    "category": "ai-cloud",
+    "summary": "通过结构化日志、分析指标和数据导出观察应用的实际运行情况。",
+    "scenarios": [
+      "线上问题无法复现",
+      "想知道慢请求出在哪一步"
+    ],
+    "inputs": "应用、部署环境、异常时间及现有日志和监控。",
+    "output": "日志字段、性能观测接入和证据查询方式。",
+    "prompt": "请使用 vercel:observability 技能，为【关键接口】补充请求标识、耗时和失败日志，检查【异常时间】的运行记录，说明如何关联前端请求与服务端错误。",
+    "requirements": "读取平台日志需要权限，部分功能受套餐限制；日志中不能记录令牌或完整敏感请求体。"
+  },
+  {
+    "id": "vercel:payments",
+    "title": "接入 Stripe 收款",
+    "category": "development",
+    "summary": "实现支付会话、订阅和经签名验证的支付事件处理。",
+    "scenarios": [
+      "产品需要订阅收费",
+      "付款成功但权益未到账"
+    ],
+    "inputs": "定价与权益规则、Stripe 测试环境、订单存储和回调地址。",
+    "output": "测试支付流程、webhook 校验及权益更新逻辑。",
+    "prompt": "请使用 vercel:payments 技能，在【项目】接入【订阅方案】的 Stripe 测试支付，校验 webhook 签名并防止重复处理，验证付款、取消和失败后的权益状态。",
+    "requirements": "需 Stripe 账号及测试密钥；支付结果应由服务端可信事件确认，正式收款前需单独验收。"
+  },
+  {
+    "id": "vercel:react-best-practices",
+    "title": "检查 React 性能",
+    "category": "testing",
+    "summary": "按影响优先级检查请求串行、包体积和不必要重渲染等 React 性能问题。",
+    "scenarios": [
+      "React 页面首次加载慢",
+      "组件频繁重复渲染"
+    ],
+    "inputs": "React 或 Next.js 源码、性能现象、测量记录。",
+    "output": "按证据和影响排序的问题清单及针对性改动。",
+    "prompt": "请使用 vercel:react-best-practices 技能，审查【React 页面】的请求瀑布、包体积和重渲染，先找到实际瓶颈，再做最小修改并比较前后表现。",
+    "requirements": "面向 React 和 Next.js；不是 Vue 优化规则，不能把每个组件都机械加缓存。"
+  },
+  {
+    "id": "vercel:routing-middleware",
+    "title": "处理请求路由",
+    "category": "ai-cloud",
+    "summary": "在缓存前按请求条件重写或重定向路径，并区分平台中间件和框架代理。",
+    "scenarios": [
+      "按地区分流落地页",
+      "旧链接迁移到新路径"
+    ],
+    "inputs": "站点框架、匹配规则、原目标地址及循环风险。",
+    "output": "路由拦截规则、matcher 与请求验证。",
+    "prompt": "请使用 vercel:routing-middleware 技能，为【站点】实现【重定向规则】，先区分 Vercel Routing Middleware 与框架代理，避免循环，并验证静态资源不会被误拦截。",
+    "requirements": "需要 Vercel 部署环境；请求路由不能替代业务接口自身的身份和权限校验。"
+  },
+  {
+    "id": "vercel:runtime-cache",
+    "title": "缓存服务端读取结果",
+    "category": "ai-cloud",
+    "summary": "使用按区域工作的临时缓存，减少函数重复访问数据库或外部接口。",
+    "scenarios": [
+      "相同查询频繁打到上游",
+      "希望按标签失效缓存"
+    ],
+    "inputs": "函数代码、缓存键、数据时效、失效条件和租户规则。",
+    "output": "缓存读取写入、未命中回源和标签失效逻辑。",
+    "prompt": "请使用 vercel:runtime-cache 技能，为【服务端查询】增加 Runtime Cache，设计包含【租户边界】的缓存键，设置有效期并验证失效及回源。",
+    "requirements": "是可淘汰的临时缓存，不是持久数据库；区域和环境隔离需要纳入设计。"
+  },
+  {
+    "id": "vercel:satori",
+    "title": "生成分享封面图",
+    "category": "documents",
+    "summary": "将受支持的 HTML、CSS 或 JSX 布局渲染为动态分享图片。",
+    "scenarios": [
+      "每篇文章需要带标题的封面",
+      "社交分享图出现中文缺字"
+    ],
+    "inputs": "标题数据、图片尺寸、字体文件和视觉样式。",
+    "output": "Satori SVG 或 OG 图片接口及样图。",
+    "prompt": "请使用 vercel:satori 技能，为【文章页面】生成包含标题与分类的分享图，支持【中文字体】，测试长标题换行和空值，输出可预览的图片。",
+    "requirements": "需要 Satori 或对应 OG 渲染工具；CSS 支持有限，中文需提供字体，不能直接当完整浏览器截图。"
+  },
+  {
+    "id": "vercel:shadcn",
+    "title": "使用可修改的 React 组件",
+    "category": "development",
+    "summary": "把 shadcn/ui 组件源码加入项目，再按现有设计调整样式和行为。",
+    "scenarios": [
+      "管理页需要表单与弹窗",
+      "现成组件需要品牌定制"
+    ],
+    "inputs": "React 项目、组件需求、样式体系与基础组件选择。",
+    "output": "选定组件源码、主题配置和交互验收。",
+    "prompt": "请使用 vercel:shadcn 技能，在【React 项目】用 shadcn/ui 实现【筛选弹窗】，复用现有组件，支持键盘操作、校验提示与手机宽度。",
+    "requirements": "本技能面向 React，不是 shadcn-vue；安装器会写入源码，需检查项目配置与组件依赖兼容性。"
+  },
+  {
+    "id": "vercel:sign-in-with-vercel",
+    "title": "使用 Vercel 账号登录",
+    "category": "development",
+    "summary": "为面向 Vercel 用户的应用接入 OAuth 或 OpenID Connect 登录流程。",
+    "scenarios": [
+      "开发者工具需要识别 Vercel 用户",
+      "应用需要用户授权读取其项目"
+    ],
+    "inputs": "应用注册信息、回调地址、身份需求及最小权限。",
+    "output": "授权跳转、回调处理与身份验证接入。",
+    "prompt": "请使用 vercel:sign-in-with-vercel 技能，为【开发者工具】设计 Sign in with Vercel 登录，验证回调 state 与身份信息，说明会话如何管理，并限制为【所需权限】。",
+    "requirements": "需要注册应用及配置回调；身份登录不等于自动拥有所有资源权限，会话管理仍需应用正确实现。"
+  },
+  {
+    "id": "vercel:swr",
+    "title": "管理 React 请求状态",
+    "category": "development",
+    "summary": "用 SWR 处理数据获取、重新验证、分页和乐观更新。",
+    "scenarios": [
+      "切回页面想自动刷新数据",
+      "修改记录后希望列表立即更新"
+    ],
+    "inputs": "React 组件、接口、分页协议和错误状态。",
+    "output": "SWR 请求逻辑、缓存更新和失败回滚。",
+    "prompt": "请使用 vercel:swr 技能，为【React 列表】使用 SWR 实现分页及修改后的刷新，区分初次加载与后台更新，验证失败回滚和空列表。",
+    "requirements": "需要 React 与 SWR；不直接适用于 Vue，缓存键应包含影响响应的参数。"
+  },
+  {
+    "id": "vercel:turbopack",
+    "title": "调整 Next.js 打包器",
+    "category": "development",
+    "summary": "排查 Turbopack 的配置、模块解析和构建兼容问题。",
+    "scenarios": [
+      "开发热更新慢",
+      "从 Webpack 切换后路径别名失效"
+    ],
+    "inputs": "Next.js 版本、打包配置、报错与复现命令。",
+    "output": "配置调整、兼容性说明及开发和构建验证。",
+    "prompt": "请使用 vercel:turbopack 技能，排查【项目】使用 Turbopack 时的【构建错误】，核对当前版本配置位置、别名和依赖兼容性，验证热更新与正式构建。",
+    "requirements": "面向支持 Turbopack 的项目；不是 Vite 的替代配置，不能直接搬用全部 Webpack 插件。"
+  },
+  {
+    "id": "vercel:turborepo",
+    "title": "管理多包仓库构建",
+    "category": "development",
+    "summary": "按依赖关系安排多个应用和共享包的构建、测试与缓存任务。",
+    "scenarios": [
+      "多包仓库重复构建太慢",
+      "共享包更新后下游没有重建"
+    ],
+    "inputs": "工作区结构、任务脚本、依赖关系及 CI 配置。",
+    "output": "任务图、输入输出声明和缓存验证。",
+    "prompt": "请使用 vercel:turborepo 技能，优化【多包仓库】的 Turborepo 任务，正确声明 build 与 test 的依赖和产物，验证缓存命中及共享包变化后的重建范围。",
+    "requirements": "需要 JavaScript/TypeScript 工作区；远程缓存需配置服务权限，不应缓存开发服务或敏感产物。"
+  },
+  {
+    "id": "vercel:v0-dev",
+    "title": "使用 v0 生成界面",
+    "category": "development",
+    "summary": "把界面需求或参考图组织成 v0 任务，并将生成结果整合进已有项目。",
+    "scenarios": [
+      "想从草图快速试做页面",
+      "需要把 v0 组件接进现有站点"
+    ],
+    "inputs": "页面目标、参考图或文字、目标框架和现有设计规范。",
+    "output": "生成提示词、组件接入方式与集成检查。",
+    "prompt": "请使用 vercel:v0-dev 技能，根据【参考图和需求】整理 v0 提示词，明确目标为【框架】，将生成的【组件】接入项目并检查路由、依赖和手机布局。",
+    "requirements": "需要 v0 访问能力或已有生成产物；默认示例偏 React/Next.js，Vue 输出需明确说明并单独验证。"
+  },
+  {
+    "id": "vercel:vercel-agent",
+    "title": "使用平台代码审查助手",
+    "category": "testing",
+    "summary": "说明和配置 Vercel Agent 的代码审查、异常调查及 SDK 安装能力。",
+    "scenarios": [
+      "希望 PR 自动得到审查",
+      "异常告警后需要平台执行调查"
+    ],
+    "inputs": "Vercel 项目、代码仓库关联、目标能力和访问权限。",
+    "output": "能力适配说明、配置步骤及平台结果核查。",
+    "prompt": "请使用 vercel:vercel-agent 技能，检查【项目】是否适合启用 Vercel Agent 的【代码审查】，说明需要的权限与当前费用，再指导配置并解释一份审查结果。",
+    "requirements": "这是 Vercel 平台服务，不是本地自动审查包；能力和费用受账号套餐及当前产品状态影响。"
+  },
+  {
+    "id": "vercel:vercel-api",
+    "title": "查询 Vercel 项目资源",
+    "category": "ai-cloud",
+    "summary": "通过已连接应用或 REST API 查询部署、日志、域名和项目信息。",
+    "scenarios": [
+      "想找出失败部署的日志",
+      "批量核对项目域名配置"
+    ],
+    "inputs": "目标团队和项目、查询范围、已连接应用或 API 权限。",
+    "output": "可追溯的资源查询结果与问题定位。",
+    "prompt": "请使用 vercel:vercel-api 技能，查询【项目】最近的失败部署，关联构建日志和错误时间，列出失败原因及部署标识；只读检查，不修改线上配置。",
+    "requirements": "需要已授权的 Vercel 连接或凭据；工具可用性取决于会话，不应展示访问令牌。"
+  },
+  {
+    "id": "vercel:vercel-cli",
+    "title": "通过命令行管理项目",
+    "category": "ai-cloud",
+    "summary": "正确使用 Vercel CLI 关联项目、拉取配置、运行和部署应用。",
+    "scenarios": [
+      "命令作用到了错误项目",
+      "本地开发与云端配置不同"
+    ],
+    "inputs": "仓库目录、团队与项目名、目标环境和操作需求。",
+    "output": "项目关联检查、正确命令及执行结果。",
+    "prompt": "请使用 vercel:vercel-cli 技能，检查【仓库】的 Vercel CLI 项目关联和当前团队，拉取【开发环境】配置并启动本地应用，报告缺少的设置而不打印密钥。",
+    "requirements": "需安装并登录 CLI；必须区分单项目和多项目仓库，线上写操作需明确目标。"
+  },
+  {
+    "id": "vercel:vercel-connect",
+    "title": "代表用户访问第三方服务",
+    "category": "ai-cloud",
+    "summary": "通过 Vercel Connect 获取有范围限制的令牌，连接第三方账号和接口。",
+    "scenarios": [
+      "应用需要读取用户的 GitHub 资源",
+      "机器人需要应用身份访问服务"
+    ],
+    "inputs": "第三方服务、用户或应用身份、所需权限与业务动作。",
+    "output": "连接配置、令牌交换与失效处理方案。",
+    "prompt": "请使用 vercel:vercel-connect 技能，为【应用】设计通过 Vercel Connect 只读访问【第三方资源】的流程，区分用户与应用身份，处理未安装连接器、授权取消和令牌过期。",
+    "requirements": "需要支持的连接器和用户授权；令牌不应回显或写进前端，连接本身不授予无限权限。"
+  },
+  {
+    "id": "vercel:vercel-firewall",
+    "title": "配置网站防护规则",
+    "category": "ai-cloud",
+    "summary": "检查并管理 Vercel 防火墙的匹配、限流和防护策略。",
+    "scenarios": [
+      "特定接口遭到高频请求",
+      "防护规则误伤正常访客"
+    ],
+    "inputs": "项目、受影响路径、请求样例与防护日志。",
+    "output": "规则建议、误伤分析和可核验配置。",
+    "prompt": "请使用 vercel:vercel-firewall 技能，分析【接口】的异常请求，先根据日志区分正常与恶意流量，再拟定限流规则，评估误伤并给出验证与回退方法。",
+    "requirements": "需要防火墙权限；平台功能与套餐应实时核对，发布规则可能阻断真实流量。"
+  },
+  {
+    "id": "vercel:vercel-flags",
+    "title": "分批开放新功能",
+    "category": "development",
+    "summary": "用功能开关控制功能是否对不同用户或环境开放，并接入提供商。",
+    "scenarios": [
+      "新功能需要小范围试用",
+      "想快速关闭异常功能"
+    ],
+    "inputs": "功能规则、用户分组、环境和开关提供商。",
+    "output": "开关定义、判定位置与开启关闭验证。",
+    "prompt": "请使用 vercel:vercel-flags 技能，给【新功能】加入功能开关，先面向【测试人群】开放，保证服务端与界面结果一致，并验证关闭后的行为。",
+    "requirements": "需要 Flags SDK 及提供商配置；功能开关不能替代权限控制，当前费用和能力需核实。"
+  },
+  {
+    "id": "vercel:vercel-functions",
+    "title": "实现和排查云端函数",
+    "category": "ai-cloud",
+    "summary": "为接口选择运行时，处理流式响应、超时和部署环境限制。",
+    "scenarios": [
+      "接口运行时间过长",
+      "流式回答在部署后中断"
+    ],
+    "inputs": "函数代码、运行时、耗时日志和输入规模。",
+    "output": "函数实现或修复、配置及请求验证。",
+    "prompt": "请使用 vercel:vercel-functions 技能，诊断【接口】的超时问题，查看实际耗时与运行限制，优化关键路径并验证流式返回和错误响应，不盲目延长超时时间。",
+    "requirements": "需要可用部署与日志；运行时和时长限制以当前套餐文档为准，不能按常驻服务器设计。"
+  },
+  {
+    "id": "vercel:vercel-queues",
+    "title": "异步处理消息任务",
+    "category": "ai-cloud",
+    "summary": "将需要重试的后台任务放入队列，并设计消费者与重复投递处理。",
+    "scenarios": [
+      "接口不应等待耗时任务完成",
+      "批量事件需要可靠重试"
+    ],
+    "inputs": "任务内容、消息大小、吞吐要求及重复处理规则。",
+    "output": "消息发送、消费处理、重试与幂等方案。",
+    "prompt": "请使用 vercel:vercel-queues 技能，把【后台任务】改成队列处理，定义消息格式，处理重复投递和失败重试，验证接口立即返回且任务最终有结果记录。",
+    "requirements": "需要当前 Queues 服务及鉴权；队列不等于任务恰好执行一次，API 和套餐状态需核对。"
+  },
+  {
+    "id": "vercel:vercel-sandbox",
+    "title": "在云端沙箱运行浏览器",
+    "category": "ai-cloud",
+    "summary": "在临时 Vercel 微虚拟机中运行浏览器自动化并回收执行环境。",
+    "scenarios": [
+      "后端任务需要抓取页面截图",
+      "代理需要隔离的浏览器环境"
+    ],
+    "inputs": "目标网址、自动化步骤、运行时长与输出文件需求。",
+    "output": "沙箱启动、浏览器任务、截图或快照及清理流程。",
+    "prompt": "请使用 vercel:vercel-sandbox 技能，在 Vercel Sandbox 中打开【测试网址】并生成截图，使用可复用快照减少启动成本，限制执行时长，结束后释放环境。",
+    "requirements": "需要 Sandbox 权限、鉴权及 Chromium 依赖；技能重点是云端浏览器自动化，不提供永久免费计算。"
+  },
+  {
+    "id": "vercel:vercel-services",
+    "title": "组合多运行时服务",
+    "category": "ai-cloud",
+    "summary": "在一个 Vercel 项目内配置独立构建的多个服务和路径分发。",
+    "scenarios": [
+      "同一站点包含 Python 与 JavaScript",
+      "多个服务希望共用域名"
+    ],
+    "inputs": "服务目录、运行时、构建命令和路径归属。",
+    "output": "多服务配置、路由与本地联调结果。",
+    "prompt": "请使用 vercel:vercel-services 技能，为【项目】配置【前端服务】和【后端服务】的独立构建与路径路由，验证本地请求和环境变量范围，整理部署前检查。",
+    "requirements": "重点是项目结构和配置，正式部署需配合部署流程；需核对服务功能当前支持的运行时与限制。"
+  },
+  {
+    "id": "vercel:vercel-storage",
+    "title": "选择数据与文件存储",
+    "category": "ai-cloud",
+    "summary": "区分 Blob、Edge Config 与市场数据库，选择适合文件或结构化数据的方案。",
+    "scenarios": [
+      "上传文件需要持久保存",
+      "旧数据库产品配置需要迁移"
+    ],
+    "inputs": "数据类型、读写频率、权限需求和已有存储。",
+    "output": "存储选型、接入配置及读写验证。",
+    "prompt": "请使用 vercel:vercel-storage 技能，为【应用数据】选择存储，区分文件、关系数据和配置，优先复用【现有服务】，说明迁移步骤并验证权限与读写。",
+    "requirements": "需要相应存储服务及权限；旧产品名称可能已变化，迁移前需备份，缓存不能替代数据库。"
+  },
+  {
+    "id": "vercel:verification",
+    "title": "验收完整业务流程",
+    "category": "testing",
+    "summary": "从用户目标出发检查浏览器、接口、持久化和外部服务之间的完整链路。",
+    "scenarios": [
+      "按钮可点但结果没有保存",
+      "一个功能跨多个服务需要验收"
+    ],
+    "inputs": "用户故事、测试环境、预期结果和必要账号。",
+    "output": "逐环节证据、失败边界和明确验收结论。",
+    "prompt": "请使用 vercel:verification 技能，验收【用户故事】，从入口操作到最终【业务结果】逐步检查，核对接口和存储，区分已验证与受权限限制的部分。",
+    "requirements": "需要可访问环境和相应工具；没有端到端证据不能只因构建通过就宣称功能完成。"
+  },
+  {
+    "id": "vercel:workflow",
+    "title": "实现可恢复的后台流程",
+    "category": "ai-cloud",
+    "summary": "用持久工作流组织多步骤任务、重试和等待外部事件后的继续执行。",
+    "scenarios": [
+      "任务中断后需要恢复",
+      "审批需要等待人工事件再继续"
+    ],
+    "inputs": "流程步骤、失败策略、外部事件和现有项目。",
+    "output": "工作流与步骤实现、等待恢复及执行验证。",
+    "prompt": "请使用 vercel:workflow 技能，为【业务流程】实现 Workflow，拆分持久步骤，等待【审批事件】后继续，处理重试和不可恢复错误，并验证中途恢复。",
+    "requirements": "需要兼容 Workflow DevKit；工作流函数存在沙箱和序列化限制，真实副作用必须防止重复执行。"
+  },
+  {
+    "id": "cloudflare:agents-sdk",
+    "title": "使用 Cloudflare 智能体 SDK",
+    "category": "ai-cloud",
+    "summary": "实现有状态智能体的状态同步、方法调用、路由和调度。",
+    "scenarios": [
+      "聊天需要跨会话保存状态",
+      "多个客户端实时同步智能体状态"
+    ],
+    "inputs": "Workers 项目、Agents SDK 版本、状态模型和交互方式。",
+    "output": "智能体类、路由、状态更新和客户端接入。",
+    "prompt": "请使用 cloudflare:agents-sdk 技能，在【Workers 项目】实现【智能体】的持久状态与实时同步，校验客户端状态修改，测试断线重连及定时任务。",
+    "requirements": "需要 Cloudflare Agents SDK、Workers 绑定与账号；客户端示例可能是 React，Vue 接入需另按协议实现。"
+  },
+  {
+    "id": "cloudflare:building-ai-agent-on-cloudflare",
+    "title": "从零搭建云端智能体",
+    "category": "ai-cloud",
+    "summary": "围绕具体目标搭建包含状态、实时交互和模型调用的 Cloudflare 智能体应用。",
+    "scenarios": [
+      "想建立有记忆的聊天助手",
+      "需要定时处理任务的代理"
+    ],
+    "inputs": "助手目标、模型选择、项目目录和服务权限。",
+    "output": "可运行智能体、模型接入、状态管理及部署配置。",
+    "prompt": "请使用 cloudflare:building-ai-agent-on-cloudflare 技能，搭建【助手用途】的 Cloudflare 智能体，保存对话状态并支持【定时任务】，先本地验证，再说明上线所需绑定与凭据。",
+    "requirements": "需要 Cloudflare 账号、Wrangler 与模型权限；技能不提供模型额度，部署前核实当前 SDK API。"
+  },
+  {
+    "id": "cloudflare:building-mcp-server-on-cloudflare",
+    "title": "把工具开放为 MCP 服务",
+    "category": "ai-cloud",
+    "summary": "将业务工具封装成可远程调用的 MCP 服务，并配置认证和部署。",
+    "scenarios": [
+      "希望 AI 调用自有查询接口",
+      "本地工具需要远程提供给多个客户端"
+    ],
+    "inputs": "工具职责、输入输出、权限模型和 Cloudflare 项目。",
+    "output": "MCP 工具定义、远程服务、认证及调用验证。",
+    "prompt": "请使用 cloudflare:building-mcp-server-on-cloudflare 技能，把【只读查询接口】封装成 Cloudflare MCP 工具，定义输入校验和错误响应，配置【认证方式】，验证无权限请求被拒绝。",
+    "requirements": "需要 Workers 与 MCP SDK；公开工具应校验身份及输入，认证连接成功不代表业务权限自动正确。"
+  },
+  {
+    "id": "cloudflare:cloudflare",
+    "title": "选择 Cloudflare 产品",
+    "category": "ai-cloud",
+    "summary": "根据计算、存储、消息和网络需求选择平台能力并找到对应实现资料。",
+    "scenarios": [
+      "不确定该用 KV 还是 D1",
+      "网站同时需要 API 与文件存储"
+    ],
+    "inputs": "业务需求、数据规模、读写模式和现有架构。",
+    "output": "产品选择与取舍、组合架构和后续接入步骤。",
+    "prompt": "请使用 cloudflare:cloudflare 技能，为【应用需求】选择 Cloudflare 服务，比较【候选产品】在一致性、查询和成本上的差异，给出最小方案并核对当前限制。",
+    "requirements": "这是平台总入口；需要细节时继续使用对应技能，价格和配额以当前官方文档为准。"
+  },
+  {
+    "id": "cloudflare:durable-objects",
+    "title": "管理共享状态与实时协作",
+    "category": "ai-cloud",
+    "summary": "用 Durable Objects 协调同一对象的持久状态、并发操作和实时连接。",
+    "scenarios": [
+      "多人房间需要共享一致状态",
+      "需要按对象串行处理请求"
+    ],
+    "inputs": "对象划分、状态结构、并发要求和 Workers 项目。",
+    "output": "对象类、存储与连接管理、迁移和测试。",
+    "prompt": "请使用 cloudflare:durable-objects 技能，为【协作房间】设计 Durable Object，按房间隔离状态，处理加入离开和断线恢复，验证并发更新及对象存储迁移。",
+    "requirements": "需要 Cloudflare Workers 与 Durable Objects 绑定；对象划分影响吞吐，不能把所有用户无条件集中到同一个对象。"
+  },
+  {
+    "id": "cloudflare:sandbox-sdk",
+    "title": "隔离运行用户代码",
+    "category": "ai-cloud",
+    "summary": "在 Cloudflare 沙箱中执行命令、读写文件并管理临时运行环境。",
+    "scenarios": [
+      "应用需要运行用户上传的脚本",
+      "智能体需要隔离的终端工具"
+    ],
+    "inputs": "执行语言、任务输入、资源限制和输出保留规则。",
+    "output": "沙箱配置、命令执行与文件处理、超时和清理逻辑。",
+    "prompt": "请使用 cloudflare:sandbox-sdk 技能，为【代码执行任务】接入 Cloudflare Sandbox，按会话隔离环境，设置执行限制，收集输出文件并验证任务结束后清理。",
+    "requirements": "本地开发需要 Docker，云端需要相应服务权限；沙箱不免除凭据隔离和网络访问控制。"
+  },
+  {
+    "id": "cloudflare:web-perf",
+    "title": "测量网页加载性能",
+    "category": "testing",
+    "summary": "通过 Chrome DevTools 实测页面加载、布局偏移和网络阻塞，再按证据排优先级。",
+    "scenarios": [
+      "页面首屏慢",
+      "图片加载导致内容跳动"
+    ],
+    "inputs": "页面地址、测试设备条件、可选源码和性能目标。",
+    "output": "性能轨迹、问题证据、影响排序及优化建议。",
+    "prompt": "请使用 cloudflare:web-perf 技能，测量【网址】的首屏与布局偏移，找出实际阻塞资源，给出有证据的前三项优化，并说明测试条件和预估收益。",
+    "requirements": "必须有 Chrome DevTools MCP 工具与可访问页面；不能用静态源码猜测替代实测指标。"
+  },
+  {
+    "id": "cloudflare:workers-best-practices",
+    "title": "检查 Workers 生产代码",
+    "category": "testing",
+    "summary": "审查 Workers 的绑定、流式处理、异步任务、密钥与跨请求状态风险。",
+    "scenarios": [
+      "准备上线一个 Worker",
+      "遇到异步任务丢失或请求间数据串扰"
+    ],
+    "inputs": "完整 Worker 源码、Wrangler 配置、依赖版本及错误现象。",
+    "output": "按风险排序的审查结果、最小修复与类型配置验证。",
+    "prompt": "请使用 cloudflare:workers-best-practices 技能，审查【Worker】的请求状态、未等待 Promise、流式处理和绑定配置，结合当前官方文档修复明确问题并验证错误响应。",
+    "requirements": "适用于 Cloudflare Workers；需要完整源码和对应类型，不能把 Node 服务器写法直接照搬。"
+  },
+  {
+    "id": "cloudflare:wrangler",
+    "title": "管理 Cloudflare 项目",
+    "category": "ai-cloud",
+    "summary": "使用 Wrangler 本地开发、检查配置、管理绑定并部署 Workers 或 Pages。",
+    "scenarios": [
+      "本地绑定与线上不一致",
+      "需要部署前预检和日志排查"
+    ],
+    "inputs": "项目目录、目标环境、绑定名称和所需操作。",
+    "output": "配置核验、类型生成、本地运行或部署操作结果。",
+    "prompt": "请使用 cloudflare:wrangler 技能，检查【Cloudflare 项目】的【测试环境】配置和绑定，生成类型并执行部署预检，区分本地模拟资源与远程资源，报告结果。",
+    "requirements": "需要 Wrangler 和 Cloudflare 权限；远程绑定会访问真实资源，密钥通过安全机制配置，不写入源码。"
+  }
+]

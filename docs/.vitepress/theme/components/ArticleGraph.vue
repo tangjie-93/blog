@@ -1,17 +1,13 @@
 <template>
     <section class="article-graph" aria-label="全站文章脑图">
-        <header class="article-graph__header">
-            <div><h1>文章脑图</h1><p>从一个技术方向出发，找到下一篇想读的文章。</p></div>
-            <a :href="withBase('/timeline/')">查看文章列表 ↗</a>
-        </header>
         <div class="article-graph__toolbar">
-            <input v-model="query" type="search" aria-label="搜索文章、标签或分类" placeholder="搜索文章、标签或分类…" />
-            <select v-model="category" aria-label="筛选技术分类"><option value="">全部技术分类</option><option v-for="item in graph.categories" :key="item.id" :value="item.id">{{ item.label }} · {{ item.count }}</option></select>
-            <div class="article-graph__controls"><button type="button" aria-label="缩小脑图" :disabled="zoom <= 0.5" @click="changeZoom(1 / 1.25)">−</button><button type="button" aria-label="放大脑图" :disabled="zoom >= 4" @click="changeZoom(1.25)">＋</button><button type="button" @click="resetViewport">适应屏幕</button><button type="button" :aria-pressed="showLabels" @click="showLabels = !showLabels">{{ showLabels ? '隐藏标签' : '显示标签' }}</button><button type="button" :aria-pressed="motionPaused" @click="motionPaused = !motionPaused">{{ motionPaused ? '播放动画' : '暂停动画' }}</button><button v-if="query || category" type="button" @click="clearFilters">清除筛选</button></div>
+            <ElInput v-model="query" class="article-graph__search" type="search" aria-label="搜索文章、标签或分类" placeholder="搜索文章、标签或分类…" />
+            <ElSelect v-model="category" :empty-values="[null, undefined]" class="article-graph__category" aria-label="筛选技术分类"><ElOption value="" label="全部技术分类" /><ElOption v-for="item in graph.categories" :key="item.id" :value="item.id" :label="`${item.label} · ${item.count}`" /></ElSelect>
+            <div class="article-graph__controls"><ElButton native-type="button" aria-label="缩小脑图" :disabled="zoom <= 0.5" @click="changeZoom(1 / 1.25)">−</ElButton><ElButton native-type="button" aria-label="放大脑图" :disabled="zoom >= 4" @click="changeZoom(1.25)">＋</ElButton><ElButton native-type="button" @click="resetViewport">适应屏幕</ElButton><ElButton native-type="button" :aria-pressed="showLabels" @click="showLabels = !showLabels">{{ showLabels ? '隐藏标签' : '显示标签' }}</ElButton><ElButton native-type="button" :aria-pressed="motionPaused" @click="motionPaused = !motionPaused">{{ motionPaused ? '播放动画' : '暂停动画' }}</ElButton><ElButton v-if="query || category" native-type="button" @click="clearFilters">清除筛选</ElButton></div>
         </div>
         <div class="article-graph__body">
             <div class="article-graph__canvas" :class="{ 'is-paused': motionPaused }">
-                <svg ref="canvas" viewBox="-520 -520 1040 1040" aria-label="文章关系图，点击分类筛选，点击文章阅读" @wheel.prevent="onWheel" @pointerdown="startPan" @pointermove="movePan" @pointerup="endPan" @pointercancel="endPan" @lostpointercapture="endPan" @dblclick.self="resetViewport">
+                <svg ref="canvas" viewBox="-470 -470 940 940" aria-label="文章关系图，点击分类筛选，点击文章阅读" @wheel.prevent="onWheel" @pointerdown="startPan" @pointermove="movePan" @pointerup="endPan" @pointercancel="endPan" @lostpointercapture="endPan" @dblclick.self="resetViewport">
                     <g :transform="`translate(${pan.x} ${pan.y}) scale(${zoom})`">
                         <g aria-hidden="true">
                             <g v-for="(edge, index) in graph.edges" :key="edge.id">
@@ -50,6 +46,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
+import { ElButton, ElInput, ElSelect, ElOption } from 'element-plus'
 import { useData, withBase } from 'vitepress'
 import { data as posts } from '../../posts.data'
 import { createArticleGraph } from '../articleGraph'
@@ -141,21 +138,15 @@ watch([query, category], () => { hovered.value = ''; resetViewport() })
 
 <style scoped>
 .article-graph {
-    padding: 28px var(--blog-page-gutter) 20px;
-    & .article-graph__header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 22px; }
-    & h1 { margin: 0; font-size: clamp(26px, 2vw, 32px); letter-spacing: -.6px; }
-    & .article-graph__header p { margin: 8px 0 0; color: var(--vp-c-text-2); font-size: 14px; }
-    & .article-graph__header > a { flex-shrink: 0; font-size: 14px; }
+    display: flex; flex-direction: column; height: max(640px, calc(100dvh - var(--vp-nav-height) - var(--vp-layout-top-height, 0px))); padding: 20px var(--blog-page-gutter);
     & .article-graph__toolbar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; padding: 12px; border: 1px solid var(--blog-border); border-radius: var(--blog-radius); background: var(--blog-panel); }
-    & input, & select, & button { min-height: 40px; padding: 7px 12px; border: 1px solid var(--blog-border); border-radius: 8px; background: var(--vp-c-bg); color: var(--vp-c-text-1); font: inherit; font-size: 14px; }
-    & input { flex: 1; min-width: 200px; max-width: none; }
-    & button { cursor: pointer; }
-    & button:disabled { opacity: .4; cursor: default; }
-    & button:hover:not(:disabled) { color: var(--vp-c-brand-1); border-color: var(--vp-c-brand-1); }
-    & input:focus-visible, & select:focus-visible { outline: 2px solid var(--vp-c-brand-1); outline-offset: 2px; }
+    & .article-graph__search { flex: 1; min-width: 200px; }
+    & .article-graph__category { width: 180px; }
+    & .el-button { min-height: 40px; margin: 0; }
+    & :deep(.el-input__wrapper), & :deep(.el-select__wrapper) { min-height: 40px; }
     & .article-graph__controls { display: flex; flex-wrap: wrap; gap: 8px; }
-    & .article-graph__body { display: grid; grid-template-columns: minmax(0, 1fr) clamp(260px, 23vw, 360px); border: 1px solid var(--blog-border); border-radius: var(--blog-radius); overflow: hidden; }
-    & .article-graph__canvas { position: relative; height: max(480px, calc(100dvh - 300px)); overflow: hidden; isolation: isolate; background: radial-gradient(ellipse at center, var(--vp-c-brand-soft), transparent 70%); }
+    & .article-graph__body { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) clamp(260px, 23vw, 360px); border: 1px solid var(--blog-border); border-radius: var(--blog-radius); overflow: hidden; }
+    & .article-graph__canvas { position: relative; min-height: 0; overflow: hidden; isolation: isolate; background: radial-gradient(ellipse at center, var(--vp-c-brand-soft), transparent 70%); }
     & .article-graph__canvas::before { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: .3; background-image: linear-gradient(var(--blog-border) 1px, transparent 1px), linear-gradient(90deg, var(--blog-border) 1px, transparent 1px); background-size: 40px 40px; mask-image: radial-gradient(ellipse, #000, transparent 75%); }
     & svg { display: block; width: 100%; height: 100%; touch-action: none; cursor: grab; }
     & svg:active { cursor: grabbing; }
@@ -176,8 +167,9 @@ watch([query, category], () => { hovered.value = ''; resetViewport() })
     & .article-graph__node.category circle.article-graph__halo { fill: none; stroke: #d58b21; stroke-width: 2; filter: drop-shadow(0 0 4px #d58b21); opacity: .5; pointer-events: none; animation: graph-breathe 3s ease-in-out infinite; }
     & .article-graph__node.hovered circle:not(.article-graph__halo) { filter: drop-shadow(0 0 6px var(--vp-c-brand-1)); }
     & .article-graph__node .article-graph__hit { display: block; width: 100%; height: 100%; border-radius: 50%; }
-    & .article-graph__node text { fill: var(--vp-c-text-1); font-size: 13px; font-weight: 500; text-anchor: middle; paint-order: stroke; stroke: var(--vp-c-bg); stroke-width: 5px; stroke-linejoin: round; pointer-events: none; animation: graph-fade-in 180ms ease-out; }
+    & .article-graph__node text { fill: var(--vp-c-text-1); font-size: 13px; font-weight: 500; text-anchor: middle; paint-order: stroke; stroke: var(--vp-c-bg); stroke-width: 5px; stroke-linejoin: round; pointer-events: none; animation: graph-fade-in 180ms ease-out; transition: fill 180ms ease; }
     & .article-graph__node.root text { font-size: 16px; font-weight: 700; }
+    & .article-graph__node.hovered text { fill: var(--vp-c-brand-1); font-weight: 700; }
     & .article-graph__node.hovered circle:not(.article-graph__hit):not(.article-graph__halo), & .article-graph__node :focus-visible circle:not(.article-graph__hit):not(.article-graph__halo) { stroke: var(--vp-c-text-1); stroke-width: 3; transform: scale(1.25); }
     & .article-graph__legend { position: absolute; left: 16px; top: 14px; display: flex; gap: 14px; font-size: 12px; pointer-events: none; }
     & .article-graph__legend span:first-child { color: #567de8; }
@@ -185,7 +177,7 @@ watch([query, category], () => { hovered.value = ''; resetViewport() })
     & .article-graph__legend span:last-child { color: var(--vp-c-brand-1); }
     & .article-graph__hint { position: absolute; bottom: 10px; left: 16px; margin: 0; font-size: 12px; color: var(--vp-c-text-2); pointer-events: none; }
     & .article-graph__empty { position: absolute; top: 45%; width: 100%; text-align: center; color: var(--vp-c-text-2); }
-    & .article-graph__results { display: flex; flex-direction: column; min-height: 0; max-height: max(480px, calc(100dvh - 300px)); border-left: 1px solid var(--blog-border); background: var(--blog-panel); }
+    & .article-graph__results { display: flex; flex-direction: column; min-height: 0; border-left: 1px solid var(--blog-border); background: var(--blog-panel); }
     & .article-graph__results > p { margin: 0; padding: 16px; border-bottom: 1px solid var(--blog-border); font-size: 13px; }
     & .article-graph__results strong { color: var(--vp-c-brand-1); }
     & .article-graph__results ul { overflow: auto; margin: 0; padding: 8px; list-style: none; }
@@ -193,12 +185,9 @@ watch([query, category], () => { hovered.value = ''; resetViewport() })
     & .article-graph__results a { display: block; border-radius: 6px; padding: 9px 8px; font-size: 14px; line-height: 1.65; color: var(--vp-c-text-2); text-decoration: none; }
     & .article-graph__results a:hover { color: var(--vp-c-brand-1); background: var(--vp-c-brand-soft); }
     @media (max-width: 767px) {
-        padding: 20px var(--blog-page-gutter);
-        & .article-graph__header { align-items: start; flex-wrap: wrap; }
-        & .article-graph__header > a { font-size: 12px; }
-        & h1 { font-size: 24px; }
-        & input { min-width: 0; flex-basis: 100%; width: 100%; }
-        & .article-graph__body { grid-template-columns: minmax(0, 1fr); }
+        height: auto;
+        & .article-graph__search { min-width: 0; flex-basis: 100%; width: 100%; }
+        & .article-graph__body { flex: none; grid-template-columns: minmax(0, 1fr); }
         & .article-graph__canvas { height: 440px; }
         & .article-graph__results { max-height: 320px; border-left: 0; border-top: 1px solid var(--blog-border); }
     }

@@ -2,7 +2,7 @@
     <section class="blog-tags" aria-label="按标签浏览">
         <p class="blog-tags__label">探索技术标签 <span>{{ tags.length }} TOPICS</span></p>
         <div class="blog-tags__buttons">
-            <button v-for="tag in tags" :key="tag" type="button" :aria-pressed="selectedTag === tag" @click="selectedTag = tag"><span class="blog-tags__hash" aria-hidden="true">#</span>{{ tag }}</button>
+            <ElButton v-for="tag in tags" :key="tag" native-type="button" :aria-pressed="selectedTag === tag" @click="selectedTag = tag"><span class="blog-tags__hash" aria-hidden="true">#</span>{{ tag }}</ElButton>
         </div>
         <BlogList v-if="selectedTag" :tag="selectedTag" />
         <p v-else class="blog-tags__hint">请选择标签，浏览相关文章。</p>
@@ -11,6 +11,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { ElButton } from 'element-plus'
 import { data as posts } from '../../posts.data'
 import BlogList from './BlogList.vue'
 
@@ -41,7 +42,8 @@ const tags = [...new Set(posts.flatMap(post => post.tags))].sort((a, b) => a.loc
         border-radius: var(--blog-radius);
         background: var(--blog-panel);
     }
-    & button {
+    & .el-button {
+        margin: 0;
         display: inline-flex;
         align-items: center;
         gap: 6px;
@@ -64,7 +66,7 @@ const tags = [...new Set(posts.flatMap(post => post.tags))].sort((a, b) => a.loc
         &[aria-pressed="true"] { font-weight: 650; }
         &:focus-visible { outline: 2px solid var(--vp-c-brand-1); outline-offset: 4px; }
     }
-    & .blog-tags__hash { color: var(--vp-c-brand-1); font-family: var(--vp-font-family-mono); font-size: 12px; opacity: 0.8; }
+    & .blog-tags__hash { margin-right: 6px; color: var(--vp-c-brand-1); font-family: var(--vp-font-family-mono); font-size: 12px; opacity: 0.8; }
     & .blog-tags__hint {
         padding: 22px 20px;
         border: 1px dashed var(--blog-border, var(--vp-c-divider));
@@ -76,10 +78,10 @@ const tags = [...new Set(posts.flatMap(post => post.tags))].sort((a, b) => a.loc
     }
     @media (max-width: 640px) {
         & .blog-tags__buttons { gap: 8px; }
-        & button { padding-right: 12px; padding-left: 12px; }
+        & .el-button { padding-right: 12px; padding-left: 12px; }
     }
     @media (prefers-reduced-motion: reduce) {
-        & button { transition: none; }
+        & .el-button { transition: none; }
     }
 }
 </style>

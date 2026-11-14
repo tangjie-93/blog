@@ -22,10 +22,14 @@
     "node": ">=22"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["esbuild", "workerd"]
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "workerd"
+    ]
   },
   "dependencies": {
     "@waline/client": "3.16.1",
+    "element-plus": "^2.14.8",
     "vue": "^3.5.0"
   },
   "devDependencies": {
