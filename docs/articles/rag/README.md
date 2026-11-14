@@ -75,7 +75,7 @@ note: 一条从白话入门到上传、摄取、检索、引用、评估与排�
 
 ## 5、示例代码
 
-[`examples/rag_demo.py`](./examples/rag_demo.py) 是本专题的基线：
+[`examples/rag_demo.py`](https://github.com/tangjie-93/blog/blob/dev/docs/articles/rag/examples/rag_demo.py) 是本专题的基线：
 
 - 只用 `Python` 标准库，通过 `HTTP` 调本机 `Ollama`；
 - `ingest` 把 `Markdown` 切成片段、算向量、原子写入 `JSON` 索引；
