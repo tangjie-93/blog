@@ -1,10 +1,9 @@
 <template>
     <main class="skill-library">
         <header class="skill-library__intro">
-            <div><p class="skill-library__eyebrow">AI TOOLBOX / 按任务找工具</p><h1>想做什么，就从这里开始。</h1><p class="skill-library__lede">技能教你怎么做，插件打包能力，MCP 连接工具与数据。按任务选择，再准备材料开始。</p></div>
+            <div><h1>AI 工具箱</h1><p class="skill-library__lede">查找技能、插件和 MCP 工具。</p></div>
             <a :href="withBase('/skills/guide.html')">第一次使用？看入门指南 ↗</a>
         </header>
-        <p class="skill-library__snapshot">整理于 {{ skillSnapshot.updatedAt }} · {{ skills.length }} 项技能、{{ pluginEntries.length }} 个启用插件、{{ mcpEntries.length }} 项 MCP 配置记录。配置记录不代表已连接；详情中说明使用前提。</p>
         <div class="skill-library__toolbar">
             <ElTabs v-model="kind" class="skill-library__tabs" aria-label="工具类型">
                 <ElTabPane :label="`技能 ${skills.length}`" name="skill" />
@@ -40,7 +39,7 @@ import { computed, nextTick, ref, watch } from 'vue'
 import { withBase } from 'vitepress'
 import { ElButton, ElInput, ElSelect, ElOption, ElTabs, ElTabPane, ElPagination, ElEmpty } from 'element-plus'
 import { filterTools, pluginEntries, mcpEntries } from '../toolbox'
-import { filterSkills, skillCategories, skills, skillSnapshot } from '../skillCatalog'
+import { filterSkills, skillCategories, skills } from '../skillCatalog'
 import SkillCard from './SkillCard.vue'
 import ToolCard from './ToolCard.vue'
 
@@ -90,8 +89,7 @@ watch(kind, () => { clearFilters(); page.value = 1 })
 .skill-library {
     max-width: 1440px; margin: 0 auto; padding: 20px var(--blog-page-gutter) 40px;
     & .skill-library__intro { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
-    & .skill-library__eyebrow { margin: 0; color: var(--vp-c-brand-1); font-size: 10px; letter-spacing: 1.4px; }
-    & h1 { margin: 4px 0 6px; font-size: clamp(24px, 2.4vw, 30px); line-height: 1.3; }
+    & h1 { margin: 0 0 4px; font-size: 24px; line-height: 1.3; }
     & .skill-library__lede { margin: 0; color: var(--vp-c-text-2); font-size: 13px; line-height: 1.6; }
     & a { color: var(--vp-c-brand-1); text-decoration: underline; text-underline-offset: 4px; }
     & .skill-library__intro > a { flex-shrink: 0; padding-bottom: 2px; font-size: 13px; }
@@ -114,11 +112,12 @@ watch(kind, () => { clearFilters(); page.value = 1 })
     & .skill-library__categories span { margin-left: 4px; font-size: 10px; }
     & .skill-library__results-header { display: flex; align-items: center; justify-content: space-between; min-height: 34px; gap: 12px; font-size: 12px; color: var(--blog-muted); scroll-margin-top: calc(var(--vp-nav-height) + 16px); }
     & .skill-library__results-header :deep(.el-button) { height: 26px; padding: 0 10px; font-size: 12px; }
-    & .skill-library__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: stretch; animation: skill-results-enter 220ms ease-out; }
+    & .skill-library__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; align-items: stretch; animation: skill-results-enter 220ms ease-out; }
     & .skill-library__pagination { display: flex; gap: 18px; align-items: center; justify-content: center; margin-top: 24px; font-size: 13px; }
     & .skill-library__empty { padding: 48px 20px; text-align: center; border: 1px dashed var(--blog-border); border-radius: 10px; }
     & .skill-library__footer { margin-top: 28px; font-size: 12px; line-height: 1.8; color: var(--blog-muted); }
-    @media (max-width: 1100px) { & .skill-library__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 1200px) { & .skill-library__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    @media (max-width: 900px) { & .skill-library__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
     @media (max-width: 900px) {
         & .skill-library__toolbar { align-items: stretch; flex-direction: column; gap: 0; }
         & .skill-library__filters { padding: 8px 0; }

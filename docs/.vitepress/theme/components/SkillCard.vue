@@ -4,12 +4,12 @@
         <h2>{{ skill.title }}</h2>
         <code class="skill-card__name">{{ skillInvocation(skill) }}</code>
         <p>{{ skill.summary }}</p>
-        <ul><li v-for="scenario in skill.scenarios" :key="scenario">{{ scenario }}</li></ul>
         <div class="skill-card__action"><ElButton text type="primary" native-type="button" aria-haspopup="dialog" :aria-label="`查看 ${skill.title} 用法与提示词`" @click="openDialog">查看用法与提示词 ↗</ElButton></div>
         <ElDialog v-if="dialogCreated" v-model="dialogVisible" :title="skill.title" width="min(720px, calc(100vw - 24px))" align-center append-to-body destroy-on-close @closed="dialogCreated = false">
             <div class="skill-card__details">
                 <code class="skill-card__name">{{ skillInvocation(skill) }}</code>
                 <p>{{ skill.summary }}</p>
+                <ul><li v-for="scenario in skill.scenarios" :key="scenario">{{ scenario }}</li></ul>
                 <dl>
                     <dt>准备什么</dt><dd>{{ skill.inputs }}</dd>
                     <dt>得到什么</dt><dd>{{ skill.output }}</dd>
@@ -57,11 +57,10 @@ async function copyPrompt(): Promise<void> {
 
 <style scoped>
 .skill-card {
-    display: flex; flex-direction: column; min-width: 0; padding: 22px; border: 1px solid var(--blog-border); border-radius: 12px; background: var(--blog-panel); overflow-wrap: anywhere;
+    display: flex; flex-direction: column; min-width: 0; padding: 16px; border: 1px solid var(--blog-border); border-radius: 8px; background: var(--blog-panel); overflow-wrap: anywhere;
     & .skill-card__meta { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; color: var(--blog-muted); font-size: 12px; }
-    & h2 { margin: 14px 0 8px; font-size: 19px; line-height: 1.5; }
-    & ul { padding-left: 18px; margin: 12px 0 18px; list-style: disc; }
-    & .skill-card__action { margin-top: auto; border-top: 1px solid var(--blog-border); padding-top: 12px; }
+    & h2 { margin: 8px 0 4px; font-size: 17px; line-height: 1.5; }
+    & .skill-card__action { margin-top: auto; border-top: 1px solid var(--blog-border); padding-top: 6px; }
     & .skill-card__action .el-button { padding-inline: 0; }
 }
 .skill-card, .skill-card__details {
@@ -71,6 +70,7 @@ async function copyPrompt(): Promise<void> {
 }
 .skill-card__details {
     max-height: calc(100dvh - 160px); overflow: auto; overscroll-behavior: contain; overflow-wrap: anywhere; padding: 4px;
+    & ul { padding-left: 18px; margin: 12px 0; list-style: disc; }
     & dt { font-weight: 600; margin-top: 14px; font-size: 14px; color: var(--vp-c-text-1); }
     & dd { margin: 4px 0 0; }
     & .skill-card__prompt-heading { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; justify-content: space-between; margin-top: 18px; font-size: 12px; }

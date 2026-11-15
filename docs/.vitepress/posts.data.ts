@@ -4,7 +4,7 @@ import { mapPosts } from './theme/blog'
 
 export declare const data: BlogPost[]
 
-export default createContentLoader('articles/**/*.md', {
+export default createContentLoader('articles/*/**/*.md', {
   includeSrc: true,
   transform: pages => mapPosts(pages)
 })

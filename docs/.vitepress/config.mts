@@ -64,7 +64,7 @@ export default defineConfig({
     logo: '/image/blog-mark.svg',
     nav: [
       { text: '首页', link: '/' },
-      { text: '文章', link: '/timeline/' },
+      { text: '文章', link: '/articles/' },
       { text: '脑图', link: '/mindmap/' },
       { text: 'AI 工具箱', link: '/skills/' },
       ...topicNav,

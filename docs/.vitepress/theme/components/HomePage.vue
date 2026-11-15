@@ -9,7 +9,7 @@
             <div class="home-page__welcome">
                 <p class="home-page__description">你好，我是 Tang Jie。<br>在代码中寻找答案，在实践中建立连接。<br>这里记录前端、图形学与工程化的探索路径。</p>
                 <div class="home-page__actions">
-                    <a class="home-page__primary" :href="withBase('/timeline/')">探索文章 <span aria-hidden="true">↗</span></a>
+                    <a class="home-page__primary" :href="withBase('/articles/')">探索文章 <span aria-hidden="true">↗</span></a>
                     <a class="home-page__secondary" :href="withBase('/mindmap/')">文章脑图 <span aria-hidden="true">↗</span></a>
                 </div>
             </div>
@@ -27,7 +27,7 @@
                 </div>
             </section>
             <section class="home-page__section home-page__latest" aria-labelledby="latest-title">
-                <div class="home-page__heading"><div><p class="home-page__eyebrow">02 / LATEST NOTES</p><h2 id="latest-title">最近的思考与记录</h2></div><a :href="withBase('/timeline/')">文章归档 <span aria-hidden="true">↗</span></a></div>
+                <div class="home-page__heading"><div><p class="home-page__eyebrow">02 / LATEST NOTES</p><h2 id="latest-title">最近的思考与记录</h2></div><a :href="withBase('/articles/')">文章归档 <span aria-hidden="true">↗</span></a></div>
                 <div class="home-page__posts">
                     <a v-for="(post, index) in recentPosts" :key="post.url" class="home-page__post" :href="withBase(post.url)"><span class="home-page__post-number">0{{ index + 1 }}</span><div><div class="home-page__post-meta"><span>{{ post.tags[0] || '技术笔记' }}</span><time :datetime="post.date">{{ post.date || '持续积累' }}</time></div><h3>{{ post.title }}</h3></div><span class="home-page__post-arrow" aria-hidden="true">↗</span></a>
                 </div>

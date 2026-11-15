@@ -120,6 +120,14 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--vp-c-brand-1); 
         & > .button > .text { color: inherit; font-size: inherit; line-height: inherit; }
     }
     & .VPNavBarMenuGroup > .button .text-icon { display: none; }
+    & .VPNavBarMenuGroup > .button {
+        background: var(--vp-c-bg-soft);
+        box-shadow: inset 0 0 0 1px var(--blog-border);
+    }
+    & .VPNavBarMenuLink[href$='/skills/'] {
+        color: var(--vp-c-brand-1);
+        box-shadow: inset 0 0 0 1px var(--vp-c-brand-1);
+    }
 }
 .VPNavBarSearch .DocSearch-Button { border: 1px solid var(--blog-border); border-radius: 6px; }
 .VPNavBarMenuGroup .VPMenuGroup .title {

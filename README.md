@@ -44,7 +44,7 @@ blog/
 │   │   ├── _headers               # Cloudflare Pages 响应头配置
 │   │   └── _redirects             # Cloudflare Pages 旧地址重定向
 │   ├── README.md                  # 站点首页，渲染 HomePage 组件
-│   ├── timeline/README.md         # 文章归档页
+│   ├── timeline/README.md         # 旧文章归档地址，跳转至 articles/
 │   ├── tags/README.md             # 标签页
 │   ├── about/README.md            # 关于页
 │   ├── summarize/README.md        # 充电站页面
