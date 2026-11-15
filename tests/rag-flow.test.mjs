@@ -24,17 +24,36 @@ for (const mode of ['entry', 'ingest', 'ask']) {
   test(`demo flow renders actual function order and labeled branches (${mode})`, async () => {
     const html = await renderToString(createSSRApp(RagDemoFlow, { mode }))
     assert.match(html, /<figure[^>]+aria-label=/)
+    assert.match(html, /<svg[^>]+role="img"/)
+    assert.match(html, /<polygon/)
+    assert.match(html, /marker-end="url\(#demo-arrow-/)
+    const nodes = [...html.matchAll(/data-node="([^"]+)"/g)].map(match => match[1])
+    const edges = [...html.matchAll(/data-from="([^"]+)" data-to="([^"]+)"/g)].map(match => [match[1], match[2]])
+    for (const [from, to] of edges) {
+      assert.ok(nodes.includes(from), `missing source ${from}`)
+      assert.ok(nodes.includes(to), `missing target ${to}`)
+    }
+    const reachable = new Set([nodes[0]])
+    for (let i = 0; i < nodes.length; i++) {
+      for (const [from, to] of edges) if (reachable.has(from)) reachable.add(to)
+    }
+    assert.equal(reachable.size, nodes.length, 'all nodes are connected to the entry')
+    const hasEdge = (from, to) => edges.some(edge => edge[0] === from && edge[1] === to)
     if (mode === 'entry') {
-      assert.match(html, /main\(\)/)
-      assert.match(html, /load_index\(\) → ask\(\)/)
-      assert.match(html, /command = ingest/)
+      assert.ok(hasEdge('command', 'ingest'))
+      assert.ok(hasEdge('command', 'load'))
+      assert.ok(hasEdge('load', 'ask'))
+      assert.ok(hasEdge('print-json', 'end'))
     } else if (mode === 'ingest') {
-      assert.ok(html.indexOf('make_chunks()') < html.indexOf('逐块 client.embed()'))
-      assert.ok(html.indexOf('检查向量维度') < html.indexOf('atomic_write()'))
+      assert.ok(hasEdge('embed', 'more'), 'embedding has a loop-back arrow')
+      assert.ok(hasEdge('valid', 'error'))
+      assert.ok(hasEdge('valid', 'write'))
       assert.match(html, /dimension=0、chunks=\[\]/)
     } else {
-      assert.ok(html.indexOf('load_index()') < html.indexOf('retrieve()'))
-      assert.ok(html.indexOf('retrieval_only 为真') < html.indexOf('evidence 为空'))
+      assert.ok(hasEdge('only', 'retrieval-return'))
+      assert.ok(hasEdge('only', 'empty'))
+      assert.ok(hasEdge('empty', 'refuse'))
+      assert.ok(hasEdge('empty', 'prompt'))
       assert.match(html, /answer=null/)
       assert.match(html, /没有足够证据回答/)
       assert.match(html, /stream=False/)

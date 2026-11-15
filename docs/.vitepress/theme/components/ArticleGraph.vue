@@ -1,10 +1,5 @@
 <template>
     <section class="article-graph" aria-label="全站文章脑图">
-        <div class="article-graph__toolbar">
-            <ElInput v-model="query" class="article-graph__search" type="search" aria-label="搜索文章、标签或分类" placeholder="搜索文章、标签或分类…" />
-            <ElSelect v-model="category" :empty-values="[null, undefined]" class="article-graph__category" aria-label="筛选技术分类"><ElOption value="" label="全部技术分类" /><ElOption v-for="item in graph.categories" :key="item.id" :value="item.id" :label="`${item.label} · ${item.count}`" /></ElSelect>
-            <div class="article-graph__controls"><ElButton native-type="button" aria-label="缩小脑图" :disabled="zoom <= 0.5" @click="changeZoom(1 / 1.25)">−</ElButton><ElButton native-type="button" aria-label="放大脑图" :disabled="zoom >= 4" @click="changeZoom(1.25)">＋</ElButton><ElButton native-type="button" @click="resetViewport">适应屏幕</ElButton><ElButton native-type="button" :aria-pressed="showLabels" @click="showLabels = !showLabels">{{ showLabels ? '隐藏标签' : '显示标签' }}</ElButton><ElButton native-type="button" :aria-pressed="motionPaused" @click="motionPaused = !motionPaused">{{ motionPaused ? '播放动画' : '暂停动画' }}</ElButton><ElButton v-if="query || category" native-type="button" @click="clearFilters">清除筛选</ElButton></div>
-        </div>
         <div class="article-graph__body">
             <div class="article-graph__canvas" :class="{ 'is-paused': motionPaused }">
                 <svg ref="canvas" viewBox="-470 -470 940 940" aria-label="文章关系图，点击分类筛选，点击文章阅读" @wheel.prevent="onWheel" @pointerdown="startPan" @pointermove="movePan" @pointerup="endPan" @pointercancel="endPan" @lostpointercapture="endPan" @dblclick.self="resetViewport">
@@ -37,6 +32,11 @@
                 <p class="article-graph__hint">拖动画布 · 滚轮缩放 · 点击节点探索</p>
             </div>
             <aside class="article-graph__results" aria-label="脑图中的文章">
+                <div class="article-graph__toolbar">
+                    <ElInput v-model="query" class="article-graph__search" type="search" aria-label="搜索文章、标签或分类" placeholder="搜索文章、标签或分类…" />
+                    <ElSelect v-model="category" :empty-values="[null, undefined]" class="article-graph__category" aria-label="筛选技术分类"><ElOption value="" label="全部技术分类" /><ElOption v-for="item in graph.categories" :key="item.id" :value="item.id" :label="`${item.label} · ${item.count}`" /></ElSelect>
+                    <div class="article-graph__controls"><ElButton native-type="button" aria-label="缩小脑图" :disabled="zoom <= 0.5" @click="changeZoom(1 / 1.25)">−</ElButton><ElButton native-type="button" aria-label="放大脑图" :disabled="zoom >= 4" @click="changeZoom(1.25)">＋</ElButton><ElButton native-type="button" @click="resetViewport">适应屏幕</ElButton><ElButton native-type="button" :aria-pressed="showLabels" @click="showLabels = !showLabels">{{ showLabels ? '隐藏标签' : '显示标签' }}</ElButton><ElButton native-type="button" :aria-pressed="motionPaused" @click="motionPaused = !motionPaused">{{ motionPaused ? '播放动画' : '暂停动画' }}</ElButton><ElButton v-if="query || category" native-type="button" @click="clearFilters">清除筛选</ElButton></div>
+                </div>
                 <p role="status" aria-live="polite">{{ category ? categoryLabels[category] || category : '全部分类' }} <strong>{{ graph.articles.length }}</strong> 篇文章</p>
                 <ul><li v-for="post in graph.articles" :key="post.url"><a :href="withBase(post.url)" @mouseenter="hovered = `article:${post.url}`" @mouseleave="hovered = ''" @focus="hovered = `article:${post.url}`" @blur="hovered = ''">{{ post.title }}</a></li></ul>
             </aside>
@@ -139,13 +139,12 @@ watch([query, category], () => { hovered.value = ''; resetViewport() })
 <style scoped>
 .article-graph {
     display: flex; flex-direction: column; height: max(640px, calc(100dvh - var(--vp-nav-height) - var(--vp-layout-top-height, 0px))); padding: 20px var(--blog-page-gutter);
-    & .article-graph__toolbar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; padding: 12px; border: 1px solid var(--blog-border); border-radius: var(--blog-radius); background: var(--blog-panel); }
-    & .article-graph__search { flex: 1; min-width: 200px; }
-    & .article-graph__category { width: 180px; }
+    & .article-graph__toolbar { display: flex; flex-direction: column; flex-shrink: 0; gap: 12px; padding: 16px; border-bottom: 1px solid var(--blog-border); }
+    & .article-graph__search, & .article-graph__category { width: 100%; min-width: 0; }
     & .el-button { min-height: 40px; margin: 0; }
     & :deep(.el-input__wrapper), & :deep(.el-select__wrapper) { min-height: 40px; }
     & .article-graph__controls { display: flex; flex-wrap: wrap; gap: 8px; }
-    & .article-graph__body { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) clamp(260px, 23vw, 360px); border: 1px solid var(--blog-border); border-radius: var(--blog-radius); overflow: hidden; }
+    & .article-graph__body { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) clamp(340px, 29vw, 480px); border: 1px solid var(--blog-border); border-radius: var(--blog-radius); overflow: hidden; }
     & .article-graph__canvas { position: relative; min-height: 0; overflow: hidden; isolation: isolate; background: radial-gradient(ellipse at center, var(--vp-c-brand-soft), transparent 70%); }
     & .article-graph__canvas::before { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: .3; background-image: linear-gradient(var(--blog-border) 1px, transparent 1px), linear-gradient(90deg, var(--blog-border) 1px, transparent 1px); background-size: 40px 40px; mask-image: radial-gradient(ellipse, #000, transparent 75%); }
     & svg { display: block; width: 100%; height: 100%; touch-action: none; cursor: grab; }
@@ -177,19 +176,19 @@ watch([query, category], () => { hovered.value = ''; resetViewport() })
     & .article-graph__legend span:last-child { color: var(--vp-c-brand-1); }
     & .article-graph__hint { position: absolute; bottom: 10px; left: 16px; margin: 0; font-size: 12px; color: var(--vp-c-text-2); pointer-events: none; }
     & .article-graph__empty { position: absolute; top: 45%; width: 100%; text-align: center; color: var(--vp-c-text-2); }
-    & .article-graph__results { display: flex; flex-direction: column; min-height: 0; border-left: 1px solid var(--blog-border); background: var(--blog-panel); }
-    & .article-graph__results > p { margin: 0; padding: 16px; border-bottom: 1px solid var(--blog-border); font-size: 13px; }
+    & .article-graph__results { display: flex; flex-direction: column; min-width: 0; min-height: 0; border-left: 1px solid var(--blog-border); background: var(--blog-panel); }
+    & .article-graph__results > p { flex-shrink: 0; margin: 0; padding: 16px; border-bottom: 1px solid var(--blog-border); font-size: 13px; }
     & .article-graph__results strong { color: var(--vp-c-brand-1); }
-    & .article-graph__results ul { overflow: auto; margin: 0; padding: 8px; list-style: none; }
+    & .article-graph__results ul { flex: 1; min-height: 0; overflow: auto; margin: 0; padding: 8px; list-style: none; }
     & .article-graph__results li { margin: 0; border-bottom: 1px solid var(--blog-border); }
     & .article-graph__results a { display: block; border-radius: 6px; padding: 9px 8px; font-size: 14px; line-height: 1.65; color: var(--vp-c-text-2); text-decoration: none; }
     & .article-graph__results a:hover { color: var(--vp-c-brand-1); background: var(--vp-c-brand-soft); }
     @media (max-width: 767px) {
         height: auto;
-        & .article-graph__search { min-width: 0; flex-basis: 100%; width: 100%; }
         & .article-graph__body { flex: none; grid-template-columns: minmax(0, 1fr); }
         & .article-graph__canvas { height: 440px; }
-        & .article-graph__results { max-height: 320px; border-left: 0; border-top: 1px solid var(--blog-border); }
+        & .article-graph__results { border-left: 0; border-top: 1px solid var(--blog-border); }
+        & .article-graph__results ul { flex: auto; max-height: 320px; }
     }
     & .article-graph__canvas.is-paused svg :is(.article-graph__flow, .article-graph__orbit, .article-graph__pulse, .article-graph__halo) { animation-play-state: paused; }
     & .article-graph__canvas.is-paused .article-graph__node.root circle { animation-play-state: paused; }

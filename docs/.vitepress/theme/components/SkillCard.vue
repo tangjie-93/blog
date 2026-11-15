@@ -4,14 +4,12 @@
         <h2>{{ skill.title }}</h2>
         <code class="skill-card__name">{{ skillInvocation(skill) }}</code>
         <p>{{ skill.summary }}</p>
-        <p v-if="skill.status === 'local-only'" class="skill-card__notice">本地已发现，本次盘点会话未提供此技能；使用前请确认技能列表中可见。</p>
         <ul><li v-for="scenario in skill.scenarios" :key="scenario">{{ scenario }}</li></ul>
         <div class="skill-card__action"><ElButton text type="primary" native-type="button" aria-haspopup="dialog" :aria-label="`查看 ${skill.title} 用法与提示词`" @click="openDialog">查看用法与提示词 ↗</ElButton></div>
         <ElDialog v-if="dialogCreated" v-model="dialogVisible" :title="skill.title" width="min(720px, calc(100vw - 24px))" align-center append-to-body destroy-on-close @closed="dialogCreated = false">
             <div class="skill-card__details">
                 <code class="skill-card__name">{{ skillInvocation(skill) }}</code>
                 <p>{{ skill.summary }}</p>
-                <p v-if="skill.status === 'local-only'" class="skill-card__notice">本地已发现，本次盘点会话未提供此技能；使用前请确认技能列表中可见。</p>
                 <dl>
                     <dt>准备什么</dt><dd>{{ skill.inputs }}</dd>
                     <dt>得到什么</dt><dd>{{ skill.output }}</dd>
@@ -70,7 +68,6 @@ async function copyPrompt(): Promise<void> {
     & .skill-card__name { color: var(--vp-c-brand-1); font-size: 12px; }
     & p, & li, & dd { font-size: 14px; line-height: 1.8; color: var(--vp-c-text-2); }
     & p { margin: 12px 0; }
-    & .skill-card__notice { padding: 10px; border: 1px dashed var(--blog-border); border-radius: 6px; }
 }
 .skill-card__details {
     max-height: calc(100dvh - 160px); overflow: auto; overscroll-behavior: contain; overflow-wrap: anywhere; padding: 4px;
