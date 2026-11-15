@@ -6,7 +6,7 @@ from pathlib import Path
 import sys
 
 sys.path.insert(0, str(Path(__file__).parents[1]))
-from rag_demo import Ollama, OllamaError, ask, cosine, ingest, load_index, retrieve
+from rag_demo import Ollama, OllamaError, ask, cosine, ingest, load_index, make_chunks, read_markdown, retrieve
 
 
 class FakeOllama:
@@ -61,6 +61,54 @@ class RagTests(unittest.TestCase):
         client = FakeOllama(); result = ask(client, index, "午餐", "fake")
         self.assertEqual(result["evidence"][0]["id"], "E1"); self.assertIn("E1", result["answer"])
         self.assertEqual(ask(client, index, "宠物", "fake")["answer"], "没有足够证据回答。")
+
+    def test_documented_markdown_chunking(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            path = root / "a.md"
+            path.write_text("# 午餐补贴\nabcdef\n\n短句\n", encoding="utf-8")
+            self.assertEqual(read_markdown(path), [("午餐补贴", "abcdef"), ("午餐补贴", "短句")])
+            chunks = make_chunks(root, max_chars=3)
+            self.assertEqual([item["text"] for item in chunks], ["abc", "def", "短句"])
+            self.assertEqual([item["id"] for item in chunks], ["C0001", "C0002", "C0003"])
+            self.assertTrue(all(item["source"] == "a.md" for item in chunks))
+
+    def test_retrieval_only_returns_before_refusal_and_keeps_index_ids(self):
+        index = {"chunks": [{"id": "C1", "text": "午餐补贴", "vector": [1, 0], "source": "a.md", "heading": "补贴"}]}
+        for question, count in [("午餐", 1), ("宠物", 0)]:
+            with self.subTest(question=question):
+                client = FakeOllama()
+                result = ask(client, index, question, "fake", retrieval_only=True)
+                self.assertIsNone(result["answer"])
+                self.assertEqual(len(result["evidence"]), count)
+                self.assertEqual([call[0] for call in client.calls], ["embed"])
+                self.assertEqual(index["chunks"][0]["id"], "C1")
+                if count:
+                    self.assertEqual(result["evidence"][0]["id"], "E1")
+        client = FakeOllama()
+        self.assertEqual(ask(client, index, "宠物", "fake")["answer"], "没有足够证据回答。")
+        self.assertEqual([call[0] for call in client.calls], ["embed"])
+
+    def test_empty_index_still_embeds_question(self):
+        client = FakeOllama()
+        result = ask(client, {"chunks": []}, "午餐", "fake")
+        self.assertEqual(result["evidence"], [])
+        self.assertEqual([call[0] for call in client.calls], ["embed"])
+
+    def test_embedding_failure_preserves_old_index(self):
+        class FailingClient:
+            def embed(self, *_):
+                raise OllamaError("offline")
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            docs = root / "docs"
+            docs.mkdir()
+            (docs / "a.md").write_text("# 制度\n午餐补贴", encoding="utf-8")
+            index = root / "index.json"
+            index.write_text('{"old": true}', encoding="utf-8")
+            with self.assertRaises(OllamaError):
+                ingest(FailingClient(), docs, index, "fake")
+            self.assertEqual(index.read_text(encoding="utf-8"), '{"old": true}')
 
 
 if __name__ == "__main__": unittest.main()

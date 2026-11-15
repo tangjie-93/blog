@@ -1,18 +1,20 @@
 <template>
     <main class="skill-library">
         <header class="skill-library__intro">
-            <div><p class="skill-library__eyebrow">AI TOOLBOX / 按任务找工具</p><h1>想做什么，就从这里开始。</h1><p>技能教你怎么做，插件打包能力，MCP 连接工具与数据。按任务选择，再准备材料开始。</p></div>
+            <div><p class="skill-library__eyebrow">AI TOOLBOX / 按任务找工具</p><h1>想做什么，就从这里开始。</h1><p class="skill-library__lede">技能教你怎么做，插件打包能力，MCP 连接工具与数据。按任务选择，再准备材料开始。</p></div>
             <a :href="withBase('/skills/guide.html')">第一次使用？看入门指南 ↗</a>
         </header>
         <p class="skill-library__snapshot">整理于 {{ skillSnapshot.updatedAt }} · {{ skills.length }} 项技能、{{ pluginEntries.length }} 个启用插件、{{ mcpEntries.length }} 项 MCP 配置记录。配置记录不代表已连接；详情中说明使用前提。</p>
-        <ElTabs v-model="kind" class="skill-library__tabs" aria-label="工具类型">
-            <ElTabPane :label="`技能 ${skills.length}`" name="skill" />
-            <ElTabPane :label="`插件 ${pluginEntries.length}`" name="plugin" />
-            <ElTabPane :label="`MCP ${mcpEntries.length}`" name="mcp" />
-        </ElTabs>
-        <div class="skill-library__filters">
-            <div class="skill-library__search"><label for="toolbox-search">搜索任务或工具</label><ElInput id="toolbox-search" v-model="query" clearable placeholder="例如：财报、Vue、PDF、检查网页…" /></div>
-            <div class="skill-library__source"><label for="toolbox-source">工具来源</label><ElSelect v-model="source" id="toolbox-source" :empty-values="[null, undefined]" aria-label="工具来源" filterable><ElOption label="全部来源" value="" /><ElOption v-for="item in sources" :key="item" :value="item" :label="sourceLabel(item)" /></ElSelect></div>
+        <div class="skill-library__toolbar">
+            <ElTabs v-model="kind" class="skill-library__tabs" aria-label="工具类型">
+                <ElTabPane :label="`技能 ${skills.length}`" name="skill" />
+                <ElTabPane :label="`插件 ${pluginEntries.length}`" name="plugin" />
+                <ElTabPane :label="`MCP ${mcpEntries.length}`" name="mcp" />
+            </ElTabs>
+            <div class="skill-library__filters">
+                <div class="skill-library__search"><label class="skill-library__label" for="toolbox-search">搜索任务或工具</label><ElInput id="toolbox-search" v-model="query" clearable placeholder="搜索任务或工具，例如：财报、Vue、PDF…" /></div>
+                <div class="skill-library__source"><label class="skill-library__label" for="toolbox-source">工具来源</label><ElSelect v-model="source" id="toolbox-source" :empty-values="[null, undefined]" aria-label="工具来源" filterable><ElOption label="全部来源" value="" /><ElOption v-for="item in sources" :key="item" :value="item" :label="sourceLabel(item)" /></ElSelect></div>
+            </div>
         </div>
         <nav v-if="kind === 'skill'" class="skill-library__categories" aria-label="技能任务分类">
             <ElButton :type="category === '' ? 'primary' : 'default'" plain :aria-pressed="category === ''" @click="category = ''">全部 <span>{{ skills.length }}</span></ElButton>
@@ -86,32 +88,46 @@ watch(kind, () => { clearFilters(); page.value = 1 })
 
 <style scoped>
 .skill-library {
-    max-width: 1440px; margin: 0 auto; padding: 28px var(--blog-page-gutter) 40px;
-    & .skill-library__intro { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
-    & .skill-library__eyebrow { color: var(--vp-c-brand-1); font-size: 11px; letter-spacing: 1.5px; }
-    & h1 { margin: 10px 0; font-size: clamp(26px, 3vw, 36px); line-height: 1.4; }
-    & .skill-library__intro p:last-child { color: var(--vp-c-text-2); font-size: 14px; }
+    max-width: 1440px; margin: 0 auto; padding: 20px var(--blog-page-gutter) 40px;
+    & .skill-library__intro { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
+    & .skill-library__eyebrow { margin: 0; color: var(--vp-c-brand-1); font-size: 10px; letter-spacing: 1.4px; }
+    & h1 { margin: 4px 0 6px; font-size: clamp(24px, 2.4vw, 30px); line-height: 1.3; }
+    & .skill-library__lede { margin: 0; color: var(--vp-c-text-2); font-size: 13px; line-height: 1.6; }
     & a { color: var(--vp-c-brand-1); text-decoration: underline; text-underline-offset: 4px; }
-    & .skill-library__intro > a { flex-shrink: 0; font-size: 14px; }
-    & .skill-library__snapshot { margin: 22px 0; color: var(--blog-muted); font-size: 12px; line-height: 1.8; }
-    & .skill-library__filters { display: flex; flex-wrap: wrap; gap: 16px; padding: 18px; border: 1px solid var(--blog-border); border-radius: 12px; background: var(--blog-panel); }
-    & label { display: block; margin-bottom: 8px; font-size: 13px; }
-    & .skill-library__search { flex: 1; min-width: 200px; }
-    & .skill-library__source { width: 220px; }
-    & :deep(.el-input__wrapper), & :deep(.el-select__wrapper) { min-height: 42px; }
-    & .skill-library__categories { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; }
-    & .skill-library__categories .el-button { min-height: 38px; }
-    & .skill-library__categories span { margin-left: 5px; font-size: 11px; }
-    & .skill-library__results-header { display: flex; align-items: center; justify-content: space-between; min-height: 48px; gap: 12px; font-size: 13px; color: var(--blog-muted); scroll-margin-top: calc(var(--vp-nav-height) + 16px); }
+    & .skill-library__intro > a { flex-shrink: 0; padding-bottom: 2px; font-size: 13px; }
+    & .skill-library__snapshot { margin: 8px 0 0; color: var(--blog-muted); font-size: 12px; line-height: 1.6; }
+    & .skill-library__toolbar { display: flex; align-items: center; gap: 24px; margin-top: 8px; border-bottom: 1px solid var(--blog-border); }
+    & .skill-library__tabs { flex-shrink: 0; }
+    & .skill-library__tabs :deep(.el-tabs__header) { margin: 0; }
+    & .skill-library__tabs :deep(.el-tabs__nav-wrap::after) { display: none; }
+    & .skill-library__tabs :deep(.el-tabs__item) { height: 36px; margin-right: 24px; padding: 0 4px; font-size: 14px; }
+    & .skill-library__tabs :deep(.el-tabs__active-bar) { height: 2px; }
+    & .skill-library__filters { display: flex; flex: 1; justify-content: flex-end; gap: 8px; padding-bottom: 6px; }
+    & .skill-library__label { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+    & .skill-library__search { flex: 1; max-width: 360px; min-width: 180px; }
+    & .skill-library__source { flex-shrink: 0; width: 180px; }
+    & :deep(.el-input__wrapper), & :deep(.el-select__wrapper) { min-height: 34px; }
+    & .skill-library__categories { display: flex; flex-wrap: nowrap; gap: 6px; margin: 10px 0 0; padding-bottom: 2px; overflow-x: auto; scrollbar-width: none; }
+    & .skill-library__categories::-webkit-scrollbar { display: none; }
+    & .skill-library__categories .el-button { flex-shrink: 0; height: 30px; padding: 0 10px; font-size: 12px; }
+    & .skill-library__categories .el-button + .el-button { margin-left: 0; }
+    & .skill-library__categories span { margin-left: 4px; font-size: 10px; }
+    & .skill-library__results-header { display: flex; align-items: center; justify-content: space-between; min-height: 34px; gap: 12px; font-size: 12px; color: var(--blog-muted); scroll-margin-top: calc(var(--vp-nav-height) + 16px); }
+    & .skill-library__results-header :deep(.el-button) { height: 26px; padding: 0 10px; font-size: 12px; }
     & .skill-library__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: stretch; animation: skill-results-enter 220ms ease-out; }
     & .skill-library__pagination { display: flex; gap: 18px; align-items: center; justify-content: center; margin-top: 24px; font-size: 13px; }
     & .skill-library__empty { padding: 48px 20px; text-align: center; border: 1px dashed var(--blog-border); border-radius: 10px; }
     & .skill-library__footer { margin-top: 28px; font-size: 12px; line-height: 1.8; color: var(--blog-muted); }
     @media (max-width: 1100px) { & .skill-library__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 900px) {
+        & .skill-library__toolbar { align-items: stretch; flex-direction: column; gap: 0; }
+        & .skill-library__filters { padding: 8px 0; }
+    }
     @media (max-width: 767px) {
-        & .skill-library__intro { align-items: start; flex-direction: column; gap: 14px; }
+        & .skill-library__intro { align-items: start; flex-direction: column; gap: 8px; }
         & .skill-library__grid { grid-template-columns: minmax(0, 1fr); }
-        & .skill-library__source { width: 100%; }
+        & .skill-library__search { min-width: 0; }
+        & .skill-library__source { width: 130px; }
     }
     @media (prefers-reduced-motion: reduce) { & .skill-library__grid { animation: none; } & :deep(.el-button) { transition: none; } }
 }
