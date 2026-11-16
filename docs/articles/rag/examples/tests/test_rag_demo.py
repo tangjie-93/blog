@@ -1,4 +1,5 @@
 import json
+import os
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -6,10 +7,10 @@ from pathlib import Path
 import sys
 
 sys.path.insert(0, str(Path(__file__).parents[1]))
-from rag_demo import Ollama, OllamaError, ask, cosine, ingest, load_index, make_chunks, read_markdown, retrieve
+from rag_demo import OpenAICompatible, ApiError, ask, cosine, ingest, load_index, make_chunks, read_markdown, retrieve
 
 
-class FakeOllama:
+class FakeClient:
     def __init__(self):
         self.calls = []
 
@@ -23,31 +24,54 @@ class FakeOllama:
 
 
 class RagTests(unittest.TestCase):
-    def test_ollama_http_boundary_and_bad_response(self):
+    def test_openai_compatible_http_boundary_and_missing_key(self):
         class Response:
+            def __init__(self, body): self.body = body
             def __enter__(self): return self
             def __exit__(self, *_): return False
-            def read(self): return b'{"embeddings": [[1, 2]]}'
-        with patch("rag_demo.urllib.request.urlopen", return_value=Response()):
-            self.assertEqual(Ollama().embed("fake", "问题"), [1.0, 2.0])
-        with patch("rag_demo.urllib.request.urlopen", side_effect=TimeoutError("slow")):
-            with self.assertRaises(OllamaError): Ollama(timeout=0.01).embed("fake", "问题")
+            def read(self): return self.body
+
+        requests = []
+
+        def fake_urlopen(request, timeout):
+            requests.append(request)
+            if request.full_url.endswith("/embeddings"):
+                return Response(b'{"data": [{"embedding": [1, 2]}]}')
+            return Response('{"choices": [{"message": {"content": "依据 [E1]"}}]}'.encode())
+
+        with patch.dict(os.environ, {"SILICONFLOW_API_KEY": "sk-embed", "OPENAI_API_KEY": "sk-chat"}), \
+             patch("rag_demo.urllib.request.urlopen", side_effect=fake_urlopen):
+            client = OpenAICompatible()
+            self.assertEqual(client.embed("fake", "问题"), [1.0, 2.0])
+            self.assertEqual(client.chat("fake", [{"role": "user", "content": "问"}]), "依据 [E1]")
+        self.assertEqual(requests[0].full_url, "https://api.siliconflow.cn/v1/embeddings")
+        self.assertEqual(requests[0].headers["Authorization"], "Bearer sk-embed")
+        self.assertEqual(requests[1].full_url, "https://api.openai.com/v1/chat/completions")
+        self.assertEqual(requests[1].headers["Authorization"], "Bearer sk-chat")
+
+        with patch.dict(os.environ, {"SILICONFLOW_API_KEY": "sk-embed"}, clear=True), \
+             patch("rag_demo.urllib.request.urlopen", side_effect=TimeoutError("slow")):
+            with self.assertRaises(ApiError): OpenAICompatible(timeout=0.01).embed("fake", "问题")
+
+        with patch.dict(os.environ, {}, clear=True), patch("rag_demo.urllib.request.urlopen") as urlopen:
+            with self.assertRaises(ApiError): OpenAICompatible().embed("fake", "问题")
+        urlopen.assert_not_called()
 
     def test_cosine_and_ranking(self):
         self.assertAlmostEqual(cosine([1, 0], [2, 0]), 1)
         index = {"embedding_model": "fake", "dimension": 2, "chunks": [{"id": "C1", "text": "午餐补贴", "vector": [1, 0], "source": "a", "heading": "h"}, {"id": "C2", "text": "访客", "vector": [0, 1], "source": "b", "heading": "h"}]}
-        hits = retrieve(FakeOllama(), index, "午餐", "fake", 1)
+        hits = retrieve(FakeClient(), index, "午餐", "fake", 1)
         self.assertEqual(hits[0]["id"], "C1")
 
     def test_empty_index_and_model_mismatch(self):
-        client = FakeOllama()
+        client = FakeClient()
         self.assertEqual(ask(client, {"embedding_model": "fake", "chunks": []}, "问题", "fake", retrieval_only=True)["evidence"], [])
         with tempfile.TemporaryDirectory() as temp:
             path = Path(temp) / "index.json"; path.write_text('{"embedding_model":"other","chunks":[]}', encoding="utf-8")
             with self.assertRaises(ValueError): load_index(path, "fake")
 
     def test_ingest_rebuilds_without_stale_chunks_and_atomic_json(self):
-        client = FakeOllama()
+        client = FakeClient()
         with tempfile.TemporaryDirectory() as temp:
             docs = Path(temp) / "docs"; docs.mkdir(); (docs / "a.md").write_text("# A\n午餐补贴 30 元", encoding="utf-8")
             index = Path(temp) / "index.json"
@@ -58,7 +82,7 @@ class RagTests(unittest.TestCase):
 
     def test_citations_and_refusal(self):
         index = {"embedding_model": "fake", "chunks": [{"id": "C1", "text": "午餐补贴 30 元", "vector": [1, 0], "source": "a", "heading": "h"}]}
-        client = FakeOllama(); result = ask(client, index, "午餐", "fake")
+        client = FakeClient(); result = ask(client, index, "午餐", "fake")
         self.assertEqual(result["evidence"][0]["id"], "E1"); self.assertIn("E1", result["answer"])
         self.assertEqual(ask(client, index, "宠物", "fake")["answer"], "没有足够证据回答。")
 
@@ -77,7 +101,7 @@ class RagTests(unittest.TestCase):
         index = {"chunks": [{"id": "C1", "text": "午餐补贴", "vector": [1, 0], "source": "a.md", "heading": "补贴"}]}
         for question, count in [("午餐", 1), ("宠物", 0)]:
             with self.subTest(question=question):
-                client = FakeOllama()
+                client = FakeClient()
                 result = ask(client, index, question, "fake", retrieval_only=True)
                 self.assertIsNone(result["answer"])
                 self.assertEqual(len(result["evidence"]), count)
@@ -85,12 +109,12 @@ class RagTests(unittest.TestCase):
                 self.assertEqual(index["chunks"][0]["id"], "C1")
                 if count:
                     self.assertEqual(result["evidence"][0]["id"], "E1")
-        client = FakeOllama()
+        client = FakeClient()
         self.assertEqual(ask(client, index, "宠物", "fake")["answer"], "没有足够证据回答。")
         self.assertEqual([call[0] for call in client.calls], ["embed"])
 
     def test_empty_index_still_embeds_question(self):
-        client = FakeOllama()
+        client = FakeClient()
         result = ask(client, {"chunks": []}, "午餐", "fake")
         self.assertEqual(result["evidence"], [])
         self.assertEqual([call[0] for call in client.calls], ["embed"])
@@ -98,7 +122,7 @@ class RagTests(unittest.TestCase):
     def test_embedding_failure_preserves_old_index(self):
         class FailingClient:
             def embed(self, *_):
-                raise OllamaError("offline")
+                raise ApiError("offline")
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
             docs = root / "docs"
@@ -106,7 +130,7 @@ class RagTests(unittest.TestCase):
             (docs / "a.md").write_text("# 制度\n午餐补贴", encoding="utf-8")
             index = root / "index.json"
             index.write_text('{"old": true}', encoding="utf-8")
-            with self.assertRaises(OllamaError):
+            with self.assertRaises(ApiError):
                 ingest(FailingClient(), docs, index, "fake")
             self.assertEqual(index.read_text(encoding="utf-8"), '{"old": true}')
 

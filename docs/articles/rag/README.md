@@ -13,7 +13,7 @@ note: 一条从白话入门到上传、摄取、检索、引用、评估与排�
 它分成三层：
 
 1. **能用大白话讲清楚**：不写代码的人读完 [01 白话 `RAG`](./01-白话RAG.md)，也能说明白 `RAG` 是什么、解决什么问题、什么时候没用。
-2. **能自己写出来**：跟着 [03 最小实现](./03-最小实现.md) 跑通一个不到 200 行、零依赖的版本，再逐层替换成生产组件。
+2. **能自己写出来**：跟着 [03 最小实现](./03-最小实现.md) 跑通一个三百行左右、零依赖的版本，再逐层替换成生产组件。
 3. **能解释故障并上线**：用 [08 全链路](./08-文档上传到问答全链路.md)、[09 评估](./09-评估.md)、[10 生产化](./10-生产化.md)、[12 排障手册](./12-排障手册.md) 把 Demo 变成可运维系统。
 
 ## 1、三条阅读路径
@@ -192,7 +192,7 @@ import RagDemoFlow from '../../.vitepress/theme/components/RagDemoFlow.vue'
 | --- | --- | --- |
 | [01 白话 `RAG`](./01-白话RAG.md) | `RAG` 到底是什么？ | 一个不用术语的解释 |
 | [02 原理地图](./02-原理地图.md) | 系统由哪些层组成？和微调、长上下文怎么选？ | 链路图与选型表 |
-| [03 最小实现](./03-最小实现.md) | 200 行怎么跑通？ | 可运行的 `ingest/ask/test` |
+| [03 最小实现](./03-最小实现.md) | 300 行怎么跑通？ | 可运行的 `ingest/ask/test` |
 | [04 数据摄取](./04-数据摄取.md) | 文档怎么变成可检索的块？ | 解析、切分、增量、删除方案 |
 | [05 向量化与索引](./05-向量化与索引.md) | 向量是什么？索引怎么选？ | 模型与向量库选型 |
 | [06 检索与重排](./06-检索与重排.md) | 为什么找不到？怎么排得准？ | 混合检索、`RRF`、重排 |
@@ -208,7 +208,7 @@ import RagDemoFlow from '../../.vitepress/theme/components/RagDemoFlow.vue'
 
 [`examples/rag_demo.py`](https://github.com/tangjie-93/blog/blob/dev/docs/articles/rag/examples/rag_demo.py) 是本专题的基线：
 
-- 只用 `Python` 标准库，通过 `HTTP` 调本机 `Ollama`；
+- 只用 `Python` 标准库，通过 `HTTP` 调 OpenAI 兼容接口：硅基流动做嵌入、`OpenAI` GPT 做对话；
 - `ingest` 把 `Markdown` 切成片段、算向量、原子写入 `JSON` 索引；
 - `ask` 做余弦召回、阈值过滤、编号证据、带引用回答，证据不足时拒答；
 - 自带单元测试，用假客户端隔离网络。
@@ -224,6 +224,9 @@ import RagDemoFlow from '../../.vitepress/theme/components/RagDemoFlow.vue'
 ```bash
 cd docs/articles/rag/examples
 python3 -m unittest discover -s tests -v
+
+export SILICONFLOW_API_KEY=...   # 嵌入：硅基流动
+export OPENAI_API_KEY=...        # 对话：OpenAI
 python3 rag_demo.py ingest data index.json
 python3 rag_demo.py ask index.json "午餐补贴是多少"
 ```
@@ -233,7 +236,7 @@ python3 rag_demo.py ask index.json "午餐补贴是多少"
 ## 6、事实与版本约定
 
 - 文章日期为 `2026-11-14`。涉及模型、价格、`stars`、许可证的信息会标注“快照”，使用前必须重新核对官方页面。
-- [08 全链路](./08-文档上传到问答全链路.md) 基于本机 `WeKnora` 仓库的静态阅读：文档基线为 `2026-11-05`（`5e65ef7`），实际查看的 `HEAD` 为 `9da0edd`。文中把“当前源码已实现”和“文档中的目标设计”分开写，不把规划当现状。
+- [08 全链路](./08-文档上传到问答全链路.md) 基于 `WeKnora` 公开源码的静态拆解：文中把“源码已实现”和“文档中的目标设计”分开写，不把规划当现状。
 - 开源项目的许可证以仓库 `LICENSE` 为准。`Dify`、`FastGPT`、`WeKnora` 在 `GitHub API` 中显示为 `NOASSERTION`，属于自定义/修改条款，不能简单写成 `MIT` 或 `Apache-2.0`。
 - 论文数字（如 `Contextual Retrieval` 的失败率下降）只在原实验设置下成立，不能直接当成本项目的预期收益。
 
