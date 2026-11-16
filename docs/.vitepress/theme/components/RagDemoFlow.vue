@@ -137,7 +137,7 @@ function diamond(node: Node): string {
 .demo-flow__heading span { font-size: 12px; color: var(--vp-c-text-2); }
 .demo-flow__canvas { overflow-x: auto; margin-top: 12px; border-radius: 6px; }
 .demo-flow__canvas:focus-visible { outline: 2px solid var(--vp-c-brand-1); outline-offset: 2px; }
-.demo-flow svg { display: block; width: 100%; min-width: 650px; height: auto; }
+.demo-flow svg { display: block; width: 100%; min-width: 650px; max-width: 800px; height: auto; margin-inline: auto; }
 .demo-flow__edge > path { fill: none; stroke: var(--vp-c-text-2); stroke-width: 2; stroke-linejoin: round; }
 .demo-flow__arrowhead { fill: var(--vp-c-text-2); }
 .demo-flow__edge text { font-size: 18px; font-weight: 600; fill: var(--vp-c-text-1); stroke: var(--blog-panel); stroke-width: 6px; paint-order: stroke; text-anchor: middle; }
