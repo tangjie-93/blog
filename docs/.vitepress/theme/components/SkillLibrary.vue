@@ -24,13 +24,17 @@
             <p role="status" aria-live="polite">找到 {{ resultCount }} 项{{ kindLabel }}<span v-if="resultCount"> · 第 {{ page }} / {{ pageCount }} 页</span></p>
             <ElButton v-if="query || category || source" @click="clearFilters">清除筛选</ElButton>
         </div>
-        <div v-if="resultCount" :key="JSON.stringify([kind, category, source, query, page])" class="skill-library__grid">
-            <template v-if="kind === 'skill'"><SkillCard v-for="skill in visibleSkills" :key="skill.id" :skill="skill" /></template>
-            <template v-else><ToolCard v-for="entry in visibleTools" :key="entry.id" :entry="entry" /></template>
+        <div ref="gridViewport" class="skill-library__viewport">
+            <div v-if="resultCount" :key="JSON.stringify([kind, category, source, query, page])" class="skill-library__grid" :style="gridStyle">
+                <template v-if="kind === 'skill'"><SkillCard v-for="skill in visibleSkills" :key="skill.id" :skill="skill" compact /></template>
+                <template v-else><ToolCard v-for="entry in visibleTools" :key="entry.id" :entry="entry" compact /></template>
+            </div>
+            <ElEmpty v-else class="skill-library__empty" description="没有找到匹配工具，试试更短的任务词或清除筛选。" />
         </div>
-        <ElEmpty v-else description="没有找到匹配工具，试试更短的任务词或清除筛选。" />
-        <ElPagination v-if="pageCount > 1" class="skill-library__pagination" :current-page="page" :page-size="pageSize" :total="resultCount" layout="prev, pager, next" :pager-count="5" background aria-label="工具分页" @current-change="changePage" />
-        <footer class="skill-library__footer">已合并旧版本与其他宿主副本。Figma 和 Caveman 仅见本地缓存，未列为可用技能。<a :href="withBase('/skills/guide.html#目录范围与维护')">查看收录范围与更新方法 ↗</a></footer>
+        <div class="skill-library__footer">
+            <p>已合并旧版本与其他宿主副本。Figma 和 Caveman 仅见本地缓存，未列为可用技能。<a :href="withBase('/skills/guide.html#目录范围与维护')">查看收录范围与更新方法 ↗</a></p>
+            <ElPagination v-if="pageCount > 1" class="skill-library__pagination" :current-page="page" :page-size="pageSize" :total="resultCount" layout="prev, pager, next" :pager-count="5" background aria-label="工具分页" @current-change="changePage" />
+        </div>
     </main>
 </template>
 
@@ -40,6 +44,7 @@ import { withBase } from 'vitepress'
 import { ElButton, ElInput, ElSelect, ElOption, ElTabs, ElTabPane, ElPagination, ElEmpty } from 'element-plus'
 import { filterTools, pluginEntries, mcpEntries } from '../toolbox'
 import { filterSkills, skillCategories, skills } from '../skillCatalog'
+import { useFitPageSize } from '../useFitPageSize'
 import SkillCard from './SkillCard.vue'
 import ToolCard from './ToolCard.vue'
 
@@ -49,16 +54,23 @@ const category = ref('')
 const source = ref('')
 const page = ref(1)
 const resultsHeader = ref<HTMLElement | null>(null)
-const pageSize = 12
+const gridViewport = ref<HTMLElement | null>(null)
+const { pageSize, gridStyle } = useFitPageSize(gridViewport, {
+    enabled: true,
+    fallbackSize: 12,
+    minCardWidth: 260,
+    minCardHeight: 220,
+    minViewportWidth: 900
+})
 const kindLabel = computed(() => kind.value === 'skill' ? '技能' : kind.value === 'plugin' ? '插件' : 'MCP')
 const toolEntries = computed(() => kind.value === 'plugin' ? pluginEntries : mcpEntries)
 const sources = computed(() => [...new Set((kind.value === 'skill' ? skills : toolEntries.value).map(item => item.source))])
 const filtered = computed(() => filterSkills(skills, query.value, category.value, source.value))
 const filteredTools = computed(() => filterTools(toolEntries.value, query.value, source.value))
 const resultCount = computed(() => kind.value === 'skill' ? filtered.value.length : filteredTools.value.length)
-const pageCount = computed(() => Math.ceil(resultCount.value / pageSize))
-const visibleSkills = computed(() => filtered.value.slice((page.value - 1) * pageSize, page.value * pageSize))
-const visibleTools = computed(() => filteredTools.value.slice((page.value - 1) * pageSize, page.value * pageSize))
+const pageCount = computed(() => Math.max(1, Math.ceil(resultCount.value / pageSize.value)))
+const visibleSkills = computed(() => filtered.value.slice((page.value - 1) * pageSize.value, page.value * pageSize.value))
+const visibleTools = computed(() => filteredTools.value.slice((page.value - 1) * pageSize.value, page.value * pageSize.value))
 
 /** 统一显示个人、系统与插件来源名称。 */
 function sourceLabel(value: string): string {
@@ -83,18 +95,25 @@ async function changePage(nextPage: number): Promise<void> {
 
 watch([query, category, source], () => { page.value = 1 })
 watch(kind, () => { clearFilters(); page.value = 1 })
+watch(pageSize, () => { page.value = Math.min(page.value, pageCount.value) })
 </script>
 
 <style scoped>
 .skill-library {
-    max-width: 1440px; margin: 0 auto; padding: 20px var(--blog-page-gutter) 40px;
-    & .skill-library__intro { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-height: 0;
+    width: 100%;
+    margin: 0;
+    padding: 16px var(--blog-page-gutter) 12px;
+    & .skill-library__intro { display: flex; flex-shrink: 0; align-items: flex-end; justify-content: space-between; gap: 24px; }
     & h1 { margin: 0 0 4px; font-size: 24px; line-height: 1.3; }
     & .skill-library__lede { margin: 0; color: var(--vp-c-text-2); font-size: 13px; line-height: 1.6; }
     & a { color: var(--vp-c-brand-1); text-decoration: underline; text-underline-offset: 4px; }
     & .skill-library__intro > a { flex-shrink: 0; padding-bottom: 2px; font-size: 13px; }
-    & .skill-library__snapshot { margin: 8px 0 0; color: var(--blog-muted); font-size: 12px; line-height: 1.6; }
-    & .skill-library__toolbar { display: flex; align-items: center; gap: 24px; margin-top: 8px; border-bottom: 1px solid var(--blog-border); }
+    & .skill-library__snapshot { flex-shrink: 0; margin: 8px 0 0; color: var(--blog-muted); font-size: 12px; line-height: 1.6; }
+    & .skill-library__toolbar { display: flex; flex-shrink: 0; align-items: center; gap: 24px; margin-top: 8px; border-bottom: 1px solid var(--blog-border); }
     & .skill-library__tabs { flex-shrink: 0; }
     & .skill-library__tabs :deep(.el-tabs__header) { margin: 0; }
     & .skill-library__tabs :deep(.el-tabs__nav-wrap::after) { display: none; }
@@ -105,20 +124,24 @@ watch(kind, () => { clearFilters(); page.value = 1 })
     & .skill-library__search { flex: 1; max-width: 360px; min-width: 180px; }
     & .skill-library__source { flex-shrink: 0; width: 180px; }
     & :deep(.el-input__wrapper), & :deep(.el-select__wrapper) { min-height: 34px; }
-    & .skill-library__categories { display: flex; flex-wrap: nowrap; gap: 6px; margin: 10px 0 0; padding-bottom: 2px; overflow-x: auto; scrollbar-width: none; }
+    & .skill-library__categories { display: flex; flex-shrink: 0; flex-wrap: nowrap; gap: 6px; margin: 10px 0 0; padding-bottom: 2px; overflow-x: auto; scrollbar-width: none; }
     & .skill-library__categories::-webkit-scrollbar { display: none; }
     & .skill-library__categories .el-button { flex-shrink: 0; height: 30px; padding: 0 10px; font-size: 12px; }
     & .skill-library__categories .el-button + .el-button { margin-left: 0; }
     & .skill-library__categories span { margin-left: 4px; font-size: 10px; }
-    & .skill-library__results-header { display: flex; align-items: center; justify-content: space-between; min-height: 34px; gap: 12px; font-size: 12px; color: var(--blog-muted); scroll-margin-top: calc(var(--vp-nav-height) + 16px); }
+    & .skill-library__results-header { display: flex; flex-shrink: 0; align-items: center; justify-content: space-between; min-height: 34px; gap: 12px; font-size: 12px; color: var(--blog-muted); scroll-margin-top: calc(var(--vp-nav-height) + 16px); }
     & .skill-library__results-header :deep(.el-button) { height: 26px; padding: 0 10px; font-size: 12px; }
-    & .skill-library__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; align-items: stretch; animation: skill-results-enter 220ms ease-out; }
-    & .skill-library__pagination { display: flex; gap: 18px; align-items: center; justify-content: center; margin-top: 24px; font-size: 13px; }
-    & .skill-library__empty { padding: 48px 20px; text-align: center; border: 1px dashed var(--blog-border); border-radius: 10px; }
-    & .skill-library__footer { margin-top: 28px; font-size: 12px; line-height: 1.8; color: var(--blog-muted); }
+    & .skill-library__viewport { display: flex; flex: 1; flex-direction: column; min-height: 0; }
+    & .skill-library__grid { display: grid; flex: 1; min-width: 0; min-height: 0; height: 100%; overflow: hidden; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; align-items: stretch; animation: skill-results-enter 220ms ease-out; }
+    & .skill-library__empty { margin: auto; padding: 48px 20px; text-align: center; border: 1px dashed var(--blog-border); border-radius: 10px; }
+    & .skill-library__footer { display: flex; flex-shrink: 0; align-items: center; justify-content: space-between; gap: 16px; min-height: 48px; font-size: 12px; line-height: 1.8; color: var(--blog-muted); }
+    & .skill-library__footer p { flex: 1; min-width: 0; margin: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+    & .skill-library__pagination { flex-shrink: 0; }
     @media (max-width: 1200px) { & .skill-library__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-    @media (max-width: 900px) { & .skill-library__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
     @media (max-width: 900px) {
+        & .skill-library__footer p { display: none; }
+        & .skill-library__footer { justify-content: center; }
+        & .skill-library__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         & .skill-library__toolbar { align-items: stretch; flex-direction: column; gap: 0; }
         & .skill-library__filters { padding: 8px 0; }
     }

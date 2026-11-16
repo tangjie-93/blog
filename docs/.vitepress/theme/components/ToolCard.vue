@@ -1,5 +1,5 @@
 <template>
-    <article class="tool-card">
+    <article class="tool-card" :class="{ 'tool-card--compact': compact }">
         <div class="tool-card__meta"><span>{{ entry.kind === 'plugin' ? '插件 · Plugin' : '工具连接 · MCP' }}</span><span>{{ entry.source }}</span></div>
         <h2>{{ entry.name }}</h2>
         <p>{{ entry.summary }}</p>
@@ -29,7 +29,7 @@ import type { ToolboxEntry } from '../../../../src/types/toolbox'
 import { ref } from 'vue'
 import { ElButton, ElDialog } from 'element-plus'
 
-const props = defineProps<{ entry: ToolboxEntry }>()
+const props = defineProps<{ entry: ToolboxEntry; compact?: boolean }>()
 const dialogCreated = ref(false)
 const dialogVisible = ref(false)
 const copyMessage = ref('')
@@ -74,5 +74,16 @@ async function copyPrompt(): Promise<void> {
     & pre { padding: 14px; margin: 10px 0; border-radius: 8px; background: var(--vp-c-bg); white-space: pre-wrap; font-size: 13px; line-height: 1.8; user-select: text; color: var(--vp-c-text-1); }
     & small { color: var(--blog-muted); }
     & pre:focus-visible { outline: 2px solid var(--vp-c-brand-1); outline-offset: 3px; }
+}
+/* 整屏分页时卡片高度由屏幕容量决定；场景列表改到弹框里查看，卡片只留摘要与状态。 */
+.tool-card--compact {
+    padding: 14px 16px;
+    & .tool-card__meta { gap: 6px; font-size: 11px; line-height: 18px; }
+    & h2 { display: -webkit-box; margin: 6px 0 2px; overflow: hidden; font-size: 16px; line-height: 1.4; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+    & > p:not(.tool-card__status) { display: -webkit-box; margin: 6px 0; overflow: hidden; font-size: 13px; line-height: 1.55; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+    & .tool-card__status { margin: 4px 0 0; padding: 4px 8px; border: 0; background: var(--vp-c-bg-soft); font-size: 11px; line-height: 1.5; }
+    & > ul { display: none; }
+    & .tool-card__action { padding-top: 4px; }
+    & .tool-card__action .el-button { min-height: 28px; font-size: 13px; }
 }
 </style>

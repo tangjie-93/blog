@@ -7,7 +7,8 @@ import { createMarkdownRenderer } from 'vitepress'
 test('every article exposes an anchored section for the default outline', async () => {
   const root = resolve('docs/articles')
   const markdown = await createMarkdownRenderer(resolve('docs'))
-  const articles = readdirSync(root, { recursive: true }).filter(file => file.endsWith('.md'))
+  // docs/articles/README.md 是归档列表页，不是正文文章，不参与目录检查。
+  const articles = readdirSync(root, { recursive: true }).filter(file => file.endsWith('.md') && file !== 'README.md')
   const missing = []
   for (const file of articles) {
     const source = readFileSync(resolve(root, file), 'utf8')

@@ -1,0 +1,20 @@
+import assert from 'node:assert/strict'
+import test from 'node:test'
+import { fitPageSize } from './pageFit.ts'
+
+test('fit page size fills the widest whole number of cards that fits the viewport', () => {
+    assert.deepEqual(fitPageSize(1440, 900, 300, 180, 16, 16), { columns: 4, rows: 4, pageSize: 16, rowHeight: 213 })
+    assert.deepEqual(fitPageSize(1920, 1080, 300, 180, 16, 16), { columns: 6, rows: 5, pageSize: 30, rowHeight: 203 })
+})
+
+test('fit page size never drops below a single card and ignores negative space', () => {
+    assert.deepEqual(fitPageSize(0, 0, 300, 180, 16, 16), { columns: 1, rows: 1, pageSize: 1, rowHeight: 0 })
+    assert.deepEqual(fitPageSize(-20, -40, 300, 180, -8, -8), { columns: 1, rows: 1, pageSize: 1, rowHeight: 0 })
+})
+
+test('fit page size shares leftover height across rows instead of stretching one row', () => {
+    const { rows, rowHeight } = fitPageSize(1200, 640, 280, 170, 12, 12)
+    assert.equal(rows, 3)
+    assert.ok(rowHeight * rows + (rows - 1) * 12 <= 640)
+    assert.ok(rowHeight >= 170)
+})

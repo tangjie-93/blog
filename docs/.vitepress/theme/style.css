@@ -282,6 +282,40 @@ html {
     max-width: var(--blog-page-max-width);
     margin-inline: auto;
 }
+/* 归档与工具箱铺满一屏：页面占满视口高度，分页数量由组件测量网格可用空间决定。
+   窄屏一屏放不下几项，900px 以下退回普通滚动列表（与 useFitPageSize 的断点一致）。 */
+@media (min-width: 900px) {
+    .Layout:is(.blog-archive--screen, .blog-toolbox) {
+        height: 100vh;
+        height: 100dvh;
+        overflow: hidden;
+
+        & > .VPContent {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            min-height: 0;
+            width: 100%;
+            max-width: none;
+        }
+        & .VPPage {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            min-height: 0;
+            width: 100%;
+        }
+        /* page 布局下 VitePress 再包两层 div，逐层传递高度才能让列表测量到固定可用空间。 */
+        & .VPPage > *,
+        & .VPPage > * > * {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            min-height: 0;
+            width: 100%;
+        }
+    }
+}
 .blog-archive .VPDoc, .blog-guestbook .VPDoc, .blog-resources .VPDoc {
     & .vp-doc > div > h1 { margin: 0; padding: 0; font-size: clamp(26px, 2vw, 32px); letter-spacing: -.6px; line-height: 1.4; }
     & .vp-doc > div > p { margin: 8px 0 28px; color: var(--vp-c-text-2); font-size: 14px; }

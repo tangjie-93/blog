@@ -1,5 +1,5 @@
 <template>
-    <article class="skill-card">
+    <article class="skill-card" :class="{ 'skill-card--compact': compact }">
         <div class="skill-card__meta"><span>{{ categoryTitle }}</span><span>{{ sourceLabel }}</span></div>
         <h2>{{ skill.title }}</h2>
         <code class="skill-card__name">{{ skillInvocation(skill) }}</code>
@@ -30,7 +30,7 @@ import { computed, ref } from 'vue'
 import { ElButton, ElDialog } from 'element-plus'
 import { skillCategories, skillInvocation } from '../skillCatalog'
 
-const props = defineProps<{ skill: SkillEntry }>()
+const props = defineProps<{ skill: SkillEntry; compact?: boolean }>()
 const copyMessage = ref('')
 const dialogCreated = ref(false)
 const dialogVisible = ref(false)
@@ -59,7 +59,8 @@ async function copyPrompt(): Promise<void> {
 .skill-card {
     display: flex; flex-direction: column; min-width: 0; padding: 16px; border: 1px solid var(--blog-border); border-radius: 8px; background: var(--blog-panel); overflow-wrap: anywhere;
     & .skill-card__meta { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; color: var(--blog-muted); font-size: 12px; }
-    & h2 { margin: 8px 0 4px; font-size: 17px; line-height: 1.5; }
+    & > h2 { display: -webkit-box; margin: 8px 0 4px; overflow: hidden; font-size: 17px; line-height: 1.5; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+    & > p { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
     & .skill-card__action { margin-top: auto; border-top: 1px solid var(--blog-border); padding-top: 6px; }
     & .skill-card__action .el-button { padding-inline: 0; }
 }
@@ -77,5 +78,15 @@ async function copyPrompt(): Promise<void> {
     & pre { padding: 14px; margin: 10px 0; border-radius: 8px; background: var(--vp-c-bg); white-space: pre-wrap; font-size: 13px; line-height: 1.8; user-select: text; color: var(--vp-c-text-1); }
     & small { color: var(--blog-muted); }
     & pre:focus-visible { outline: 2px solid var(--vp-c-brand-1); outline-offset: 3px; }
+}
+/* 整屏分页时卡片高度由屏幕容量决定，压缩行高与间距以保证内容不被裁切。 */
+.skill-card--compact {
+    padding: 14px 16px;
+    & .skill-card__meta { gap: 6px; font-size: 11px; line-height: 18px; }
+    & > h2 { margin: 6px 0 2px; font-size: 16px; line-height: 1.4; }
+    & .skill-card__name { font-size: 11px; line-height: 18px; }
+    & > p { margin: 6px 0; font-size: 13px; line-height: 1.55; }
+    & .skill-card__action { padding-top: 4px; }
+    & .skill-card__action .el-button { min-height: 28px; font-size: 13px; }
 }
 </style>

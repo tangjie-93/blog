@@ -1,71 +1,105 @@
 <template>
-    <section ref="listElement" class="blog-list" aria-label="文章列表">
+    <section ref="listElement" class="blog-list" :class="{ 'blog-list--fit': fitActive }" aria-label="文章列表">
         <div class="blog-list__toolbar">
             <p class="blog-list__count" role="status" aria-live="polite" aria-atomic="true">
                 <strong>共 {{ filteredPosts.length }} 篇文章</strong>
-                <span v-if="filteredPosts.length">当前 {{ (page - 1) * PAGE_SIZE + 1 }}–{{ Math.min(page * PAGE_SIZE, filteredPosts.length) }} 篇</span>
+                <span v-if="filteredPosts.length">当前 {{ (page - 1) * pageSize + 1 }}–{{ Math.min(page * pageSize, filteredPosts.length) }} 篇</span>
             </p>
-            <nav v-if="pageCount > 1" class="blog-list__pagination" aria-label="文章分页">
-                <ElButton native-type="button" :disabled="page === 1" @click="changePage(page - 1)">上一页</ElButton>
-                <ElSelect :model-value="page" class="blog-list__page-select" aria-label="选择页码" @change="changePage">
-                    <ElOption v-for="number in pageCount" :key="number" :value="number" :label="`第 ${number} / ${pageCount} 页`" />
-                </ElSelect>
-                <ElButton native-type="button" :disabled="page === pageCount" @click="changePage(page + 1)">下一页</ElButton>
-            </nav>
         </div>
-        <div :key="`${props.tag || ''}-${props.type || ''}-${page}`" class="blog-list__grid">
-            <article v-for="(post, index) in visiblePosts" :key="post.url" class="blog-list__card">
-                <div class="blog-list__eyebrow">
-                    <span>{{ post.type || '技术笔记' }}</span>
-                    <span class="blog-list__index" aria-hidden="true">{{ String((page - 1) * PAGE_SIZE + index + 1).padStart(2, '0') }}</span>
-                </div>
-                <h2 class="blog-list__title"><a :href="withBase(post.url)">{{ displayTitle(post.title) }}<span class="blog-list__arrow" aria-hidden="true">↗</span></a></h2>
-                <p v-if="post.note" class="blog-list__note">{{ post.note }}</p>
-                <div class="blog-list__meta">
-                    <span v-for="tag in post.tags" :key="tag" class="blog-list__tag">{{ tag }}</span>
-                    <time v-if="post.date" :datetime="post.date">{{ post.date }}</time>
-                </div>
-            </article>
+        <div ref="gridViewport" class="blog-list__viewport">
+            <div v-if="filteredPosts.length" :key="`${props.tag || ''}-${props.type || ''}-${page}`" class="blog-list__grid" :style="gridStyle">
+                <article v-for="(post, index) in visiblePosts" :key="post.url" class="blog-list__card">
+                    <div class="blog-list__eyebrow">
+                        <span>{{ post.type || '技术笔记' }}</span>
+                        <span class="blog-list__index" aria-hidden="true">{{ String((page - 1) * pageSize + index + 1).padStart(2, '0') }}</span>
+                    </div>
+                    <h2 class="blog-list__title"><a :href="withBase(post.url)">{{ displayTitle(post.title) }}<span class="blog-list__arrow" aria-hidden="true">↗</span></a></h2>
+                    <p v-if="post.note" class="blog-list__note">{{ post.note }}</p>
+                    <div class="blog-list__meta">
+                        <span v-for="tag in post.tags" :key="tag" class="blog-list__tag">{{ tag }}</span>
+                        <time v-if="post.date" :datetime="post.date">{{ post.date }}</time>
+                    </div>
+                </article>
+            </div>
+            <p v-else class="blog-list__empty">暂无文章</p>
         </div>
-        <p v-if="!filteredPosts.length" class="blog-list__empty">暂无文章</p>
+        <nav v-if="pageCount > 1" class="blog-list__pagination" aria-label="文章分页">
+            <ElButton native-type="button" :disabled="page === 1" @click="changePage(page - 1)">上一页</ElButton>
+            <ElSelect :model-value="page" class="blog-list__page-select" aria-label="选择页码" @change="changePage">
+                <ElOption v-for="number in pageCount" :key="number" :value="number" :label="`第 ${number} / ${pageCount} 页`" />
+            </ElSelect>
+            <ElButton native-type="button" :disabled="page === pageCount" @click="changePage(page + 1)">下一页</ElButton>
+        </nav>
     </section>
 </template>
 
 <script setup lang="ts">
-import type { BlogListProps } from '../../../../src/types/blog'
 import { computed, nextTick, ref, watch } from 'vue'
 import { ElButton, ElSelect, ElOption } from 'element-plus'
 import { withBase } from 'vitepress'
 import { data as posts } from '../../posts.data'
 import { filterPosts } from '../blog'
+import { useFitPageSize } from '../useFitPageSize'
 
-const props = defineProps<BlogListProps>()
-const PAGE_SIZE = 24
+// 就地声明 props：开发服务器会缓存跨文件类型解析结果，若沿用导入的 BlogListProps，
+// 运行中的服务可能仍在用旧字段表，新加的 fitScreen 会变成普通属性而非布尔 prop，整屏分页静默失效。
+const props = defineProps<{
+    tag?: string
+    type?: string
+    /** 铺满一屏：按容器可用空间计算每页数量，由调用页负责提供固定高度。 */
+    fitScreen?: boolean
+}>()
 const page = ref(1)
 const listElement = ref<HTMLElement | null>(null)
+const gridViewport = ref<HTMLElement | null>(null)
 const filteredPosts = computed(() => filterPosts(posts, props))
-const pageCount = computed(() => Math.ceil(filteredPosts.value.length / PAGE_SIZE))
-const visiblePosts = computed(() => filteredPosts.value.slice((page.value - 1) * PAGE_SIZE, page.value * PAGE_SIZE))
+const { pageSize, gridStyle, active: fitActive } = useFitPageSize(gridViewport, {
+    enabled: props.fitScreen === true,
+    fallbackSize: 24,
+    minCardWidth: 300,
+    minCardHeight: 176,
+    minViewportWidth: 900
+})
+const pageCount = computed(() => Math.max(1, Math.ceil(filteredPosts.value.length / pageSize.value)))
+const visiblePosts = computed(() => filteredPosts.value.slice((page.value - 1) * pageSize.value, page.value * pageSize.value))
 
 /** 归档卡片已用右上角编号表示顺序，标题保留正文名称即可。 */
 function displayTitle(title: string): string {
     return title.replace(/^\d+[、.．]\s*/, '')
 }
 
-/** 切换到指定页，待列表更新后回到开头，避免用户继续停留在上一页底部。 */
+/** 切换到指定页；整屏模式下列表已完整可见，无需滚动。 */
 async function changePage(nextPage: number): Promise<void> {
     page.value = Math.max(1, Math.min(nextPage, pageCount.value))
     await nextTick()
-    listElement.value?.scrollIntoView({ block: 'start', behavior: 'instant' })
+    if (!fitActive.value) listElement.value?.scrollIntoView({ block: 'start', behavior: 'instant' })
 }
 
 watch([() => props.tag, () => props.type], () => { page.value = 1 })
+watch(pageSize, () => { page.value = Math.min(page.value, pageCount.value) })
 </script>
 
 <style scoped>
 .blog-list {
     scroll-margin-top: calc(var(--vp-nav-height) + 12px);
 
+    &.blog-list--fit {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        min-height: 0;
+        padding: 16px var(--blog-page-gutter) 12px;
+
+        & .blog-list__toolbar { position: static; margin-bottom: 12px; padding: 10px 16px; }
+        & .blog-list__viewport { display: flex; flex: 1; min-height: 0; }
+        & .blog-list__grid { flex: 1; min-width: 0; min-height: 0; height: 100%; overflow: hidden; }
+        & .blog-list__card { padding: 16px 18px; overflow: hidden; }
+        & .blog-list__eyebrow { margin-bottom: 8px; }
+        & .blog-list__title { display: -webkit-box; overflow: hidden; font-size: 16px; line-height: 1.5; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+        & .blog-list__note { margin-top: 6px; font-size: 13px; line-height: 1.55; -webkit-line-clamp: 2; }
+        & .blog-list__meta { padding-top: 12px; gap: 6px; }
+        & .blog-list__empty { margin: auto; }
+    }
     & .blog-list__toolbar {
         display: flex;
         position: sticky;
@@ -199,10 +233,12 @@ watch([() => props.tag, () => props.type], () => { page.value = 1 })
     & .blog-list__pagination {
         display: flex;
         align-items: center;
+        justify-content: center;
         gap: 8px;
+        padding-top: 12px;
         font-variant-numeric: tabular-nums;
-
     }
+    &.blog-list--fit .blog-list__pagination { flex-shrink: 0; }
     & .el-button { min-height: 44px; margin: 0; }
     & .blog-list__page-select { width: 148px; }
     & :deep(.el-select__wrapper) { min-height: 44px; }

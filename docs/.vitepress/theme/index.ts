@@ -41,12 +41,17 @@ function numberDocumentHeadings() {
     })
 }
 
+/** pageClass 可同时声明多个类名，逐项匹配以免归档页误挂评论区。 */
+function hasPageClass(pageClass: unknown, name: string): boolean {
+    return String(pageClass ?? '').split(/\s+/).includes(name)
+}
+
 export default {
     extends: DefaultTheme,
     Layout: () => {
         const { page } = useData()
         return h(ElConfigProvider, { locale: zhCn }, () => h(DefaultTheme.Layout, null, {
-            'doc-after': () => page.value.relativePath.startsWith('articles/') && page.value.frontmatter.pageClass !== 'blog-archive' ? h(Valine) : null,
+            'doc-after': () => page.value.relativePath.startsWith('articles/') && !hasPageClass(page.value.frontmatter.pageClass, 'blog-archive') ? h(Valine) : null,
         }))
     },
     /** 保留旧文章中的组件标签，使迁移无需修改正文。 */
