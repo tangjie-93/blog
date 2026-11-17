@@ -19,6 +19,7 @@ async function loadComponent(name) {
 
 const RagFlow = await loadComponent('RagFlow')
 const RagDemoFlow = await loadComponent('RagDemoFlow')
+const IngestStateFlow = await loadComponent('IngestStateFlow')
 
 for (const mode of ['entry', 'ingest', 'ask']) {
   test(`demo flow renders actual function order and labeled branches (${mode})`, async () => {
@@ -61,6 +62,35 @@ for (const mode of ['entry', 'ingest', 'ask']) {
     }
   })
 }
+
+test('ingest state flow renders every state and transition', async () => {
+  const html = await renderToString(createSSRApp(IngestStateFlow))
+  assert.match(html, /<figure[^>]+aria-label=/)
+  assert.match(html, /<svg[^>]+role="img"/)
+  assert.match(html, /marker-end="url\(#state-arrow-/)
+  const nodes = [...html.matchAll(/data-node="([^"]+)"/g)].map(match => match[1])
+  const edges = [...html.matchAll(/data-from="([^"]+)" data-to="([^"]+)"/g)].map(match => [match[1], match[2]])
+  assert.equal(nodes[0], 'pending')
+  for (const [from, to] of edges) {
+    assert.ok(nodes.includes(from), `missing source ${from}`)
+    assert.ok(nodes.includes(to), `missing target ${to}`)
+  }
+  const reachable = new Set([nodes[0]])
+  for (let i = 0; i < nodes.length; i++) {
+    for (const [from, to] of edges) if (reachable.has(from)) reachable.add(to)
+  }
+  assert.equal(reachable.size, nodes.length, 'all states are connected to pending')
+  const hasEdge = (from, to) => edges.some(edge => edge[0] === from && edge[1] === to)
+  assert.ok(hasEdge('pending', 'processing'))
+  assert.ok(hasEdge('finalizing', 'completed'))
+  for (const stage of ['processing', 'indexing', 'finalizing']) assert.ok(hasEdge(stage, 'failed'))
+  for (const stage of ['processing', 'indexing']) assert.ok(hasEdge(stage, 'cancelled'))
+  assert.ok(hasEdge('completed', 'deleting'))
+  assert.ok(hasEdge('failed', 'deleting'))
+  assert.ok(hasEdge('deleting', 'deleted'))
+  assert.match(html, /cancelled 与 deleted 是终态/)
+  assert.match(html, /不会自己回到 pending/)
+})
 
 for (const detailed of [false, true]) {
   test(`RAG flow renders ordered, accessible lanes on the server (detailed=${detailed})`, async () => {
