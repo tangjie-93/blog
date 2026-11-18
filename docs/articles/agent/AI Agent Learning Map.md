@@ -10,48 +10,48 @@ note: "按基础概念、核心机制、工程化、前端结合与项目实践�
 
 ## 1、阶段 1：基础概念
 
-- [x] `LLM` 基本能力与限制
-- [x] `Prompt Engineering`（见 [`LLM` 与 `Agent` 基础](./01-LLM%E4%B8%8EAgent%E5%9F%BA%E7%A1%80.md)）
-- [x] `Tool Calling` / `Function Calling`（见 [`Tool` Use](./02%E3%80%81Tool%20Use%20%E2%80%94%20%E5%A4%9A%E5%8A%A0%E4%B8%80%E4%B8%AA%E5%B7%A5%E5%85%B7%EF%BC%8C%E5%8F%AA%E5%8A%A0%E4%B8%80%E8%A1%8C.md)）
-- [x] `Structured Output`（见 [`LLM` 与 `Agent` 基础](./01-LLM%E4%B8%8EAgent%E5%9F%BA%E7%A1%80.md)）
-- [x] `Embeddings` / `RAG`（见 [`AI` 知识图谱](/articles/ai/)）
+- `LLM` 基本能力与限制
+- `Prompt Engineering`（见 [`LLM` 与 `Agent` 基础](./01-LLM%E4%B8%8EAgent%E5%9F%BA%E7%A1%80.md)）
+- `Tool Calling` / `Function Calling`（见 [`Tool` Use](./02%E3%80%81Tool%20Use%20%E2%80%94%20%E5%A4%9A%E5%8A%A0%E4%B8%80%E4%B8%AA%E5%B7%A5%E5%85%B7%EF%BC%8C%E5%8F%AA%E5%8A%A0%E4%B8%80%E8%A1%8C.md)）
+- `Structured Output`（见 [`LLM` 与 `Agent` 基础](./01-LLM%E4%B8%8EAgent%E5%9F%BA%E7%A1%80.md)）
+- `Embeddings` / `RAG`（见 [`AI` 知识图谱](/articles/ai/)）
 
 ## 2、阶段 2：`Agent` 核心机制
 
-- [x] `Agent Loop`
-- [x] 任务规划与分解
-- [x] 工具选择
-- [x] 短期记忆与长期记忆
-- [ ] 反思与自我修正（见 `Agent` Patterns 的 `Evaluator-Optimizer`）
-- [x] `Human-in-the-loop`
+- `Agent Loop`
+- 任务规划与分解
+- 工具选择
+- 短期记忆与长期记忆
+- 反思与自我修正（见 `Agent` Patterns 的 `Evaluator-Optimizer`）
+- `Human-in-the-loop`
 
 ## 3、阶段 3：工程化
 
-- [x] 状态管理
-- [x] 错误恢复
-- [x] 评测与回归测试
-- [x] 成本控制
-- [x] 日志与可观测性
-- [x] 权限与安全边界
-- [x] 持久化执行与跨进程恢复（见 [`Durable Execution`](./24%E3%80%81Durable%20Execution%20%E2%80%94%20%E8%AE%A9%E9%95%BF%E4%BB%BB%E5%8A%A1%E5%8F%AF%E6%9A%82%E5%81%9C%E3%80%81%E5%8F%AF%E6%81%A2%E5%A4%8D.md)）
-- [x] `Prompt Injection` 与沙箱防护（见 [`Agent` Security](./23%E3%80%81Agent%20Security%20%E2%80%94%20%E4%BB%8E%E6%8F%90%E7%A4%BA%E6%B3%A8%E5%85%A5%E5%88%B0%E6%B2%99%E7%AE%B1%E9%9A%94%E7%A6%BB.md)）
+- 状态管理
+- 错误恢复
+- 评测与回归测试
+- 成本控制
+- 日志与可观测性
+- 权限与安全边界
+- 持久化执行与跨进程恢复（见 [`Durable Execution`](./24%E3%80%81Durable%20Execution%20%E2%80%94%20%E8%AE%A9%E9%95%BF%E4%BB%BB%E5%8A%A1%E5%8F%AF%E6%9A%82%E5%81%9C%E3%80%81%E5%8F%AF%E6%81%A2%E5%A4%8D.md)）
+- `Prompt Injection` 与沙箱防护（见 [`Agent` Security](./23%E3%80%81Agent%20Security%20%E2%80%94%20%E4%BB%8E%E6%8F%90%E7%A4%BA%E6%B3%A8%E5%85%A5%E5%88%B0%E6%B2%99%E7%AE%B1%E9%9A%94%E7%A6%BB.md)）
 
 ## 4、阶段 4：前端结合点
 
-- [x] `Chat UI` 设计
-- [x] 多步任务进度展示
-- [x] 可解释的工具调用过程
-- [x] 人机协作交互
-- [ ] 浏览器自动化界面
-- [ ] 知识库检索体验
+- `Chat UI` 设计
+- 多步任务进度展示
+- 可解释的工具调用过程
+- 人机协作交互
+- 浏览器自动化界面
+- 知识库检索体验
 
 ## 5、阶段 5：项目实践
 
-- [ ] 个人 `AI` 情报助手
-- [ ] `Obsidian` 知识库助手
-- [ ] 前端代码审查 `Agent`
-- [ ] 网页信息采集与摘要 `Agent`
-- [ ] 个人每日规划和复盘 `Agent`
+- 个人 `AI` 情报助手
+- `Obsidian` 知识库助手
+- 前端代码审查 `Agent`
+- 网页信息采集与摘要 `Agent`
+- 个人每日规划和复盘 `Agent`
 
 ## 6、扩展生态
 

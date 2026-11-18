@@ -3870,31 +3870,31 @@ public class PageResult<T> {
 ## 学习检查清单
 
 ### Java Web基础
-- [ ] 理解HTTP协议在Java中的处理
-- [ ] 掌握Servlet生命周期
-- [ ] 能够创建Filter和Listener
-- [ ] 了解JSP基本语法（可选）
-- [ ] 掌握Tomcat配置和部署
+- 理解HTTP协议在Java中的处理
+- 掌握Servlet生命周期
+- 能够创建Filter和Listener
+- 了解JSP基本语法（可选）
+- 掌握Tomcat配置和部署
 
 ### Spring Framework核心
-- [ ] 理解IoC和DI的概念
-- [ ] 掌握Bean的创建方式（注解、XML、Java Config）
-- [ ] 掌握依赖注入方式（构造器、Setter、字段）
-- [ ] 理解AOP的概念和使用场景
-- [ ] 能够创建切面和通知
-- [ ] 掌握Bean生命周期
-- [ ] 理解事务管理和传播行为
-- [ ] 掌握SpEL表达式
+- 理解IoC和DI的概念
+- 掌握Bean的创建方式（注解、XML、Java Config）
+- 掌握依赖注入方式（构造器、Setter、字段）
+- 理解AOP的概念和使用场景
+- 能够创建切面和通知
+- 掌握Bean生命周期
+- 理解事务管理和传播行为
+- 掌握SpEL表达式
 
 ### Spring MVC
-- [ ] 理解MVC模式
-- [ ] 掌握@Controller和@RequestMapping
-- [ ] 能够绑定请求参数（基本类型、对象、JSON）
-- [ ] 掌握数据验证（@Valid）
-- [ ] 能够实现全局异常处理
-- [ ] 能够创建和使用拦截器
-- [ ] 掌握RESTful API设计
-- [ ] 能够实现统一返回格式
+- 理解MVC模式
+- 掌握@Controller和@RequestMapping
+- 能够绑定请求参数（基本类型、对象、JSON）
+- 掌握数据验证（@Valid）
+- 能够实现全局异常处理
+- 能够创建和使用拦截器
+- 掌握RESTful API设计
+- 能够实现统一返回格式
 
 ---
 

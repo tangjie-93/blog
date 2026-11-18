@@ -3731,46 +3731,46 @@ CREATE TABLE comment (
 ## 4.8 学习检查清单
 
 ### Spring Boot核心
-- [ ] 能使用Spring Initializr创建项目
-- [ ] 理解项目结构和各目录的作用
-- [ ] 理解`@SpringBootApplication`自动配置原理
-- [ ] 掌握Starter依赖管理
-- [ ] 熟练使用application.yml配置
-- [ ] 掌握Profile多环境管理
-- [ ] 理解内嵌Web服务器配置
-- [ ] 能编写RESTful API
+- 能使用Spring Initializr创建项目
+- 理解项目结构和各目录的作用
+- 理解`@SpringBootApplication`自动配置原理
+- 掌握Starter依赖管理
+- 熟练使用application.yml配置
+- 掌握Profile多环境管理
+- 理解内嵌Web服务器配置
+- 能编写RESTful API
 
 ### 分层架构
-- [ ] 理解Controller/Service/Mapper三层架构
-- [ ] 掌握DTO/VO/Entity的区别和使用
-- [ ] 能实现统一响应封装
-- [ ] 能实现全局异常处理
-- [ ] 掌握参数校验（@Valid/@Validated）
+- 理解Controller/Service/Mapper三层架构
+- 掌握DTO/VO/Entity的区别和使用
+- 能实现统一响应封装
+- 能实现全局异常处理
+- 掌握参数校验（@Valid/@Validated）
 
 ### 常用集成
-- [ ] 掌握Spring Boot + MyBatis/MyBatis-Plus集成
-- [ ] 掌握Spring Boot + Redis集成（缓存注解）
-- [ ] 掌握文件上传/下载实现
-- [ ] 掌握日志配置（Logback）
-- [ ] 掌握JUnit 5 + Mockito单元测试
+- 掌握Spring Boot + MyBatis/MyBatis-Plus集成
+- 掌握Spring Boot + Redis集成（缓存注解）
+- 掌握文件上传/下载实现
+- 掌握日志配置（Logback）
+- 掌握JUnit 5 + Mockito单元测试
 
 ### 安全框架
-- [ ] 理解Spring Security核心概念
-- [ ] 掌握认证与授权流程
-- [ ] 能集成JWT实现无状态认证
-- [ ] 理解OAuth2.0授权流程
-- [ ] 掌握RBAC权限模型实现
-- [ ] 掌握方法级权限控制
+- 理解Spring Security核心概念
+- 掌握认证与授权流程
+- 能集成JWT实现无状态认证
+- 理解OAuth2.0授权流程
+- 掌握RBAC权限模型实现
+- 掌握方法级权限控制
 
 ### 接口文档
-- [ ] 掌握Swagger/OpenAPI 3注解使用
-- [ ] 掌握Knife4j配置和使用
-- [ ] 能生成完整的API文档
+- 掌握Swagger/OpenAPI 3注解使用
+- 掌握Knife4j配置和使用
+- 能生成完整的API文档
 
 ### 部署运维
-- [ ] 掌握Maven打包
-- [ ] 了解Actuator监控
-- [ ] 了解Docker部署
+- 掌握Maven打包
+- 了解Actuator监控
+- 了解Docker部署
 
 ---
 

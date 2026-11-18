@@ -294,12 +294,12 @@ CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 
 ### 11.1 第一周任务清单
 
-- [ ] 安装 `FastAPI` 和 Uvicorn
-- [ ] 阅读 `FastAPI` 官方文档 "Tutorial - User Guide"
-- [ ] 创建第一个 `FastAPI` 应用
-- [ ] 掌握路由定义和请求参数处理
-- [ ] 学习 `Pydantic` 模型定义
-- [ ] 了解依赖注入系统
+- 安装 `FastAPI` 和 Uvicorn
+- 阅读 `FastAPI` 官方文档 "Tutorial - User Guide"
+- 创建第一个 `FastAPI` 应用
+- 掌握路由定义和请求参数处理
+- 学习 `Pydantic` 模型定义
+- 了解依赖注入系统
 
 ---
 

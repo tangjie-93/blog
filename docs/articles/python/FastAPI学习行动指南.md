@@ -19,14 +19,14 @@ note: "从基础接口、数据库到认证、测试和部署的六周行动计�
 
 ### 1.2 任务清单
 
-- [ ] **安装 `FastAPI` 和 Uvicorn**
+- **安装 `FastAPI` 和 Uvicorn**
   ```bash
   pip install fastapi uvicorn
   # 或使用 Poetry
   poetry add fastapi uvicorn
   ```
 
-- [ ] **阅读 `FastAPI` 官方文档 "Tutorial - User Guide"**
+- **阅读 `FastAPI` 官方文档 "Tutorial - User Guide"**
   - 网址：https://fastapi.tiangolo.com/tutorial/
   - 重点章节：
     - First Steps
@@ -36,23 +36,23 @@ note: "从基础接口、数据库到认证、测试和部署的六周行动计�
     - Query Parameters and String Validations
     - Path Parameters and Numeric Validations
 
-- [ ] **创建第一个 `FastAPI` 应用**
+- **创建第一个 `FastAPI` 应用**
   - 创建 `main.py`
   - 实现基本的 `GET`/`POST` 路由
   - 运行并访问 `/docs` 查看自动文档
 
-- [ ] **掌握路由定义和请求参数处理**
+- **掌握路由定义和请求参数处理**
   - 路径参数：`@app.get("/items/{item_id}")`
   - 查询参数：`def read_item(q: str = None)`
   - 请求体：使用 `Pydantic` 模型
 
-- [ ] **学习 `Pydantic` 模型定义**
+- **学习 `Pydantic` 模型定义**
   - BaseModel 基础使用
   - 字段验证（Field）
   - 嵌套模型
   - 模型继承
 
-- [ ] **了解依赖注入系统**
+- **了解依赖注入系统**
   - `Depends()` 基础用法
   - 子依赖
   - 类作为依赖
@@ -77,29 +77,29 @@ note: "从基础接口、数据库到认证、测试和部署的六周行动计�
 
 ### 2.2 任务清单
 
-- [ ] **学习 `SQLModel` 基础**
+- **学习 `SQLModel` 基础**
   - 阅读 `/FastAPI/doc/SQLModel详解.md`
   - 模型定义（`table=True`）
   - 字段类型和约束
 
-- [ ] **数据库连接与会话管理**
+- **数据库连接与会话管理**
   - 创建数据库引擎
   - 使用 `Session` 进行 `CRUD`
   - 依赖注入获取会话
 
-- [ ] **实现完整的 `CRUD` `API`**
+- **实现完整的 `CRUD` `API`**
   - Create: `POST` 创建资源
   - Read: `GET` 查询（单条/列表）
   - Update: `PUT/PATCH` 更新
   - Delete: DELETE 删除
 
-- [ ] **学习关系模型**
+- **学习关系模型**
   - 一对一关系
   - 一对多关系
   - 多对多关系
   - 使用 `Relationship()` 和 `back_populates`
 
-- [ ] **数据库迁移（Alembic）**
+- **数据库迁移（Alembic）**
   - 安装：`pip install alembic`
   - 初始化：`alembic init alembic`
   - 创建迁移：`alembic revision --autogenerate`
@@ -125,28 +125,28 @@ note: "从基础接口、数据库到认证、测试和部署的六周行动计�
 
 ### 3.2 任务清单
 
-- [ ] **环境变量管理**
+- **环境变量管理**
   - 使用 `pydantic-settings`
   - 创建 `.env` 文件
   - 区分开发/生产配置
 
-- [ ] **密码安全**
+- **密码安全**
   - 使用 `passlib` 进行密码哈希
   - bcrypt 算法
   - 验证密码
 
-- [ ] **`JWT` 认证**
+- **`JWT` 认证**
   - 安装：`pip install python-jose`
   - `Token` 生成与验证
   - 登录接口实现
   - 受保护路由
 
-- [ ] **OAuth2 密码流程**
+- **OAuth2 密码流程**
   - `OAuth2PasswordBearer`
   - `OAuth2PasswordRequestForm`
   - 集成 Swagger `UI` 认证
 
-- [ ] **权限控制**
+- **权限控制**
   - 基于角色的权限（RBAC）
   - 依赖注入实现权限检查
   - 全局异常处理
@@ -172,27 +172,27 @@ note: "从基础接口、数据库到认证、测试和部署的六周行动计�
 
 ### 4.2 任务清单
 
-- [ ] **单元测试**
+- **单元测试**
   - 使用 `TestClient`
   - 测试路由和响应
   - 断言状态码和数据
 
-- [ ] **异步测试**
+- **异步测试**
   - `pytest-asyncio`
   - `AsyncClient`
   - 测试异步函数
 
-- [ ] **数据库测试**
+- **数据库测试**
   - 测试数据库配置
   - Fixture 使用
   - 依赖覆盖（`dependency_overrides`）
 
-- [ ] **`Docker` 部署**
+- **`Docker` 部署**
   - 编写 `Dockerfile`
   - docker-compose 配置
   - 多阶段构建优化
 
-- [ ] **生产环境配置**
+- **生产环境配置**
   - Gunicorn + Uvicorn
   - 环境变量配置
   - 日志配置
@@ -216,28 +216,28 @@ note: "从基础接口、数据库到认证、测试和部署的六周行动计�
 
 ### 5.2 任务清单
 
-- [ ] **中间件**
+- **中间件**
   - 请求日志中间件
   - `CORS` 配置
   - 自定义中间件
 
-- [ ] **后台任务**
+- **后台任务**
   - `BackgroundTasks`
   - 发送邮件
   - 异步处理
 
-- [ ] **`WebSocket`**
+- **`WebSocket`**
   - 实时通信
   - ConnectionManager
   - 广播消息
 
-- [ ] **性能优化**
+- **性能优化**
   - 异步数据库查询
   - 缓存（`Redis`）
   - 连接池配置
   - GZip 压缩
 
-- [ ] **`API` 版本控制**
+- **`API` 版本控制**
   - `URL` 版本前缀
   - 版本化路由
 
@@ -295,11 +295,11 @@ note: "从基础接口、数据库到认证、测试和部署的六周行动计�
 - 单元测试
 
 ### 6.3 项目要求
-- [ ] 完整的 `API` 文档
-- [ ] 单元测试覆盖率 > 80%
-- [ ] `Docker` 部署配置
-- [ ] README 文档（安装、运行、`API` 说明）
-- [ ] 代码规范（Black + Ruff）
+- 完整的 `API` 文档
+- 单元测试覆盖率 > 80%
+- `Docker` 部署配置
+- README 文档（安装、运行、`API` 说明）
+- 代码规范（Black + Ruff）
 
 ---
 
