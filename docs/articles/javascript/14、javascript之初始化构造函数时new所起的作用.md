@@ -27,7 +27,7 @@ p1.say();//姓名：黎明，年龄：30
 ```
 
 
-## <span id="new">1、new在这个过程中执行了以下三个步骤</span>
+## 1、<span id="new">1、new在这个过程中执行了以下三个步骤</span>
 
 
 > 1、创建一个空对象；  
@@ -37,7 +37,7 @@ p1.say();//姓名：黎明，年龄：30
 > 3、调用call方法，将这个空对象对象作为函数的this传进去，并且最后隐式的返回这个空对象 。
 
 
-## <span id="useNew">2、调用构造函数使用new关键字的情况</span>
+## 2、<span id="useNew">2、调用构造函数使用new关键字的情况</span>
 
 
 `var p1=new Person("黎明",30)`这句代码的内部代码执行如下： 
@@ -61,14 +61,14 @@ new Person("黎明",30)=>_New(Person,"黎明",30)
 <img src="https://user-gold-cdn.xitu.io/2019/4/5/169ed224f2de8e81?w=452&h=191&f=png&s=14037" alt="暂无对象">
 
 
-## <span id="noNew">3、调用构造函数不使用new关键字的情况</span>
+## 3、<span id="noNew">3、调用构造函数不使用new关键字的情况</span>
 
 
 ```javascript	
 var p2=Person("李明",24);
 console.log(p2.name);//Cannot read property 'age' of undefined
 ```
-**分析：** 此时相当于只是调用了`Person("李明"，24)`的这样一个普通方法,并不是调用Person构造函数创建一个新的实例对象，并且该方法没有返回值，所以调用Person("李明",24)返回的是默认值undefined。因此P2也没有name和age属性。
+**分析：** 此时相当于只是调用了`Person("李明"，24)`的这样一个普通方法,并不是调用Person构造函数创建一个新的实例对象，并且该方法没有返回值，所以调用Person("李明",24)返回的是默认值`undefined`。因此P2也没有name和age属性。
 
 ```javascript
 var p2=Person("李明",24)
@@ -84,7 +84,7 @@ window.age=24;
 >2、p1.say.call(p2)中的p2表示是调用Person("李明",24)构造函数后的返回值，但是该构造函数没有返回值，因此p2=undefined，根据call方法的定义，所以在say()方法中的this表示window。
 
 
-## <span id="return">4、调用构造函数时，在内部有retun语句的情况</span>
+## 4、<span id="return">4、调用构造函数时，在内部有retun语句的情况</span>
 
 
 ```javascript	 
@@ -104,4 +104,3 @@ var p1=new Person("黎明"，23)；
 console.log(p1);//{}
 ```
 **原因分析：** 构造函数不需要显示的返回值。使用new来创建对象(调用构造函数)时，**如果return返回的是非对象(数字、字符串、布尔类型等)会忽略返回值，返回默认值；如果return的是对象，则返回该对象**(注：若`return null`也会忽略返回值）。
-<Valine></Valine>

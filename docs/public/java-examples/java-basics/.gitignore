@@ -1,0 +1,36 @@
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Test files created by demos
+test.txt
+test2.txt
+test3.txt
+test4.txt
+test_copy.txt
+nio_test.txt
+nio_copy.txt
+nio_moved.txt
+user.dat
+app.log

@@ -20,7 +20,7 @@ note: javascript之事件总结
         + 执行效率块，使用起来方便
 + `DOM2`级事件绑定 
     **语法：** [元素].addEvenetListener([事件],[方法],[捕获/冒泡]) 最后一个参数默认是`false`，控制方法在冒泡阶段执行。
-    document.body.addEvenListener("click",fn,false)
+    `document.body`.addEvenListener("click",fn,false)
     **移除事件绑定：** [元素].removeEvenetListener([事件],[方法],[捕获/冒泡]) 参数需要跟绑定时的一样
     `document.body.removeEvenListener("click",fn,false)`
     **原理：** 每一个`DOM`元素都会基于`__proto__`，查找到`EventTarget.prototype`上的`addEventListener/removeEventListener`等方法，基于这些方法实现事件的移除和绑定,`DOM2`事件绑定采用事件池机制。

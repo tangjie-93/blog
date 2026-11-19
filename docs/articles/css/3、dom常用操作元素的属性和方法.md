@@ -27,7 +27,7 @@ note: dom常用操作元素的属性和方法
 + `previousSibling`/`previousElementSibling`
  `nextSibling`/`nextElementSibling`
 //=>所有带`Element`的在`IE6-8`下都不兼容
-## 2、DOM的增删改查
+## 2、`DOM`的增删改查
 ```js
 document.createElement(tagname)
 document.createTextNode(text content)

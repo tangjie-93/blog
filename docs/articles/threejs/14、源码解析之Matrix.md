@@ -440,5 +440,3 @@ makeRotationFromEuler( euler ) {
 
 }
 ```
-
-<Valine></Valine>

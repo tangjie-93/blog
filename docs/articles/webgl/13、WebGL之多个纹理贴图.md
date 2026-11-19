@@ -28,7 +28,7 @@ note: 多个纹理贴图
     }
 </script>
 ```
-## 3、JavaScript代码
+## 3、`JavaScript`代码
 + 1、构建着色器需要的数据与顶点着色器交互
 ```js
 function assignValue(gl, program) {

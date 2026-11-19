@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+    UserMapper.xml — User 实体对应的 MyBatis SQL 映射文件
+    namespace 绑定到接口 learn.persistence.mybatis.UserMapper，方法名与 SQL id 一一对应
+-->
+
+<mapper namespace="learn.persistence.mybatis.UserMapper">
+
+    <!-- 结果映射：将数据库下划线列名（如 created_at）映射到 Java 驼峰属性（如 createdAt） -->
+    <resultMap id="UserResultMap" type="learn.persistence.model.User">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="email" column="email"/>
+        <result property="age" column="age"/>
+        <result property="status" column="status"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+
+    <!-- 根据主键 ID 查询单个用户 -->
+    <select id="findById" resultMap="UserResultMap">
+        SELECT *
+        FROM users
+        WHERE id = #{id}
+    </select>
+
+    <!-- 查询全部用户，按 ID 降序 -->
+    <select id="findAll" resultMap="UserResultMap">
+        SELECT *
+        FROM users
+        ORDER BY id DESC
+    </select>
+
+    <!--
+        动态条件查询：根据传入参数非空情况，动态拼接 WHERE 条件
+        - username 支持模糊匹配
+        - email 精确匹配
+        - age 支持区间查询
+        - status 精确匹配
+    -->
+    <select id="findByCondition" resultMap="UserResultMap">
+        SELECT *
+        FROM users
+        <where>
+            <if test="username != null and username != ''">
+                AND username LIKE CONCAT('%', #{username}, '%')
+            </if>
+            <if test="email != null and email != ''">
+                AND email = #{email}
+            </if>
+            <if test="minAge != null and maxAge != null">
+                AND age BETWEEN #{minAge} AND #{maxAge}
+            </if>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+        </where>
+        ORDER BY id DESC
+    </select>
+
+    <!-- 插入新用户，useGeneratedKeys 使数据库自增主键回填到传入对象的 id 属性 -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO users (username, password, email, age, status)
+        VALUES (#{username}, #{password}, #{email}, #{age}, #{status})
+    </insert>
+
+    <!-- 动态更新：仅更新传入对象中非空的字段，<set> 自动处理末尾逗号 -->
+    <update id="update">
+        UPDATE users
+        <set>
+            <if test="username != null">username = #{username},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="age != null">age = #{age},</if>
+            <if test="status != null">status = #{status},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 根据主键 ID 删除用户 -->
+    <delete id="deleteById">
+        DELETE FROM users WHERE id = #{id}
+    </delete>
+
+</mapper>

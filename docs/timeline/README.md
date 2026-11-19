@@ -1,13 +1,19 @@
 ---
 title: 文章归档
 pageClass: blog-archive
+search: false
 aside: false
 prev: false
 next: false
 ---
 
-# 文章归档
+<script setup>
+import { onMounted } from 'vue'
+import { withBase } from 'vitepress'
 
-从一个问题出发，记录每一次理解与实践。
+onMounted(() => {
+    window.location.replace(withBase('/articles/') + window.location.search + window.location.hash)
+})
+</script>
 
-<BlogList />
+文章归档已迁移至[文章总览](../articles/)。

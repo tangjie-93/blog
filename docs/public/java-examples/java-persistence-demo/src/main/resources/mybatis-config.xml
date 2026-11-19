@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    mybatis-config.xml 是 MyBatis 的全局配置文件。
+
+    可以把它理解成 MyBatis 的“启动配置中心”：
+    1. settings：配置 MyBatis 的全局行为，例如字段名自动转换。
+    2. environments：配置数据库连接环境，例如开发库、测试库、生产库。
+    3. mappers：告诉 MyBatis 去哪里找 SQL 映射规则。
+
+    Java 代码通常会读取这个文件，创建 SqlSessionFactory。
+    后续所有数据库操作，都会基于 SqlSessionFactory 创建出来的 SqlSession 执行。
+-->
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<!--
+    configuration 是 MyBatis 配置文件的根标签。
+
+    上面的 DOCTYPE 会让 MyBatis 按照官方 DTD 校验标签顺序和标签名称。
+    所以这里的标签顺序不能随便放，常见顺序是：
+    properties、settings、typeAliases、plugins、environments、mappers 等。
+-->
+<configuration>
+    <!--
+        settings 用来配置 MyBatis 的全局开关。
+
+        这些配置会影响所有 Mapper 和所有 SQL 执行结果。
+        如果只是某一条 SQL 的特殊行为，通常不应该放在这里。
+    -->
+    <settings>
+        <!--
+            开启下划线转驼峰。
+
+            数据库字段常用 snake_case：
+            created_at、updated_at、user_name
+
+            Java 对象属性常用 camelCase：
+            createdAt、updatedAt、userName
+
+            设置为 true 后，MyBatis 查询结果映射对象时，会自动完成这种转换。
+            这样 SQL 里不需要每次都写别名：
+            select created_at as createdAt
+
+            注意：
+            1. 这个配置主要影响结果集字段到 Java 属性的映射。
+            2. Java 实体类属性名仍然要符合驼峰命名。
+            3. 如果字段名和属性名差异很大，仍然需要在 resultMap 中手动映射。
+        -->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+
+    <!--
+        environments 用来声明数据库运行环境。
+
+        一个 MyBatis 配置文件里可以配置多个 environment，
+        例如 development、test、production。
+
+        default="development" 表示：
+        如果 Java 代码创建 SqlSessionFactory 时没有额外指定环境，
+        MyBatis 默认使用 id 为 development 的这套数据库配置。
+    -->
+    <environments default="development">
+        <!--
+            当前环境：development。
+
+            这里代表本地开发环境，连接的是本机 localhost 上的 MySQL。
+            如果后续要连接测试库或生产库，通常会新增 environment，
+            或者改用 properties 文件和外部配置管理数据库信息。
+        -->
+        <environment id="development">
+            <!--
+                transactionManager 配置事务管理方式。
+
+                type="JDBC" 表示使用原生 JDBC 事务：
+                1. 开启事务后，需要通过 SqlSession.commit() 提交。
+                2. 出错时，需要通过 SqlSession.rollback() 回滚。
+                3. 事务边界由当前应用代码自己控制。
+
+                学习原生 MyBatis 时，JDBC 事务最直观。
+                如果项目接入 Spring，通常会把事务交给 Spring 管理，而不是在这里手动管理。
+            -->
+            <transactionManager type="JDBC"/>
+
+            <!--
+                dataSource 配置数据库连接来源。
+
+                type="POOLED" 表示使用 MyBatis 自带的简单连接池：
+                1. 不会每次执行 SQL 都重新创建数据库连接。
+                2. 会复用已经创建过的连接。
+                3. 适合学习和简单示例。
+
+                真实业务项目更常见的是使用 HikariCP、Druid 等专业连接池，
+                并把数据库账号密码放到 application.yml、环境变量或配置中心。
+            -->
+            <dataSource type="POOLED">
+                <!--
+                    MySQL JDBC 驱动类。
+
+                    com.mysql.cj.jdbc.Driver 是 MySQL Connector/J 8.x 推荐的驱动类。
+                    Maven 依赖里必须包含 mysql-connector-j，否则启动时会找不到这个类。
+                -->
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+
+                <!--
+                    数据库连接地址。
+
+                    jdbc:mysql://localhost:3306/test_db 表示：
+                    1. 使用 MySQL 协议。
+                    2. 连接本机 localhost。
+                    3. 端口是 3306。
+                    4. 数据库名是 test_db。
+
+                    URL 参数说明：
+                    useSSL=false：本地学习环境关闭 SSL，减少连接配置复杂度。
+                    serverTimezone=UTC：指定数据库连接时区，避免时区相关警告或时间偏移。
+                    characterEncoding=utf8：指定连接字符编码，降低中文乱码概率。
+
+                    XML 中不能直接写 &，所以参数之间要写成 &amp;。
+                -->
+                <property name="url" value="jdbc:mysql://localhost:3306/test_db?useSSL=false&amp;serverTimezone=UTC&amp;characterEncoding=utf8"/>
+
+                <!-- 数据库用户名。这里连接本地 MySQL 的 root 用户。 -->
+                <property name="username" value="root"/>
+
+                <!--
+                    数据库密码。
+
+                    学习项目可以先写在配置文件里，便于快速运行示例。
+                    真实项目不建议把密码提交到代码仓库，通常放到环境变量或外部配置文件。
+                -->
+                <property name="password" value="Jamestang93!"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <!--
+        mappers 用来注册 Mapper。
+
+        Mapper 是 MyBatis 找到 SQL 的入口，可以有两种常见注册方式：
+        1. resource：注册 XML 文件，SQL 写在 XML 里。
+        2. class：注册 Mapper 接口，常用于注解 SQL 或 MyBatis-Plus。
+
+        如果 Mapper 没有注册，Java 代码里调用 getMapper(...) 时会找不到对应映射。
+    -->
+    <mappers>
+        <!--
+            原生 MyBatis XML Mapper。
+
+            resource 使用 classpath 路径，从 src/main/resources 开始查找。
+            这里会加载：
+            src/main/resources/mapper/UserMapper.xml
+
+            适合学习手写 SQL、resultMap、动态 SQL 等 MyBatis 基础能力。
+        -->
+        <mapper resource="mapper/UserMapper.xml"/>
+
+        <!--
+            MyBatis-Plus Mapper。
+
+            这里注册的是 Mapper 接口类。
+            UserMapperMP 继承 BaseMapper 后，MyBatis-Plus 可以提供基础 CRUD 方法，
+            不需要为每个简单增删改查都写 XML。
+        -->
+        <mapper class="learn.persistence.mybatisplus.UserMapperMP"/>
+
+        <!--
+            学生选课系统 Mapper。
+
+            下面三个 Mapper 用于多表关联练习：
+            StudentMapper：学生表相关操作。
+            CourseMapper：课程表相关操作。
+            EnrollmentMapper：选课关系表相关操作。
+
+            这类练习通常会涉及一对多、多对多、关联查询和事务提交。
+        -->
+        <mapper class="learn.persistence.practice.StudentMapper"/>
+        <mapper class="learn.persistence.practice.CourseMapper"/>
+        <mapper class="learn.persistence.practice.EnrollmentMapper"/>
+    </mappers>
+</configuration>

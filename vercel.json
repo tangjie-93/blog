@@ -1,0 +1,58 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "vitepress",
+  "buildCommand": "pnpm run build",
+  "outputDirectory": "docs/.vitepress/dist",
+  "redirects": [
+    {
+      "source": "/blog",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/:path*",
+      "destination": "/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/articles/其他/",
+      "destination": "/articles/git/",
+      "permanent": true
+    },
+    {
+      "source": "/articles/其他/正则表达式总结.html",
+      "destination": "/articles/javascript/正则表达式总结.html",
+      "permanent": true
+    },
+    {
+      "source": "/articles/其他/canvas基础api总结.html",
+      "destination": "/articles/webgl/canvas基础api总结.html",
+      "permanent": true
+    },
+    {
+      "source": "/articles/其他/docker学习总结.html",
+      "destination": "/articles/linux/docker学习总结.html",
+      "permanent": true
+    },
+    {
+      "source": "/articles/其他/nginx.html",
+      "destination": "/articles/linux/nginx.html",
+      "permanent": true
+    },
+    {
+      "source": "/articles/其他/Protobuf在vue中的使用.html",
+      "destination": "/articles/http/Protobuf在vue中的使用.html",
+      "permanent": true
+    },
+    {
+      "source": "/articles/其他/性能优化总结.html",
+      "destination": "/articles/webpack/性能优化总结.html",
+      "permanent": true
+    }
+  ]
+}

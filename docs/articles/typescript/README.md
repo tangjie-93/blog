@@ -66,9 +66,9 @@ note: typescript基本知识点总结
     }
     let name:void=undefined;
 ```
-+ 9、Null和undefined
++ 9、Null和`undefined`
 
-    默认情况下null和undefined是所有类型的子类型。如果编译器不能去除`null和undefined`，可以使用类型断言手动去除。语法是添加`!`后缀。
+    默认情况下`null`和`undefined`是所有类型的子类型。如果编译器不能去除`null和undefined`，可以使用类型断言手动去除。语法是添加`!`后缀。
 ```typescript
     let u: undefined = undefined;
     let n: null = null;
@@ -111,9 +111,9 @@ note: typescript基本知识点总结
         let {a,b=100}=obj;
     }
 ```
-+ 2、const和readonly的区别
++ 2、`const`和readonly的区别
 
-  const用于声明变量，定义后的变量不能赋值。readonly用于修饰属性，被修饰的属性只可读。
+  `const`用于声明变量，定义后的变量不能赋值。readonly用于修饰属性，被修饰的属性只可读。
 
 ## 3、接口
 
@@ -447,7 +447,7 @@ abstract class Animal { //抽象类
 }
 ```
 
-**6、存取器 通过getters/setters来截取对对象成员的访问。 它能帮助你有效的控制对对象成员的访问。**
+**6、存取器 通过`getters/setters`来截取对对象成员的访问。 它能帮助你有效的控制对对象成员的访问。**
 
 ```ts
 let passcode = "secret passcode";
@@ -1225,7 +1225,7 @@ let p: required = {
 
 **1、`export=和import = require()`语法**
 
-​		`export=`语法定义一个模块的到处对象。它可以是类，接口，命名空间，函数或枚举。若要**导入一个使用了`export=`的模块时**，必须使用TypeScript提供的特定语法 `import zip=require("module")`
+​		`export=`语法定义一个模块的到处对象。它可以是类，接口，命名空间，函数或枚举。若要**导入一个使用了`export=`的模块时**，必须使用`TypeScript`提供的特定语法 `import zip=require("module")`
 
 ```typescript
     //ZipCodeValidator.ts
@@ -1308,7 +1308,7 @@ let myUrl = URL.parse("http://www.typescriptlang.org");
   /moduleB.d.ts
   ```
 
-  **2、Node.js如何解析模块**
+  **2、`Node`.js如何解析模块**
 
 + 相对路径解析。
 
@@ -1340,7 +1340,7 @@ let myUrl = URL.parse("http://www.typescriptlang.org");
   9、/node_modules/moduleB/index.js
   ```
 
-**3、TypeScript如何解析模块**
+**3、`TypeScript`如何解析模块**
 
 + 相对路径时。
 
@@ -1866,11 +1866,11 @@ class Greeter{
 
 #### **6、访问器装饰器**
 
-访问器装饰器声明在一个访问器的声明之前（紧靠着访问器声明）。 访问器装饰器应用于访问器的属性描述符并且可以用来监视，修改或替换一个访问器的定义。访问器装饰器不能用在声明文件中（.d.ts），或者任何外部上下文（比如 `declare`的类）里。
+访问器装饰器声明在一个访问器的声明之前（紧靠着访问器声明）。 访问器装饰器应用于访问器的属性描述符并且可以用来监视，修改或替换一个访问器的定义。访问器装饰器不能用在声明文件中（`.d.ts`），或者任何外部上下文（比如 `declare`的类）里。
 
 如果访问器装饰器返回一个值，它会被用作方法的**属性描述符**。
 
-**注意**  TypeScript不允许同时装饰一个成员的`get`和`set`访问器。因为，在装饰器应用于一个*属性描述符*时，它联合了`get`和`set`访问器，而不是分开声明的。
+**注意**  `TypeScript`不允许同时装饰一个成员的`get`和`set`访问器。因为，在装饰器应用于一个*属性描述符*时，它联合了`get`和`set`访问器，而不是分开声明的。
 
 ​		访问器装饰器表达式会在运行时当作函数被调用，传入下列3个参数，跟方法装饰器的参数一样。
 
@@ -1905,7 +1905,7 @@ class Greeter{
 
 #### **7、属性装饰器**
 
-​		属性装饰器声明在一个属性声明之前（紧靠着属性声明）。 属性装饰器不能用在声明文件中（.d.ts），或者任何外部上下文（比如 `declare`的类）里。属性描述符*不会做为参数传入属性装饰器，属性描述符只能用来监视类中是否声明了某个名字的属性。
+​		属性装饰器声明在一个属性声明之前（紧靠着属性声明）。 属性装饰器不能用在声明文件中（`.d.ts`），或者任何外部上下文（比如 `declare`的类）里。属性描述符*不会做为参数传入属性装饰器，属性描述符只能用来监视类中是否声明了某个名字的属性。
 
 属性装饰器表达式会在运行时当作函数被调用，传入下列2个参数：
 

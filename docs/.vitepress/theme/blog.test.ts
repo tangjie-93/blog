@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { encodePostPath, filterPosts, getCommentPath, mapPosts } from './blog.ts'
+import { encodePostPath, filterPosts, getCommentPath, mapPosts, summarizeMarkdown } from './blog.ts'
 import { createCommentDocument } from './comments.ts'
 
 test('article paths encode reserved filename characters once and map README to directories', () => {
@@ -34,9 +34,24 @@ test('posts sort newest first and support pipe/array tags and combined filters',
     assert.equal(filterPosts(posts, { tag: 'missing' }).length, 0)
 })
 
+test('category README cards use a body summary instead of duplicate frontmatter notes', () => {
+    const summary = summarizeMarkdown('---\ntitle: 重复标题\n---\n\n## 一、状态管理\n\n本文介绍状态更新和组件通信的常见方式。')
+    assert.equal(summary, '本文介绍状态更新和组件通信的常见方式。')
+    const [post] = mapPosts([{ url: '/articles/react/README.html', src: '\n## 一、状态管理\n\n本文介绍状态更新。', frontmatter: { title: '重复标题', note: '重复标题' } }])
+    assert.equal(post.note, '本文介绍状态更新。')
+})
+
 test('comment iframe safely escapes path and title script delimiters', () => {
-    const html = createCommentDocument('https://example.com/valine.js', 'https://example.com/av.js', '/blog/a.html', '</script><script>bad()</script>', { appId: 'test', appKey: 'test' })
+    const html = createCommentDocument('https://example.com/waline.js', 'https://example.com/waline.css', '/blog/a.html', '</script><script>bad()</script>', { serverURL: 'https://comments.example.com' })
     assert.equal((html.match(/<script>/g) ?? []).length, 1)
     assert.ok(!html.includes('<script>bad()'))
     assert.ok(html.includes('\\u003c/script>'))
+})
+
+test('comment form keeps only the two optional contact fields', () => {
+    const html = createCommentDocument('https://example.com/waline.js', 'https://example.com/waline.css', '/blog/a.html', '文章', { serverURL: 'https://comments.example.com' })
+    assert.ok(html.includes("meta:['nick','mail'],requiredMeta:[]"))
+    assert.ok(!html.includes('/api/comment-notify'))
+    assert.ok(!html.includes('appKey'))
+    assert.ok(!html.includes('comment-privacy'))
 })

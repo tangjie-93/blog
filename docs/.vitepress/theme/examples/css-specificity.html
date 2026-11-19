@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CSS 选择器优先级</title>
+    <style>
+        body { margin: 24px; font: 18px/1.6 sans-serif; }
+        div ul li .test { color: red; }
+        #test { color: blue; }
+        .span { color: green; }
+    </style>
+</head>
+<body>
+    <p>下面的文字同时匹配三个选择器，最终由 ID 选择器决定颜色。</p>
+    <div>
+        <ul>
+            <li><span class="test span" id="test">test：我是蓝色</span></li>
+        </ul>
+    </div>
+</body>
+</html>

@@ -34,13 +34,17 @@ async function loadComments(): Promise<void> {
     const currentLoadId = ++loadId
     documentHtml.value = ''
     error.value = ''
+    if (!commentSettings.serverURL) {
+        error.value = '评论服务正在迁移，暂时无法留言。'
+        return
+    }
     try {
-        const [{ default: scriptUrl }, { default: storageUrl }] = await Promise.all([
-            import('valine/dist/Valine.min.js?url'),
-            import('leancloud-storage/dist/av-min.js?url'),
+        const [{ default: scriptUrl }, { default: styleText }] = await Promise.all([
+            import('waline-script-asset?url'),
+            import('waline-style-asset?inline'),
         ])
         if (currentLoadId !== loadId || !isMounted) return
-        documentHtml.value = createCommentDocument(new URL(scriptUrl, window.location.href).href, new URL(storageUrl, window.location.href).href, commentPath.value, page.value.title, commentSettings)
+        documentHtml.value = createCommentDocument(new URL(scriptUrl, window.location.href).href, 'data:text/css;charset=utf-8,' + encodeURIComponent(styleText), commentPath.value, page.value.title, commentSettings)
     } catch {
         if (currentLoadId === loadId) error.value = '评论暂时无法加载，请刷新页面重试。'
     }

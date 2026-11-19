@@ -1,0 +1,772 @@
+[
+  {
+    "id": "system:imagegen",
+    "title": "生成与修改图片",
+    "category": "documents",
+    "summary": "按描述生成图片，或在参考图上修改指定内容。",
+    "scenarios": [
+      "给文章制作封面",
+      "更换产品图背景并保留主体"
+    ],
+    "inputs": "用途、尺寸、风格、参考图及必须保留的内容",
+    "output": "图片文件、保存位置和生成提示词",
+    "prompt": "使用 $imagegen，为【文章主题】生成横版封面，采用【风格】，留出标题区域，不添加文字。保存到【输出目录】，检查主体和构图。",
+    "requirements": "需要可用的图像生成工具；API 脚本备用方式需另行确认和配置密钥，不适合简单 SVG 图标修改。"
+  },
+  {
+    "id": "system:openai-docs",
+    "title": "查询官方产品用法",
+    "category": "getting-started",
+    "summary": "从官方文档核对 Codex 和 OpenAI 产品的使用方法。",
+    "scenarios": [
+      "不知道技能怎样调用",
+      "需要核对模型或 API 用法"
+    ],
+    "inputs": "具体问题、产品名称、使用环境和报错信息",
+    "output": "带官方出处的步骤及明确的不确定项",
+    "prompt": "使用 $openai-docs，查清【Codex 使用问题】。我使用【客户端或平台】，请依据官方文档给新手操作步骤，并附来源。",
+    "requirements": "需要能访问官方文档；具体账号是否拥有功能需在自己的环境中确认。"
+  },
+  {
+    "id": "system:review-agent",
+    "title": "只读审查代码改动",
+    "category": "testing",
+    "summary": "检查整份变更，找出有依据、值得作者修复的问题。",
+    "scenarios": [
+      "合并分支前检查回归",
+      "想独立检查某次提交"
+    ],
+    "inputs": "仓库、目标提交或比较分支、相关需求",
+    "output": "按严重程度排列的问题、文件位置和原因",
+    "prompt": "使用 $review-agent，审查【目标分支或提交】相对【基准分支】的改动，检查调用方和测试，只报告可证实的问题，不修改文件。",
+    "requirements": "本地存在但本次盘点会话未提供该技能；需先确认可调用，且它不负责自动修复或发布评论。"
+  },
+  {
+    "id": "system:skill-creator",
+    "title": "创建自己的技能",
+    "category": "getting-started",
+    "summary": "把反复执行的工作方法整理成可复用技能。",
+    "scenarios": [
+      "每周重复整理同类报告",
+      "希望助手遵守某类任务的特殊流程"
+    ],
+    "inputs": "工作目标、触发场景、实际输入输出样例",
+    "output": "技能目录、说明文件及验证结果",
+    "prompt": "使用 $skill-creator，把【重复工作流程】整理成一个技能。输入是【材料】，输出是【成品】，请先明确触发范围，再生成最少必要说明并验证。",
+    "requirements": "需要可写的技能目录和真实样例；不要将与任务无关的规则塞进技能。"
+  },
+  {
+    "id": "system:skill-installer",
+    "title": "安装现成技能",
+    "category": "getting-started",
+    "summary": "查找可安装技能，并从指定技能仓库安装。",
+    "scenarios": [
+      "想安装官方精选技能",
+      "已有 GitHub 技能目录链接"
+    ],
+    "inputs": "技能名称或仓库目录链接",
+    "output": "安装结果和后续使用说明",
+    "prompt": "使用 $skill-installer，从【GitHub 技能目录链接】安装技能，先检查来源与已有同名目录，安装后告诉我如何确认它已被识别。",
+    "requirements": "需要网络和安装脚本运行环境；私有仓库需要访问权限，本目录中个人技能不一定有公开安装地址。"
+  },
+  {
+    "id": "personal:bottleneck-hunter",
+    "title": "寻找产业链瓶颈",
+    "category": "investment",
+    "summary": "从需求趋势拆解供给链，识别约束环节及相关公司。",
+    "scenarios": [
+      "研究算力供应链",
+      "判断涨价是否来自真实短缺"
+    ],
+    "inputs": "行业或趋势、地区、研究截止日期",
+    "output": "瓶颈地图、候选公司和反证清单",
+    "prompt": "使用 $bottleneck-hunter，研究【行业趋势】的供应链瓶颈，区分真实产能限制与叙事，核对估值和反证，列出信息缺口。",
+    "requirements": "需要可靠来源、联网检索与计算核验；部分流程依赖原研究工具包，结果用于研究，不保证收益。"
+  },
+  {
+    "id": "personal:codebase-graph-business-rules",
+    "title": "梳理全项目业务规则",
+    "category": "understanding",
+    "summary": "结合代码图谱和源码，把整个项目的业务规则整理成文档。",
+    "scenarios": [
+      "接手项目缺少业务文档",
+      "为产品和测试建立规则基线"
+    ],
+    "inputs": "项目源码、范围、已有业务说明",
+    "output": "模块规则、流程图、源码依据与测试范围文档",
+    "prompt": "使用 $codebase-graph-business-rules，梳理【项目目录】的全量业务规则，先建图谱再复核源码，面向产品和测试说明主流程、异常路径及数据关系，不修改业务代码。",
+    "requirements": "需要 Graphify 等配套能力；图谱帮助定位，业务结论仍需源码或配置佐证。"
+  },
+  {
+    "id": "personal:codebase-graph-module-rules",
+    "title": "讲清一个功能的规则",
+    "category": "understanding",
+    "summary": "沿源码与依赖关系解释指定模块怎样运行。",
+    "scenarios": [
+      "弄懂退款状态变化",
+      "检查分发排序或限额规则"
+    ],
+    "inputs": "模块名称、核心疑问、仓库位置",
+    "output": "模块规则、依赖链路、流程图和测试点",
+    "prompt": "使用 $codebase-graph-module-rules，分析【模块名】的触发条件、排序规则、状态变化和失败恢复，在【仓库目录】中核对源码并写出给非开发者看的说明。",
+    "requirements": "需要可读源码与 Graphify 配套工具；范围聚焦指定模块，不自动改动业务系统。"
+  },
+  {
+    "id": "personal:codebase-summary",
+    "title": "看懂代码仓库",
+    "category": "understanding",
+    "summary": "从仓库证据解释入口、模块和请求流转方式。",
+    "scenarios": [
+      "第一次接触陌生项目",
+      "为团队整理架构概览"
+    ],
+    "inputs": "仓库路径、关心的功能和期望深度",
+    "output": "带源码依据的架构说明；明确要求时生成架构文档",
+    "prompt": "使用 $codebase-summary，解释【仓库目录】如何工作，指出入口、核心模块和一次请求的路径，区分已确认事实与推断，先在对话中说明。",
+    "requirements": "本地存在但盘点会话未提供；默认只读解释，生成文件要明确要求，不能凭目录名猜架构。"
+  },
+  {
+    "id": "personal:deep-company-series",
+    "title": "写懂一家公司的系列文章",
+    "category": "investment",
+    "summary": "将复杂公司拆成多篇相互衔接的深度研究文章。",
+    "scenarios": [
+      "准备长期研究专栏",
+      "业务复杂难以一篇解释"
+    ],
+    "inputs": "公司、读者、研究范围和已收集材料",
+    "output": "按复杂度安排的系列文章及跨篇核验",
+    "prompt": "使用 $deep-company-series，为【公司】规划并撰写面向【读者】的深度系列，先决定必要篇数，再逐篇完成，核查跨篇数据一致性，不发布。",
+    "requirements": "需要可靠来源、联网检索与计算核验；部分流程依赖原研究工具包，结果用于研究，不保证收益。"
+  },
+  {
+    "id": "personal:dyp-ask",
+    "title": "借鉴段永平的思考框架",
+    "category": "investment",
+    "summary": "用商业模式、能力圈和长期视角分析投资疑问。",
+    "scenarios": [
+      "拿不准自己是否理解一门生意",
+      "想检查判断中的情绪因素"
+    ],
+    "inputs": "具体问题、已知事实和个人判断",
+    "output": "基于思想框架的分析与反问",
+    "prompt": "使用 $dyp-ask，借鉴段永平的公开思想分析【问题】，说明商业模式、能力圈与不为清单；不要冒充本人，不预测股价。",
+    "requirements": "只借鉴公开思想，不代表段永平本人或其投资建议；不用于精确股价预测。"
+  },
+  {
+    "id": "personal:e2e",
+    "title": "智能端到端测试",
+    "category": "testing",
+    "summary": "结合智能操作与精确断言检查网页或移动端流程。",
+    "scenarios": [
+      "验证完整注册流程",
+      "检查模拟器中的移动应用"
+    ],
+    "inputs": "可运行应用、目标平台、测试步骤与测试账号",
+    "output": "测试脚本、运行结果和失败轨迹",
+    "prompt": "使用 $e2e，为【应用和平台】验证【用户流程】，复用现有 e2e 配置，每一步都检查结果，运行后报告失败位置和证据，使用测试数据。",
+    "requirements": "需要 e2e 及对应网页或移动引擎；智能步骤还需要模型配置，纯精确步骤不必调用模型。"
+  },
+  {
+    "id": "personal:earnings-review",
+    "title": "精读一份财报",
+    "category": "investment",
+    "summary": "从原始财报、附注和管理层讨论解释业务变化。",
+    "scenarios": [
+      "利润上涨但现金流变差",
+      "需要理解最新一季的重要变化"
+    ],
+    "inputs": "公司、报告期间和官方财报",
+    "output": "财报变化、现金流、附注风险与出处",
+    "prompt": "使用 $earnings-review，精读【公司】【期间】财报，解释收入、利润与现金流变化，区分一次性因素和长期变化，逐项标注来源。",
+    "requirements": "需要可靠来源、联网检索与计算核验；部分流程依赖原研究工具包，结果用于研究，不保证收益。"
+  },
+  {
+    "id": "personal:earnings-team",
+    "title": "多视角解读财报",
+    "category": "investment",
+    "summary": "组织商业、财务、竞争和风险视角，再合成面向读者的文章。",
+    "scenarios": [
+      "财报复杂需要多角度检查",
+      "将财报研究整理为可读长文"
+    ],
+    "inputs": "公司、期间、报告及读者定位",
+    "output": "综合财报报告、编辑后的文章和审阅结果",
+    "prompt": "使用 $earnings-team，对【公司】【期间】财报进行多角色研究，合并有证据的结论，编辑成面向【读者】的文章，仅保存草稿。",
+    "requirements": "需要多代理能力、联网及原研究工具包；缺失资料必须标注，模拟研究视角不代表真人意见，不能保证收益。"
+  },
+  {
+    "id": "personal:extract-flowcharts",
+    "title": "导出文档流程图",
+    "category": "documents",
+    "summary": "把 Markdown 中的 Mermaid 图导出为独立高清图片。",
+    "scenarios": [
+      "把方案图插入 Word",
+      "批量导出文档中的流程图"
+    ],
+    "inputs": "Markdown 文件、格式、尺寸和输出目录",
+    "output": "PNG、SVG、图源和导出清单",
+    "prompt": "使用 $extract-flowcharts，将【文档路径】中的 Mermaid 图导出为高清 PNG 和 SVG，保存到【输出目录】，保留中文并检查数量和裁切。",
+    "requirements": "需要 Node.js、Mermaid CLI 与浏览器渲染环境；不能当作任意扫描图片的流程图识别器。"
+  },
+  {
+    "id": "personal:financial-data",
+    "title": "核对财务数据",
+    "category": "investment",
+    "summary": "按市场选择来源，检查财务数值、口径和差异。",
+    "scenarios": [
+      "多个网站的利润数字不同",
+      "估值计算可能混淆币种或单位"
+    ],
+    "inputs": "公司、期间、指标与待核对数据",
+    "output": "注明币种单位与出处的数据表和差异解释",
+    "prompt": "使用 $financial-data，交叉核验【公司】【期间】的【财务指标】，检查币种、单位、复权与会计口径，解释差异，不用猜测补缺失值。",
+    "requirements": "需要可靠来源、联网检索与计算核验；部分流程依赖原研究工具包，结果用于研究，不保证收益。"
+  },
+  {
+    "id": "personal:git-commit-info",
+    "title": "识别线上代码版本",
+    "category": "development",
+    "summary": "在构建时注入 Git 信息，方便线上核对部署版本。",
+    "scenarios": [
+      "不知道线上运行哪个提交",
+      "排查测试与生产版本不一致"
+    ],
+    "inputs": "项目、构建方式和展示位置",
+    "output": "构建注入逻辑、版本展示或读取入口及验证",
+    "prompt": "使用 $git-commit-info，为【项目目录】加入构建时 Git 版本信息，在【展示位置】显示短提交号和构建时间，并验证生产构建。",
+    "requirements": "需有 Git 仓库及对应构建环境；展示版本信息不能包含凭据，uni-app 需注明运行平台。"
+  },
+  {
+    "id": "personal:git-commit-standards",
+    "title": "整理规范的代码提交",
+    "category": "development",
+    "summary": "按仓库习惯检查分支、提交范围与提交信息。",
+    "scenarios": [
+      "准备提交一个修复",
+      "需要写清变更内容与验证情况"
+    ],
+    "inputs": "Git 工作区、目标改动、提交边界",
+    "output": "提交检查结果和规范提交信息；授权时执行提交",
+    "prompt": "使用 $git-commit-standards，检查【功能范围】相关改动，给出合适的提交拆分与中文提交信息，列出验证结果，先不要推送。",
+    "requirements": "需要 Git；这是个人工作规范，应与项目约定协调，提交和推送的授权范围不同。"
+  },
+  {
+    "id": "personal:income-investment",
+    "title": "分析派息能否持续",
+    "category": "investment",
+    "summary": "追踪可分配现金与风险，研究收入来源的可持续性。",
+    "scenarios": [
+      "高分红产品收益看起来很高",
+      "比较股息或基金分派的质量"
+    ],
+    "inputs": "标的、派息记录、投资币种与收入目标",
+    "output": "现金来源、压力情景、分派风险与可用收入估算",
+    "prompt": "使用 $income-investment，研究【标的】的派息来源、现金覆盖和削减风险，按【持有币种及税务假设】估算可用收入，列出三种情景。",
+    "requirements": "需要可靠来源、联网检索与计算核验；部分流程依赖原研究工具包，结果用于研究，不保证收益。"
+  },
+  {
+    "id": "personal:industry-funnel",
+    "title": "逐层筛选研究候选",
+    "category": "investment",
+    "summary": "从行业候选逐级缩小范围，留下少量值得深入研究的公司。",
+    "scenarios": [
+      "面对一个行业不知道从谁开始",
+      "需要有依据的候选对比"
+    ],
+    "inputs": "行业、市场范围、筛选条件和日期",
+    "output": "粗筛理由、候选对比和最终研究名单",
+    "prompt": "使用 $industry-funnel，在【行业与市场】按质量和估值逐层筛选，说明每次淘汰原因与资料缺口，形成少量候选研究名单，不做交易。",
+    "requirements": "需要可靠来源、联网检索与计算核验；部分流程依赖原研究工具包，结果用于研究，不保证收益。"
+  },
+  {
+    "id": "personal:industry-research",
+    "title": "看懂行业与产业链",
+    "category": "investment",
+    "summary": "分析行业逻辑、上下游关系、竞争公司和主要风险。",
+    "scenarios": [
+      "了解新行业的赚钱方式",
+      "比较产业链不同环节的竞争优势"
+    ],
+    "inputs": "行业、地区、时间范围与重点问题",
+    "output": "产业链图、公司对比、风险和研究结论",
+    "prompt": "使用 $industry-research，研究【行业】的产业链与商业逻辑，核对需求驱动和竞争格局，列出主要公司、证据及不成立的条件。",
+    "requirements": "需要可靠来源、联网检索与计算核验；部分流程依赖原研究工具包，结果用于研究，不保证收益。"
+  },
+  {
+    "id": "personal:investment-checklist",
+    "title": "检查研究判断的缺口",
+    "category": "investment",
+    "summary": "用六关清单检查生意、竞争优势、管理层、价格和决策纪律。",
+    "scenarios": [
+      "已有研究却担心遗漏风险",
+      "比较数家公司的理解程度"
+    ],
+    "inputs": "公司名单、研究资料、估值假设",
+    "output": "逐项检查结果、否决项和未解决问题",
+    "prompt": "使用 $investment-checklist，对【公司列表】执行研究检查清单，逐项检查生意、护城河、管理层和估值，指出证据不足与否决条件，不下单。",
+    "requirements": "需要可靠来源、联网检索与计算核验；部分流程依赖原研究工具包，结果用于研究，不保证收益。"
+  },
+  {
+    "id": "personal:investment-memo-craft",
+    "title": "把投研报告写清楚",
+    "category": "investment",
+    "summary": "把已有研究整理成逻辑连贯、证据充分的决策材料。",
+    "scenarios": [
+      "长报告难抓住判断依据",
+      "数字多但没讲清商业机制"
+    ],
+    "inputs": "研究初稿、数据出处、读者与用途",
+    "output": "结构清晰的研究报告或指定备忘录",
+    "prompt": "使用 $investment-memo-craft，改写【研究初稿】，把商业机制、反面证据和估值假设讲清楚，保留数据出处，补充机会成本与判断失效条件。",
+    "requirements": "这是写作与排版叠加层，不能替代原始资料核对或估值工具；结论仍依赖研究证据。"
+  },
+  {
+    "id": "personal:investment-research",
+    "title": "综合研究一家上市公司",
+    "category": "investment",
+    "summary": "从生意、护城河、管理层、风险和估值形成综合判断。",
+    "scenarios": [
+      "首次系统研究一家公司",
+      "更新已有公司的长期研究"
+    ],
+    "inputs": "公司、研究截止日期、财报及已有判断",
+    "output": "公司研究报告、估值情景和反证清单",
+    "prompt": "使用 $investment-research，研究【公司】，分析商业模式、竞争优势、管理层和财务，建立有依据的估值情景，明确哪些事实会推翻结论。",
+    "requirements": "需要可靠来源、联网检索与计算核验；部分流程依赖原研究工具包，结果用于研究，不保证收益。"
+  },
+  {
+    "id": "personal:investment-team",
+    "title": "分工完成公司研究",
+    "category": "investment",
+    "summary": "让不同角色分别研究商业、财务、行业和风险，再交叉合成。",
+    "scenarios": [
+      "需要并行调查复杂公司",
+      "希望独立视角互相检查结论"
+    ],
+    "inputs": "公司、研究目标、资料与日期",
+    "output": "四维研究结果、分歧说明和综合报告",
+    "prompt": "使用 $investment-team，组织多角色研究【公司】，分别分析商业、财务估值、竞争与风险，交叉核验数据后汇总分歧和结论。",
+    "requirements": "需要多代理能力、联网及原研究工具包；缺失资料必须标注，模拟研究视角不代表真人意见，不能保证收益。"
+  },
+  {
+    "id": "personal:karpathy-guidelines",
+    "title": "用最少改动完成任务",
+    "category": "development",
+    "summary": "明确目标与假设，避免不必要的重构和复杂设计。",
+    "scenarios": [
+      "小修复容易越改越多",
+      "想评估方案是否过度设计"
+    ],
+    "inputs": "具体需求、代码范围和验收标准",
+    "output": "聚焦需求的改动或审查意见与验证结果",
+    "prompt": "使用 $karpathy-guidelines，检查【改动或需求】，找出多余抽象和范围扩张，用最少修改完成【验收目标】，保留必要错误处理。",
+    "requirements": "需提供真实代码和目标；少写代码不等于省略安全、数据校验或必要验证。"
+  },
+  {
+    "id": "personal:management-deep-dive",
+    "title": "研究管理层与治理",
+    "category": "investment",
+    "summary": "用承诺兑现、资本配置和治理记录评估管理团队。",
+    "scenarios": [
+      "怀疑管理层说法与行动不符",
+      "评估创始人离任的影响"
+    ],
+    "inputs": "公司或管理者、时间范围、公开资料",
+    "output": "承诺追踪表、资本配置记录和治理风险",
+    "prompt": "使用 $management-deep-dive，研究【公司及管理者】的承诺兑现、资本配置和治理记录，区分事实与传闻，并分析关键人物离任情景。",
+    "requirements": "需要可靠来源、联网检索与计算核验；部分流程依赖原研究工具包，结果用于研究，不保证收益。"
+  },
+  {
+    "id": "personal:markdown-inline-code-style",
+    "title": "统一 Markdown 技术格式",
+    "category": "documents",
+    "summary": "规范文档中的技术术语、命令与路径标记。",
+    "scenarios": [
+      "技术文档排版不一致",
+      "批量整理术语和编号"
+    ],
+    "inputs": "Markdown 文件与允许修改范围",
+    "output": "格式统一且链接、代码块保持完整的文档",
+    "prompt": "使用 $markdown-inline-code-style，整理【Markdown 文件】的行内代码与编号格式，只调整排版，保留链接目标、代码块和原意，最后检查反引号是否成对。",
+    "requirements": "属于个人排版偏好；不应对普通文字过度标记，不能改变命令和链接内容。"
+  },
+  {
+    "id": "personal:news-pulse",
+    "title": "梳理新闻与股价异动",
+    "category": "investment",
+    "summary": "从公司、政策、同行与情绪四个方向寻找异动证据。",
+    "scenarios": [
+      "公司股价突然大涨大跌",
+      "需要判断新闻是否改变原有研究"
+    ],
+    "inputs": "公司、异动日期、事件窗口和原投资假设",
+    "output": "事件时间线、可能主因及需重审的假设",
+    "prompt": "使用 $news-pulse，梳理【公司】在【日期区间】的新闻与价格异动，按事件时间构建证据链，区分相关性与因果，列出后续核实项。",
+    "requirements": "需要多代理能力、联网及原研究工具包；缺失资料必须标注，模拟研究视角不代表真人意见，不能保证收益。"
+  },
+  {
+    "id": "personal:patent-disclosure-writer",
+    "title": "整理专利技术交底书",
+    "category": "documents",
+    "summary": "把项目实现与技术草稿整理成模板化交底材料。",
+    "scenarios": [
+      "向专利代理人解释技术方案",
+      "把草稿填入 Word 模板"
+    ],
+    "inputs": "源码、技术草稿、Word 模板及已有检索材料",
+    "output": "交底书草稿、Word 文件、流程图与待确认问题",
+    "prompt": "使用 $patent-disclosure-writer，根据【项目和技术草稿】及【Word 模板】整理技术交底书，区分已实现内容与设想，补齐流程图并检查排版。",
+    "requirements": "需要足够技术事实及文档渲染工具；初步检索不等于正式新颖性结论，材料不保证授权。"
+  },
+  {
+    "id": "personal:pdf",
+    "title": "阅读与制作 PDF",
+    "category": "documents",
+    "summary": "读取、生成并逐页检查 PDF 的内容和版式。",
+    "scenarios": [
+      "从报告提取内容",
+      "生成可打印的 PDF 文件"
+    ],
+    "inputs": "原始文件或内容、目标版式和输出目录",
+    "output": "PDF 文件或提取结果、页面渲染检查记录",
+    "prompt": "使用 $pdf，将【内容文件】整理为 PDF，保存到【输出位置】，渲染检查中文、表格和分页，报告无法确认的版式问题。",
+    "requirements": "需要 PDF 处理与渲染依赖；与同名插件技能来源不同，纯文本提取不能证明版式正确。"
+  },
+  {
+    "id": "personal:playwright",
+    "title": "像用户一样检查网页",
+    "category": "testing",
+    "summary": "打开真实浏览器，执行操作并保留截图和调试证据。",
+    "scenarios": [
+      "检查页面搜索与分页",
+      "复现手机宽度下的布局问题"
+    ],
+    "inputs": "网址、复现步骤、预期结果及必要测试账号",
+    "output": "操作结果、截图与问题证据",
+    "prompt": "使用 $playwright，打开【网址】，检查【用户流程】和手机布局，记录实际结果并保存截图，不提交真实留言或订单。",
+    "requirements": "需要 Node.js、浏览器及可访问页面；默认使用命令行操作，不等于自动建立完整测试工程。"
+  },
+  {
+    "id": "personal:portfolio-review",
+    "title": "检查持仓组合风险",
+    "category": "investment",
+    "summary": "综合仓位、集中度、相关性和压力情景检查组合。",
+    "scenarios": [
+      "单个公司不错但组合过于集中",
+      "想比较现有持仓与替代机会"
+    ],
+    "inputs": "脱敏持仓、成本、仓位、现金和目标",
+    "output": "组合风险分析、压力情景与调整研究建议",
+    "prompt": "使用 $portfolio-review，分析【脱敏持仓表】，检查集中度、相关性和现金需求，给出压力情景及需进一步研究的调整方向，不执行交易。",
+    "requirements": "需要可靠来源、联网检索与计算核验；部分流程依赖原研究工具包，结果用于研究，不保证收益。"
+  },
+  {
+    "id": "personal:prd-review-team",
+    "title": "多人视角评审需求",
+    "category": "understanding",
+    "summary": "用产品、开发、测试、设计和运营视角检查需求是否闭环。",
+    "scenarios": [
+      "现有需求有歧义",
+      "开发前需要细化验收标准"
+    ],
+    "inputs": "已有需求文档、模块范围和业务约束",
+    "output": "问题清单、模块化 PRD、验收标准和待确认事项",
+    "prompt": "使用 $prd-review-team，评审【需求文档】中的【模块】，从六个角色检查规则闭环、权限、异常与实现成本，输出可开发部分和阻塞问题，不写业务代码。",
+    "requirements": "需要多代理能力和已有需求材料；业务决定不足时只能交付待确认版本，不能替用户编造结论。"
+  },
+  {
+    "id": "personal:private-company-research",
+    "title": "研究未上市公司",
+    "category": "investment",
+    "summary": "利用产品、融资、团队和替代数据拼出有边界的公司画像。",
+    "scenarios": [
+      "未上市公司缺少财报",
+      "评估创业公司的业务与技术"
+    ],
+    "inputs": "公司、研究问题、公开资料和截止日期",
+    "output": "多维公司报告、估值假设及信息盲区",
+    "prompt": "使用 $private-company-research，研究【未上市公司】，交叉核对产品、融资、技术、团队与替代数据，将已证实事实、估计和未知分开列出。",
+    "requirements": "需要多代理能力、联网及原研究工具包；缺失资料必须标注，模拟研究视角不代表真人意见，不能保证收益。"
+  },
+  {
+    "id": "personal:quality-screen",
+    "title": "快速排除弱质公司",
+    "category": "investment",
+    "summary": "用七项指标与例外规则筛查公司质量。",
+    "scenarios": [
+      "研究名单太长",
+      "需要先识别明显财务或经营风险"
+    ],
+    "inputs": "公司列表或行业、报告期间和财务数据",
+    "output": "通过、排除、豁免及争议名单",
+    "prompt": "使用 $quality-screen，筛查【公司列表】的经营质量，按七项指标给出证据与豁免理由，不把缺失数据当作通过，列出边界争议。",
+    "requirements": "需要可靠来源、联网检索与计算核验；部分流程依赖原研究工具包，结果用于研究，不保证收益。"
+  },
+  {
+    "id": "personal:security-standards",
+    "title": "检查前端安全边界",
+    "category": "development",
+    "summary": "检查令牌、输入输出、跨站请求和敏感信息处理。",
+    "scenarios": [
+      "开发登录和鉴权",
+      "审查富文本或用户输入"
+    ],
+    "inputs": "相关代码、认证方式、部署环境和威胁范围",
+    "output": "安全问题、具体修复及验证结果",
+    "prompt": "使用 $security-standards，检查【模块路径】的令牌处理、输入输出和请求安全，结合当前认证架构给出最小修复，验证正常与异常路径。",
+    "requirements": "前端校验不能替代服务端授权；技能示例需结合后端、Cookie 与部署条件，不能机械套用。"
+  },
+  {
+    "id": "personal:tech-learning-coach",
+    "title": "把学习变成练习计划",
+    "category": "learning",
+    "summary": "按基础和目标建立学习目录、日程、练习与复盘。",
+    "scenarios": [
+      "收藏很多资料却不会实践",
+      "准备在固定时间内掌握技术"
+    ],
+    "inputs": "当前基础、每天时间、最终项目和学习目录",
+    "output": "学习地图、周计划、练习、笔记和复盘文件",
+    "prompt": "使用 $tech-learning-coach，我会【已有基础】，每天有【时间】，希望【周期】后做出【项目】。请在【学习目录】建立计划并安排第一周练习。",
+    "requirements": "需要可写工作区及持续反馈；计划本身不代表已经掌握，进度要由实际练习验证。"
+  },
+  {
+    "id": "personal:thesis-drift",
+    "title": "检查投资观点是否漂移",
+    "category": "investment",
+    "summary": "比较前后研究，把事实变化与措辞变化分开。",
+    "scenarios": [
+      "报告越来越乐观却没有新证据",
+      "需要检查自己是否悄悄改了判断标准"
+    ],
+    "inputs": "同一公司的两份报告、日期与假设基线",
+    "output": "逐项漂移表、事实差异和需重审事项",
+    "prompt": "使用 $thesis-drift，比较【旧报告】与【新报告】，按核心假设、红线和估值锚点识别漂移，指出哪些变化有新证据，哪些只是换了说法。",
+    "requirements": "需要可比较的同公司报告及假设基线；缺失时先补基线，不把措辞变化直接当作事实变化。"
+  },
+  {
+    "id": "personal:thesis-tracker",
+    "title": "跟踪投资假设",
+    "category": "investment",
+    "summary": "记录核心假设、失效红线与估值锚点，并用新事实持续检查。",
+    "scenarios": [
+      "担心忘记最初研究理由",
+      "财报更新后复核长期假设"
+    ],
+    "inputs": "公司、研究报告、核心假设及跟踪日期",
+    "output": "结构化假设基线或更新后的追踪记录",
+    "prompt": "使用 $thesis-tracker，为【公司】建立投资假设基线，列出可验证条件、红线与估值锚点；已有基线时用【新材料】逐条更新。",
+    "requirements": "需要可靠来源、联网检索与计算核验；部分流程依赖原研究工具包，结果用于研究，不保证收益。"
+  },
+  {
+    "id": "personal:typescript-coding-standards",
+    "title": "写清类型与接口",
+    "category": "development",
+    "summary": "按个人规范组织类型、注释、命名和错误处理。",
+    "scenarios": [
+      "新接口类型混乱",
+      "重构组件中的类型定义"
+    ],
+    "inputs": "TypeScript 项目、目标文件和接口约定",
+    "output": "类型更明确的代码、调用方同步和检查结果",
+    "prompt": "使用 $typescript-coding-standards，整理【模块路径】的类型与接口，结合项目现有目录放置共享类型，修复相关调用方并运行类型检查。",
+    "requirements": "需要 TypeScript 项目；类型集中规则是此技能的约定，不是语言本身的强制要求。"
+  },
+  {
+    "id": "personal:vue-coding-standards",
+    "title": "Vue 开发规范总入口",
+    "category": "development",
+    "summary": "根据改动范围选择模板、逻辑、样式等具体 Vue 规范。",
+    "scenarios": [
+      "给 Vue 页面加功能",
+      "希望组件改动沿用项目习惯"
+    ],
+    "inputs": "项目、功能需求和目标平台",
+    "output": "符合项目约定的组件改动与验证结果",
+    "prompt": "使用 $vue-coding-standards，为【Vue 项目】的【页面】增加【功能】，先看现有约定，使用合适的组件规范并验证【关键行为】。",
+    "requirements": "主要适用于 Vue 3 和 TypeScript；uni-app 还需说明 H5、小程序或 App 平台。"
+  },
+  {
+    "id": "personal:vue-component-communication",
+    "title": "理清组件传值",
+    "category": "development",
+    "summary": "梳理 props、事件与双向绑定，使数据流清晰。",
+    "scenarios": [
+      "父子组件互相修改状态",
+      "设计弹窗表单的保存事件"
+    ],
+    "inputs": "父子组件和交互约定",
+    "output": "清晰的数据流、事件契约和行为验证",
+    "prompt": "使用 $vue-component-communication，检查【父子组件路径】的数据流，改为符合项目约定的 props 与事件传递，验证编辑、取消和保存。",
+    "requirements": "适用于 Vue 3 项目；优先核对仓库习惯，uni-app 必须结合页面目录和目标平台，不能直接照搬普通网页模式。"
+  },
+  {
+    "id": "personal:vue-component-script",
+    "title": "组织 Vue 组件逻辑",
+    "category": "development",
+    "summary": "整理 script setup 中的状态、计算属性、生命周期和方法。",
+    "scenarios": [
+      "组件脚本难以阅读",
+      "新增异步加载与清理逻辑"
+    ],
+    "inputs": "组件文件和预期行为",
+    "output": "结构清晰的组件脚本与验证结果",
+    "prompt": "使用 $vue-component-script，整理【组件路径】的 script setup，保留行为，检查异步错误、卸载清理与类型定义，运行相关验证。",
+    "requirements": "适用于 Vue 3 项目；优先核对仓库习惯，uni-app 必须结合页面目录和目标平台，不能直接照搬普通网页模式。"
+  },
+  {
+    "id": "personal:vue-component-structure",
+    "title": "整理组件文件结构",
+    "category": "development",
+    "summary": "规范组件命名、单文件结构和职责边界。",
+    "scenarios": [
+      "一个组件混入多种职责",
+      "新建组件需要匹配项目布局"
+    ],
+    "inputs": "组件目录、现有命名与使用方",
+    "output": "组件结构调整及引用同步",
+    "prompt": "使用 $vue-component-structure，检查【组件目录】的结构和命名，只拆分确有必要的职责，同步导入引用并验证原有页面。",
+    "requirements": "适用于 Vue 3 项目；优先核对仓库习惯，uni-app 必须结合页面目录和目标平台，不能直接照搬普通网页模式。"
+  },
+  {
+    "id": "personal:vue-component-style",
+    "title": "整理样式与适配",
+    "category": "development",
+    "summary": "组织样式作用域、状态样式及响应式布局。",
+    "scenarios": [
+      "样式影响了其他组件",
+      "悬停或手机布局需要调整"
+    ],
+    "inputs": "组件样式、设计目标和屏幕范围",
+    "output": "局部样式改动与多尺寸验证",
+    "prompt": "使用 $vue-component-style，调整【组件路径】的【样式问题】，沿用现有样式变量，检查悬停、键盘焦点及手机布局。",
+    "requirements": "适用于 Vue 3 项目；优先核对仓库习惯，uni-app 必须结合页面目录和目标平台，不能直接照搬普通网页模式。"
+  },
+  {
+    "id": "personal:vue-template-standards",
+    "title": "写清 Vue 模板",
+    "category": "development",
+    "summary": "整理模板、指令、插槽和标签结构，让界面表达更清晰。",
+    "scenarios": [
+      "条件渲染层次混乱",
+      "表单模板需要统一写法"
+    ],
+    "inputs": "Vue 模板和页面行为说明",
+    "output": "模板改动和行为验证",
+    "prompt": "使用 $vue-template-standards，整理【组件路径】的模板，检查条件渲染、列表 key 和事件绑定，保持【现有交互】正确。",
+    "requirements": "适用于 Vue 3 项目；优先核对仓库习惯，uni-app 必须结合页面目录和目标平台，不能直接照搬普通网页模式。"
+  },
+  {
+    "id": "personal:vue-hook-standards",
+    "title": "整理可复用逻辑",
+    "category": "development",
+    "summary": "将适合共享的 Vue 逻辑组织为有清晰输入输出的组合式函数。",
+    "scenarios": [
+      "多个组件重复查询逻辑",
+      "已有 Hook 缺少副作用清理"
+    ],
+    "inputs": "重复逻辑、使用方和状态边界",
+    "output": "组合式函数、调用方同步及测试",
+    "prompt": "使用 $vue-hook-standards，把【组件列表】真正重复的【逻辑】整理为组合式函数，明确输入输出，保留取消请求与卸载清理并验证调用方。",
+    "requirements": "适用于 Vue 3 项目；优先核对仓库习惯，uni-app 必须结合页面目录和目标平台，不能直接照搬普通网页模式。"
+  },
+  {
+    "id": "personal:vue-performance-standards",
+    "title": "改善 Vue 性能",
+    "category": "development",
+    "summary": "从构建、响应式、列表和请求角度排查性能问题。",
+    "scenarios": [
+      "首屏加载慢",
+      "大量数据导致列表卡顿"
+    ],
+    "inputs": "复现页面、数据量、构建配置和测量结果",
+    "output": "瓶颈分析、针对性优化和前后对比",
+    "prompt": "使用 $vue-performance-standards，分析【页面】在【数据量】下的卡顿，先测量瓶颈，再做针对性优化，给出前后结果，避免无依据拆包。",
+    "requirements": "适用于 Vue 3 项目；优先核对仓库习惯，uni-app 必须结合页面目录和目标平台，不能直接照搬普通网页模式。"
+  },
+  {
+    "id": "personal:vue-project-structure",
+    "title": "安排项目目录",
+    "category": "development",
+    "summary": "区分公共能力与页面私有能力，按实际业务组织文件。",
+    "scenarios": [
+      "不清楚新模块应放哪里",
+      "项目目录越来越难导航"
+    ],
+    "inputs": "项目目录、业务边界和重构范围",
+    "output": "目录建议或有限迁移及引用同步",
+    "prompt": "使用 $vue-project-structure，检查【项目目录】中【模块】的文件归属，区分公共与私有能力，只移动确有必要的文件并验证引用。",
+    "requirements": "适用于 Vue 3 项目；优先核对仓库习惯，uni-app 必须结合页面目录和目标平台，不能直接照搬普通网页模式。"
+  },
+  {
+    "id": "personal:vue-testing",
+    "title": "Vue 测试入口",
+    "category": "testing",
+    "summary": "按风险选择单元测试、浏览器验收或测试质量审查。",
+    "scenarios": [
+      "不确定应补哪层测试",
+      "改完页面需要完整验收"
+    ],
+    "inputs": "变更范围、项目测试脚本和业务风险",
+    "output": "测试方案、必要用例及执行报告",
+    "prompt": "使用 $vue-testing，检查【模块改动】，按风险选择合适的单元、组件与浏览器验证，先覆盖【关键行为】，报告执行结果与缺口。",
+    "requirements": "这是路由入口，细则在 core、e2e 和 review 三个子技能；不能用覆盖率替代行为验证。"
+  },
+  {
+    "id": "personal:vue-testing-core",
+    "title": "Vue 单元与组件测试",
+    "category": "testing",
+    "summary": "为组件、Hook、状态和接口封装编写有业务价值的测试。",
+    "scenarios": [
+      "验证搜索重置和分页参数",
+      "覆盖请求失败与取消"
+    ],
+    "inputs": "源码、测试环境、接口契约",
+    "output": "稳定的测试用例和运行记录",
+    "prompt": "使用 $vue-testing-core，为【模块路径】补充测试，覆盖成功、空数据、失败和【高风险边界】，隔离后端与时间并运行相关测试。",
+    "requirements": "通常需要 Vitest、Vue Test Utils 及适合的模拟环境；真实布局交给浏览器验收。"
+  },
+  {
+    "id": "personal:vue-testing-e2e",
+    "title": "Vue 浏览器流程验收",
+    "category": "testing",
+    "summary": "在真实浏览器验证布局、权限、请求和跨页面流程。",
+    "scenarios": [
+      "检查登录后的路由权限",
+      "验收桌面与手机操作"
+    ],
+    "inputs": "开发地址、测试账号、目标流程和平台",
+    "output": "验收记录、截图、Console 与 Network 问题",
+    "prompt": "使用 $vue-testing-e2e，在【开发网址】验证【核心流程】，检查权限跳转、请求参数与桌面手机布局，使用测试数据并保留失败证据。",
+    "requirements": "需要可运行开发服务和浏览器工具；不能以真实生产写入代替测试数据。"
+  },
+  {
+    "id": "personal:vue-testing-review",
+    "title": "审查测试是否有效",
+    "category": "testing",
+    "summary": "找出错误断言、漏测、过度模拟和不稳定用例。",
+    "scenarios": [
+      "覆盖率高但仍频繁出错",
+      "测试偶尔失败难以复现"
+    ],
+    "inputs": "被测源码、测试文件、失败日志和覆盖率资料",
+    "output": "按风险排序的测试问题与最小补测建议",
+    "prompt": "使用 $vue-testing-review，审查【测试目录】对应的【模块】，检查断言、副作用、异常路径和隔离，逐项给出证据及最小修复建议。",
+    "requirements": "需同时读取测试和实现；不因覆盖率低就机械增加用例，无法确认的问题需标注。"
+  },
+  {
+    "id": "personal:wechat-article",
+    "title": "研究并打磨公众号文章",
+    "category": "documents",
+    "summary": "结合作者、编辑和读者视角产出易读的深度文章。",
+    "scenarios": [
+      "把技术论文讲给普通读者",
+      "将研究材料整理成公众号长文"
+    ],
+    "inputs": "主题、目标读者、篇幅和来源材料",
+    "output": "文章定稿、配图与引用出处",
+    "prompt": "使用 $wechat-article，围绕【主题】写给【目标读者】一篇【篇幅】文章，先核实资料，再由作者、编辑、读者视角改进，保存草稿，不发布。",
+    "requirements": "需要研究、配图处理及多代理能力；生成文稿与向公众号发布是两件事，资料与图片应确认来源。"
+  }
+]

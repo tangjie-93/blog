@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>事件循环执行顺序</title>
+    <style>body { margin: 20px; font: 16px/1.6 sans-serif; }</style>
+</head>
+<body>
+    <p>观察下方输出：同步代码先执行，然后是微任务，最后是定时器任务。</p>
+    <script>
+        setTimeout(() => {
+            console.log('我是宏任务1');
+        }, 0);
+        const p = new Promise(resolve => {
+            console.log('promise1');
+            resolve();
+        });
+        p.then(() => {
+            console.log('我是微任务1');
+        });
+        const p2 = new Promise(resolve => {
+            console.log('promise2');
+            resolve();
+        });
+        p2.then(() => {
+            console.log('我是微任务2');
+        });
+        setTimeout(() => {
+            console.log('我是宏任务2');
+        }, 0);
+        console.log('我是主线程');
+    </script>
+</body>
+</html>

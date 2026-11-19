@@ -6,7 +6,7 @@ tags: jquery
 note: jquery之样式获取兼容总结
 ---
 
-## nodeType常用值总结
+## 1、nodeType常用值总结
 ```js
 1 表示是元素结点
 2 表示属性结点

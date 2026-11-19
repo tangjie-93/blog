@@ -110,5 +110,3 @@ getWorldDirection( target ) {
     return target.set( e[ 8 ], e[ 9 ], e[ 10 ] ).normalize();
 }
 ```
-
-<Valine></Valine>

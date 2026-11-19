@@ -82,11 +82,11 @@ computed：{
 
 ```
 + 预渲染
-+ 服务端渲染SSR
++ 服务端渲染`SSR`
 ## 2、打包优化
 + 压缩代码
 + 模板预编译
-+ Tree Shaking/Scope Hoisting
++ Tree `Shaking/Scope` Hoisting
 + 使用cdn加载第三方模块
 + 多线程打包happypack
 + splitChunks抽离公共文件
@@ -98,5 +98,5 @@ computed：{
 localstorage、cookie、
 ```
 + 服务器端`gzip`压缩
-+ CDN的使用
++ `CDN`的使用
 + 使用 Chrome Performance 查找性能瓶颈

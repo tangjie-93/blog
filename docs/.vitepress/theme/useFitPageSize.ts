@@ -1,0 +1,83 @@
+import { computed, onBeforeUnmount, onMounted, ref, type CSSProperties, type Ref } from 'vue'
+import { fitPageSize } from './pageFit.ts'
+
+interface FitPageSizeOptions {
+    enabled: boolean
+    fallbackSize: number
+    minCardWidth: number
+    minCardHeight: number
+    /** 小于该宽度时退回固定分页并允许页面滚动，窄屏一屏放不下几项。 */
+    minViewportWidth?: number
+}
+
+/**
+ * 让列表按所在视口容量分页：服务端先用固定数量渲染，挂载后测量可用空间，
+ * 之后跟随窗口尺寸更新列数、行数与每页数量。
+ */
+export function useFitPageSize(viewport: Ref<HTMLElement | null>, options: FitPageSizeOptions) {
+    const pageSize = ref(options.fallbackSize)
+    const columns = ref(0)
+    const rowHeight = ref(0)
+    const active = ref(false)
+    let observer: ResizeObserver | undefined
+    let media: MediaQueryList | undefined
+
+    const gridStyle = computed<CSSProperties | undefined>(() => {
+        if (!columns.value || !rowHeight.value) return undefined
+        return {
+            gridTemplateColumns: `repeat(${columns.value}, minmax(0, 1fr))`,
+            gridAutoRows: `minmax(0, ${rowHeight.value}px)`
+        }
+    })
+
+    function measure(): void {
+        const element = viewport.value
+        if (!active.value || !element) return
+        // 视口本身只负责占位，间距定义在它内部的网格容器上（视口读到的 gap 是 normal）。
+        const styleOwner = element.firstElementChild instanceof HTMLElement ? element.firstElementChild : element
+        const { columnGap, rowGap } = getComputedStyle(styleOwner)
+        const gapX = Number.parseFloat(columnGap) || 0
+        const gapY = Number.parseFloat(rowGap) || gapX
+        const fit = fitPageSize(
+            element.clientWidth,
+            element.clientHeight,
+            options.minCardWidth,
+            options.minCardHeight,
+            gapX,
+            gapY
+        )
+        columns.value = fit.columns
+        rowHeight.value = fit.rowHeight
+        pageSize.value = fit.pageSize
+    }
+
+    /** 宽度跨过断点时切换模式；退出整屏时恢复固定分页和默认网格。 */
+    function syncActive(): void {
+        active.value = options.enabled && (!media || media.matches)
+        if (!active.value) {
+            columns.value = 0
+            rowHeight.value = 0
+            pageSize.value = options.fallbackSize
+            return
+        }
+        measure()
+    }
+
+    onMounted(() => {
+        if (!options.enabled || typeof ResizeObserver === 'undefined') return
+        if (options.minViewportWidth) {
+            media = window.matchMedia(`(min-width: ${options.minViewportWidth}px)`)
+            media.addEventListener('change', syncActive)
+        }
+        observer = new ResizeObserver(() => { measure() })
+        if (viewport.value) observer.observe(viewport.value)
+        syncActive()
+    })
+
+    onBeforeUnmount(() => {
+        observer?.disconnect()
+        media?.removeEventListener('change', syncActive)
+    })
+
+    return { pageSize, columns, active, gridStyle, measure }
+}

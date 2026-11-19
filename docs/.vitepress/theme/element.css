@@ -1,0 +1,30 @@
+:root, html.dark {
+    --el-color-primary: var(--vp-c-brand-1);
+    --el-color-primary-light-3: var(--vp-c-brand-2);
+    --el-color-primary-light-5: var(--blog-border);
+    --el-color-primary-light-7: var(--vp-c-brand-soft);
+    --el-color-primary-light-8: var(--vp-c-brand-soft);
+    --el-color-primary-light-9: var(--vp-c-brand-soft);
+    --el-color-primary-dark-2: var(--vp-c-brand-2);
+    --el-bg-color: var(--blog-panel);
+    --el-bg-color-page: var(--vp-c-bg);
+    --el-bg-color-overlay: var(--blog-panel);
+    --el-text-color-primary: var(--vp-c-text-1);
+    --el-text-color-regular: var(--vp-c-text-2);
+    --el-text-color-secondary: var(--blog-muted);
+    --el-text-color-placeholder: var(--blog-muted);
+    --el-border-color: var(--blog-border);
+    --el-border-color-light: var(--blog-border);
+    --el-border-color-lighter: var(--blog-border);
+    --el-fill-color-blank: var(--vp-c-bg);
+    --el-fill-color-light: var(--vp-c-brand-soft);
+    --el-fill-color-lighter: var(--vp-c-brand-soft);
+    --el-mask-color: rgb(0 0 0 / .6);
+    --el-font-family: var(--vp-font-family-base);
+    --el-border-radius-base: 8px;
+}
+.el-button + .el-button { margin-left: 0; }
+.el-button--primary:not(.is-plain):not(.is-text):not(.is-link) { --el-button-text-color: var(--blog-on-accent); --el-button-hover-text-color: var(--blog-on-accent); }
+.el-select-dropdown__item { font-family: var(--vp-font-family-base); }
+.el-dialog { border: 1px solid var(--blog-border); border-radius: 16px; }
+.el-dialog__headerbtn:focus-visible { outline: 2px solid var(--vp-c-brand-1); outline-offset: -4px; }

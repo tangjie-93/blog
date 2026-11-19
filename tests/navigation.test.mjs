@@ -42,6 +42,19 @@ test('categories without README link to their first real article', () => {
   }
 })
 
+test('sidebar removes numeric prefixes from English slugs', () => {
+  const root = mkdtempSync(join(tmpdir(), 'blog-nav-'))
+  try {
+    mkdirSync(join(root, 'langchain'))
+    writeFileSync(join(root, 'langchain', 'README.md'), '# LangChain')
+    writeFileSync(join(root, 'langchain', '05-agent-and-tools.md'), '# Agent')
+    const { sidebar } = createNavigation(root)
+    assert.equal(sidebar['/articles/langchain/'][0].items[0].text, '1、agent-and-tools')
+  } finally {
+    rmSync(root, { recursive: true, force: true })
+  }
+})
+
 test('Chinese categories match source paths while navigation links remain URL encoded', () => {
   const root = mkdtempSync(join(tmpdir(), 'blog-nav-'))
   try {
@@ -64,6 +77,40 @@ test('Chinese categories match source paths while navigation links remain URL en
         `${link}${encodeURIComponent('1、入门 & 实践')}.html`, `${link}${encodeURIComponent('数据结构之堆')}.html`
       ])
     }
+  } finally {
+    rmSync(root, { recursive: true, force: true })
+  }
+})
+
+test('sidebar omits subtitles while preserving complete article URLs', () => {
+  const root = mkdtempSync(join(tmpdir(), 'blog-nav-'))
+  try {
+    mkdirSync(join(root, 'agent'))
+    const names = ['01、Hooks — 挂在循环上.md', '02、Task System——目标太大.md']
+    for (const name of names) writeFileSync(join(root, 'agent', name), '# Article')
+    const items = createNavigation(root).sidebar['/articles/agent/'].find(group => group.text === '基础与工具').items
+    assert.deepEqual(items.map(item => item.text), ['1、Hooks', '2、Task System'])
+    assert.deepEqual(items.map(item => item.link), names.map(name => `/articles/agent/${encodeURIComponent(name.slice(0, -3))}.html`))
+  } finally {
+    rmSync(root, { recursive: true, force: true })
+  }
+})
+
+test('agent sidebar numbers each topic group independently', () => {
+  const root = mkdtempSync(join(tmpdir(), 'blog-nav-'))
+  try {
+    mkdirSync(join(root, 'agent'))
+    for (const name of ['01、Loop.md', '02、Tools.md', '21、Patterns.md', '03、Permission.md']) {
+      writeFileSync(join(root, 'agent', name), '# Article')
+    }
+    const { sidebar } = createNavigation(root)
+    const groups = sidebar['/articles/agent/']
+    assert.deepEqual(groups.find(group => group.text === '基础与工具').items.map(item => item.text), [
+      '1、Loop', '2、Tools', '3、Patterns'
+    ])
+    assert.deepEqual(groups.find(group => group.text === '安全与运行时').items.map(item => item.text), [
+      '1、Permission'
+    ])
   } finally {
     rmSync(root, { recursive: true, force: true })
   }

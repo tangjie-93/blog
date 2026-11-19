@@ -1,0 +1,1324 @@
+{
+  "updatedAt": "2026-11-14",
+  "entries": [
+    {
+      "id": "system:imagegen",
+      "name": "imagegen",
+      "source": "system",
+      "kind": "system",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "681ddb4ad6d06a2acc78a3535b583f8d0c1ea800ecda3d56370d3310fd2cd4ba"
+    },
+    {
+      "id": "system:openai-docs",
+      "name": "openai-docs",
+      "source": "system",
+      "kind": "system",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "aa6829e21df2223167c85d2e49b6337a7345c84c1033f1ec10182c7882b36d45"
+    },
+    {
+      "id": "system:review-agent",
+      "name": "review-agent",
+      "source": "system",
+      "kind": "system",
+      "version": "local",
+      "status": "local-only",
+      "sourceHash": "07079efd0dc76f05fade424e5dfb048dce1de2df7626e1a4f56292a4f3f92228"
+    },
+    {
+      "id": "system:skill-creator",
+      "name": "skill-creator",
+      "source": "system",
+      "kind": "system",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "6656e54755638e8efcf275a472b9672eaa8a9a1b9e59dc210e275b03b59e1e66"
+    },
+    {
+      "id": "system:skill-installer",
+      "name": "skill-installer",
+      "source": "system",
+      "kind": "system",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "d68b77e5bbb34dedab89d134da52855f140fc4b4299b80104f534e3b9e98f8ee"
+    },
+    {
+      "id": "personal:bottleneck-hunter",
+      "name": "bottleneck-hunter",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "84435e4848562bd693cd41beff73a00a9adf8809ff3d316ca5687c314c583c02"
+    },
+    {
+      "id": "personal:codebase-graph-business-rules",
+      "name": "codebase-graph-business-rules",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "3d328e106ac0a0b80ae1d2ed9d3db136ccc9198dc3b66661dc6c93bdc7a448d4"
+    },
+    {
+      "id": "personal:codebase-graph-module-rules",
+      "name": "codebase-graph-module-rules",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "af3041f6d1a30e62ca2791ad25a07868501945fc0ef3af7eeba8bb59a589b9e3"
+    },
+    {
+      "id": "personal:codebase-summary",
+      "name": "codebase-summary",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "local-only",
+      "sourceHash": "d10c9628b956987b88b1323d99ae5b4a12d816eade321b5f8d8915578fbb7ba4"
+    },
+    {
+      "id": "personal:deep-company-series",
+      "name": "deep-company-series",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "e98f1c19023f5515ff5be0f5796cb529d3ca9a7dd5ed50e992495cbe17641d2d"
+    },
+    {
+      "id": "personal:dyp-ask",
+      "name": "dyp-ask",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "409e20ccfb114da5f0ecfe24d4e3f68ed951c5c2a97c0e067b0d1b97acc03d67"
+    },
+    {
+      "id": "personal:e2e",
+      "name": "e2e",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "ba17760e87ca08c3786e9fb7db80172488b9f463b8ca45c02cf5c0ca3a12b6dc"
+    },
+    {
+      "id": "personal:earnings-review",
+      "name": "earnings-review",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "2a5b59925606c5df03522d048f89ed8dee64dbd186a1bfa514d8d9f2fc2a1eec"
+    },
+    {
+      "id": "personal:earnings-team",
+      "name": "earnings-team",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "959406ac222b752227dff2a9e78604d52bf5610e7f59227d036c7090ed964d87"
+    },
+    {
+      "id": "personal:extract-flowcharts",
+      "name": "extract-flowcharts",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "430c49fe3aee99580391da614438f23f05c11ccc5434788280cdd5a26c5df6b4"
+    },
+    {
+      "id": "personal:financial-data",
+      "name": "financial-data",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "fb051c5b6026ac992daf495a5b5c7f3c41114e8228f326ac508af9d0d6e9bf59"
+    },
+    {
+      "id": "personal:git-commit-info",
+      "name": "git-commit-info",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "e3063bde663274834ee5fb1e58184e72ee2920c3925f26e87b9ecc911813d28a"
+    },
+    {
+      "id": "personal:git-commit-standards",
+      "name": "git-commit-standards",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "0f58d6d491e82ae4b78b90f3b1c642c9acd99ab9afd0ee81f558632ea85e0583"
+    },
+    {
+      "id": "personal:income-investment",
+      "name": "income-investment",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "683ac1947d3bc7007f2b6a0866514ed9ad33b1fea6a1c023d4ca3996bcf61e0f"
+    },
+    {
+      "id": "personal:industry-funnel",
+      "name": "industry-funnel",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "042cd59b274f54f0f11935bee2e23592e03cd92895e2a5f47e0ac58232eae1c5"
+    },
+    {
+      "id": "personal:industry-research",
+      "name": "industry-research",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "39bca0b2dc0f8f828196a6b1bd0116eaae539828c7cd7295dce0abbec2c8fdf0"
+    },
+    {
+      "id": "personal:investment-checklist",
+      "name": "investment-checklist",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "109f9df7f7264571f597bda5da7f26ddafaec34f364138476bc1e229ffd56a0b"
+    },
+    {
+      "id": "personal:investment-memo-craft",
+      "name": "investment-memo-craft",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "2d6217f3589fc394e621f50ceb29ec7917f59c898870ed19db9d97d5ab8f4576"
+    },
+    {
+      "id": "personal:investment-research",
+      "name": "investment-research",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "4f616333c0f39a457445afc4666f262203e84f1998ca421777f3827f117e5976"
+    },
+    {
+      "id": "personal:investment-team",
+      "name": "investment-team",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "4b5060622c325111053edb75e521684da3749cf6bfc7090618f5bd47fd9a307f"
+    },
+    {
+      "id": "personal:karpathy-guidelines",
+      "name": "karpathy-guidelines",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "962eb2760c9473164f7c9ab1f0dd3aef0a56a03acfd8bcb868cfd46f61ec30f1"
+    },
+    {
+      "id": "personal:management-deep-dive",
+      "name": "management-deep-dive",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "77cd31f1fa8184ca8a0eb6b3573d9107d7cede0a9a78ba4dcb4dda4063024787"
+    },
+    {
+      "id": "personal:markdown-inline-code-style",
+      "name": "markdown-inline-code-style",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "217d555f7f762eaef24e3cea6d520ca663ce4028a5a1e5eb54dcb7834f6f443e"
+    },
+    {
+      "id": "personal:news-pulse",
+      "name": "news-pulse",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "53d8c0301d5ddd828e1cbbe803acd0ba87e610e820384d5738d8409adbf1395b"
+    },
+    {
+      "id": "personal:patent-disclosure-writer",
+      "name": "patent-disclosure-writer",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "f08726f3bbe116ce65a3dbf71106c8b624b51f20d9545c2f6a7acd632ed8ea84"
+    },
+    {
+      "id": "personal:pdf",
+      "name": "pdf",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "d108cf2b36355ab37eb5962933f4d09785ec002f3105c506129320209306b9d2"
+    },
+    {
+      "id": "personal:playwright",
+      "name": "playwright",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "0ffaabcc8e0990627c4725f18bf1c7955534a796c1c199e872909de2013ce6a8"
+    },
+    {
+      "id": "personal:portfolio-review",
+      "name": "portfolio-review",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "7261b78e857f86bff6196571a4a17dbeb0d8bf2a8093d9dedb71de05fc2fa486"
+    },
+    {
+      "id": "personal:prd-review-team",
+      "name": "prd-review-team",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "c4288321c0207085ff33030c41dc90c173b9daa5a2179b0ea051e41a97b9203d"
+    },
+    {
+      "id": "personal:private-company-research",
+      "name": "private-company-research",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "2b708ce0544985b0a0fcf292a76007fd51a4defe9456d0ae252ff4ecb8b153ac"
+    },
+    {
+      "id": "personal:quality-screen",
+      "name": "quality-screen",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "ea302e077cbf1ce635edcaab304bea1041ddc0557a350dfde8608bd52aeb103e"
+    },
+    {
+      "id": "personal:security-standards",
+      "name": "security-standards",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "e00d3d905b45f3c540c3e33be5ff58e81c620ad8a0ed8dc02d64612c6ed5464c"
+    },
+    {
+      "id": "personal:tech-learning-coach",
+      "name": "tech-learning-coach",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "2d23715387256ad17fbbf985d2899c1766934b9209e3e165c069f877e940f683"
+    },
+    {
+      "id": "personal:thesis-drift",
+      "name": "thesis-drift",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "28363374d4b03714bdc9f6b44a9aef0ebf6db0c45562f7d02a939249cf722a79"
+    },
+    {
+      "id": "personal:thesis-tracker",
+      "name": "thesis-tracker",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "08b70c839788dae680fa9503fde675e497364495b0b9ba8fb87505d6108b5017"
+    },
+    {
+      "id": "personal:typescript-coding-standards",
+      "name": "typescript-coding-standards",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "3c8657b5539881c5c6e5047e9ded0960895fd9017a15141b46617637d6165aa6"
+    },
+    {
+      "id": "personal:vue-coding-standards",
+      "name": "vue-coding-standards",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "d2759f1bf1be70a5ebfa5dedc3b53eb42345b3c0f2283b3ce7daf622ba248fd7"
+    },
+    {
+      "id": "personal:vue-component-communication",
+      "name": "vue-component-communication",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "710336e014a926061d0aea90107c6f01a5800e355a39e2a3e9405d5036e78f17"
+    },
+    {
+      "id": "personal:vue-component-script",
+      "name": "vue-component-script",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "24efc436d20ff7e55cc399ee9a26d9bbbb0acdd10909a6c6c2e3aa3e0f7dfb9b"
+    },
+    {
+      "id": "personal:vue-component-structure",
+      "name": "vue-component-structure",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "a93e89cae7f783ca0cd8bad08671c681c019213124ff47461c2168c48d9816e5"
+    },
+    {
+      "id": "personal:vue-component-style",
+      "name": "vue-component-style",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "e64dd341e0f9c1084c99ac08856686a07106a9523caaec63dd5f9e863fd1c410"
+    },
+    {
+      "id": "personal:vue-template-standards",
+      "name": "vue-template-standards",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "a7b17e93cf46eb80e280003d1af771b5e680c62784b6dbc38157a136bf956c5d"
+    },
+    {
+      "id": "personal:vue-hook-standards",
+      "name": "vue-hook-standards",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "427715acc3c31c485fb9a94ec81a06270cd91ddc6116349d6ea54c8c8b8b4869"
+    },
+    {
+      "id": "personal:vue-performance-standards",
+      "name": "vue-performance-standards",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "d3e418b83a181f1e681d87b78c306d00988115a6a253945c6e70e55f71b9e744"
+    },
+    {
+      "id": "personal:vue-project-structure",
+      "name": "vue-project-structure",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "e2034eb4369e4d8c1ac003b9c78ff4c5a2a2a1c793fe211cbffc00fac11cc37f"
+    },
+    {
+      "id": "personal:vue-testing",
+      "name": "vue-testing",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "12d5b8fe682812ec3b8ff071cc909895917482d5ced8df784a5c13ec28361694"
+    },
+    {
+      "id": "personal:vue-testing-core",
+      "name": "vue-testing-core",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "8a814564dc7e144f3572efde468a21171f175e0271984373a7fe6821df0561ba"
+    },
+    {
+      "id": "personal:vue-testing-e2e",
+      "name": "vue-testing-e2e",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "00ed6bbb3a412ba23ca00f896bed8578fc5d792d1db9a4789434f12e6b2c5c0a"
+    },
+    {
+      "id": "personal:vue-testing-review",
+      "name": "vue-testing-review",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "90e128f7e85ac0d8ac06fa699af22229613d3af7e9998f73300d354aa1ccb296"
+    },
+    {
+      "id": "personal:wechat-article",
+      "name": "wechat-article",
+      "source": "personal",
+      "kind": "personal",
+      "version": "local",
+      "status": "available",
+      "sourceHash": "6b769fffc2cb3e27f83963f1f2afa9e0e6520fa7a4dd1dd7233a614331aa796e"
+    },
+    {
+      "id": "vercel:agent-browser",
+      "name": "agent-browser",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "268feb796ace9927d54310ffda8f72bac63cd1c0d88a0506294beab6472a611b"
+    },
+    {
+      "id": "vercel:agent-browser-verify",
+      "name": "agent-browser-verify",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "ddba077d6c07d6b5cce7aa8fb8b2c56e043cd561d70f20f096b7422dd44a1ee6"
+    },
+    {
+      "id": "vercel:ai-elements",
+      "name": "ai-elements",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "47ae062a3ca7dc004f667591b39998d650a0cd0d909fe3a06ca6bb9a9f685567"
+    },
+    {
+      "id": "vercel:ai-gateway",
+      "name": "ai-gateway",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "cdfc9062b39056d43b406a93ba081d38383473a62d5391b8c9561b89079c6647"
+    },
+    {
+      "id": "vercel:ai-generation-persistence",
+      "name": "ai-generation-persistence",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "275935c3e309762399764595e6bfa0f9408132f197e170bbe377a7194f4327ba"
+    },
+    {
+      "id": "vercel:ai-sdk",
+      "name": "ai-sdk",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "787895e07e49c8686ad12b5017bc7f5160fa88863c2739a98976b540f709e2b5"
+    },
+    {
+      "id": "vercel:auth",
+      "name": "auth",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "22f46358aeb87caddde759176073aea63dab402930ada7250741068a67318e3f"
+    },
+    {
+      "id": "vercel:bootstrap",
+      "name": "bootstrap",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "509de0d4efe0611ef39bdbeb3514daaf42794898fc36c67466370d2b1cbd914c"
+    },
+    {
+      "id": "vercel:cdn-caching",
+      "name": "cdn-caching",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "b4024155cacc4d2d385ee0ee7ad1b5e6c1079e1b2599885fc2b3d197ea433f64"
+    },
+    {
+      "id": "vercel:chat-sdk",
+      "name": "chat-sdk",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "4b57ca391f11d05ce5f9b43bd2d316ca1099947542a105162818122ba05fc5f7"
+    },
+    {
+      "id": "vercel:cms",
+      "name": "cms",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "d5f22976cb562714110ecd2e358b5123cd12baaffec6d7dc6af086e272b93ff5"
+    },
+    {
+      "id": "vercel:cron-jobs",
+      "name": "cron-jobs",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "16b197f8fc40559cc16c4aa1d535466d3f595ac2aec0b297203f1db23d98f873"
+    },
+    {
+      "id": "vercel:deployments-cicd",
+      "name": "deployments-cicd",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "0eb60b7627053f47eebe13685fb06c2ecee1cc3ada6fee283b3775a2a3ae4e64"
+    },
+    {
+      "id": "vercel:email",
+      "name": "email",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "bd601c2f88f5879ce01fc235efb902a8f50575eb0b24f445fe827ae0b909248c"
+    },
+    {
+      "id": "vercel:env-vars",
+      "name": "env-vars",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "6390db2eaa8fece483672975cc23f308fe10286c08126b7db6566dda64ba31c4"
+    },
+    {
+      "id": "vercel:eve",
+      "name": "eve",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "33139452b6dfec01a35b5f1d4089f7fa95075edfa593522855950c35e4bb492e"
+    },
+    {
+      "id": "vercel:geist",
+      "name": "geist",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "000d1515d168deabce0097b86ceaf7b5cc6c891e505e6a80c40b65b46b47b77e"
+    },
+    {
+      "id": "vercel:geistdocs",
+      "name": "geistdocs",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "ebd9221a886c61a53e999382ca2bbcbd01e5100e7fe11a554da9bff1a4462284"
+    },
+    {
+      "id": "vercel:investigation-mode",
+      "name": "investigation-mode",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "7fb010f9716e7c8f814976263a6ac5b64f1e266a9b3d71b0559fce015d93a86a"
+    },
+    {
+      "id": "vercel:json-render",
+      "name": "json-render",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "89f5c6e94dcc53310c569f9dadede009be51bddec04af50efa3b6a2181b05a24"
+    },
+    {
+      "id": "vercel:knowledge-update",
+      "name": "knowledge-update",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "88e7a902e08fb6140cc637bd76e0836a67cf489054e9b3377f1972a37fc21da6"
+    },
+    {
+      "id": "vercel:marketplace",
+      "name": "marketplace",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "57df1817f77785369753a2f8fbbfb21ed3859f7393a5d5e23376cd6ed47cf052"
+    },
+    {
+      "id": "vercel:micro",
+      "name": "micro",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "8d694a0b60a57bf3ab7e61bdf555545a2c941acb1a8d2938bf94a0d7cd624fe4"
+    },
+    {
+      "id": "vercel:microfrontends",
+      "name": "microfrontends",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "aea264a84984cb809c1d8cc9bc9bde2cee8ec92d1101242d89ce743ac484807e"
+    },
+    {
+      "id": "vercel:ncc",
+      "name": "ncc",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "e37c814ba40e85f0e280a50c78b266a5b4b808f69cfe6231a46d306446cf0dc2"
+    },
+    {
+      "id": "vercel:next-cache-components",
+      "name": "next-cache-components",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "337a928c251c4500b9107152c2560a5b506707a22f763dd94902b8fc5b3b44bd"
+    },
+    {
+      "id": "vercel:next-forge",
+      "name": "next-forge",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "1427a3c22669d365b26daf1dfa1d67e599155679a4b8fc13651017ab761288e0"
+    },
+    {
+      "id": "vercel:next-upgrade",
+      "name": "next-upgrade",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "24869b3c690618b485f009dbd5b93c44385000b322347e2d41d20fe908fa1041"
+    },
+    {
+      "id": "vercel:nextjs",
+      "name": "nextjs",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "cdd014ce090e4a137abd81682238d994a41fcd73a626cd70a2af47e2451bbb0c"
+    },
+    {
+      "id": "vercel:observability",
+      "name": "observability",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "ec9869baf54d7aaa65e34685deab4c855c23b2e65a9ed987ba2e9ce2ee0d4c48"
+    },
+    {
+      "id": "vercel:payments",
+      "name": "payments",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "102127fccfef4a019e3944fd719f75dce1ad60237d0996ea0aa216636981cce4"
+    },
+    {
+      "id": "vercel:react-best-practices",
+      "name": "react-best-practices",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "64cbd5962d4a6005e55503138c29930053d55dacc6290e60bad22ebeebca5fca"
+    },
+    {
+      "id": "vercel:routing-middleware",
+      "name": "routing-middleware",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "0b9144b76ee253d169453505a7c9d8d42ceefe8ab835bc136b7c56402ae9877f"
+    },
+    {
+      "id": "vercel:runtime-cache",
+      "name": "runtime-cache",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "d8c9263c079330012710b33de933c5568ce32a781478f0bfcb44d4187d0d846b"
+    },
+    {
+      "id": "vercel:satori",
+      "name": "satori",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "e18bc83ab691fa888301a3678b7d7d888f2d8989d9ee9344ec192dec3c75fddc"
+    },
+    {
+      "id": "vercel:shadcn",
+      "name": "shadcn",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "f624e06541dcf3c3c8cb3978fe924fa2fded979048f360ae4919f27edbb67fb2"
+    },
+    {
+      "id": "vercel:sign-in-with-vercel",
+      "name": "sign-in-with-vercel",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "7e2484055684e96d6c2f3b968939b32cad8e75c224189110ae09e4de7cb1fadf"
+    },
+    {
+      "id": "vercel:swr",
+      "name": "swr",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "3c88522d609da8c8bc981225f44471d436609b5acdf854fc40e8d29aae191d50"
+    },
+    {
+      "id": "vercel:turbopack",
+      "name": "turbopack",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "92b7684d1900cdbb6e23529ff77c943d744fea6ddd5ffcc45468fa79654e8d77"
+    },
+    {
+      "id": "vercel:turborepo",
+      "name": "turborepo",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "3c4b0658cedf2f342b49919d5116371a6f3c03a03759d1d6ff29a52d22059704"
+    },
+    {
+      "id": "vercel:v0-dev",
+      "name": "v0-dev",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "3fc9dc2b71b9fd27f1e95ac2df97eee81cb27550b4c6463615a4d492f4f2d22d"
+    },
+    {
+      "id": "vercel:vercel-agent",
+      "name": "vercel-agent",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "4e1d77cd9405e40222a923f8a1bce4639ee24acf555f30a37c363a63c96d990f"
+    },
+    {
+      "id": "vercel:vercel-api",
+      "name": "vercel-api",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "74bf57484948269645b28eb1b6ed2b6b6691bf02cb1bec7b9ceb3fb91d906dbf"
+    },
+    {
+      "id": "vercel:vercel-cli",
+      "name": "vercel-cli",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "0962de55d37c10eab8889dd8a90ca04d2747f2812102cd2f1e6aecefd7e533f7"
+    },
+    {
+      "id": "vercel:vercel-connect",
+      "name": "vercel-connect",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "65438f9a3500e5fa94825a762bf271be201e5de68689f64f6fb805ce8292d152"
+    },
+    {
+      "id": "vercel:vercel-firewall",
+      "name": "vercel-firewall",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "ff7654dc6b4dba878e34a69951deee3ffd2e0779b88b0e29d062a960539c1991"
+    },
+    {
+      "id": "vercel:vercel-flags",
+      "name": "vercel-flags",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "e668b1e4384bfbfbb0ac0df7c953183bb1a8956c5ba558d1f43836d09d9c5e46"
+    },
+    {
+      "id": "vercel:vercel-functions",
+      "name": "vercel-functions",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "f7a80c5159847c8c8d22e3d02c5157e10e85aeac8d501eaeda8d8c4355af95e8"
+    },
+    {
+      "id": "vercel:vercel-queues",
+      "name": "vercel-queues",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "8e12371a880cd754359a765a63b5d3d54243c11cc700cae6513e8cc95822f54c"
+    },
+    {
+      "id": "vercel:vercel-sandbox",
+      "name": "vercel-sandbox",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "d549ffa8793afdb2e4ba60eacef1d004de1c25e938db1bdb99702d4c4ead07aa"
+    },
+    {
+      "id": "vercel:vercel-services",
+      "name": "vercel-services",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "1638be9f8ff41638bf4eba03d9880abd19ccc027b646ad25cddf429b61e07f45"
+    },
+    {
+      "id": "vercel:vercel-storage",
+      "name": "vercel-storage",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "39790b7fe708b2ba845a08c7f5ee1eff6e0f2b799f09ebc898d00c0f8cd13866"
+    },
+    {
+      "id": "vercel:verification",
+      "name": "verification",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "8baf446b9cc0894c85d8d79484ef8c72d03e8a6cac6f6bd20f672da708c929c9"
+    },
+    {
+      "id": "vercel:workflow",
+      "name": "workflow",
+      "source": "vercel",
+      "kind": "plugin",
+      "version": "0.21.4",
+      "status": "available",
+      "sourceHash": "b159cfcb9ef1d78f69cd13f4d0801c9bf058fb81a4b8598e914e20b34c545364"
+    },
+    {
+      "id": "cloudflare:agents-sdk",
+      "name": "agents-sdk",
+      "source": "cloudflare",
+      "kind": "plugin",
+      "version": "0.1.2",
+      "status": "available",
+      "sourceHash": "007d6ccf85808a6c779f5b058b1be970d77785000071cb27a55a5f580fbc845b"
+    },
+    {
+      "id": "cloudflare:building-ai-agent-on-cloudflare",
+      "name": "building-ai-agent-on-cloudflare",
+      "source": "cloudflare",
+      "kind": "plugin",
+      "version": "0.1.2",
+      "status": "available",
+      "sourceHash": "31554ff30e2edb8c2dc9bd5fba15438691fb07f3541f0a0cc843b6a13cdaa573"
+    },
+    {
+      "id": "cloudflare:building-mcp-server-on-cloudflare",
+      "name": "building-mcp-server-on-cloudflare",
+      "source": "cloudflare",
+      "kind": "plugin",
+      "version": "0.1.2",
+      "status": "available",
+      "sourceHash": "d76ee46c043d3876d542245e0c26e9d084f4ca8241d811593e93d8d2594118e8"
+    },
+    {
+      "id": "cloudflare:cloudflare",
+      "name": "cloudflare",
+      "source": "cloudflare",
+      "kind": "plugin",
+      "version": "0.1.2",
+      "status": "available",
+      "sourceHash": "613c4c57c19bd6385a870b4d441e00a0d88cc6c348c447f8a88889d34b17b2d0"
+    },
+    {
+      "id": "cloudflare:durable-objects",
+      "name": "durable-objects",
+      "source": "cloudflare",
+      "kind": "plugin",
+      "version": "0.1.2",
+      "status": "available",
+      "sourceHash": "cd6797cb18f3ae8f721dfd2e5cb27b73a0aa8636683f1a38163dab2fd51a8dfb"
+    },
+    {
+      "id": "cloudflare:sandbox-sdk",
+      "name": "sandbox-sdk",
+      "source": "cloudflare",
+      "kind": "plugin",
+      "version": "0.1.2",
+      "status": "available",
+      "sourceHash": "0f3501e6510921401be3f54bcb24d2a432a1b5c63af8f719eded3a087ad88ea9"
+    },
+    {
+      "id": "cloudflare:web-perf",
+      "name": "web-perf",
+      "source": "cloudflare",
+      "kind": "plugin",
+      "version": "0.1.2",
+      "status": "available",
+      "sourceHash": "746b3490d401c8020900f0a62ece846c22d3df15782ee843c082acfa89f26703"
+    },
+    {
+      "id": "cloudflare:workers-best-practices",
+      "name": "workers-best-practices",
+      "source": "cloudflare",
+      "kind": "plugin",
+      "version": "0.1.2",
+      "status": "available",
+      "sourceHash": "099432ff265ff6080327ef0b392c118b835d2a5bda98a7de07e1afd115ed6458"
+    },
+    {
+      "id": "cloudflare:wrangler",
+      "name": "wrangler",
+      "source": "cloudflare",
+      "kind": "plugin",
+      "version": "0.1.2",
+      "status": "available",
+      "sourceHash": "0aa6fbe6932df4392779bfda67b1a0165697369668cb2dbef66d018a34f44c11"
+    },
+    {
+      "id": "chatcut:connect-chatcut-desktop",
+      "name": "connect-chatcut-desktop",
+      "source": "chatcut",
+      "kind": "plugin",
+      "version": "1.0.4",
+      "status": "available",
+      "sourceHash": "572693a786dedb9c25bc37197e1af473d8341eb65b9c82a14bb092c8b0ef6364"
+    },
+    {
+      "id": "superpowers:brainstorming",
+      "name": "brainstorming",
+      "source": "superpowers",
+      "kind": "plugin",
+      "version": "6.3.0",
+      "status": "available",
+      "sourceHash": "74edf03ea6d24ef53db48677b93558d14a979bdf052ca3f57ecdca0c66791608"
+    },
+    {
+      "id": "superpowers:dispatching-parallel-agents",
+      "name": "dispatching-parallel-agents",
+      "source": "superpowers",
+      "kind": "plugin",
+      "version": "6.3.0",
+      "status": "available",
+      "sourceHash": "1968923066f3b707eb01d1992cdf4c42284c3855f70253b9cd5000ff45fca13c"
+    },
+    {
+      "id": "superpowers:executing-plans",
+      "name": "executing-plans",
+      "source": "superpowers",
+      "kind": "plugin",
+      "version": "6.3.0",
+      "status": "available",
+      "sourceHash": "c4c3d8b628c51114cd165fb8246fe02744cd8be180032328391252e653028d9b"
+    },
+    {
+      "id": "superpowers:finishing-a-development-branch",
+      "name": "finishing-a-development-branch",
+      "source": "superpowers",
+      "kind": "plugin",
+      "version": "6.3.0",
+      "status": "available",
+      "sourceHash": "8db5a922b242dd4e1bf824cb91c13b3e8d8e8a86d6ceaf7f0774eb9cce909d65"
+    },
+    {
+      "id": "superpowers:receiving-code-review",
+      "name": "receiving-code-review",
+      "source": "superpowers",
+      "kind": "plugin",
+      "version": "6.3.0",
+      "status": "available",
+      "sourceHash": "091df1629510af1b92fc4abd6f96732ebedb4cb2c0f3457e8f2740b0504a2438"
+    },
+    {
+      "id": "superpowers:requesting-code-review",
+      "name": "requesting-code-review",
+      "source": "superpowers",
+      "kind": "plugin",
+      "version": "6.3.0",
+      "status": "available",
+      "sourceHash": "d71cc01ba56d2325cf8af5f7c11837819b63ecd57de0bfdb812f7f3ff7751df8"
+    },
+    {
+      "id": "superpowers:subagent-driven-development",
+      "name": "subagent-driven-development",
+      "source": "superpowers",
+      "kind": "plugin",
+      "version": "6.3.0",
+      "status": "available",
+      "sourceHash": "8dd1b8e698edec3700c6d89517dbe96febd3bacd3f6ea21c1a3569c62ea104b5"
+    },
+    {
+      "id": "superpowers:systematic-debugging",
+      "name": "systematic-debugging",
+      "source": "superpowers",
+      "kind": "plugin",
+      "version": "6.3.0",
+      "status": "available",
+      "sourceHash": "808fc5717aa88ad65efff312b11c186294d3e6ee301afb584e2f86599b137787"
+    },
+    {
+      "id": "superpowers:test-driven-development",
+      "name": "test-driven-development",
+      "source": "superpowers",
+      "kind": "plugin",
+      "version": "6.3.0",
+      "status": "available",
+      "sourceHash": "bf1b8216e523851a411e91d429a7c1c2a173e79d88957bc78e348218d50edd54"
+    },
+    {
+      "id": "superpowers:using-git-worktrees",
+      "name": "using-git-worktrees",
+      "source": "superpowers",
+      "kind": "plugin",
+      "version": "6.3.0",
+      "status": "available",
+      "sourceHash": "8cfb86f121269e8f7f12361e6795c4f6738828340e28964c9229d365666c9edd"
+    },
+    {
+      "id": "superpowers:using-superpowers",
+      "name": "using-superpowers",
+      "source": "superpowers",
+      "kind": "plugin",
+      "version": "6.3.0",
+      "status": "available",
+      "sourceHash": "30f2ab78e20ddc27ee7158ae8d4a2abe161c360981c7cc3548070913142d3dc3"
+    },
+    {
+      "id": "superpowers:verification-before-completion",
+      "name": "verification-before-completion",
+      "source": "superpowers",
+      "kind": "plugin",
+      "version": "6.3.0",
+      "status": "available",
+      "sourceHash": "2befe7fc55bcadaa3d97dd9e8efeb633d2561c0ebe74c5a8b17c4d9e7e4520b3"
+    },
+    {
+      "id": "superpowers:writing-plans",
+      "name": "writing-plans",
+      "source": "superpowers",
+      "kind": "plugin",
+      "version": "6.3.0",
+      "status": "available",
+      "sourceHash": "48508f44bbfd7d24b029fbf3a314f3cd14c9615599059366e922f47b8dc08cf2"
+    },
+    {
+      "id": "superpowers:writing-skills",
+      "name": "writing-skills",
+      "source": "superpowers",
+      "kind": "plugin",
+      "version": "6.3.0",
+      "status": "available",
+      "sourceHash": "d34db5c8aed6a4e0440132bd0613aace70a693ec7819d5637ad77481d8e10d1b"
+    },
+    {
+      "id": "documents:documents",
+      "name": "documents",
+      "source": "documents",
+      "kind": "plugin",
+      "version": "26.1024.11018",
+      "status": "available",
+      "sourceHash": "c9b9ba61ac15f20a600220bc10a380c7753992bbd3c323bfe33fae864adefc21"
+    },
+    {
+      "id": "pdf:pdf",
+      "name": "pdf",
+      "source": "pdf",
+      "kind": "plugin",
+      "version": "26.1024.11018",
+      "status": "available",
+      "sourceHash": "a6e20f4ae66364a06d577dd51e0ce66ee2ef955be129cbe195e0a27f403daaf8"
+    },
+    {
+      "id": "presentations:Presentations",
+      "name": "Presentations",
+      "source": "presentations",
+      "kind": "plugin",
+      "version": "26.1024.11018",
+      "status": "available",
+      "sourceHash": "bb3726eff35cb82241fd2c3b09fcdb18cc3bf3daefddf8df929d2e0bd4d2af2f"
+    },
+    {
+      "id": "spreadsheets:excel-live-control",
+      "name": "excel-live-control",
+      "source": "spreadsheets",
+      "kind": "plugin",
+      "version": "26.1024.11018",
+      "status": "available",
+      "sourceHash": "1c27488fa2a59ce2cc8925a12527ee9c7aa40ccf0701f3f2719ab17858586e8b"
+    },
+    {
+      "id": "spreadsheets:Spreadsheets",
+      "name": "Spreadsheets",
+      "source": "spreadsheets",
+      "kind": "plugin",
+      "version": "26.1024.11018",
+      "status": "available",
+      "sourceHash": "25da47cec10100f2a08df9feaa252864a738816aca30562ae6ba111d7b1eb48e"
+    },
+    {
+      "id": "template-creator:template-creator",
+      "name": "template-creator",
+      "source": "template-creator",
+      "kind": "plugin",
+      "version": "26.1024.11018",
+      "status": "available",
+      "sourceHash": "f1d14fd2847a2e879611a8b8f872f5dc4676a0607958d015274d2dc61e812deb"
+    },
+    {
+      "id": "visualize:visualize",
+      "name": "visualize",
+      "source": "visualize",
+      "kind": "plugin",
+      "version": "1.0.49",
+      "status": "available",
+      "sourceHash": "37a648f231b3716956e5b534bff1eef36195b5f7261ccd78e913a9ad5c961f0f"
+    },
+    {
+      "id": "ponytail:ponytail",
+      "name": "ponytail",
+      "source": "ponytail",
+      "kind": "plugin",
+      "version": "5.3.2",
+      "status": "available",
+      "sourceHash": "9badd22a32e19cb884e46dfa8d3aae82bb81dfa5484105b8b4f0262df823a509"
+    },
+    {
+      "id": "ponytail:ponytail-audit",
+      "name": "ponytail-audit",
+      "source": "ponytail",
+      "kind": "plugin",
+      "version": "5.3.2",
+      "status": "available",
+      "sourceHash": "2b3223a02c386d1263e1b08343cb8eb3a53e444cdafb1d79e26c8ec2a8fcad28"
+    },
+    {
+      "id": "ponytail:ponytail-debt",
+      "name": "ponytail-debt",
+      "source": "ponytail",
+      "kind": "plugin",
+      "version": "5.3.2",
+      "status": "available",
+      "sourceHash": "b5ec2762f6ba8c4af9ea7173aa6c9f91b88655a25e43f9de0264f6ce8722b25f"
+    },
+    {
+      "id": "ponytail:ponytail-gain",
+      "name": "ponytail-gain",
+      "source": "ponytail",
+      "kind": "plugin",
+      "version": "5.3.2",
+      "status": "available",
+      "sourceHash": "231034a896d6762e4b5c8468287083422c56b499119976ec9f76821f7d083090"
+    },
+    {
+      "id": "ponytail:ponytail-help",
+      "name": "ponytail-help",
+      "source": "ponytail",
+      "kind": "plugin",
+      "version": "5.3.2",
+      "status": "available",
+      "sourceHash": "86ab0ce0af70cbeeeef499d5c884873b393f87f86401dcc45553662ce2c1eff9"
+    },
+    {
+      "id": "ponytail:ponytail-review",
+      "name": "ponytail-review",
+      "source": "ponytail",
+      "kind": "plugin",
+      "version": "5.3.2",
+      "status": "available",
+      "sourceHash": "33fe4ebe22a460924e5d4a261e223df22e409cc94ab76182bee9fb91a3ef022e"
+    }
+  ],
+  "excluded": {
+    "duplicateOrOtherHostFiles": 31,
+    "inactiveCacheSkills": 12,
+    "note": "排除旧版 Superpowers 14 份、Figma 重复副本 11 份、Ponytail 其他宿主副本 6 份；Figma 11 项和 Caveman 1 项仅见缓存，未计入可用目录。"
+  }
+}

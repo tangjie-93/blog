@@ -23,14 +23,14 @@ note: WebGL之透视投影及矩阵的推导
 + 近平面`（Near Plane, n`：距离相机最近的平面`z-near`。
 + 远平面`（Far Plane, f`：距离相机最远的平面 `z-far`。
 
-## 3推导步骤
+## 3、3推导步骤
 #### 3.1定义视角参数
 视角参数包括视角 `（FOV）`、宽高比`（aspectRatio`）、近平面`n`和远平面`f`。
 + `θ` 为视角的一半，即 `θ = FOV/2`
 + `t = n * tan(θ)` 为近平面的高度的一半 `height/2`
 + `r = t*aspectRatio = n * tan(θ) * aspectRatio` 为近平面的宽度的一半 `wight/2`
 
-#### 3.2 透视投影矩阵的推导
+#### `3.2` 透视投影矩阵的推导
 
 透视投影矩阵的推导包括将三维点映射到二维平面上，并进行**透视除法**以实现透视效果。
 
@@ -176,8 +176,5 @@ $$
 [透视投影demo地址](https://github.com/tangjie-93/WebGL/blob/main/%E8%B7%9F%E7%9D%80%E5%AE%98%E7%BD%91%E5%AD%A6WebGL%2BWebGL%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97/%E6%8A%95%E5%BD%B1/demo/%E9%80%8F%E8%A7%86%E6%8A%95%E5%BD%B1.html)
 
 **参考文档**<br>
-[WebGL 三维透视投影](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-3d-perspective.html)<br>
+[`WebGL` 三维透视投影](https://webglfundamentals.org/webgl/lessons/zh_cn/webgl-3d-perspective.html)<br>
 [透视投影](https://juejin.cn/book/6844733755580481543/section/6844733755941191687)
-
-
-<Valine></Valine>

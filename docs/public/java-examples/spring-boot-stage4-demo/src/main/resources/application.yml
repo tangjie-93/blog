@@ -1,0 +1,61 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /stage4
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+spring:
+  application:
+    name: spring-boot-stage4-demo
+  profiles:
+    # 默认启用 dev 环境。生产运行时可通过 --spring.profiles.active=prod 覆盖。
+    active: dev
+  jackson:
+    time-zone: Asia/Shanghai
+    date-format: yyyy-MM-dd HH:mm:ss
+
+app:
+  name: 阶段4 Spring Boot Demo
+  version: 1.0.0
+  description: 面向小白的 Spring Boot 分层架构示例
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+  info:
+    env:
+      enabled: true
+
+info:
+  app:
+    name: ${app.name}
+    version: ${app.version}
+    description: ${app.description}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
+  openapi:
+    title: 阶段4 Spring Boot Demo API
+    description: 包含分层架构、统一响应、参数校验、异常处理、AOP 日志、接口文档的学习示例
+    version: 1.0.0
+    group:
+      default:
+        api-rule: package
+        api-rule-resources:
+          - com.example.stage4.controller

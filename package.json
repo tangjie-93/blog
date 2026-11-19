@@ -7,22 +7,29 @@
   "description": "前端技术积累：VitePress 技术博客",
   "scripts": {
     "dev": "vitepress dev docs",
-    "build": "vitepress build docs && node scripts/check-build.mjs",
+    "inject:git-info": "node scripts/inject-git-info.mjs",
+    "build": "pnpm run inject:git-info && node --max-old-space-size=4096 node_modules/vitepress/bin/vitepress.js build docs && node scripts/check-build.mjs",
     "docs:dev": "vitepress dev docs",
     "docs:build": "pnpm run build",
     "docs:preview": "vitepress preview docs",
-    "deploy": "pnpm run docs:build && wrangler pages deploy docs/.vitepress/dist --project-name tangjie-blog",
+    "deploy:github": "git push origin dev",
+    "deploy:cloudflare": "pnpm run build && wrangler pages deploy docs/.vitepress/dist --project-name tangjie-blog --branch dev",
+    "deploy:vercel": "vercel --prod --yes",
+    "deploy": "node scripts/deploy-all.mjs",
     "test": "node --test tests/*.test.mjs docs/.vitepress/theme/*.test.ts"
   },
   "engines": {
     "node": ">=22"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["esbuild", "workerd"]
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "workerd"
+    ]
   },
   "dependencies": {
-    "leancloud-storage": "^4.15.2",
-    "valine": "1.5.3",
+    "@waline/client": "3.16.1",
+    "element-plus": "^2.14.8",
     "vue": "^3.5.0"
   },
   "devDependencies": {

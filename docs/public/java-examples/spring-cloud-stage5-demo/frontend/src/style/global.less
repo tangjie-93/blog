@@ -1,0 +1,70 @@
+@import './variables.less';
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    color: @text-main;
+    font-family: Arial, 'Microsoft YaHei', sans-serif;
+    background: @page-bg;
+}
+
+button,
+input,
+select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+.field-input {
+    width: 100%;
+    min-height: 38px;
+    padding: 8px 10px;
+    color: @text-main;
+    background: #ffffff;
+    border: 1px solid @line-color;
+    border-radius: 6px;
+}
+
+.primary-button,
+.secondary-button,
+.icon-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 36px;
+    border-radius: 6px;
+
+    &:disabled {
+        cursor: not-allowed;
+        opacity: 0.55;
+    }
+}
+
+.primary-button {
+    padding: 8px 13px;
+    color: #ffffff;
+    background: @primary-color;
+    border: 1px solid @primary-color;
+}
+
+.secondary-button {
+    padding: 8px 12px;
+    color: @text-main;
+    background: #ffffff;
+    border: 1px solid @line-color;
+}
+
+.icon-button {
+    width: 36px;
+    padding: 0;
+    color: @text-main;
+    background: #ffffff;
+    border: 1px solid @line-color;
+}

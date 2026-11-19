@@ -168,5 +168,3 @@ setFromQuaternion( q, order, update ) {
 
 }
 ```
-
-<Valine></Valine>

@@ -38,5 +38,3 @@ function contextLost(ev) { // Event Handler for context lost event
 ```
 上下文丢失事件的响应函数只有短短的两行，一个是停止调用产生动画的函数，停止物体的绘制。第二个是阻止浏览器对该事件的默认处理行为。因为浏览器对于上下文丢失的默认处理行为是，不再触发上下文恢复行为。
 [demo地址](https://github.com/tangjie-93/WebGL/blob/main/%E8%B7%9F%E7%9D%80%E5%AE%98%E7%BD%91%E5%AD%A6WebGL%2BWebGL%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97/%E9%AB%98%E7%BA%A7%E6%8A%80%E6%9C%AF/%E5%93%8D%E5%BA%94%E4%B8%8A%E4%B8%8B%E6%96%87%E4%B8%A2%E5%A4%B1/%E4%B8%8A%E4%B8%8B%E6%96%87%E4%B8%A2%E5%A4%B1.html)
-
-<Valine></Valine>

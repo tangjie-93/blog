@@ -11,9 +11,27 @@ export function getCommentPath(relativePath: string): string {
     return `/blog/${encodeURI(path.replace(/^\//, '')).replace(/\?/g, '%3F').replace(/#/g, '%23')}`
 }
 
+/** 从目录 README 的正文提取短摘要，避免卡片重复显示标题。 */
+export function summarizeMarkdown(source = ''): string {
+    const content = source
+        .replace(/^---[\s\S]*?---\s*/u, '')
+        .replace(/<!--[\s\S]*?-->/gu, '')
+        .replace(/```[\s\S]*?```/gu, '')
+    const headings = [...content.matchAll(/^#{1,6}\s+(.+)$/gmu)]
+        .map(match => match[1].replace(/[`*_~]/g, '').replace(/^\s*\d+[、.)]\s*/u, '').trim())
+        .filter(Boolean)
+        .slice(0, 2)
+    const paragraph = content.split(/\r?\n/)
+        .map(line => line.trim())
+        .find(line => line.length > 8 && !/^(?:[#>|+*-]|\d+[.)、])\s*/u.test(line) && !/^\|/.test(line))
+    const summary = paragraph || headings.join('；')
+    return summary ? `${summary.replace(/\s+/gu, ' ').slice(0, 100)}${summary.length > 100 ? '…' : ''}` : ''
+}
+
 /** 规范化文章元数据并按日期倒序排列，保留无日期文章。 */
 export function mapPosts(pages: BlogSourcePost[]): BlogPost[] {
-    return pages.map(({ url, frontmatter }) => {
+    return pages.map(({ url, src, frontmatter }) => {
+        const isCategoryIndex = /(?:\/README(?:\.html)?|\/)$/u.test(url)
         const tags = Array.isArray(frontmatter.tags) ? frontmatter.tags : String(frontmatter.tags ?? '').split('|')
         const date = frontmatter.date instanceof Date ? frontmatter.date.toISOString().slice(0, 10) : String(frontmatter.date ?? '')
         return {
@@ -22,7 +40,7 @@ export function mapPosts(pages: BlogSourcePost[]): BlogPost[] {
             date,
             tags: [...new Set(tags.map(tag => String(tag).trim()).filter(Boolean))],
             type: String(frontmatter.type ?? ''),
-            note: String(frontmatter.note ?? ''),
+            note: isCategoryIndex ? summarizeMarkdown(src) || String(frontmatter.note ?? '') : String(frontmatter.note ?? ''),
         }
     }).sort((a, b) => (Date.parse(b.date) || 0) - (Date.parse(a.date) || 0))
 }

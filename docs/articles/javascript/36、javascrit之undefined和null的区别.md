@@ -11,11 +11,11 @@ note: Undefined 类型只有一个值，即特殊的undefined。实际上，unde
 </ul>
 
 
-## <span id="a1">1、Undefined</span>
+## 1、<span id="a1">1、Undefined</span>
 
 
-&#8195;&#8195;Undefined 类型只有一个值，即特殊的undefined。实际上，undefined值是继承自null值。undefined==null 为true。
-根据工作中总结，只要有这几种情况下会出现undefined。并且undefined===undefined为true 
+&#8195;&#8195;Undefined 类型只有一个值，即特殊的`undefined`。实际上，`undefined`值是继承自`null`值。`undefined`==`null` 为true。
+根据工作中总结，只要有这几种情况下会出现`undefined`。并且`undefined`===`undefined`为true 
 
 >1.定义变量，但是没有初始化时,如var a；
 
@@ -49,20 +49,20 @@ alert(typeof age);         // "undefined"
 ```
 
 
-## <span id="a2">2、Null 类型</span>
+## 2、<span id="a2">2、Null 类型</span>
 
 
-&#8195;&#8195;是第二个只有一个值的数据类型，这个特殊的值是 null。从逻辑角度来看，null值表示一个空对象指针，要意在保存对象的变量还没有真正保存对象。而这也正是使用 typeof 操作符检测 null值时会返回"object"的原因。null===null为true。这几种情况下会出现null的情况
+&#8195;&#8195;是第二个只有一个值的数据类型，这个特殊的值是 `null`。从逻辑角度来看，`null`值表示一个空对象指针，要意在保存对象的变量还没有真正保存对象。而这也正是使用 typeof 操作符检测 `null`值时会返回"object"的原因。`null`===`null`为true。这几种情况下会出现`null`的情况
 
 >1、手动设置变量的值或者对象某一个属性值为null（在初始化对象时，手动设置对象为null。在作用域中不再需要使用某个对象时，把null赋值给那个变量解除引用，以释放内存）    
 
->2、在javascript的DOM元素获取中，如果没有获取到指定的元素对象，结果一般是null。    
+>2、在javascript的`DOM`元素获取中，如果没有获取到指定的元素对象，结果一般是null。    
 
 ```js
 var d=document.getElementById("d");
 console.log(d);//当没有id为"d"的标签时返回null
 ```
->3、Object.prototype._proto_的值也是null。（每一个对象都有__proto__属性，指向对应的构造函数的prototype属性,但是因为Object是所有类的基类,其没有对应的构造函数，所有Object.prototype._proto_值为空）；
+>3、`Object`.prototype._proto_的值也是null。（每一个对象都有__proto__属性，指向对应的构造函数的prototype属性,但是因为`Object`是所有类的基类,其没有对应的构造函数，所有`Object`.prototype._proto_值为空）；
 
 ```js
 console.log("a".__proto__);
@@ -71,5 +71,3 @@ console.log("a".__proto__);
 ```
 
 >4、在正则捕获的时候，如果没有捕获到结果，默认也是null。
-
-<Valine></Valine>

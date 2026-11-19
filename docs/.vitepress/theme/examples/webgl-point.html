@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>WebGL 绘制正方形点</title>
+    <style>
+        body { margin: 16px; font: 16px/1.6 sans-serif; }
+        canvas { display: block; width: 320px; max-width: 100%; height: auto; }
+    </style>
+</head>
+<body>
+    <p>黑色画布中央是一个红色正方形点。</p>
+    <canvas id="canvas" width="320" height="240" aria-label="黑底中央的红色正方形点"></canvas>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const gl = canvas.getContext('webgl');
+        if (!gl) throw new Error('当前浏览器或设备不支持 WebGL，请检查硬件加速设置。');
+
+        // 编译失败时给出具体错误，避免只看到空白画布。
+        function compileShader(type, source) {
+            const shader = gl.createShader(type);
+            if (!shader) throw new Error('无法创建着色器。');
+            gl.shaderSource(shader, source);
+            gl.compileShader(shader);
+            if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+                const message = gl.getShaderInfoLog(shader);
+                gl.deleteShader(shader);
+                throw new Error('着色器编译失败：' + message);
+            }
+            return shader;
+        }
+        const vertexShader = compileShader(gl.VERTEX_SHADER, `
+            void main() {
+                gl_Position = vec4(0.0, 0.0, 0.0, 1.0);
+                gl_PointSize = 40.0;
+            }
+        `);
+        const fragmentShader = compileShader(gl.FRAGMENT_SHADER, `
+            precision mediump float;
+            void main() {
+                gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+            }
+        `);
+        const program = gl.createProgram();
+        if (!program) throw new Error('无法创建着色器程序。');
+        gl.attachShader(program, vertexShader);
+        gl.attachShader(program, fragmentShader);
+        gl.linkProgram(program);
+        if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+            throw new Error('着色器程序链接失败：' + gl.getProgramInfoLog(program));
+        }
+        gl.useProgram(program);
+        gl.viewport(0, 0, canvas.width, canvas.height);
+        gl.clearColor(0, 0, 0, 1);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        gl.drawArrays(gl.POINTS, 0, 1);
+    </script>
+</body>
+</html>

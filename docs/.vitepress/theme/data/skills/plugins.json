@@ -1,0 +1,394 @@
+[
+  {
+    "id": "superpowers:brainstorming",
+    "title": "先把需求想清楚",
+    "category": "understanding",
+    "summary": "通过问题、方案比较和设计确认，把一个想法变成可实施的需求。",
+    "scenarios": [
+      "只有模糊想法，不知道先做哪些功能",
+      "开发前需要比较两种实现方式"
+    ],
+    "inputs": "目标用户、想解决的问题、已有项目和时间限制。",
+    "output": "确认过的范围与设计；复杂任务还会形成设计文档。",
+    "prompt": "请使用 superpowers:brainstorming 技能，我想为【项目】增加【功能】，使用者是【人群】。先了解现有代码和目标，比较方案，说明取舍，再和我确认设计。",
+    "requirements": "需要你参与回答关键问题；这是设计阶段，未确认方案前不会直接开始实现。"
+  },
+  {
+    "id": "superpowers:dispatching-parallel-agents",
+    "title": "让独立任务同时推进",
+    "category": "development",
+    "summary": "把互不依赖的问题交给不同代理处理，再统一检查和整合结果。",
+    "scenarios": [
+      "多个测试文件因不同原因失败",
+      "不同模块需要独立调查或修改"
+    ],
+    "inputs": "任务清单、每项负责的文件、共享约束和验收标准。",
+    "output": "各任务的调查或修改结果，以及整合后的验证记录。",
+    "prompt": "请使用 superpowers:dispatching-parallel-agents 技能，分析【任务清单】中哪些工作互不依赖，为它们分配清晰的文件范围并并行推进，最后检查冲突并统一验证。",
+    "requirements": "运行环境必须支持子代理；共享文件或有先后依赖的工作不适合直接并行。"
+  },
+  {
+    "id": "superpowers:executing-plans",
+    "title": "按现成计划逐项实现",
+    "category": "development",
+    "summary": "读取已有实施计划，检查缺口，再按步骤完成代码和验证。",
+    "scenarios": [
+      "上次已经写好计划，现在开始执行",
+      "换到新会话继续完成一份明确的开发任务"
+    ],
+    "inputs": "可读取的计划文件、对应仓库和测试运行条件。",
+    "output": "计划中的实现结果、实际检查结果和仍未解决的阻塞。",
+    "prompt": "请使用 superpowers:executing-plans 技能，执行【计划文件】，先检查计划与当前代码是否一致，再按任务逐项实现和验证，遇到无法验证的步骤明确记录原因。",
+    "requirements": "必须有可执行的书面计划；支持子代理时，该版本优先转到 subagent-driven-development。"
+  },
+  {
+    "id": "superpowers:finishing-a-development-branch",
+    "title": "完成开发分支的收尾",
+    "category": "development",
+    "summary": "先验证开发结果，再按你的选择合并、创建拉取请求或保留分支。",
+    "scenarios": [
+      "功能写完了，需要整理成可合并的提交",
+      "独立工作目录中的任务结束，需要安全收尾"
+    ],
+    "inputs": "当前分支、原始目标分支、测试命令和希望的交付方式。",
+    "output": "测试结果、分支处理结果，必要时包含拉取请求链接。",
+    "prompt": "请使用 superpowers:finishing-a-development-branch 技能，检查【当前功能分支】是否可以收尾，运行项目测试，核实目标分支，然后向我列出合并、创建拉取请求或保留分支的选择。",
+    "requirements": "需要 Git 仓库；推送或创建拉取请求还需要远程访问权限，不能把测试失败视为完成。"
+  },
+  {
+    "id": "superpowers:receiving-code-review",
+    "title": "核实并处理审查意见",
+    "category": "testing",
+    "summary": "先对照代码判断审查意见是否成立，再逐条修改并验证。",
+    "scenarios": [
+      "收到一组代码审查意见，不确定哪些该改",
+      "审查建议可能破坏现有兼容行为"
+    ],
+    "inputs": "完整审查反馈、相关代码、原始需求及兼容范围。",
+    "output": "逐条反馈的核实结论、必要的修复和测试证据。",
+    "prompt": "请使用 superpowers:receiving-code-review 技能，核实【审查意见】与当前实现。说明每项是否成立，按风险顺序修复确认的问题，对不成立的建议给出代码依据。",
+    "requirements": "需要完整反馈和代码上下文；不会默认审查者每条意见都正确，不清楚的要求需要澄清。"
+  },
+  {
+    "id": "superpowers:requesting-code-review",
+    "title": "安排独立代码审查",
+    "category": "testing",
+    "summary": "给独立审查代理提供需求和改动范围，在合并前找出遗漏。",
+    "scenarios": [
+      "大功能完成后想找另一双眼睛检查",
+      "准备提交拉取请求，需要验证是否满足需求"
+    ],
+    "inputs": "改动说明、需求或计划、基准与目标提交，或明确的未提交改动范围。",
+    "output": "按严重程度整理的审查发现和处理结果。",
+    "prompt": "请使用 superpowers:requesting-code-review 技能，对【改动范围】安排独立审查，重点核对【需求文档】、边界情况和回归风险。给审查者完整上下文，处理关键问题后再验证。",
+    "requirements": "依赖子代理能力和可读取的代码；审查发现仍需复核，不能用代理一句“通过”代替测试。"
+  },
+  {
+    "id": "superpowers:subagent-driven-development",
+    "title": "分工完成一份开发计划",
+    "category": "development",
+    "summary": "由主代理协调多个实施和审查代理，按计划完成开发并做整体复核。",
+    "scenarios": [
+      "计划涉及多个独立模块，需要多人式分工",
+      "希望每项实现完成后都有人检查需求和代码质量"
+    ],
+    "inputs": "已确认的计划、设计、文件归属及验收方式。",
+    "output": "各任务的实现、任务审查记录和最终整体检查结果。",
+    "prompt": "请使用 superpowers:subagent-driven-development 技能，按【实施计划】分配实现任务，每项明确文件归属，完成后检查需求符合度和代码质量，最后进行整体回归验证。",
+    "requirements": "需要支持子代理的运行环境及清楚的实施计划；任务有依赖时仍要顺序执行。"
+  },
+  {
+    "id": "superpowers:systematic-debugging",
+    "title": "有证据地排查故障",
+    "category": "testing",
+    "summary": "先复现并追踪根因，再用最小修改修复，避免反复猜测。",
+    "scenarios": [
+      "页面报错但不知道是前端还是接口问题",
+      "一个问题改了几次仍然反复出现"
+    ],
+    "inputs": "复现步骤、预期与实际结果、日志、近期改动及相关代码。",
+    "output": "根因解释、修复改动和能证明问题解决的验证结果。",
+    "prompt": "请使用 superpowers:systematic-debugging 技能，排查【故障现象】。复现步骤是【步骤】，预期是【结果】。先收集证据并定位根因，再最小修复，最后验证原场景和相关回归。",
+    "requirements": "需要可复现环境或足够日志；无法复现时会继续收集证据，不能仅凭猜测宣布修复。"
+  },
+  {
+    "id": "superpowers:test-driven-development",
+    "title": "先写失败测试再实现",
+    "category": "testing",
+    "summary": "用失败测试描述目标行为，再写最少的实现让测试通过。",
+    "scenarios": [
+      "要修复一个容易再次出现的边界问题",
+      "新增业务逻辑，需要明确正确与错误结果"
+    ],
+    "inputs": "行为需求、输入输出示例、现有测试框架与代码。",
+    "output": "经历先失败后通过的测试，以及满足行为要求的实现。",
+    "prompt": "请使用 superpowers:test-driven-development 技能，为【功能或缺陷】按测试驱动方式开发，先写一个能够失败的行为测试并运行，再实现最小修复，最后检查相关测试。",
+    "requirements": "需要可运行的测试环境；关键是验证行为，不是写与实现逐行对应的测试。"
+  },
+  {
+    "id": "superpowers:using-git-worktrees",
+    "title": "为新任务建立独立工作目录",
+    "category": "development",
+    "summary": "使用 Git worktree 隔离开发任务，减少与当前未完成改动相互干扰。",
+    "scenarios": [
+      "当前目录有未完成修改，还想开始另一项功能",
+      "需要同时保留两个分支的可运行环境"
+    ],
+    "inputs": "Git 仓库、新任务分支名称和项目安装测试方式。",
+    "output": "独立工作目录、分支信息和初始测试状态。",
+    "prompt": "请使用 superpowers:using-git-worktrees 技能，为【新功能】建立隔离的 Git 工作目录，检查已有 worktree 和忽略规则，准备依赖并运行基础检查，保留原目录的修改。",
+    "requirements": "需要 Git 和工作目录写权限；依赖准备可能耗时，目录隔离不代表外部数据库也被隔离。"
+  },
+  {
+    "id": "superpowers:using-superpowers",
+    "title": "选择合适的开发流程技能",
+    "category": "getting-started",
+    "summary": "帮助代理先判断任务需要哪些技能，再进入设计、调试或实现流程。",
+    "scenarios": [
+      "不知道应该从规划还是排错开始",
+      "希望开发任务遵循已有技能工作流"
+    ],
+    "inputs": "当前任务目标、已有技能目录和运行环境。",
+    "output": "适用技能的选择与后续工作方式。",
+    "prompt": "请使用 superpowers:using-superpowers 技能，针对【任务目标】判断该使用哪些已安装技能，说明从哪一步开始，并按适用工作流推进。",
+    "requirements": "这是技能选择与流程入口，不直接提供业务功能；只能调用当前环境实际可用的技能。"
+  },
+  {
+    "id": "superpowers:verification-before-completion",
+    "title": "完成前拿出验证证据",
+    "category": "testing",
+    "summary": "要求在声称完成前重新运行对应检查，并如实说明结果与缺口。",
+    "scenarios": [
+      "代码看起来改好了，但没有跑过测试",
+      "交付前要确认构建和原问题真的通过"
+    ],
+    "inputs": "待验证的改动、验收标准、测试与构建命令。",
+    "output": "刚运行的检查结果及尚未证实的部分。",
+    "prompt": "请使用 superpowers:verification-before-completion 技能，检查【本次改动】是否达到【验收标准】，运行能够证明结果的测试或构建，逐项说明通过、失败和无法验证的内容。",
+    "requirements": "需要可运行的检查环境；以前的成功记录和静态阅读不能替代本次验证。"
+  },
+  {
+    "id": "superpowers:writing-plans",
+    "title": "把设计拆成可执行步骤",
+    "category": "understanding",
+    "summary": "把已确认的需求写成包含文件、实现步骤和测试方法的开发计划。",
+    "scenarios": [
+      "需求已经明确，但实现顺序还不清楚",
+      "需要把任务交给另一个会话或开发者继续"
+    ],
+    "inputs": "已确认的设计、仓库结构、技术约束和验收目标。",
+    "output": "有明确文件范围、依赖关系和验证命令的实施计划。",
+    "prompt": "请使用 superpowers:writing-plans 技能，根据【已确认设计】和当前项目写实施计划，列出每个任务修改哪些文件、怎样实现、怎样验证，并说明任务之间的依赖。",
+    "requirements": "先有清楚的设计再使用；产出是计划，不等于代码已经实现。"
+  },
+  {
+    "id": "superpowers:writing-skills",
+    "title": "编写并测试可复用技能",
+    "category": "getting-started",
+    "summary": "将重复工作方法写成技能，并用真实任务检验它是否能正确引导代理。",
+    "scenarios": [
+      "团队有固定流程，希望沉淀成可重复调用的技能",
+      "已有技能经常被误触发或跳过重要步骤"
+    ],
+    "inputs": "目标工作流、触发场景、失败案例、输出标准及现有技能（如有）。",
+    "output": "技能说明与相关资源，以及触发和执行测试结果。",
+    "prompt": "请使用 superpowers:writing-skills 技能，为【重复工作流程】编写技能，先设计能暴露现有问题的测试场景，再写触发条件和步骤，验证它确实改善了执行结果。",
+    "requirements": "更偏重技能质量验证；完整压力测试依赖子代理，不适合把一次性任务硬做成技能。"
+  },
+  {
+    "id": "chatcut:connect-chatcut-desktop",
+    "title": "连接桌面视频工具",
+    "category": "getting-started",
+    "summary": "安装、打开或修复 ChatCut Desktop，让编辑工具能够连接到 Codex。",
+    "scenarios": [
+      "Codex 找不到 ChatCut 的桌面工具",
+      "已安装 ChatCut，但程序打不开或连接失败"
+    ],
+    "inputs": "操作系统和芯片类型、已安装情况及错误提示。",
+    "output": "应用安装或连接状态，以及需要用户完成的登录或重启步骤。",
+    "prompt": "请使用 chatcut:connect-chatcut-desktop 技能，检查本机 ChatCut Desktop 为什么没有连接到 Codex，根据【错误提示】定位问题，使用官方安装方式修复，并确认后续如何开始编辑任务。",
+    "requirements": "支持 macOS 13 及以上和 Windows x64，Linux 不支持；此技能负责连接，不是视频剪辑器。登录需本人完成。"
+  },
+  {
+    "id": "documents:documents",
+    "title": "制作和修改 Word 文档",
+    "category": "documents",
+    "summary": "创建、编辑或审阅 Word 文档，并通过逐页渲染检查排版。",
+    "scenarios": [
+      "把一份草稿整理成可交付的项目方案",
+      "按提供的模板修改文档并保留修订意见"
+    ],
+    "inputs": "原始内容或文档、读者、目标格式、模板和需要保留的内容。",
+    "output": "可编辑的 DOCX 文档或审阅修改结果，附实际完成的检查说明。",
+    "prompt": "请使用 documents:documents 技能，把【草稿或文档】整理成面向【读者】的 Word 方案，遵循【模板或版式要求】，保留事实与出处，逐页检查表格和文字是否裁切。",
+    "requirements": "依赖文档运行时与渲染工具；原生 Google Docs 交付还需要可用的 Google Drive 导入连接和权限。"
+  },
+  {
+    "id": "pdf:pdf",
+    "title": "生成和检查 PDF 文件",
+    "category": "documents",
+    "summary": "读取、生成或填写 PDF，并同时检查页面显示与表单数据是否正确。",
+    "scenarios": [
+      "将报告整理为排版稳定的 PDF",
+      "填写可交互表单并确认保存后的字段值"
+    ],
+    "inputs": "PDF 或原始材料、输出要求；填表时还需字段与对应值。",
+    "output": "PDF 文件、内容或版式检查结果；填表时可保留交互字段。",
+    "prompt": "请使用 pdf:pdf 技能，根据【材料】生成【用途】PDF，确保中文、表格和分页清晰，渲染检查每页；如果遇到不支持的格式或缺失工具请明确说明。",
+    "requirements": "需要 PDF 处理和页面渲染工具；扫描文件的文字提取取决于额外识别能力，不能仅靠提取文本判断排版。"
+  },
+  {
+    "id": "presentations:Presentations",
+    "title": "制作可编辑演示文稿",
+    "category": "documents",
+    "summary": "把材料组织成演示文稿，处理页面设计、编辑和交付检查。",
+    "scenarios": [
+      "为汇报准备一套逻辑清楚的幻灯片",
+      "按现有模板更新项目进展演示文稿"
+    ],
+    "inputs": "目标受众、演讲目的、素材、页数或时长，以及参考模板。",
+    "output": "可编辑的演示文稿或既有幻灯片的修改结果。",
+    "prompt": "请使用 presentations:Presentations 技能，将【材料】制作成面向【受众】的【页数】页演示文稿，重点解释【核心结论】，使用【参考模板】，检查文字、图表和页面布局后交付。",
+    "requirements": "需要演示文稿运行时及渲染能力；Google Slides 交付依赖相应连接，不能把本地 PPTX 当成已写入云端。"
+  },
+  {
+    "id": "spreadsheets:Spreadsheets",
+    "title": "制作和分析表格文件",
+    "category": "documents",
+    "summary": "处理表格文件中的数据、公式、图表和格式，并检查计算结果。",
+    "scenarios": [
+      "把销售 CSV 做成含汇总和图表的工作簿",
+      "修改预算表公式，检查合计是否一致"
+    ],
+    "inputs": "表格文件、列含义、计算口径、需要的指标与输出格式。",
+    "output": "可编辑的表格文件、公式计算和可视化分析结果。",
+    "prompt": "请使用 spreadsheets:Spreadsheets 技能，分析【表格文件】，按【分组字段】汇总【指标】，保留原始数据，创建可复算公式和清晰图表，检查合计一致并交付 XLSX。",
+    "requirements": "这是文件处理技能，不控制已打开的 Excel；依赖表格运行时，Google Sheets 输出还需对应连接和授权。"
+  },
+  {
+    "id": "spreadsheets:excel-live-control",
+    "title": "操作当前打开的 Excel",
+    "category": "documents",
+    "summary": "在已连接的 Excel 会话里读取和修改指定工作簿，并核实结果。",
+    "scenarios": [
+      "想直接整理 Excel 中当前选中的数据区域",
+      "希望在打开的工作簿里修正公式和格式"
+    ],
+    "inputs": "目标工作簿、工作表和单元格范围，以及具体操作要求。",
+    "output": "目标 Excel 工作簿中的实际修改和核验结果。",
+    "prompt": "请使用 spreadsheets:excel-live-control 技能，在已连接的 Microsoft Excel 中确认【工作簿】的【工作表及区域】，检查【公式或数据问题】，只修改指定区域并核实结果。",
+    "requirements": "需要 Excel 桌面应用、已登录的 ChatGPT 加载项及连接工具；连接失败时不会擅自改用另一个文件生成流程。"
+  },
+  {
+    "id": "template-creator:template-creator",
+    "title": "把参考作品保存为个人模板技能",
+    "category": "getting-started",
+    "summary": "从参考文档、表格、幻灯片等提取可反复使用的个人模板技能。",
+    "scenarios": [
+      "每周都要复用同样的周报版式和语气",
+      "想把满意的演示文稿保存成后续可调用的模板"
+    ],
+    "inputs": "一份受支持的参考文件或有权限访问的链接，以及模板用途。",
+    "output": "个人模板技能、保留的参考资料与预览，以及后续调用方式。",
+    "prompt": "请使用 template-creator:template-creator 技能，将【参考文件】制作成用于【重复任务】的个人模板技能，保留它的结构和视觉风格，验证模板文件完整，并说明以后怎样调用。",
+    "requirements": "用于创建可复用模板，不是一次性套模板；需模板创建工具，云端引用需连接权限，不会自动发布插件或发送消息。"
+  },
+  {
+    "id": "visualize:visualize",
+    "title": "用交互图解理解问题",
+    "category": "learning",
+    "summary": "在对话中用可操作的图示解释变化、比较和因果关系。",
+    "scenarios": [
+      "想直观看参数变化会怎样影响结果",
+      "讨论一个界面方案时需要可交互预览"
+    ],
+    "inputs": "要解释的问题、数据或规则，以及希望调整的参数。",
+    "output": "对话内可查看和操作的图示或模拟。",
+    "prompt": "请使用 visualize:visualize 技能，用交互图解说明【概念】，让我调整【参数】观察【结果】如何变化，标明参数含义和单位，让没有相关基础的人也能理解。",
+    "requirements": "依赖支持对话内可视化的宿主；不是建立独立网站的技能，出版用科学图应选择标准绘图工具。"
+  },
+  {
+    "id": "ponytail:ponytail",
+    "title": "用最少改动完整解决问题",
+    "category": "development",
+    "summary": "优先复用已有实现，减少无用代码，同时保留必要验证和错误处理。",
+    "scenarios": [
+      "一个小功能不想引入新框架或大量抽象",
+      "希望修复根因且不顺手重构整个项目"
+    ],
+    "inputs": "明确任务、现有代码、验收条件和不能改变的行为。",
+    "output": "满足任务的最小完整改动，以及检查结果和未覆盖风险。",
+    "prompt": "请使用 ponytail:ponytail 技能，以 full 模式完成【任务】，先找项目已有实现，选择最小完整方案，保留安全校验和错误处理，验证结果并说明未检查项。",
+    "requirements": "这是编码取舍与工作方式，不会保证固定的节省比例；开启后会持续影响会话，结束可说“stop ponytail”。"
+  },
+  {
+    "id": "ponytail:ponytail-audit",
+    "title": "检查整个仓库的质量",
+    "category": "testing",
+    "summary": "从真实代码路径检查错误、安全、负载、测试缺口及可简化之处。",
+    "scenarios": [
+      "接手一个老项目，需要知道先修什么",
+      "想确认仓库是否有高风险逻辑和不必要的复杂度"
+    ],
+    "inputs": "仓库或目录、主要用途、预期用户量和重点风险。",
+    "output": "按优先级排列、有具体触发案例和最小修复建议的审计报告。",
+    "prompt": "请使用 ponytail:ponytail-audit 技能，审查【仓库或目录】，预期使用规模为【规模】。优先检查数据写入、权限和并发，再检查测试缺口与重复代码，给出有证据的修复排序。",
+    "requirements": "默认只读，不自动修复；大仓库会优先深入高风险路径，报告应说明未检查范围。"
+  },
+  {
+    "id": "ponytail:ponytail-debt",
+    "title": "汇总代码中标记的技术债",
+    "category": "understanding",
+    "summary": "收集 shortcut 或旧 ponytail 注释，列出简化边界和需要升级的条件。",
+    "scenarios": [
+      "想知道哪些临时方案已经接近适用上限",
+      "准备迭代时清点之前明确推迟的工作"
+    ],
+    "inputs": "仓库及需要扫描的注释标记；默认使用 shortcut 和 ponytail。",
+    "output": "按文件整理的技术债清单，以及缺少升级条件的标记数量。",
+    "prompt": "请使用 ponytail:ponytail-debt 技能，扫描【项目】中的 shortcut 和 ponytail 技术债注释，整理每项当前限制、重新处理的触发条件和源码位置，标出没有触发条件的项目。",
+    "requirements": "仅统计已写入注释的债务，不会发现所有潜在问题；默认只读，保存报告需要明确指定。"
+  },
+  {
+    "id": "ponytail:ponytail-gain",
+    "title": "了解插件的基准测试收益",
+    "category": "getting-started",
+    "summary": "展示 Ponytail 自带基准测试中的代码量、成本和时间对比，并解释适用范围。",
+    "scenarios": [
+      "想了解为什么有人使用精简开发模式",
+      "想区分插件测试数据与自己项目的实际收益"
+    ],
+    "inputs": "想了解的指标；无需提供当前仓库作为测量对象。",
+    "output": "插件发布的基准对比和统计口径说明。",
+    "prompt": "请使用 ponytail:ponytail-gain 技能，展示自带基准中代码量、时间和成本的对比，解释测试范围，并明确这些数字不能当作【我的项目】实际节省的结果。",
+    "requirements": "展示的是插件附带的历史基准，不会测量当前仓库真实收益，也不保证在其他模型或项目上复现。"
+  },
+  {
+    "id": "ponytail:ponytail-help",
+    "title": "了解精简开发模式怎么用",
+    "category": "getting-started",
+    "summary": "说明 Ponytail 的模式、配套审查技能，以及开启和关闭方法。",
+    "scenarios": [
+      "第一次使用 Ponytail，不知道 full 与 ultra 的区别",
+      "只想审查改动，不想开启持续的开发模式"
+    ],
+    "inputs": "正在使用的宿主，例如 Codex CLI、IDE 或桌面应用。",
+    "output": "适合当前宿主的模式说明与技能调用速查。",
+    "prompt": "请使用 ponytail:ponytail-help 技能，用新手能懂的话说明在【当前宿主】里如何使用 Ponytail，比较 lite、full、ultra，并说明如何只做一次审查和退出持续模式。",
+    "requirements": "这是帮助速查，不会自行修改代码或切换模式；不同宿主的命令写法不完全一样。"
+  },
+  {
+    "id": "ponytail:ponytail-review",
+    "title": "审查本次代码改动",
+    "category": "testing",
+    "summary": "结合差异和关联代码，检查本次改动的正确性、风险、测试与复杂度。",
+    "scenarios": [
+      "提交前想确认这次修改有没有引入回归",
+      "收到一份实现，想知道是否过度设计"
+    ],
+    "inputs": "未提交改动、提交范围、分支或拉取请求，以及原始需求。",
+    "output": "逐条说明触发条件、问题、最小修复方式和影响的审查报告。",
+    "prompt": "请使用 ponytail:ponytail-review 技能，审查【本次改动范围】，结合调用方和测试检查逻辑、安全与回归风险，给出具体案例和最小修复建议，暂不修改代码。",
+    "requirements": "默认只读审查改动；若要检查整个仓库，应使用 ponytail-audit，远程请求需相应访问权限。"
+  }
+]

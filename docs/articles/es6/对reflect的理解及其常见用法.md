@@ -6,30 +6,30 @@ tags: es6
 note: 对reflect的理解及其常见用法
 ---
 
-## `Reflect` 的设计目的
+## 1、`Reflect` 的设计目的
 
-&#8195;&#8195;与Proxy对象一样，也是 ES6 为了操作对象而提供的新 API。Reflect对象的设计目的有这样几个。
+&#8195;&#8195;与`Proxy`对象一样，也是 `ES6` 为了操作对象而提供的新 `API`。Reflect对象的设计目的有这样几个。
 
-&#8195;&#8195;1.	将Object对象的一些明显属于语言内部的方法（比如Object.defineProperty），放到Reflect对象上。
+&#8195;&#8195;1.	将`Object`对象的一些明显属于语言内部的方法（比如`Object`.defineProperty），放到Reflect对象上。
 
-&#8195;&#8195;2.	修改某些Object方法的返回结果，让其变得更合理。
+&#8195;&#8195;2.	修改某些`Object`方法的返回结果，让其变得更合理。
 
-&#8195;&#8195;3.	让Object操作都变成函数行为。
+&#8195;&#8195;3.	让`Object`操作都变成函数行为。
 ```js
 // 老写法
 'assign' in Object // true
 // 新写法
 Reflect.has(Object, 'assign') // true
 ```       
-&#8195;&#8195;4.	Reflect对象的方法与Proxy对象的方法一一对应，只要是Proxy对象的方法，就能在Reflect对象上找到对应的方法。
+&#8195;&#8195;4.	Reflect对象的方法与`Proxy`对象的方法一一对应，只要是`Proxy`对象的方法，就能在Reflect对象上找到对应的方法。
 
-&#8195;&#8195;5.	Reflect对象的静态方法有13个，跟Proxy的静态方法时一一对应的。
+&#8195;&#8195;5.	Reflect对象的静态方法有13个，跟`Proxy`的静态方法时一一对应的。
 
-## 常用静态方法
+## 2、常用静态方法
 
-### `Reflect.get`：读取属性
+### 2.1 `Reflect.get`：读取属性
 
-&#8195;&#8195;1）Reflect.get（target, name, receiver）：查找并返回target对象的name属性，如果没有该属性，则返回undefined。
+&#8195;&#8195;1）`Reflect.get`（target, name, receiver）：查找并返回target对象的name属性，如果没有该属性，则返回`undefined`。
 ```js
 var myObject = {
     foo: 1,
@@ -48,9 +48,9 @@ console.log((Reflect.get(myObject, 'baz', myReceiverObject)) // 8
 ```       
 &#8195;&#8195;如果name属性部署了读取函数（getter），则读取函数的this绑定receiver。
 
-### `Reflect.set`：设置属性
+### 2.2 `Reflect.set`：设置属性
 
-&#8195;&#8195;2）Reflect.set(target, name, value, receiver): Reflect.set方法设置target对象的name属性等于value。如果name属性设置了赋值函数，则赋值函数的this绑定receiver。如果第一个参数不是对象，Reflect.set会报错。
+&#8195;&#8195;2）`Reflect.set`(target, name, value, receiver): `Reflect.set`方法设置target对象的name属性等于value。如果name属性设置了赋值函数，则赋值函数的this绑定receiver。如果第一个参数不是对象，`Reflect.set`会报错。
 ```js        
 var myObject = {
 	foo: 1,
@@ -67,9 +67,9 @@ myObject.foo // 2
 Reflect.set(myObject, 'bar', 3)
 myObject.foo // 3
 ```
-### `Reflect.has`：检查属性
+### 2.3 `Reflect.has`：检查属性
 
-&#8195;&#8195;3）Reflect.has(obj,name):对应name in obj里面的in运算符。如果第一个参数不是对象，Reflect.has和in运算符都会报错。
+&#8195;&#8195;3）`Reflect.has`(obj,name):对应name in obj里面的in运算符。如果第一个参数不是对象，`Reflect.has`和in运算符都会报错。
 ```js        
 var myObject = {
 	foo: 1,
@@ -80,7 +80,7 @@ var myObject = {
 Reflect.has(myObject, 'foo') // true
 ```
 
-## 实例：利用 `Proxy` 实现观察者模式
+## 3、实例：利用 `Proxy` 实现观察者模式
 
 ```js
 const queuedObservers = new Set();//观察者队列

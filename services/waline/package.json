@@ -1,0 +1,7 @@
+{
+  "name": "tangjie-blog-comments",
+  "private": true,
+  "version": "1.0.0",
+  "engines": { "node": "24.x" },
+  "dependencies": { "@waline/vercel": "1.43.4" }
+}

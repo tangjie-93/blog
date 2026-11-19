@@ -6,7 +6,7 @@ type: 技术
 tags: WebGL
 note: WebGL之纹理总结
 ---
-## 纹理
+## 1、纹理
 ### 1.二维纹理
 在 `WebGL` 中绘制图片需要使用纹理, 渲染纹理时需要纹理坐标。无论纹理是什么尺寸，纹理坐标范围始终是 `0.0` 到 `1.0` 。我们绘制图形时，需要告诉 `WebGL` 图形中每个顶点对应的纹理坐标。 
 我们将使用一种特殊的叫做 `varying` 的变量将纹理坐标从顶点着色器传到片段着色器，它叫做 **可变量** 是因为它的值有很多个，`WebGL`**会用顶点着色器中值的进行插值，然后传给对应像素执行的片段着色器**。
@@ -160,7 +160,7 @@ void main() {
        texture2D(u_image, v_texCoord + vec2(-onePixel.x, 0.0))) / 3.0;
 }
 ```
-> 在JavaScript中传入纹理的大小。
+> 在`JavaScript`中传入纹理的大小。
 ```js
 ...
 const textureSizeLocation = gl.getUniformLocation(program, "u_textureSize");
@@ -953,5 +953,3 @@ function render(gl, positions) {
   
 }
 ```
-
-<Valine></Valine>

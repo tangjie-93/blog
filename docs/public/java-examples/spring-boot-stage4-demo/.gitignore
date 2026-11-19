@@ -1,0 +1,6 @@
+target/
+frontend/node_modules/
+frontend/dist/
+vite-runtime/cache/
+*.log
+*.err.log

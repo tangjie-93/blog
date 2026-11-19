@@ -1,0 +1,30 @@
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence
+             https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
+             version="3.0">
+    <persistence-unit name="jpa-demo">
+        <!-- 实体类 -->
+        <class>learn.persistence.jpa.UserEntity</class>
+        <!-- 学生选课系统 JPA 实体 -->
+        <class>learn.persistence.practice.StudentJpaEntity</class>
+        <class>learn.persistence.practice.CourseJpaEntity</class>
+
+        <properties>
+            <!-- JDBC 连接 -->
+            <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+            <property name="jakarta.persistence.jdbc.url"
+                      value="jdbc:mysql://localhost:3306/test_db?useSSL=false&amp;serverTimezone=UTC&amp;characterEncoding=utf8"/>
+            <property name="jakarta.persistence.jdbc.user" value="root"/>
+            <property name="jakarta.persistence.jdbc.password" value="Jamestang93!"/>
+
+            <!-- Hibernate 配置 -->
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.hbm2ddl.auto" value="validate"/>
+            <!-- 驼峰转下划线 -->
+            <property name="hibernate.physical_naming_strategy"
+                      value="org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy"/>
+        </properties>
+    </persistence-unit>
+</persistence>

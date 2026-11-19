@@ -10,7 +10,7 @@ note: koa用法及源码详解。
 &#8195;&#8195;`Koa`是一个类似于`Express`的`Web`开发框架，创始人也是同一个人。它的主要特点是，使用了`ES6`的`Generator`函数，进行了架构的重新设计。也就是说，`Koa`的原理和内部结构很像`Express`，但是语法和内部结构进行了升级。
 
 
-**&#8195;一个Koa应用就是一个对象，包含了一个middleware数组，这个数组由一组Generator函数组成**。这些函数负责对HTTP请求进行各种加工，比如生成缓存、指定代理、请求重定向等等。
+**&#8195;一个Koa应用就是一个对象，包含了一个middleware数组，这个数组由一组`Generator`函数组成**。这些函数负责对`HTTP`请求进行各种加工，比如生成缓存、指定代理、请求重定向等等。
 ```javascript
 var koa = require('koa');
 var app = koa();
@@ -134,27 +134,27 @@ router.get('/:id', ...); // 等同于"/users/:id"
         this.status = 301;
     });
 ```
-+ **9、context对象**
++ **9、`context`对象**
 
 &#8195;&#8195;中间件当中的 `this` 表示上下文对象 `context`，代表一次 `HTTP` 请求和回应，即一次访问/回应的所有信息，都可以从上下文对象获得。`context` 对象封装了 `request` 和 `response` 对象，并且提供了一些辅助方法。每次 `HTTP` 请求，就会创建一个新的`context` 对象。
 `context` 对象的全局属性。
-+  request：指向Request对象
-+  response：指向Response对象
-    + response.set(key,val);//设置响应头
-    + response.status=200;//设置状态码
-    + response.body="cee";//响应体
++  `request`：指向Request对象
++  `response`：指向Response对象
+    + `response.set`(key,val);//设置响应头
+    + `response.status`=200;//设置状态码
+    + `response.body`="cee";//响应体
 
-`context` 也可以直接使用respanse以及request的api
-+ ctx.set(key,value);
-+ ctx.status=200;
-+ ctx.body="cee"    
-+ req：指向Node的request对象
-+ res：指向Node的response对象
+`context` 也可以直接使用respanse以及`request`的api
++ `ctx.set`(key,value);
++ `ctx.status`=200;
++ `ctx.body`="cee"    
++ req：指向`Node`的`request`对象
++ res：指向`Node`的`response`对象
 + app：指向App对象
 + state：用于在中间件传递信息。
 
 `context` 对象的全局方法。
-+ throw()：抛出错误，直接决定了HTTP回应的状态码。
++ throw()：抛出错误，直接决定了`HTTP`回应的状态码。
 + assert()：如果一个表达式为false，则抛出一个错误。
 
 ## 4、Koa提供内置的错误处理机制

@@ -1,0 +1,19 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        enabled: true
+    gateway:
+      routes:
+        - id: service-user
+          uri: lb://service-user
+          predicates:
+            - Path=/api/users/**
+        - id: service-product
+          uri: lb://service-product
+          predicates:
+            - Path=/api/products/**
+        - id: service-order
+          uri: lb://service-order
+          predicates:
+            - Path=/api/orders/**

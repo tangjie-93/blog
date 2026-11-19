@@ -27,7 +27,7 @@ axiosInstance({url:"/api/getdata"}).then(res=>{},err=>{});//params是可选对�
 
 接下里我们将从入口文件`axios\lib\axios.js`文件开始分析。	
 
-## 1、入口文件——axios\lib\axios.js
+## 1、入口文件——axios\lib\`axios.js`
 
 ​		文件地址为[axios](https://github.com/axios/axios/blob/master/lib/axios.js)，大家可以自行去 [github](https://github.com/axios/axios/)上看，也可以`clone`到本地仔细研究。
 
@@ -104,11 +104,11 @@ module.exports = axios;
 module.exports.default = axios;
 ```
 
-## 2、创建`axios`实例的文件——axios\core\Axios.js
+## 2、创建`axios`实例的文件——axios\core\`Axios.js`
 
-​		文件地址为[Axios](https://github.com/axios/axios/tree/master/lib/core/Axios.js)。接下来我们来看看`lib\core\Axios.js`文件里初始化`Axios`实例的过程。
+​		文件地址为[`Axios`](https://github.com/axios/axios/tree/master/lib/core/Axios.js)。接下来我们来看看`lib\core\Axios.js`文件里初始化`Axios`实例的过程。
 
-**1、首先是Axios构造函数的定义**
+**1、首先是`Axios`构造函数的定义**
 
   ```js
 function Axios(instanceConfig) {
@@ -120,7 +120,7 @@ function Axios(instanceConfig) {
 }
   ```
 
-**2、原型方法——Axios.prototype.request**
+**2、原型方法——`Axios.prototype`.`request`**
 
 ​		其实我们在创建`axios`实例过程中，最终调用的方法还是是`Axios.prototype.request`方法。接下来我们来好好看一下该方法的实现。
 
@@ -180,7 +180,7 @@ function Axios(instanceConfig) {
 + 第4步，**将经过响应拦截后的`promise`实例返回**。通过调用`then`方法就能对后台返回的数据（在`this.interceptors.response.use`会先进行预处理）进行处理。这也就是为什么我们调用`axios()`和`axios.create()`方法返回的是一个`promise`实例对象了。
 
 
-**3、原型方法——Axios.prototype.getUri**
+**3、原型方法——`Axios.prototype`.getUri**
 
 ​			处理传入的`params`，构造后台需要的`URl`。
 
@@ -191,7 +191,7 @@ Axios.prototype.getUri = function getUri(config) {
 };
 ```
 
-**4、原型方法——Axios.prototype.get/post**
+**4、原型方法——`Axios.prototype`.`get/post`**
 
 ​		这也就是为什么可以直接`axios.get()、axios.post()`等方法的原因。但其实本质上调用`get`和`post`方法时，调用的还是`request`方法。相当于给`request`方法设置了别名一样。
 
@@ -217,7 +217,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 });
 ```
 
-## 3、拦截器文件——lib\core\InterceptorManager.js
+## 3、拦截器文件——lib\core\`InterceptorManager.js`
 
 ​		主要是通过在初始化`axios`时，调用以下代码来对请求和响应进行拦截处理的。文件地址为[InterceptorManager](https://github.com/axios/axios/blob/master/lib/core/InterceptorManager.js)。该拦截器在如下代码中才会起作用。
 
@@ -230,7 +230,7 @@ instance.interceptors.response.use(res=>{},err=>{})；
 ```
  下面我们来看一下`InterceptorManager`类的实现过程。该类中主要有以下添加拦截（`use`）,取消拦截（`reject`）和
 
-**1、原型方法——InterceptorManager.prototype.use**
+**1、原型方法——`InterceptorManager.prototype`.use**
 
 ​		该方法的主要作用是将拦截操作添加到数组中。
 
@@ -245,7 +245,7 @@ InterceptorManager.prototype.use = function use(fulfilled, rejected) {
 };
 ```
 
-**2、原型方法——InterceptorManager.prototype.reject**
+**2、原型方法——`InterceptorManager.prototype`.reject**
 
 ​		该方法的主要作用是将拦截操作从拦截数组中删除。
 
@@ -258,7 +258,7 @@ InterceptorManager.prototype.eject = function eject(id) {
 };
 ```
 
-**3、原型方法——InterceptorManager.prototype.forEach**
+**3、原型方法——`InterceptorManager.prototype`.forEach**
 
 ​		遍历拦截数组，进行拦截操作。
 
@@ -273,7 +273,7 @@ utils.forEach(this.handlers, function forEachHandler(h) {
 };
 ```
 
-## 4、后台请求操作文件——lib\core\dispatchRequest.js
+## 4、后台请求操作文件——lib\core\`dispatchRequest.js`
 
 ​		该方法主要用于向后台请求数据。
 

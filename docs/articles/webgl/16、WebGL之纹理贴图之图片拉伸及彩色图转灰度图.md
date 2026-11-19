@@ -27,7 +27,7 @@ note:  纹理贴图
 </script>
 ```
 
-#### 2、JavaScript代码
+#### 2、`JavaScript`代码
 
 + 渲染`WebGL`
 在`render`函数中添加旋转顶点坐标的代码。
@@ -95,6 +95,6 @@ function tranlate() {
 
 
 **参考**<br>
-[WebGL零基础入门教程(郭隆邦)](http://www.yanhuangxueyuan.com/WebGL/)<br>
-[WebGL 入门与实践](https://juejin.cn/book/6844733755580481543/section/6844733755916025869)<br>
-[WebGL官方文档](https://developer.mozilla.org/zh-CN/docs/Web/API/WebGLRenderingContext/vertexAttribPointer)<br>
+[`WebGL`零基础入门教程(郭隆邦)](http://www.yanhuangxueyuan.com/WebGL/)<br>
+[`WebGL` 入门与实践](https://juejin.cn/book/6844733755580481543/section/6844733755916025869)<br>
+[`WebGL`官方文档](https://developer.mozilla.org/zh-CN/docs/Web/API/WebGLRenderingContext/vertexAttribPointer)<br>

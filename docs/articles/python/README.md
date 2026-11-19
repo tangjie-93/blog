@@ -43,10 +43,10 @@ def chunks(items: Iterable[str], size: int) -> Iterable[list[str]]:
 
 | 方向 | 建议学习内容 |
 | --- | --- |
-| Web 服务 | `FastAPI`、请求校验、数据库、鉴权、异步任务 |
+| `Web` 服务 | `FastAPI`、请求校验、数据库、鉴权、异步任务 |
 | 数据处理 | `NumPy`、`pandas`、文件格式、任务调度 |
 | 自动化 | `pathlib`、`subprocess`、浏览器自动化、定时任务 |
-| AI 应用 | `HTTP API`、结构化输出、向量数据库、评测与监控 |
+| `AI` 应用 | `HTTP API`、结构化输出、向量数据库、评测与监控 |
 
 ## 四、推荐练习顺序
 
@@ -56,3 +56,18 @@ def chunks(items: Iterable[str], size: int) -> Iterable[list[str]]:
 4. 接入一个模型服务，完成可观测、可回归的 `AI` 功能。
 
 `Python` 的优势在于生态和表达力，长期质量取决于边界、测试和运行方式。
+
+## 5、后端学习资料
+
+按主题和阅读顺序浏览：[后端与智能应用学习索引](./后端与智能应用学习索引.md)。
+
+- [`SQLModel`详解](./SQLModel%E8%AF%A6%E8%A7%A3.md)
+- [`DataBase` 专题](../database/)
+- [`FastAPI`知识点总结](./FastAPI%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93.md)
+- [`FastAPI`学习行动指南](./FastAPI%E5%AD%A6%E4%B9%A0%E8%A1%8C%E5%8A%A8%E6%8C%87%E5%8D%97.md)
+- [`Pydantic`详解](./Pydantic%E8%AF%A6%E8%A7%A3.md)
+- [poetry命令总结](./poetry%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93.md)
+- [`Python` 后端全栈行动指南](./Python%20%E5%90%8E%E7%AB%AF%E5%85%A8%E6%A0%88%E8%A1%8C%E5%8A%A8%E6%8C%87%E5%8D%97.md)
+- [`Python` 后端全栈学习路线](./Python%20%E5%90%8E%E7%AB%AF%E5%85%A8%E6%A0%88%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF.md)
+- [`Poetry`-pyproject详解](./Poetry-pyproject%E8%AF%A6%E8%A7%A3.md)
+- [`uv`-guide](./uv-guide.md)

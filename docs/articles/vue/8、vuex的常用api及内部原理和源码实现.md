@@ -6,24 +6,24 @@ tags: vue
 note: vuex的常用api及内部原理
 ---
 
-## 什么是 `Vuex`
+## 1、什么是 `Vuex`
 
-&#8195;&#8195;Vuex是一个专门为Vue.js一个用程序开发的`状态管理模式`。将`不同组件的共享状态`抽取出来，以一个`全局单例管理模式`来管理，利用Vue.js的`细粒度数据响应机制`来进行高效的状态更新。<br>
+&#8195;&#8195;Vuex是一个专门为`Vue`.js一个用程序开发的`状态管理模式`。将`不同组件的共享状态`抽取出来，以一个`全局单例管理模式`来管理，利用`Vue`.js的`细粒度数据响应机制`来进行高效的状态更新。<br>
 &#8195;&#8195;优势：
 + 通过定义和隔离状态管理中的各种概念并通过强制规则来维护视图和状态间的独立性，使得代码变得更结构化并且易于维护。<br>
 + `改变 store 中的状态的唯一途径就是显式地提交 (commit) mutation`。这样使得我们可以方便地跟踪每一个状态的变化。
-+ `Vuex 的状态存储是响应式的`。当 Vue 组件从 store 中读取状态的时候，若 store 中的状态发生变化，那么相应的组件也会相应地得到高效更新。
++ `Vuex 的状态存储是响应式的`。当 `Vue` 组件从 store 中读取状态的时候，若 store 中的状态发生变化，那么相应的组件也会相应地得到高效更新。
 
-&#8195;&#8195;用一张官网的图可以很好的描述Vuex的状态管理模式。
+&#8195;&#8195;用一张官网的图可以很好的描述`Vuex`的状态管理模式。
 <img src="../../images/vue/vuex.png" alt="暂无图片" style="display:block;width:50%;margin:0 auto">
 
-## 核心概念
+## 2、核心概念
 
-### `state`
+### 2.1 `state`
 
 &#8195;&#8195;驱动应用的数据源。在组件中通过`this.$store.state.list`来访问这些state。
 
-### `Getter`
+### 2.2 `Getter`
 
 &#8195;&#8195;可以认为是store的计算属性，getter额返回值会根据它的依赖被缓存起来，且只有当它的依赖值发生了变化才会被重新计算。在vue组件中，通过`this.$store.getters.doneTodos`访问这些值
 
@@ -77,7 +77,7 @@ note: vuex的常用api及内部原理
     }
 ```
 
-### `Mutation`
+### 2.3 `Mutation`
 
 &#8195;&#8195;更改store中状态的唯一方法就是提交mutations。
 ```javascript
@@ -96,7 +96,7 @@ note: vuex的常用api及内部原理
         }
     }
 ```
-&#8195;&#8195;因为Vuex中的store的状态是响应式的，那么当我们变更状态时，监视状态的Vue组件也会相应更新。那么同样意味着Vuex中的mutation也需要和Vue一样，遵守以下注意事项。
+&#8195;&#8195;因为`Vuex`中的store的状态是响应式的，那么当我们变更状态时，监视状态的`Vue`组件也会相应更新。那么同样意味着`Vuex`中的mutation也需要和`Vue`一样，遵守以下注意事项。
 ```javascript
 1、在store的state中初始化好所有所需属性
 2、在对象在上添加属性时，应该使用
@@ -125,7 +125,7 @@ export default {
 }
 ```
 
-### `Action`
+### 2.4 `Action`
 
 &#8195;**1、Action类似于mutation，他们的不同点在于：**<br>
 &#8195;&#8195;`1）Action提交的是mutation，而不是直接改变状态。`<br>
@@ -160,7 +160,7 @@ const store = new Vuex.Store({
 })
 ```
 &#8195;&#8195;**2、在组件中分发Action** <br>
-&#8195;&#8195;可以在组件中使用`this.$store.dispatch("xxx")`分发action，或者使用mapActions辅助函数来将组件的methods映射为store.dispatch(需要在根节点注入store)。
+&#8195;&#8195;可以在组件中使用`this.$store.dispatch("xxx")`分发action，或者使用mapActions辅助函数来将组件的methods映射为`store.dispatch`(需要在根节点注入store)。
 ```javascript
     import { mapActions } from 'vuex'
     export default {
@@ -216,9 +216,9 @@ actions: {
 }
 ```
 
-### `Module`
+### 2.5 `Module`
 
-&#8195;&#8195;Vuex允许我们将store分割成多个模块。每个模块都有自己的state、mutation、action和getter。
+&#8195;&#8195;`Vuex`允许我们将store分割成多个模块。每个模块都有自己的state、mutation、action和getter。
 ```javascript
     const moduleA = {
         state: { ... },
@@ -245,7 +245,7 @@ actions: {
 ```
 &#8195;&#8195;**1、模块的局部状态**<br>
 &#8195;&#8195;对于模块内部的mutation和getter，接收的第一个参数是模块的局部状态对象。<br>
-&#8195;&#8195;对于模块内部的action，局部状态通过context.state暴露出来，根节点(`store实例中的state、getter等属性`)状态则为context.rootState。
+&#8195;&#8195;对于模块内部的action，局部状态通过`context.state`暴露出来，根节点(`store实例中的state、getter等属性`)状态则为`context.rootState`。
 ```javascript
     const moduleA = {
         // ...

@@ -125,5 +125,3 @@ console.log("Orthographic Projection Matrix:", orthoMatrix);
 [正交投影demo地址](https://github.com/tangjie-93/WebGL/blob/main/%E8%B7%9F%E7%9D%80%E5%AE%98%E7%BD%91%E5%AD%A6WebGL%2BWebGL%E7%BC%96%E7%A8%8B%E6%8C%87%E5%8D%97/%E6%8A%95%E5%BD%B1/demo/%E6%AD%A3%E5%B0%84%E6%8A%95%E5%BD%B1.html)
 
 **总结：** 计算正交投影的关键是要求出 `p` 和 `p'` 之间的关系，及屏幕坐标跟投影坐标的关系。
-
-<Valine></Valine>

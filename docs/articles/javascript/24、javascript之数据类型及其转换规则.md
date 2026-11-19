@@ -8,7 +8,7 @@ note: js数据类型及其常见用法
 &#8195;&#8195;`javascript`中一种有9种数据类型，有7种简单数据类型（也称为基本数据类型）：`undefined、null、boolean、number 和string、symbol、bigint`，还有2种复杂数据类型——`Object`和 `function`。
 <img src="../../images/js/js数据类型.png">
 
-## 1、undefined
+## 1、`undefined`
 &#8195;&#8195;`undefined` 类型只有一个值，即特殊的`undefined`。根据工作中总结，只要有这几种情况下会出现`undefined`。
 >1.定义变量，但是没有初始化时,如var a；
 
@@ -47,12 +47,12 @@ alert(typeof age);         // "undefined"
 
 >1、手动设置变量的值或者对象某一个属性值为null（在初始化对象时，手动设置对象为null。在作用域中不再需要使用某个对象时，把null赋值给那个变量解除引用，以释放内存）  
 
->2、在javascript的DOM元素获取中，如果没有获取到指定的元素对象，结果一般是null。    
+>2、在javascript的`DOM`元素获取中，如果没有获取到指定的元素对象，结果一般是null。    
 ```js       
 var d=document.getElementById("d");
 console.log(d);//当没有id为"d"的标签时返回null
 ```
->3、Object.prototype._proto_的值也是null。（每一个对象都有__proto__属性，指向对应的构造函数的prototype属性,但是因为Object是所有类的基类,其没有对应的构造函数，所有Object.prototype._proto_值为空）；
+>3、`Object`.prototype._proto_的值也是null。（每一个对象都有__proto__属性，指向对应的构造函数的prototype属性,但是因为`Object`是所有类的基类,其没有对应的构造函数，所有`Object`.prototype._proto_值为空）；
 
 ```js           
 console.log("a".__proto__);
@@ -62,7 +62,7 @@ console.log("a".__proto__);
 
 >4、在正则捕获的时候，如果没有捕获到结果，默认也是null。
 
-**注意：实际上，undefined 值是派生自 null值的。undefined转为数值为NAN,而null转为数值却为0**
+**注意：实际上，`undefined` 值是派生自 `null`值的。`undefined`转为数值为NAN,而`null`转为数值却为0**
 ```js        
 alert(typeof null);//object
 alert(null == undefined);弹出的是true 
@@ -76,30 +76,30 @@ alert(Number(null))//0
 | 数据类型        | 转换为true的值           | 转换为false的值  |
 | :-------------: |:-------------:| :-------------:|
 | String        | 任何非空字符串 | 空字符串("") |
-| Number        | 任何非零数值(包括无穷大)      |   0和NAN |
-| Object        | 任何对象      |    null |
-| undefined     | 没有为true的情况      |    undefined |
+| `Number`        | 任何非零数值(包括无穷大)      |   0和NAN |
+| `Object`        | 任何对象      |    `null` |
+| `undefined`     | 没有为true的情况      |    `undefined` |
 
 **注意：**  
 + js存在6种假值。分别是
-""、0、null、undefined、false、和NAN。  
+""、0、`null`、`undefined`、false、和NAN。  
 + +true返回的是1。一元加号会尝试将 `boolean` 类型转换为数字类型。 true被转换为1，false被转换为0。 
 + `+"1"`返回的是NAN。
 
-## 4、Number
+## 4、`Number`
 
-**注意点1：** Number的浮点数值在进行算术计算时精确度远远不如正数，所以不要去计算两个浮点数相加的结果是否等于另一个浮点数。
+**注意点1：** `Number`的浮点数值在进行算术计算时精确度远远不如正数，所以不要去计算两个浮点数相加的结果是否等于另一个浮点数。
 ```js        
 if(0.1+0.2==0.3){
     alert("相等")
 }
 ```
-&#8195;&#8195;这种情况永远都不会弹出"相等"的。因为浮点数的精度太高，0.1+0.2的值不一定精确的等于0.3。
+&#8195;&#8195;这种情况永远都不会弹出"相等"的。因为浮点数的精度太高，`0.1`+0.2的值不一定精确的等于0.3。
 
-**注意点2：** NaN,即非数值（Not a Number）是一个特殊的数值，这个数值用于表示一个本来要返回数值的操作数未返回数值的情况（这样就不会抛出错误了）。
+**注意点2：** `NaN`,即非数值（Not a `Number`）是一个特殊的数值，这个数值用于表示一个本来要返回数值的操作数未返回数值的情况（这样就不会抛出错误了）。
 
-**NaN 本身有两个非同寻常的特点。**
-+ 1、任何涉及 NaN 的操作（例如 NaN/10）都会返回 NaN，这个特点在多步计算中有可能导致问题。
+**`NaN` 本身有两个非同寻常的特点。**
++ 1、任何涉及 `NaN` 的操作（例如 `NaN`/10）都会返回 `NaN`，这个特点在多步计算中有可能导致问题。
 
 + 2、`NaN` 与任何值都不相等，包括 `NaN` 本身。
 
@@ -112,7 +112,7 @@ isNAN("12px") //true 先Number(null)在判断
 **注意点3：** 数值转换
 &#8195;&#8195;有三个函数可以将非数值转换为数值：`Number()`、`parseInt()`、`parseFloat()`。`Number`()可以用于转换任何数据类型，而另外两个只能将字符串转换为数值。
 
-#### 4.1 Number()函数的转换规则如下所示
+#### `4.1` `Number`()函数的转换规则如下所示
 
 * 如果是 `Boolean` 类型，`true` 和 `false` 分别转换为1和0.
     ```js        
@@ -126,7 +126,7 @@ isNAN("12px") //true 先Number(null)在判断
     Number(undefined);//NAN
     ```
 * 如果是 `String` 类型，需要考虑以下情况。  
-    + 1、如果字符串中只包含数字，则直接将其转换为10进制数值,并且会忽略前导0。如"123"会变成123，"011"会变成11，"1.1"会变成1.1。  
+    + 1、如果字符串中只包含数字，则直接将其转换为10进制数值,并且会忽略前导0。如"123"会变成123，"011"会变成11，"`1.1`"会变成1.1。  
     ```js
     Number("0123") //123
     Number("11.2")// 11
@@ -147,7 +147,7 @@ isNAN("12px") //true 先Number(null)在判断
     ```js            
     Number({a:123});//NAN
     ```
-#### 4.2  parseInt(value,radix)的转换规则
+#### `4.2`  parseInt(value,radix)的转换规则
 + `radix`是一个进制，不写或者写0都是按10处理。(特殊情况:如果 `value`是以`0x` 开头，则进制为16)。
 + 进制有一个取值的范围:2~36 之间，不在这个区间的结果是`NAN`。
     ```js
@@ -183,7 +183,7 @@ parseInt("23",5) // 13
 parseInt(77,6) //NaN
 ```
 **`Number`和`parseInt`转换对比。**
-| 特殊情况 | Number | parseInt |
+| 特殊情况 | `Number` | parseInt |
 | :-----:| :----: | :----: |
 | 空字符串 | `Number("")=>0` | `parseInt("")=>NaN` |
 | 不包含数字的字符串 | `Number("dddd")=>NaN` | `parseInt("gsdg")=>NaN` |
@@ -193,11 +193,11 @@ parseInt(77,6) //NaN
 | `null` | `Number(null)=>0` | `parseInt(null)=>NaN` |
 | `undefined` | `Number(undefined)=>NaN` | `parseInt(undefined)=>NaN` |
 
-#### 4.3  parseFloat转换规则
+#### `4.3`  parseFloat转换规则
 
 &#8195;&#8195;`parseFloat`跟 `parseInt` 的解析规则类似。`parseFloat()`比`parseInt()`多识别一个0。 区别在于：**它只解析十进制值，没有第二个参数指定基数。**
 
-#### 4.4 为什么`12.toString()`会报错呢？
+#### `4.4` 为什么`12.toString()`会报错呢？
 这是因为十进制的`Number`是可以带小数的，小数点前后部分都可以省略，但是不能同时省略。
 ```js
 .01
@@ -214,7 +214,7 @@ parseInt(77,6) //NaN
 
 + 1、如果值有 `toString()`方法，则调用该方法（没有参数）并返回相应的结果；    
 
-+ 2、如果值是 `null`,则返回 "null"；
++ 2、如果值是 `null`,则返回 "`null`"；
 
 + 3、如果值是 `undefined`，则返回 `"undefined"`。   
 ```js       
@@ -311,7 +311,7 @@ var str="hello world hello hello";
 var res=str.replace(/(.ll)/g,"123($1)");
 console.log(res);//h123(ell)o world h123(ell)o h123(ell)o
 ```
-&#8195;&#8195;如果第二个参数为函数，在只有一个匹配项的情况下，会向这个函数传递3个参数：**模式的匹配项，模式匹配项在字符串中的位置和原始字符串。 function(match,pos,originalText)** 。如果是有多个捕获组的情况下，传递给函数的参数依次是模式的匹配项，第一个捕获组的匹配项，第二个捕获组的匹配项。。。，最后两个参数仍然是模式匹配项在字符串中的位置和原始字符串。
+&#8195;&#8195;如果第二个参数为函数，在只有一个匹配项的情况下，会向这个函数传递3个参数：**模式的匹配项，模式匹配项在字符串中的位置和原始字符串。 `function`(match,pos,originalText)** 。如果是有多个捕获组的情况下，传递给函数的参数依次是模式的匹配项，第一个捕获组的匹配项，第二个捕获组的匹配项。。。，最后两个参数仍然是模式匹配项在字符串中的位置和原始字符串。
 
 &#8195;&#8195;**split():** 基于指定的分隔符将字符串分割为多个子字符串。并返回一个数组。分隔符可以是字付串也可以是RegExp对象。还可以接受第二个参数，用于指定返回数组的大小。        
 ```js       
@@ -332,7 +332,7 @@ alert(str.localeCompare("cca"));//-1
 alert(str.localeCompare("aca"));//1
 alert(str.localeCompare("bbc"));//0
 ```
-+ 8、HTML方法    
++ 8、`HTML`方法    
 但是尽量不去使用这些方法，因为他们创建的标记通常无法表达语义。
 ![](https://user-gold-cdn.xitu.io/2019/4/6/169f042487817cc8?w=614&h=264&f=png&s=52206)
 
@@ -375,7 +375,7 @@ console.log(b);//{n:10,x:{n:12}}
 ```
 主要是注意这几个方法:       
 + **hasOwnProperty(propertyName)：**
-用于检查给定的属性在当前对象实例中（而不是在实例的原型中）是否存在。其中，作为参数的属性名（propertyName）必须以字符串形式指定（例如：o.hasOwnProperty("name")）。
+用于检查给定的属性在当前对象实例中（而不是在实例的原型中）是否存在。其中，作为参数的属性名（propertyName）必须以字符串形式指定（例如：`o.hasOwnProperty`("name")）。
 
 + **isPrototypeOf(object)：**
 用于检查传入的对象是否是传入对象的原型。
@@ -388,7 +388,7 @@ console.log(b);//{n:10,x:{n:12}}
  
 + **getValues(obj)：**
  返回一个数组，成员是参数对象自身的（不含继承的）所有可遍历（enumerable）属性的键值。属性名为数值的属性，是按照数值大小，从小到大遍历的。
-## 9、function
+## 9、`function`
 ```js
 typeof function(){} //function
 ```
@@ -408,20 +408,20 @@ typeof function(){} //function
 #### 2、+ 运算符
 但是`+`是个例外，执行`+` 操作符时：
 
-> 当一侧为**String/Object类型**，被识别为**字符串拼接**，并会优先将另一侧转换为字符串类型。
+> 当一侧为**String/`Object`类型**，被识别为**字符串拼接**，并会优先将另一侧转换为字符串类型。
 ```js
 ![]+[] //->"false" 等价于false+[] ->"false"+[].toString()
 {}+{} //[object Object][object Object]
 123 + {}  // 123[object Object]    （规则3） 
 [1,2,3]+[4,5,6]  //->1,2,34,5,6 等价于 [1,2,3].toString()+[4,5,6].toString()
 ```
-> 当一侧为**Number类型**，另一侧为原始类型，则**将原始类型转换为Number类型**。
+> 当一侧为**`Number`类型**，另一侧为原始类型，则**将原始类型转换为`Number`类型**。
 ```js
 123 + '123' // 123123   （规则1）
 123 + null  // 123    （规则2）
 123 + true // 124    （规则2）
 ```
-> 当一侧为**Number类型，另一侧为引用类型，将引用类型和Number类型转换成字符串后拼接**。
+> 当一侧为**`Number`类型，另一侧为引用类型，将引用类型和`Number`类型转换成字符串后拼接**。
 ```js        
 {}+0 //0 {}会被看成一个代码块
 ({}+0) //[object Object]0

@@ -117,5 +117,3 @@ a*b = [
     c02,c12,c22
 ]
 ```
-
-<Valine></Valine>

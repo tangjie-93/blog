@@ -15,17 +15,27 @@ for (const base of ['/', '/blog/']) {
       const output = join(root, 'docs/.vitepress/dist')
       mkdirSync(join(output, 'articles'), { recursive: true })
       writeFileSync(join(root, 'docs/README.md'), '# Home')
+      mkdirSync(join(root, 'docs/public/java-examples'), { recursive: true })
+      writeFileSync(join(root, 'docs/public/java-examples/README.md'), '# Example source')
+      mkdirSync(join(output, 'java-examples'))
+      writeFileSync(join(output, 'java-examples/README.md'), '# Example source')
       writeFileSync(join(output, 'articles/中文.html'), '<div class="vp-doc">Article</div>')
-      const check = (href) => {
-        writeFileSync(join(output, 'index.html'), `<div class="vp-doc"><a href="${href}">Article</a></div>`)
+      mkdirSync(join(output, 'assets'))
+      writeFileSync(join(output, 'assets/style.test.css'), '.VPNav{display:flex}')
+      writeFileSync(join(output, 'assets/waline.test.css'), '.wl-panel{display:flex}')
+      const check = (href, stylesheet = 'style.test.css', contentClass = 'vp-doc') => {
+        writeFileSync(join(output, 'index.html'), `<link rel="stylesheet" href="${base}assets/${stylesheet}"><div class="${contentClass}"><a href="${href}">Article</a></div>`)
         return spawnSync(process.execPath, [script], {
           cwd: root, env: { ...process.env, VITEPRESS_BASE: base }, encoding: 'utf8'
         })
       }
-      for (const href of [`${base}articles/%E4%B8%AD%E6%96%87.html`, 'articles/中文.html']) {
+      for (const href of [`${base}articles/%E4%B8%AD%E6%96%87.html`, 'articles/中文.html', `${base}java-examples/README.md`]) {
         const result = check(href)
         assert.equal(result.status, 0, result.stderr)
       }
+      assert.notEqual(check(`${base}articles/中文.html`, 'waline.test.css').status, 0)
+      assert.equal(check(`${base}articles/中文.html`, 'style.test.css', 'skill-library').status, 0)
+      assert.notEqual(check(`${base}articles/中文.html`, 'style.test.css', 'empty-page').status, 0)
       assert.notEqual(check(`${base}missing.html`).status, 0)
       if (base !== '/') assert.notEqual(check('/articles/中文.html').status, 0)
     } finally {

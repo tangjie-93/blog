@@ -1,0 +1,210 @@
+[
+  {
+    "id": "plugin:superpowers",
+    "name": "Superpowers · 开发流程",
+    "kind": "plugin",
+    "summary": "把需求澄清、实施计划、排错、测试和代码审查组织成一套开发流程。",
+    "scenarios": [
+      "新功能开发前确定范围",
+      "修复难以复现的问题并验证结果"
+    ],
+    "requirements": "需要可读取的项目；并行代理能力取决于当前环境。",
+    "setup": "从当前客户端的插件目录安装并启用 Superpowers，再确认对应技能出现在选择器中。",
+    "prompt": "请使用 superpowers:brainstorming 技能，梳理【功能目标】，比较方案并明确验收条件，确认设计后再进入实现。",
+    "status": "配置已启用 · 依赖未逐项验证",
+    "source": "superpowers",
+    "skillCount": 14
+  },
+  {
+    "id": "plugin:visualize",
+    "name": "Visualize · 对话内可视化",
+    "kind": "plugin",
+    "summary": "在对话中用交互图表、图解或模拟器解释问题。",
+    "scenarios": [
+      "用图比较两个方案",
+      "解释参数变化如何影响结果"
+    ],
+    "requirements": "需要支持该插件渲染能力的客户端；不等同于发布一个独立网站。",
+    "setup": "在支持的客户端启用 Visualize，确认 visualize 技能可见，提供主题和数据。",
+    "prompt": "请使用 visualize:visualize 技能，用交互图解解释【概念】，让读者调节【参数】观察变化，标明数据与假设。",
+    "status": "配置已启用 · 依赖未逐项验证",
+    "source": "visualize",
+    "skillCount": 1
+  },
+  {
+    "id": "plugin:documents",
+    "name": "Documents · 文档制作",
+    "kind": "plugin",
+    "summary": "创建、编辑和检查 Word 等文档产物，适合把资料整理成可交付文件。",
+    "scenarios": [
+      "把会议材料整理成方案文档",
+      "修改现有 Word 并检查排版"
+    ],
+    "requirements": "需要输入文件或可访问链接；文档工具与云端授权按环境提供。",
+    "setup": "启用 Documents 后确认 documents 技能可见，上传文档或提供已授权的链接。",
+    "prompt": "请使用 documents:documents 技能，根据【资料】制作面向【读者】的方案文档，包含【章节】，交付 Word 文件并检查排版。",
+    "status": "配置已启用 · 依赖未逐项验证",
+    "source": "documents",
+    "skillCount": 1
+  },
+  {
+    "id": "plugin:pdf",
+    "name": "PDF · 阅读与版面检查",
+    "kind": "plugin",
+    "summary": "读取、生成、渲染和核对 PDF，关注文字内容及实际页面效果。",
+    "scenarios": [
+      "从报告提取关键内容",
+      "生成 PDF 后检查分页和裁切"
+    ],
+    "requirements": "需要可读文件和相应转换、渲染工具；扫描件可能需要文字识别。",
+    "setup": "启用 PDF 插件并确认 pdf:pdf 技能可见，提供文件和检查目标。",
+    "prompt": "请使用 pdf:pdf 技能，检查【PDF 文件】的内容与排版，指出错字、裁切和分页问题，并提供对应页码。",
+    "status": "配置已启用 · 依赖未逐项验证",
+    "source": "pdf",
+    "skillCount": 1
+  },
+  {
+    "id": "plugin:spreadsheets",
+    "name": "Spreadsheets · 表格与 Excel",
+    "kind": "plugin",
+    "summary": "处理表格文件，也提供连接实时 Excel 工作簿的独立技能。",
+    "scenarios": [
+      "汇总销售表并制作图表",
+      "在已连接的 Excel 中调整公式"
+    ],
+    "requirements": "文件处理与实时 Excel 控制前提不同；后者需要已连接、可访问的工作簿会话。",
+    "setup": "启用 Spreadsheets。处理文件时选择 Spreadsheets 技能；操作打开的工作簿时先完成 Excel 连接，再选择 excel-live-control。",
+    "prompt": "请使用 spreadsheets:Spreadsheets 技能，分析【表格文件】中的【指标】，核对空值与重复项，输出含计算说明和图表的工作簿。",
+    "status": "配置已启用 · 依赖未逐项验证",
+    "source": "spreadsheets",
+    "skillCount": 2
+  },
+  {
+    "id": "plugin:presentations",
+    "name": "Presentations · 演示文稿",
+    "kind": "plugin",
+    "summary": "把主题与材料整理成演示文稿，并检查每页布局和最终输出。",
+    "scenarios": [
+      "制作项目汇报",
+      "按现有风格修改 PPT"
+    ],
+    "requirements": "需要主题、受众和素材；特定在线文稿需访问权限。",
+    "setup": "启用 Presentations 后提供参考文稿或内容提纲，确认所需格式与页数。",
+    "prompt": "请使用 presentations:Presentations 技能，为【受众】制作【主题】演示文稿，约【页数】页，使用【资料】，交付 PPTX 并检查页面布局。",
+    "status": "配置已启用 · 依赖未逐项验证",
+    "source": "presentations",
+    "skillCount": 1
+  },
+  {
+    "id": "plugin:template-creator",
+    "name": "Template Creator · 可复用模板",
+    "kind": "plugin",
+    "summary": "从参考产物提炼结构、样式和规则，创建能反复使用的个人模板技能。",
+    "scenarios": [
+      "固定每周报告的结构",
+      "把品牌演示文稿沉淀为模板"
+    ],
+    "requirements": "需要可访问的参考文件和明确的可变内容；不是一次性套模板做文件。",
+    "setup": "启用 Template Creator，提供参考产物，说明哪些部分固定、哪些部分每次替换。",
+    "prompt": "请使用 template-creator:template-creator 技能，将【参考文件】整理为可重复使用的模板技能，保留【固定规则】，把【变化内容】做成输入项。",
+    "status": "配置已启用 · 依赖未逐项验证",
+    "source": "template-creator",
+    "skillCount": 1
+  },
+  {
+    "id": "plugin:codex-app-tools",
+    "name": "Codex App Tools · 桌面工作流",
+    "kind": "plugin",
+    "summary": "通过本地 MCP 暴露 Codex 桌面应用的线程与自动化相关工具。",
+    "scenarios": [
+      "将任务移交到独立线程",
+      "整理项目中的任务线程"
+    ],
+    "requirements": "依赖匹配版本的 Codex 桌面宿主和本地工具进程；仅启用插件不代表服务启动成功。",
+    "setup": "使用客户端提供的内置插件管理启用；先检查 codex_app 服务是否连接及实际工具列表，不复制他人的本机启动路径。",
+    "prompt": "请检查 codex_app 是否连接，说明当前提供哪些线程与自动化工具，并为【工作流】提出组织方案；先说明计划，不创建或发送任务。",
+    "status": "配置已启用 · 依赖未逐项验证",
+    "source": "codex-app-tools",
+    "skillCount": 0
+  },
+  {
+    "id": "plugin:ponytail",
+    "name": "Ponytail · 精简实现与审查",
+    "kind": "plugin",
+    "summary": "要求用最少必要代码完整解决问题，并提供代码审查、仓库审计与技术债清单。",
+    "scenarios": [
+      "避免简单需求被过度设计",
+      "审查改动或梳理已有技术债"
+    ],
+    "requirements": "需要项目上下文；收益展示使用插件基准数据，不等于当前项目实测结果。",
+    "setup": "安装并启用 Ponytail 后选择对应技能；先区分当前改动审查、整个仓库审计或精简实现。",
+    "prompt": "请使用 ponytail:ponytail-review 技能，审查【改动范围】，关注正确性和回归，给出有源码依据的问题，避免无关重构。",
+    "status": "配置已启用 · 依赖未逐项验证",
+    "source": "ponytail",
+    "skillCount": 6
+  },
+  {
+    "id": "plugin:github",
+    "name": "GitHub · 仓库与协作",
+    "kind": "plugin",
+    "summary": "结合 GitHub 连接器、MCP 与命令行工作流查看仓库、拉取请求、议题和 CI。",
+    "scenarios": [
+      "调查拉取请求的检查失败",
+      "汇总待处理议题"
+    ],
+    "requirements": "需要对应仓库权限；连接器、远程 MCP 和命令行登录需分别确认，不保证互相替代。",
+    "setup": "启用 GitHub 插件，按客户端提示连接账号，确认可访问仓库和 github MCP 状态；只授予任务所需权限。",
+    "prompt": "请使用已连接的 GitHub 工具，读取【仓库】中【拉取请求】的变更和检查结果，给出失败原因与修复建议，先不评论、不合并。",
+    "status": "配置已启用 · 依赖未逐项验证",
+    "source": "github",
+    "skillCount": 0
+  },
+  {
+    "id": "plugin:cloudflare",
+    "name": "Cloudflare · 云应用与部署",
+    "kind": "plugin",
+    "summary": "提供 Workers、Wrangler、智能体等技能，并声明 Cloudflare API MCP 服务。",
+    "scenarios": [
+      "构建 Workers 接口",
+      "检查云资源和部署设置"
+    ],
+    "requirements": "需要相应账号、资源权限及本地开发工具；MCP 连接与部署授权需核对。",
+    "setup": "启用 Cloudflare 插件，按官方流程授权 API MCP；本地开发另检查 Wrangler 和项目配置。",
+    "prompt": "请使用 cloudflare:workers-best-practices 技能，审查【Workers 项目】的请求处理、绑定和错误路径，给出修复及验证结果，暂不部署。",
+    "status": "配置已启用 · 依赖未逐项验证",
+    "source": "cloudflare",
+    "skillCount": 9
+  },
+  {
+    "id": "plugin:chatcut",
+    "name": "ChatCut · 连接视频工具",
+    "kind": "plugin",
+    "summary": "帮助安装、打开和修复 ChatCut Desktop 连接，为后续视频工具工作做好准备。",
+    "scenarios": [
+      "首次连接 ChatCut Desktop",
+      "排查桌面视频工具不可用"
+    ],
+    "requirements": "需要受支持的桌面环境；连接技能本身不是视频剪辑执行器。",
+    "setup": "启用 ChatCut 插件，使用 connect-chatcut-desktop 技能完成安装和连接，随后确认实际可用工具。",
+    "prompt": "请使用 chatcut:connect-chatcut-desktop 技能，检查 ChatCut Desktop 的安装与连接状态，修复连接问题并说明哪些工具已可用。",
+    "status": "配置已启用 · 依赖未逐项验证",
+    "source": "chatcut",
+    "skillCount": 1
+  },
+  {
+    "id": "plugin:vercel",
+    "name": "Vercel · 网站与 AI 应用",
+    "kind": "plugin",
+    "summary": "提供网站、AI 应用、部署与云资源相关技能，并声明 Vercel 应用连接器。",
+    "scenarios": [
+      "开发 Next.js 网站",
+      "分析部署或缓存问题"
+    ],
+    "requirements": "不少技能面向 React/Next.js；云端操作需要 Vercel 账号和项目权限。",
+    "setup": "启用 Vercel 插件并按提示连接账号；开发时选择匹配技术栈的技能，部署前核对项目及环境。",
+    "prompt": "请使用 vercel:deployments-cicd 技能，检查【项目】的构建、预览与生产发布流程，提出可验证的调整，先不执行生产部署。",
+    "status": "配置已启用 · 依赖未逐项验证",
+    "source": "vercel",
+    "skillCount": 54
+  }
+]

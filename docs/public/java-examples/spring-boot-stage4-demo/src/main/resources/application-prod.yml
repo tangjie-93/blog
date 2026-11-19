@@ -1,0 +1,11 @@
+server:
+  port: 8080
+  compression:
+    enabled: true
+
+logging:
+  level:
+    com.example.stage4: info
+
+app:
+  description: 生产环境示例：真实项目应接入 MySQL、Redis、安全认证和集中日志
