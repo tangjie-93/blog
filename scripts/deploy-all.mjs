@@ -15,8 +15,9 @@ console.log(`Publishing commit ${commit.slice(0, 7)} from ${branch}`)
 
 // GitHub Pages is published by the repository workflow after this push.
 run('git', ['push', 'origin', 'dev'])
-run('pnpm', ['run', 'build'])
-run('pnpm', ['exec', 'wrangler', 'pages', 'deploy', 'docs/.vitepress/dist', '--project-name', 'tangjie-blog', '--branch', 'dev', '--commit-hash', commit])
-run('vercel', ['--prod', '--yes'])
+const pnpm = process.platform === 'win32' ? 'pnpm.cmd' : 'pnpm'
+run(pnpm, ['run', 'build'])
+run(pnpm, ['exec', 'wrangler', 'pages', 'deploy', 'docs/.vitepress/dist', '--project-name', 'tangjie-blog', '--branch', 'dev', '--commit-hash', commit])
+run(pnpm, ['dlx', 'vercel', '--prod', '--yes'])
 
 console.log(`\nPublished commit ${commit.slice(0, 7)} to GitHub Pages, Cloudflare Pages and Vercel.`)

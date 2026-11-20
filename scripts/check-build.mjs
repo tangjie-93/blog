@@ -5,7 +5,7 @@ import { resolve } from 'node:path'
 const source = resolve('docs')
 const output = resolve('docs/.vitepress/dist')
 const base = process.env.VITEPRESS_BASE || '/'
-const pages = readdirSync(source, { recursive: true }).filter(path =>
+const pages = readdirSync(source, { recursive: true }).map(path => path.replaceAll('\\', '/')).filter(path =>
   path.endsWith('.md') && !path.startsWith('.') && !path.startsWith('public/'))
 const failures = []
 for (const page of pages) {
