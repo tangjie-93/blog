@@ -2,7 +2,7 @@ import { execFileSync } from 'node:child_process'
 
 const run = (command, args) => {
   console.log(`\n$ ${command} ${args.join(' ')}`)
-  execFileSync(command, args, { stdio: 'inherit' })
+  execFileSync(command, args, { stdio: 'inherit', shell: command.endsWith('.cmd') })
 }
 
 const branch = execFileSync('git', ['branch', '--show-current'], { encoding: 'utf8' }).trim()
