@@ -18,3 +18,11 @@ test('article library avoids a duplicate heading strip while retaining accessibl
   assert.match(source, /aria-label="选择具体专题"/)
   assert.match(source, /<BlogList fit-screen :group="selectedGroup" :category="selectedCategory"/)
 })
+
+test('each topic offers an independent homepage link using real configured navigation', () => {
+  assert.match(source, /function categoryHome\(category: string\): string/)
+  assert.match(source, /theme\.value\.sidebar/)
+  assert.match(source, /class="library-topic__home" :href="withBase\(categoryHome\(category\)\)"/)
+  assert.match(source, /:aria-label="`\$\{categoryLabels\[category\] \|\| category\} 专题首页`"/)
+  assert.match(source, /@click="select\(selectedGroup, category\)"/)
+})

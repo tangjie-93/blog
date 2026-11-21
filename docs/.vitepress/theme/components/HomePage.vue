@@ -6,7 +6,7 @@
                 <h1 id="home-title">保持好奇，<br>探索<span>技术边界。</span></h1>
             </div>
             <div class="home-page__welcome">
-                <p class="home-page__description">你好，我是 Tang Jie。<br>记录前端、AI 与工程实践，<br>把知识写下来，把原理弄明白。</p>
+                <p class="home-page__description"><span>你好，我是 Tang Jie。记录前端、AI 与工程实践，</span><span>把知识写下来，把原理弄明白。</span></p>
                 <div class="home-page__actions">
                     <a class="home-page__primary" :href="withBase('/articles/')">探索文章 <span aria-hidden="true">↗</span></a>
                     <a class="home-page__secondary" :href="withBase('/mindmap/')">文章脑图 <span aria-hidden="true">↗</span></a>
@@ -67,6 +67,7 @@ const topics = [
     & h1 span { color: var(--vp-c-brand-1); }
     & .home-page__welcome { min-width: 0; }
     & .home-page__description { margin: 0 0 20px; color: var(--vp-c-text-2); font-size: 15px; line-height: 1.9; }
+    & .home-page__description > span { display: block; }
     & .home-page__actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
     & .home-page__primary, & .home-page__secondary { display: inline-flex; gap: 24px; align-items: center; min-height: 44px; padding: 10px 18px; border: 1px solid transparent; border-radius: 8px; font-size: 14px; font-weight: 600; transition: background .2s, border-color .2s; }
     & .home-page__primary { background: var(--vp-c-brand-1); color: var(--blog-on-accent); }
@@ -151,12 +152,12 @@ const topics = [
         & h1 { font-size: clamp(24px, 2.1vw, 32px); white-space: nowrap; }
         & h1 br { display: none; }
         & .home-page__welcome { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
-        & .home-page__description { flex-shrink: 0; margin: 0; font-size: 13px; line-height: 1.7; }
+        & .home-page__description { flex: 1; min-width: 0; margin: 0; font-size: 15px; line-height: 1.8; }
         & .home-page__actions { flex-shrink: 0; gap: 10px; }
         & .home-page__primary, & .home-page__secondary { gap: 16px; padding-inline: 14px; }
-        & .home-page__stats { grid-column: auto; display: grid; gap: 6px; padding: 0 0 0 20px; border-top: 0; border-left: 1px solid var(--blog-border); }
-        & .home-page__stats strong { font-size: 20px; }
-        & .home-page__stats > div { gap: 8px; }
+        & .home-page__stats { grid-column: auto; display: flex; flex-wrap: nowrap; gap: 18px; padding: 0 0 0 20px; border-top: 0; border-left: 1px solid var(--blog-border); }
+        & .home-page__stats strong { min-width: 0; font-size: 22px; }
+        & .home-page__stats > div { flex-direction: column; align-items: flex-start; gap: 6px; white-space: nowrap; }
         & .home-page__stack { padding: 10px 0; }
         & .home-page__section { min-height: 0; padding: 16px 20px; }
         & .home-page__heading { margin-bottom: 12px; }
@@ -176,16 +177,18 @@ const topics = [
     @media (min-width: 960px) and (max-width: 1199px) {
         & .home-page__hero { gap: 20px; padding-inline: 20px; }
         & .home-page__welcome { align-items: flex-start; flex-direction: column; gap: 8px; }
-        & .home-page__description br { display: none; }
-        & .home-page__description { flex-shrink: 1; font-size: 12px; }
+        & .home-page__description { flex-shrink: 1; font-size: 15px; }
         & .home-page__stats { padding-left: 16px; }
         & .home-page__topic { padding: 10px; gap: 6px; }
         & .home-page__topic h3 { font-size: 13px; }
     }
+    @media (min-width: 1200px) and (max-width: 1279px) {
+        & .home-page__welcome { align-items: flex-start; flex-direction: column; gap: 8px; }
+    }
     @media (min-width: 960px) and (max-height: 800px) {
         padding-top: 12px;
         & .home-page__hero { padding: 12px 20px; }
-        & .home-page__description { font-size: 13px; }
+        & .home-page__description { font-size: 15px; }
         & .home-page__section { padding: 14px 16px; }
         & .home-page__topic { gap: 6px; padding: 10px; }
         & .home-page__topic-summary { display: none; }

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref } from 'vue'
-import { withBase } from 'vitepress'
+import { useData, withBase } from 'vitepress'
 import { articleGroups, categoryLabels, postCategory } from '../../articleTaxonomy.mjs'
 import { data as posts } from '../../posts.data'
 import BlogList from './BlogList.vue'
@@ -13,6 +13,12 @@ const groupIcons: Record<string, string> = {
     backend: 'M4 3h16v7H4zM4 14h16v7H4zM8 6.5h.01M8 17.5h.01M12 6.5h5M12 17.5h5',
     graphics: 'm12 3 9 5v8l-9 5-9-5V8l9-5Zm-9 5 9 5 9-5m-9 5v8M7.5 5.5l9 5',
     source: 'M6 6v12m0-9h8a4 4 0 0 0 4-4M4 4h4v4H4zM4 16h4v4H4zM16 2h4v4h-4z',
+}
+const { theme } = useData()
+/** 复用真实导航入口；没有目录首页的旧专题回退到已配置的首篇文章。 */
+function categoryHome(category: string): string {
+    const groups = theme.value.sidebar?.[`/articles/${category}/`]
+    return groups?.[0]?.link || groups?.[0]?.items?.[0]?.link || ''
 }
 const selectedGroup = ref('')
 const selectedCategory = ref('')
@@ -55,7 +61,10 @@ onUnmounted(() => { window.removeEventListener('popstate', restore) })
             <div v-if="activeGroup" class="library-toolbar">
                 <div class="library-topics" role="group" aria-label="选择具体专题">
                     <button type="button" class="blog-choice" :aria-pressed="!selectedCategory" @click="select(selectedGroup)">全部</button>
-                    <button v-for="category in activeGroup.categories" :key="category" type="button" class="blog-choice" :aria-pressed="selectedCategory === category" @click="select(selectedGroup, category)">{{ categoryLabels[category] || category }}</button>
+                    <div v-for="category in activeGroup.categories" :key="category" class="library-topic" :class="{ 'is-selected': selectedCategory === category }">
+                        <button type="button" class="blog-choice" :aria-pressed="selectedCategory === category" @click="select(selectedGroup, category)">{{ categoryLabels[category] || category }}</button>
+                        <a v-if="categoryHome(category)" class="library-topic__home" :href="withBase(categoryHome(category))" :aria-label="`${categoryLabels[category] || category} 专题首页`" :title="`打开 ${categoryLabels[category] || category} 专题首页`"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m3 10 9-7 9 7M5 9v11h5v-6h4v6h5V9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                    </div>
                 </div>
                 <div v-if="activeGroup.resources?.length" class="library-resources">
                     <a v-for="resource in activeGroup.resources" :key="resource.link" :href="withBase(resource.link)" :title="resource.description">{{ resource.text }} <span aria-hidden="true">↗</span></a>
@@ -96,6 +105,15 @@ onUnmounted(() => { window.removeEventListener('popstate', restore) })
     & .library-topics {
         display: flex; flex: 1; flex-wrap: wrap; gap: 6px; min-width: 0;
         & button { min-height: 34px; padding: 6px 12px; border-radius: 8px; font-size: 12px; cursor: pointer; }
+    }
+    & .library-topic {
+        display: inline-flex; align-items: center; flex-shrink: 0; border: 1px solid var(--blog-border); border-radius: 8px; background: var(--blog-panel);
+        & > button { border-radius: 7px 0 0 7px; font-size: 13px; }
+        &.is-selected { border-color: var(--blog-selected-border); }
+    }
+    & .library-topic__home {
+        display: inline-flex; align-items: center; justify-content: center; align-self: stretch; min-width: 32px; border-left: 1px solid var(--blog-border); border-radius: 0 7px 7px 0; color: var(--vp-c-brand-1); transition: background-color 160ms ease;
+        &:hover { background: var(--vp-c-brand-soft); }
     }
     & .library-resources {
         display: flex; flex-shrink: 0; gap: 8px; margin-left: auto;
