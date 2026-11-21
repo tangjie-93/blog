@@ -256,7 +256,7 @@ cp .env.example .env.local
 docs/articles/
 ├── 语言与标准/  javascript、es6、typescript、css、http
 ├── 框架与工程/  vue、vue3、react、node、webpack、git
-├── 人工智能/    ai、agent、agent-projects、rag、jev、ai-coding
+├── 人工智能/    ai、agent、agent-projects、rag、jev
 ├── 后端/        python、java、linux、database、langchain
 ├── 图形与交互/  webgl、threejs
 ├── 源码与算法/  jquery-source-analysis、算法

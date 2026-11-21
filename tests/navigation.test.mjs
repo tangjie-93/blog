@@ -15,10 +15,10 @@ test('article filters classify logical routes without confusing nested examples 
 
 test('AI toolbox belongs to AI and the global header stays compact', () => {
   const ai = articleGroups.find(group => group.id === 'ai')
-  assert.ok(ai.categories.includes('ai-coding'))
+  assert.deepEqual(ai.categories, ['ai', 'agent', 'agent-projects', 'rag', 'jev'])
   assert.deepEqual(ai.resources.map(resource => resource.link), ['/skills/'])
   assert.equal(articleGroups.length, 6)
-  assert.equal(articleSourcePath('ai-coding'), '人工智能/ai-coding')
+  assert.equal(articleSourcePath('rag'), '人工智能/rag')
   const config = readFileSync(new URL('../docs/.vitepress/config.mts', import.meta.url), 'utf8')
   const nav = config.slice(config.indexOf('    nav: ['), config.indexOf('    sidebar,'))
   assert.match(nav, /text: '标签', link: '\/tags\/'/)
