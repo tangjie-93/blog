@@ -67,6 +67,8 @@
 body { -webkit-font-smoothing: auto; }
 ::selection { background: var(--blog-selected-bg); color: var(--blog-selected-text); }
 a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid var(--blog-focus-ring); outline-offset: 3px; }
+/* 本地搜索由外层 search-bar:focus-within 提示焦点，避免输入框再套一层描边。 */
+.VPLocalSearchBox .search-input:focus-visible { outline: none; }
 /* 分类、专题与标签共用状态；选中不依赖单侧色条，键盘焦点单独保留轮廓。 */
 .blog-choice {
     color: var(--vp-c-text-2);
@@ -151,7 +153,13 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
     & .VPNavBarMenuGroup > .button .text-icon { display: inline-block; }
     & .VPNavBarMenuGroup > .button { background: transparent; box-shadow: none; }
 }
-.VPNavBarSearch .DocSearch-Button { border: 1px solid var(--blog-border); border-radius: 6px; }
+.VPNavBarSearch .DocSearch-Button {
+    border: 1px solid var(--blog-border);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: border-color 160ms ease, background-color 160ms ease;
+    &:hover { border-color: var(--blog-border-hover); background: var(--blog-hover-bg); }
+}
 .VPNavBarMenuGroup .VPMenuGroup .title {
     display: block;
     margin: 0 0 8px;

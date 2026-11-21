@@ -43,15 +43,15 @@ import { data as posts } from '../../posts.data'
 import { createTagCatalog } from '../tags'
 import HomeReadingPaths from './components/HomeReadingPaths.vue'
 
-const recentPosts = posts.slice(0, 4)
+const recentPosts = posts.slice(0, 6)
 const tagCount = createTagCatalog(posts).entries.length
 const topics = [
-    { icon: '{ }', title: '语言与标准', summary: '从语法到运行机制，打牢基础。', description: 'JavaScript · TypeScript · CSS · HTTP', url: '/articles/?group=languages' },
-    { icon: '⌘', title: '框架与工程', summary: '理解框架原理，构建可靠应用。', description: 'Vue · React · Node.js · Git', url: '/articles/?group=engineering' },
-    { icon: '>_', title: 'AI 与智能应用', summary: '拆解模型原理，动手验证想法。', description: '模型原理 · RAG · Agent · 工具箱', url: '/articles/?group=ai' },
-    { icon: '↔', title: '后端开发', summary: '连接服务与数据，补全技术视角。', description: 'Python · Java · 数据库 · Linux', url: '/articles/?group=backend' },
-    { icon: '◈', title: '图形与交互', summary: '从渲染管线走向三维交互。', description: 'WebGL · Three.js · 渲染基础', url: '/articles/?group=graphics' },
-    { icon: '</>', title: '源码与算法', summary: '读懂实现细节，练习拆解问题。', description: '数据结构 · 算法 · jQuery 源码', url: '/articles/?group=source' },
+    { icon: '{ }', title: '语言与标准', summary: '理解语法，打牢运行机制。', description: 'JavaScript · TypeScript · CSS · HTTP', url: '/articles/?group=languages' },
+    { icon: '⌘', title: '框架与工程', summary: '理解框架，构建可靠应用。', description: 'Vue · React · Node.js · Git', url: '/articles/?group=engineering' },
+    { icon: '>_', title: 'AI 与智能应用', summary: '拆解模型，动手验证想法。', description: '模型原理 · RAG · Agent · 工具箱', url: '/articles/?group=ai' },
+    { icon: '↔', title: '后端开发', summary: '连接服务与数据，补全视角。', description: 'Python · Java · 数据库 · Linux', url: '/articles/?group=backend' },
+    { icon: '◈', title: '图形与交互', summary: '理解渲染，探索三维交互。', description: 'WebGL · Three.js · 渲染基础', url: '/articles/?group=graphics' },
+    { icon: '</>', title: '源码与算法', summary: '读懂源码，练习拆解问题。', description: '数据结构 · 算法 · jQuery 源码', url: '/articles/?group=source' },
 ]
 </script>
 
@@ -146,7 +146,7 @@ const topics = [
     @media (min-width: 960px) {
         min-height: calc(100svh - var(--vp-nav-height) - var(--vp-layout-top-height, 0px));
         padding-top: 16px;
-        grid-template-rows: auto auto minmax(280px, 1fr) auto auto;
+        grid-template-rows: auto auto auto minmax(230px, 1fr) auto;
         & .home-page__hero { grid-template-columns: max-content minmax(0, 1fr) auto; gap: 28px; padding: 16px 24px; }
         & .home-page__eyebrow { margin-bottom: 10px; }
         & h1 { font-size: clamp(24px, 2.1vw, 32px); white-space: nowrap; }
@@ -163,15 +163,17 @@ const topics = [
         & .home-page__heading { margin-bottom: 12px; }
         & .home-page__heading .home-page__eyebrow { margin-bottom: 4px; }
         & h2 { font-size: 19px; }
-        & .home-page__topics { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+        & .home-page__topics { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: minmax(138px, auto); align-content: start; gap: 10px; }
         & .home-page__topic { position: relative; display: grid; grid-template-columns: max-content minmax(0, 1fr); align-content: start; align-items: center; gap: 8px; padding: 12px; }
         & .home-page__topic-top { display: contents; }
         & .home-page__topic-top > span:last-child { position: absolute; right: 10px; top: 10px; font-size: 12px; }
         & .home-page__icon { font-size: 20px; white-space: nowrap; }
         & .home-page__topic h3 { padding-right: 10px; font-size: 15px; line-height: 1.5; }
-        & .home-page__topic-summary { grid-column: 1 / -1; margin: 0; }
+        & .home-page__topic-summary { grid-column: 1 / -1; margin: 0; font-size: 12px; letter-spacing: -.2px; }
         & .home-page__topic-tech { grid-column: 1 / -1; margin: 0; padding-top: 8px; }
-        & .home-page__post { padding: 10px 0; }
+        & .home-page__post { padding: 5px 0; }
+        & .home-page__post-meta { margin-bottom: 3px; line-height: 1.5; }
+        & .home-page__post h3 { font-size: 13px; line-height: 1.5; }
         & .home-page__closing { padding: 10px 0; }
     }
     @media (min-width: 960px) and (max-width: 1199px) {
@@ -191,7 +193,7 @@ const topics = [
         & .home-page__description { font-size: 15px; }
         & .home-page__section { padding: 14px 16px; }
         & .home-page__topic { gap: 6px; padding: 10px; }
-        & .home-page__topic-summary { display: none; }
+        & .home-page__topics { grid-auto-rows: minmax(126px, auto); }
         & .home-page__post { padding: 6px 0; }
         & .home-page__post-meta { margin-bottom: 4px; line-height: 1.5; }
         & .home-page__post h3 { line-height: 1.5; }
