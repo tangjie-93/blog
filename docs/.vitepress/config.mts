@@ -2,33 +2,10 @@ import { defineConfig } from 'vitepress'
 import { fileURLToPath } from 'node:url'
 import { createRequire } from 'node:module'
 import { createNavigation } from './navigation.mjs'
+import { rewriteArticlePath } from './articleCategories.mjs'
 
-const { nav, sidebar } = createNavigation(fileURLToPath(new URL('../articles', import.meta.url)))
+const { sidebar } = createNavigation(fileURLToPath(new URL('../articles', import.meta.url)))
 const base = process.env.VITEPRESS_BASE || '/'
-
-const navGroups = [
-  { text: '语言与标准', categories: ['javascript', 'es6', 'typescript', 'css', 'http'] },
-  { text: '框架与工程', categories: ['vue', 'vue3', 'react', 'node', 'webpack', 'git'] },
-  { text: 'AI', categories: ['ai', 'agent', 'agent-projects', 'rag', 'jev'] },
-  { text: '后端', categories: ['python', 'java', 'linux', 'database', 'langchain'] },
-  { text: '图形与交互', categories: ['webgl', 'threejs'] },
-  { text: '源码与算法', categories: ['jquery-source-analysis', '算法', '其他'] }
-]
-const navByCategory = new Map(nav.map(item => [decodeURIComponent(item.link.split('/')[2] || ''), item]))
-const topicNav = navGroups.flatMap(({ text, categories }) => {
-  const items = categories.flatMap(category => {
-    const item = navByCategory.get(category)
-    return item ? [item] : []
-  })
-  return items.length ? [{ text, items }] : []
-})
-const groupedCategories = new Set(navGroups.flatMap(group => group.categories))
-const hiddenNavCategories = new Set(['ai-coding'])
-const remainingNav = nav.filter(item => {
-  const category = decodeURIComponent(item.link.split('/')[2] || '')
-  return !groupedCategories.has(category) && !hiddenNavCategories.has(category)
-})
-if (remainingNav.length) topicNav.push({ text: '更多专题', items: remainingNav })
 
 export default defineConfig({
   lang: 'zh-CN',
@@ -57,7 +34,7 @@ export default defineConfig({
   },
   appearance: 'dark',
   cleanUrls: false,
-  rewrites: (path) => path.replace(/(^|\/)README\.md$/, '$1index.md'),
+  rewrites: rewriteArticlePath,
   head: [['link', { rel: 'icon', href: `${base}image/blog-mark.svg` }]],
   markdown: { lineNumbers: true },
   themeConfig: {
@@ -66,11 +43,8 @@ export default defineConfig({
       { text: '首页', link: '/' },
       { text: '文章', link: '/articles/' },
       { text: '脑图', link: '/mindmap/' },
-      { text: 'AI 工具箱', link: '/skills/' },
-      ...topicNav,
       { text: '标签', link: '/tags/' },
-      { text: '充电站', link: '/summarize/' },
-      { text: '留言', link: '/comments/' }
+      { text: '留言板', link: '/comments/' }
     ],
     sidebar,
     socialLinks: [{ icon: 'github', link: 'https://github.com/tangjie-93/blog' }],

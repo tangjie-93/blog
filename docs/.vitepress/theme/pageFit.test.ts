@@ -12,6 +12,15 @@ test('fit page size never drops below a single card and ignores negative space',
     assert.deepEqual(fitPageSize(-20, -40, 300, 180, -8, -8), { columns: 1, rows: 1, pageSize: 1, rowHeight: 0 })
 })
 
+test('compact grids cap card height instead of stretching sparse rows', () => {
+    assert.equal(fitPageSize(1200, 330, 300, 176, 12, 12, 196).rowHeight, 196)
+    const fit = fitPageSize(1600, 700, 300, 176, 12, 12, 196)
+    assert.equal(fit.pageSize, 15)
+    assert.equal(fit.rowHeight, 196)
+    assert.ok(fit.rowHeight * fit.rows + (fit.rows - 1) * 12 <= 700)
+    assert.equal(fitPageSize(350, 110, 280, 176, 10, 10, 196).rowHeight, 110)
+})
+
 test('fit page size shares leftover height across rows instead of stretching one row', () => {
     const { rows, rowHeight } = fitPageSize(1200, 640, 280, 170, 12, 12)
     assert.equal(rows, 3)

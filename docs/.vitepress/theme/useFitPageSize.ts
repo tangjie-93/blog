@@ -6,6 +6,7 @@ interface FitPageSizeOptions {
     fallbackSize: number
     minCardWidth: number
     minCardHeight: number
+    maxCardHeight?: number
     /** 小于该宽度时退回固定分页并允许页面滚动，窄屏一屏放不下几项。 */
     minViewportWidth?: number
 }
@@ -44,7 +45,8 @@ export function useFitPageSize(viewport: Ref<HTMLElement | null>, options: FitPa
             options.minCardWidth,
             options.minCardHeight,
             gapX,
-            gapY
+            gapY,
+            options.maxCardHeight
         )
         columns.value = fit.columns
         rowHeight.value = fit.rowHeight

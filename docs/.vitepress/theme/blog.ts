@@ -1,11 +1,12 @@
 import type { BlogListProps, BlogPost, BlogSourcePost } from '../../../src/types/blog.ts'
+import { normalizeTag, normalizeTags } from './tags.ts'
 
 /** 将原始文件路径编码为 URL，保留目录分隔符；输入必须是未编码路径。 */
 export function encodePostPath(path: string): string {
     return path.split('/').map(encodeURIComponent).join('/')
 }
 
-/** 从源文件路径恢复旧站评论标识，避免部署平台的 URL 规范化拆分评论。 */
+/** 从重写后的逻辑页面路径恢复旧站评论标识，不使用物理分组路径。 */
 export function getCommentPath(relativePath: string): string {
     const path = relativePath.replace(/(^|\/)(?:README|index)\.md$/, '$1').replace(/\.md$/, '.html')
     return `/blog/${encodeURI(path.replace(/^\//, '')).replace(/\?/g, '%3F').replace(/#/g, '%23')}`
@@ -16,6 +17,7 @@ export function summarizeMarkdown(source = ''): string {
     const content = source
         .replace(/^---[\s\S]*?---\s*/u, '')
         .replace(/<!--[\s\S]*?-->/gu, '')
+        .replace(/<(?:script|style)\b[^>]*>[\s\S]*?<\/(?:script|style)>/giu, '')
         .replace(/```[\s\S]*?```/gu, '')
     const headings = [...content.matchAll(/^#{1,6}\s+(.+)$/gmu)]
         .map(match => match[1].replace(/[`*_~]/g, '').replace(/^\s*\d+[、.)]\s*/u, '').trim())
@@ -38,7 +40,7 @@ export function mapPosts(pages: BlogSourcePost[]): BlogPost[] {
             url: encodePostPath(url.replace(/\/README(?:\.html)?$/, '/')),
             title: String(frontmatter.title || url.split('/').pop()?.replace(/\.html$/, '') || '未命名文章'),
             date,
-            tags: [...new Set(tags.map(tag => String(tag).trim()).filter(Boolean))],
+            tags: normalizeTags(tags),
             type: String(frontmatter.type ?? ''),
             note: isCategoryIndex ? summarizeMarkdown(src) || String(frontmatter.note ?? '') : String(frontmatter.note ?? ''),
         }
@@ -47,5 +49,5 @@ export function mapPosts(pages: BlogSourcePost[]): BlogPost[] {
 
 /** 根据组件筛选条件返回文章，保持构建时的时间顺序。 */
 export function filterPosts(posts: BlogPost[], filters: BlogListProps): BlogPost[] {
-    return posts.filter(post => (!filters.type || post.type === filters.type) && (!filters.tag || post.tags.includes(filters.tag)))
+    return posts.filter(post => (!filters.type || post.type === filters.type) && (!filters.tag || !/\/$|\/(?:README|index)\.html$/.test(post.url) && post.tags.includes(normalizeTag(filters.tag))))
 }

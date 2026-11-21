@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict'
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
 import { resolve } from 'node:path'
+import { rewriteArticlePath } from '../docs/.vitepress/articleCategories.mjs'
 
 const source = resolve('docs')
 const output = resolve('docs/.vitepress/dist')
@@ -9,11 +10,11 @@ const pages = readdirSync(source, { recursive: true }).map(path => path.replaceA
   path.endsWith('.md') && !path.startsWith('.') && !path.startsWith('public/'))
 const failures = []
 for (const page of pages) {
-  const route = page.replace(/(^|\/)README\.md$/, '$1index.md').replace(/\.md$/, '.html')
+  const route = rewriteArticlePath(page).replace(/\.md$/, '.html')
   const path = resolve(output, route)
   if (!existsSync(path)) { failures.push(`${page}: missing HTML`); continue }
   const html = readFileSync(path, 'utf8')
-  if (!html.includes('vp-doc') && !html.includes('VPHome') && !html.includes('class="home-page"') && !html.includes('class="skill-library"') && !html.includes('class="blog-list')) failures.push(`${page}: missing rendered content`)
+  if (!html.includes('vp-doc') && !html.includes('VPHome') && !html.includes('class="home-page"') && !html.includes('class="skill-library"') && !html.includes('class="blog-list') && !html.includes('class="blog-tags"') && !html.includes('class="topic-library"') && !html.includes('class="tag-index"')) failures.push(`${page}: missing rendered content`)
   if (!/<link\b[^>]*rel="[^"]*stylesheet[^"]*"[^>]*href="[^"]*\/assets\/style\.[^"]+\.css"/.test(html)) failures.push(`${page}: missing site theme stylesheet`)
   for (const match of html.matchAll(/<(?:a|img|script|link|embed)\b[^>]*?\s(?:href|src)="([^"]+)"/g)) {
     const url = new URL(match[1].replaceAll('&amp;', '&'), `https://blog.local${base}${route}`)

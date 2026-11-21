@@ -5,4 +5,8 @@ pageClass: blog-archive blog-archive--screen
 search: false
 ---
 
-<BlogList fit-screen />
+<script setup>
+import ArticleLibrary from '../.vitepress/theme/components/ArticleLibrary.vue'
+</script>
+
+<ArticleLibrary />

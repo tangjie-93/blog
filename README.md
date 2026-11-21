@@ -47,7 +47,6 @@ blog/
 │   ├── timeline/README.md         # 旧文章归档地址，跳转至 articles/
 │   ├── tags/README.md             # 标签页
 │   ├── about/README.md            # 关于页
-│   ├── summarize/README.md        # 充电站页面
 │   └── comments/README.md         # 留言页
 ├── src/types/blog.ts              # 文章、组件参数和评论配置的类型定义
 ├── scripts/check-build.mjs        # 检查构建页面及本地链接、资源路径
@@ -251,7 +250,20 @@ cp .env.example .env.local
 
 ## 5. 继续写文章
 
-在 `docs/articles/<分类>/` 新增 `.md` 文件。分类导航、文章列表和标签在构建时自动更新。
+在 `docs/articles/<导航分组>/<专题>/` 新增 `.md` 文件。源文件按导航归组，公开地址仍保持 `/articles/<专题>/...`，原有文章链接、收藏与评论标识不变。
+
+```text
+docs/articles/
+├── 语言与标准/  javascript、es6、typescript、css、http
+├── 框架与工程/  vue、vue3、react、node、webpack、git
+├── 人工智能/    ai、agent、agent-projects、rag、jev、ai-coding
+├── 后端/        python、java、linux、database、langchain
+├── 图形与交互/  webgl、threejs
+├── 源码与算法/  jquery-source-analysis、算法
+└── README.md    文章归档页
+```
+
+分组与入口数据维护在 `docs/.vitepress/articleTaxonomy.mjs`，源路径到公开路由的转换在 `docs/.vitepress/articleCategories.mjs`。顶部只保留首页、文章、脑图、标签、留言板；文章页通过左侧分类和上方专题切换浏览，AI 工具箱收在 AI 分类内，`/skills/` 地址不变。新增专题时先加入对应分组；文章列表和标签在构建时自动更新。`人工智能` 对应网页上的 **AI**，避免在默认不区分大小写的文件系统上与子目录 `ai` 冲突。
 
 ```yaml
 ---

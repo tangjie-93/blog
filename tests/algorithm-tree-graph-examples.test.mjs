@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs'
 import { runInNewContext } from 'node:vm'
 import { test } from 'node:test'
 function load(file, name, index = 0) {
-  const source = readFileSync(new URL(`../docs/articles/算法/${file}.md`, import.meta.url), 'utf8')
+  const source = readFileSync(new URL(`../docs/articles/源码与算法/算法/${file}.md`, import.meta.url), 'utf8')
   const blocks = [...source.matchAll(/^```js\n([\s\S]*?)^```/gm)].map(x => x[1]).filter(code => code.includes(`function ${name}(`))
   assert.ok(blocks[index], name)
   return runInNewContext(`'use strict';\n${blocks[index]}\n${name}`, {})

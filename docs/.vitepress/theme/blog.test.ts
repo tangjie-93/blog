@@ -26,7 +26,7 @@ test('posts sort newest first and support pipe/array tags and combined filters',
         { url: '/new.html', frontmatter: { date: new Date('2024-01-01'), tags: ['vue'], type: '笔记', note: '摘要' } },
     ])
     assert.deepEqual(posts.map(post => post.url), ['/new.html', '/old.html', '/undated.html'])
-    assert.deepEqual(posts[1].tags, ['vue', 'js'])
+    assert.deepEqual(posts[1].tags, ['Vue', 'JavaScript'])
     assert.equal(posts[0].date, '2024-01-01')
     assert.equal(posts[0].note, '摘要')
     assert.equal(filterPosts(posts, { tag: 'vue' }).length, 2)
@@ -39,6 +39,7 @@ test('category README cards use a body summary instead of duplicate frontmatter 
     assert.equal(summary, '本文介绍状态更新和组件通信的常见方式。')
     const [post] = mapPosts([{ url: '/articles/react/README.html', src: '\n## 一、状态管理\n\n本文介绍状态更新。', frontmatter: { title: '重复标题', note: '重复标题' } }])
     assert.equal(post.note, '本文介绍状态更新。')
+    assert.equal(summarizeMarkdown('<script setup>\nimport Demo from "./Demo.vue"\n</script>\n\n# 实验包\n\n这是不包含组件源码的实验说明。'), '这是不包含组件源码的实验说明。')
 })
 
 test('comment iframe safely escapes path and title script delimiters', () => {

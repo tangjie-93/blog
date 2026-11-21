@@ -1,6 +1,6 @@
 :root {
     --vp-layout-max-width: 100vw;
-    --blog-page-gutter: clamp(16px, 2vw, 32px);
+    --blog-page-gutter: clamp(16px, 1.25vw, 24px);
     --blog-page-max-width: 1400px;
     --blog-radius: 12px;
     --vp-c-brand-1: #087d70;
@@ -13,8 +13,16 @@
     --vp-c-text-1: #152b32;
     --vp-c-text-2: #4f656d;
     --blog-panel: #fff;
-    --blog-border: #d5e2e3;
-    --blog-muted: #597179;
+    --blog-border: #e0e7e8;
+    --blog-border-hover: #bbcacc;
+    --blog-hover-bg: #edf2f3;
+    --blog-selected-bg: #e3eeec;
+    --blog-selected-text: #28675f;
+    --blog-selected-border: #c4d9d4;
+    --blog-surface-shadow: 0 2px 8px rgb(23 43 50 / .025);
+    --blog-hover-shadow: 0 6px 18px rgb(23 43 50 / .06);
+    --blog-focus-ring: #508e86;
+    --blog-muted: #63777f;
     --blog-on-accent: #fff;
     --blog-field-opacity: .42;
     --blog-field-grid: rgba(33, 111, 137, .045);
@@ -39,17 +47,38 @@
     --vp-c-text-2: #c4cfdb;
     --vp-c-text-3: #aab8c7;
     --blog-panel: #101923;
-    --blog-border: #344657;
+    --blog-border: #24313e;
+    --blog-border-hover: #3b4d5c;
+    --blog-hover-bg: #1a2632;
+    --blog-selected-bg: #20332f;
+    --blog-selected-text: var(--vp-c-brand-1);
+    --blog-selected-border: #38564e;
+    --blog-surface-shadow: 0 2px 8px rgb(0 0 0 / .06);
+    --blog-hover-shadow: 0 6px 18px rgb(0 0 0 / .14);
+    --blog-focus-ring: #7bafa5;
     --blog-muted: #adbdcc;
     --blog-on-accent: #08241f;
-    --blog-field-opacity: .65;
+    --blog-field-opacity: .28;
     --blog-field-grid: rgba(100, 190, 210, .045);
     --blog-field-glow: rgba(28, 180, 184, .14);
     --blog-field-halo: rgba(93, 92, 190, .12);
 }
+/* 保留原生字体渲染，避免暗色背景上的细字因强制抗锯齿显灰。 */
 body { -webkit-font-smoothing: auto; }
-::selection { background: var(--vp-c-brand-soft); color: var(--vp-c-brand-1); }
-a:focus-visible, button:focus-visible { outline: 2px solid var(--vp-c-brand-1); outline-offset: 5px; }
+::selection { background: var(--blog-selected-bg); color: var(--blog-selected-text); }
+a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid var(--blog-focus-ring); outline-offset: 3px; }
+/* 分类、专题与标签共用状态；选中不依赖单侧色条，键盘焦点单独保留轮廓。 */
+.blog-choice {
+    color: var(--vp-c-text-2);
+    transition: color 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
+    &:hover { color: var(--vp-c-text-1); background: var(--blog-hover-bg); }
+    &[aria-pressed='true'] {
+        color: var(--blog-selected-text);
+        background: var(--blog-selected-bg);
+        box-shadow: inset 0 0 0 1px var(--blog-selected-border);
+        font-weight: 600;
+    }
+}
 /* 固定装饰层不接管滚动或鼠标事件，内容面板保持实色以保证可读性。 */
 .Layout {
     position: relative;
@@ -110,8 +139,8 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--vp-c-brand-1); 
     & .VPNavBarMenuLink:is(:hover, :focus-visible, .active),
     & .VPNavBarMenuGroup:is(:hover, .active) > .button,
     & .VPNavBarMenuGroup > .button:is(:focus-visible, [aria-expanded='true']) {
-        color: var(--vp-c-brand-1);
-        background: var(--vp-c-brand-soft);
+        color: var(--blog-selected-text);
+        background: var(--blog-selected-bg);
     }
     & .VPNavBarMenuGroup {
         display: flex;
@@ -119,15 +148,8 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--vp-c-brand-1); 
         height: var(--vp-nav-height);
         & > .button > .text { color: inherit; font-size: inherit; line-height: inherit; }
     }
-    & .VPNavBarMenuGroup > .button .text-icon { display: none; }
-    & .VPNavBarMenuGroup > .button {
-        background: var(--vp-c-bg-soft);
-        box-shadow: inset 0 0 0 1px var(--blog-border);
-    }
-    & .VPNavBarMenuLink[href$='/skills/'] {
-        color: var(--vp-c-brand-1);
-        box-shadow: inset 0 0 0 1px var(--vp-c-brand-1);
-    }
+    & .VPNavBarMenuGroup > .button .text-icon { display: inline-block; }
+    & .VPNavBarMenuGroup > .button { background: transparent; box-shadow: none; }
 }
 .VPNavBarSearch .DocSearch-Button { border: 1px solid var(--blog-border); border-radius: 6px; }
 .VPNavBarMenuGroup .VPMenuGroup .title {
@@ -167,18 +189,6 @@ html {
         background: var(--blog-border);
     }
     &::-webkit-scrollbar-thumb:hover { background: var(--blog-muted); }
-}
-@media (min-width: 768px) and (max-width: 1279px) {
-    .VPNavBar .VPNavBarMenu { display: none; }
-    .VPNavBar .VPNavBarHamburger { display: flex; }
-    .VPNav .VPNavScreen { display: block; }
-    .VPNavBar .VPNavBarSearch { padding-left: 12px; }
-}
-@media (min-width: 960px) and (max-width: 1399px) {
-    /* 六个专题常驻一级导航时，给外观切换和菜单留出空间。 */
-    .VPNavBar .VPNavBarMenuLink,
-    .VPNavBar .VPNavBarMenuGroup > .button { padding-inline: 6px; font-size: 13px; }
-    .VPNavBar .VPNavBarSocialLinks { display: none; }
 }
 .VPDoc {
     & .vp-doc { line-height: 1.8; overflow-wrap: break-word; }
@@ -225,12 +235,18 @@ html {
         border-bottom: 1px solid var(--blog-border);
         & .link::after { content: '首页 →'; flex-shrink: 0; margin-left: 8px; font-size: 12px; color: var(--blog-muted); }
     }
+    & .VPSidebarItem.level-1 > .item { margin-block: 4px; }
     & .VPSidebarItem.level-1 > .item > .link {
-        padding-inline: 8px;
+        padding: 2px 8px;
         border-radius: 6px;
-        &:hover { background: var(--vp-c-brand-soft); }
+        &:hover { background: var(--blog-hover-bg); }
     }
-    & .VPSidebarItem.level-1.is-active > .item > .link { background: var(--vp-c-brand-soft); }
+    & .VPSidebarItem .indicator { display: none; }
+    & .VPSidebarItem.level-1.is-active > .item > .link {
+        background: var(--blog-selected-bg);
+        box-shadow: inset 0 0 0 1px var(--blog-selected-border);
+        & .text { color: var(--blog-selected-text); }
+    }
     @media (min-width: 960px) {
         & .VPSidebarItem.level-1 .text { padding-block: 3px; line-height: 22px; }
     }
@@ -272,8 +288,8 @@ html {
         overflow-wrap: anywhere;
         font-size: 13px;
         transition: color .2s, background-color .2s;
-        &:hover { color: var(--vp-c-brand-1); background: var(--vp-c-brand-soft); }
-        &.active { color: var(--vp-c-brand-1); background: var(--vp-c-brand-soft); font-weight: 600; }
+        &:hover { color: var(--vp-c-text-1); background: var(--blog-hover-bg); }
+        &.active { color: var(--blog-selected-text); background: var(--blog-selected-bg); font-weight: 600; }
     }
     & .nested { padding: 0 0 0 12px; }
 }
@@ -281,6 +297,22 @@ html {
     width: 100%;
     max-width: var(--blog-page-max-width);
     margin-inline: auto;
+}
+/* 浏览型页面使用全宽，阅读正文仍保留独立的排版约束。 */
+.Layout:is(.blog-archive--screen, .blog-tags-page, .blog-toolbox) { --blog-page-max-width: 100%; }
+/* 主题目录在所有屏幕上按可用空间分页，沿 page 布局传递剩余高度。 */
+.Layout.blog-tags-page {
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    & > .VPContent, & .VPPage, & .VPPage > div, & .VPPage > div > div {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        min-height: 0;
+        width: 100%;
+    }
+    & > .VPContent { max-width: none; }
 }
 /* 归档与工具箱铺满一屏：页面占满视口高度，分页数量由组件测量网格可用空间决定。
    窄屏一屏放不下几项，900px 以下退回普通滚动列表（与 useFitPageSize 的断点一致）。 */
@@ -306,8 +338,8 @@ html {
             width: 100%;
         }
         /* page 布局下 VitePress 再包两层 div，逐层传递高度才能让列表测量到固定可用空间。 */
-        & .VPPage > *,
-        & .VPPage > * > * {
+        & .VPPage > :not(.article-library),
+        & .VPPage > :not(.article-library) > :not(.article-library) {
             display: flex;
             flex: 1;
             flex-direction: column;

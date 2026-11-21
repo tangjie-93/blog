@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs'
 import { runInNewContext } from 'node:vm'
 import { test } from 'node:test'
 
-const source = readFileSync(new URL('../docs/articles/算法/leetcode之递归专题.md', import.meta.url), 'utf8')
+const source = readFileSync(new URL('../docs/articles/源码与算法/算法/leetcode之递归专题.md', import.meta.url), 'utf8')
 const blocks = [...source.matchAll(/^```js\n([\s\S]*?)^```/gm)].map(match => match[1])
 
 function example(name) {

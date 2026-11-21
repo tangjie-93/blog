@@ -1,9 +1,70 @@
 import assert from 'node:assert/strict'
-import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs'
+import { mkdtempSync, mkdirSync, writeFileSync, rmSync, readFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { test } from 'node:test'
 import { createNavigation } from '../docs/.vitepress/navigation.mjs'
+import { postCategory } from '../docs/.vitepress/articleTaxonomy.mjs'
+import { articleGroups, articleRoute, articleSourcePath, rewriteArticlePath, discoverArticleCategories } from '../docs/.vitepress/articleCategories.mjs'
+
+test('article filters classify logical routes without confusing nested examples or encoded topics', () => {
+  assert.equal(postCategory('/articles/rag/examples/data/hr-policy.html'), 'rag')
+  assert.equal(postCategory('/articles/%E7%AE%97%E6%B3%95/排序算法.html'), '算法')
+  assert.equal(postCategory('/skills/'), '')
+})
+
+test('AI toolbox belongs to AI and the global header stays compact', () => {
+  const ai = articleGroups.find(group => group.id === 'ai')
+  assert.ok(ai.categories.includes('ai-coding'))
+  assert.deepEqual(ai.resources.map(resource => resource.link), ['/skills/'])
+  assert.equal(articleGroups.length, 6)
+  assert.equal(articleSourcePath('ai-coding'), '人工智能/ai-coding')
+  const config = readFileSync(new URL('../docs/.vitepress/config.mts', import.meta.url), 'utf8')
+  const nav = config.slice(config.indexOf('    nav: ['), config.indexOf('    sidebar,'))
+  assert.match(nav, /text: '标签', link: '\/tags\/'/)
+  assert.match(nav, /text: '留言板', link: '\/comments\/'/)
+  assert.ok(!nav.includes("text: '更多'"))
+  assert.ok(!nav.includes('充电站'))
+  assert.ok(!nav.includes('/summarize/'))
+  for (const label of ['语言与标准', '框架与工程', 'AI 工具箱']) assert.ok(!nav.includes(`text: '${label}'`))
+})
+
+test('grouped article sources keep legacy routes, nested paths and README indexes', () => {
+  assert.equal(rewriteArticlePath('articles/人工智能/rag/README.md'), 'articles/rag/index.md')
+  assert.equal(rewriteArticlePath('articles/语言与标准/javascript/中文 & 示例.md'), 'articles/javascript/中文 & 示例.md')
+  assert.equal(rewriteArticlePath('articles/人工智能/ai/examples/README.md'), 'articles/ai/examples/index.md')
+  assert.equal(articleRoute('articles/人工智能/ai/examples/demo.py'), 'articles/ai/examples/demo.py')
+  assert.equal(articleRoute('articles/ai/README.html'), 'articles/ai/README.html')
+  assert.equal(articleSourcePath('ai'), '人工智能/ai')
+  assert.equal(rewriteArticlePath('skills/README.md'), 'skills/index.md')
+  const categories = articleGroups.flatMap(group => group.categories)
+  assert.equal(categories.length, new Set(categories).size, 'each topic belongs to exactly one group')
+})
+
+test('grouped physical directories produce unchanged navigation and sidebar URLs', () => {
+  const root = mkdtempSync(join(tmpdir(), 'blog-nav-'))
+  try {
+    mkdirSync(join(root, '人工智能/rag'), { recursive: true })
+    writeFileSync(join(root, '人工智能/rag/README.md'), '# RAG')
+    writeFileSync(join(root, '人工智能/rag/01-中文 入门.md'), '# 入门')
+    const { nav, sidebar } = createNavigation(root)
+    assert.deepEqual(nav, [{ text: 'RAG', link: '/articles/rag/' }])
+    assert.equal(sidebar['/articles/rag/'][0].items[0].link, '/articles/rag/01-%E4%B8%AD%E6%96%87%20%E5%85%A5%E9%97%A8.html')
+    assert.equal(sidebar['/articles/人工智能/'], undefined)
+  } finally { rmSync(root, { recursive: true, force: true }) }
+})
+
+test('unknown grouped topics and duplicate legacy routes fail explicitly', () => {
+  const root = mkdtempSync(join(tmpdir(), 'blog-nav-'))
+  try {
+    mkdirSync(join(root, '人工智能/new-topic'), { recursive: true })
+    assert.throws(() => discoverArticleCategories(root), /未登记的专题/)
+    rmSync(join(root, '人工智能/new-topic'), { recursive: true })
+    mkdirSync(join(root, '人工智能/rag'))
+    mkdirSync(join(root, 'rag'))
+    assert.throws(() => discoverArticleCategories(root), /重复专题目录/)
+  } finally { rmSync(root, { recursive: true, force: true }) }
+})
 
 test('category navigation preserves index and encoded article URLs in natural order', () => {
   const root = mkdtempSync(join(tmpdir(), 'blog-nav-'))

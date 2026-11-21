@@ -54,7 +54,9 @@ async function copyPrompt(): Promise<void> {
 
 <style scoped>
 .tool-card {
-    display: flex; flex-direction: column; min-width: 0; padding: 22px; border: 1px solid var(--blog-border); border-radius: 12px; background: var(--blog-panel); overflow-wrap: anywhere;
+    display: flex; flex-direction: column; min-width: 0; padding: 22px; border: 1px solid var(--blog-border); border-radius: var(--blog-radius); background: var(--blog-panel); overflow-wrap: anywhere; box-shadow: var(--blog-surface-shadow);
+    transition: border-color 180ms ease, box-shadow 180ms ease;
+    &:hover, &:focus-within { border-color: var(--blog-border-hover); box-shadow: var(--blog-hover-shadow); }
     & .tool-card__meta { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; color: var(--blog-muted); font-size: 12px; }
     & h2 { margin: 14px 0 8px; font-size: 19px; line-height: 1.5; }
     & .tool-card__action { margin-top: auto; border-top: 1px solid var(--blog-border); padding-top: 12px; }

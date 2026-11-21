@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs'
 import { test } from 'node:test'
 import { runInNewContext } from 'node:vm'
 
-const source = readFileSync(new URL('../docs/articles/算法/排序算法.md', import.meta.url), 'utf8')
+const source = readFileSync(new URL('../docs/articles/源码与算法/算法/排序算法.md', import.meta.url), 'utf8')
 const blocks = [...source.matchAll(/^```js\n([\s\S]*?)^```/gm)].map(match => match[1])
 const names = ['insertSort', 'mergeSort', 'quickSort', 'bubbleSort', 'selectSort', 'shellSort', 'heapSort', 'countSort', 'radixSort', 'bucketSort']
 const copying = new Set(['mergeSort', 'countSort', 'bucketSort'])

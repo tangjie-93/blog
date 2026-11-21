@@ -57,7 +57,9 @@ async function copyPrompt(): Promise<void> {
 
 <style scoped>
 .skill-card {
-    display: flex; flex-direction: column; min-width: 0; padding: 16px; border: 1px solid var(--blog-border); border-radius: 8px; background: var(--blog-panel); overflow-wrap: anywhere;
+    display: flex; flex-direction: column; min-width: 0; padding: 16px; border: 1px solid var(--blog-border); border-radius: var(--blog-radius); background: var(--blog-panel); overflow-wrap: anywhere; box-shadow: var(--blog-surface-shadow);
+    transition: border-color 180ms ease, box-shadow 180ms ease;
+    &:hover, &:focus-within { border-color: var(--blog-border-hover); box-shadow: var(--blog-hover-shadow); }
     & .skill-card__meta { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; color: var(--blog-muted); font-size: 12px; }
     & > h2 { display: -webkit-box; margin: 8px 0 4px; overflow: hidden; font-size: 17px; line-height: 1.5; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
     & > p { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
