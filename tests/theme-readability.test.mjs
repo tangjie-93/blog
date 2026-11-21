@@ -30,6 +30,16 @@ test('dark reading text retains the original clear palette on page and card surf
   }
 })
 
+test('mobile sidebar uses an opaque sliding surface instead of fading its text and background', () => {
+  const sidebar = css.slice(css.indexOf('.Layout aside.VPSidebar'), css.indexOf('.Layout .VPDoc'))
+  assert.match(sidebar, /background-color:\s*var\(--vp-sidebar-bg-color\)/)
+  assert.match(sidebar, /max-width:\s*959px/)
+  assert.match(sidebar, /opacity:\s*1/)
+  assert.match(sidebar, /visibility:\s*hidden/)
+  assert.match(sidebar, /&\.open\s*\{\s*visibility:\s*visible/)
+  assert.doesNotMatch(sidebar, /transition:\s*opacity/)
+})
+
 test('dark accent stays distinct and text uses native font smoothing', () => {
   assert.equal(token('--vp-c-brand-1'), '#58e5cb')
   assert.match(dark, /--blog-selected-text:\s*var\(--vp-c-brand-1\)/)

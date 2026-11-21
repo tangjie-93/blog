@@ -217,6 +217,15 @@ html {
     overflow: hidden;
     padding-inline: 16px;
     padding-bottom: 12px;
+    background-color: var(--vp-sidebar-bg-color);
+    @media (max-width: 959px) {
+        /* 抽屉只做位移，不淡入整层，避免动画或视口切换时正文透到菜单上。 */
+        opacity: 1;
+        visibility: hidden;
+        transition: transform .25s ease, visibility .25s;
+        &.open { visibility: visible; transition: transform .25s ease; }
+    }
+    @media (prefers-reduced-motion: reduce) { transition: none; &.open { transition: none; } }
     & > .curtain { display: none; }
     & > .nav {
         flex: 1;

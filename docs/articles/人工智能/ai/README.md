@@ -1,7 +1,7 @@
 ---
 title: AI 系统学习：从直觉到原理与工程
 date: '2026-10-17'
-updated: '2026-11-20'
+updated: '2026-11-21'
 type: 技术
 tags: AI|知识图谱|LLM|学习路线
 note: 用可手算的原理、交互图解和可复现实验，逐步构建有证据、受约束、可评估的团队知识助手。
@@ -9,6 +9,7 @@ note: 用可手算的原理、交互图解和可复现实验，逐步构建有�
 
 <script setup>
 import AiConcept from '../../../.vitepress/theme/components/AiConcept.vue'
+import AiVisual from '../../../.vitepress/theme/components/AiVisual.vue'
 </script>
 
 # AI 系统学习：从直觉到原理与工程
@@ -19,8 +20,16 @@ import AiConcept from '../../../.vitepress/theme/components/AiConcept.vue'
 
 ## 1. 先看全景：模型只是系统的一部分
 
+<AiVisual title="从问题到可靠 AI 系统" :nodes="[
+  { label: '理解', detail: '模型从输入预测输出，先用可手算例子建立机制直觉。' },
+  { label: '接入', detail: '数据、检索和工具把模型放进真实任务，但带来新边界。' },
+  { label: '约束', detail: '授权、评估和审计限制可执行范围，避免把提示当权限。' },
+  { label: '验证', detail: '用失败样本、测量和回归记录证明改动是否有效。' }
+]" caption="学习地图示意：每增加一个组件，都要说明它修复的失败和新增的成本。" />
+
 <AiConcept mode="learning" />
 
+::: details 类比的帮助与失效边界
 把 AI 助手想成一位能组织语言的协作者，有助于入门；但不要把这种类比当作机制解释：
 
 | 直觉类比 | 工程上实际是什么 | 类比失效的地方 |
@@ -30,6 +39,7 @@ import AiConcept from '../../../.vitepress/theme/components/AiConcept.vue'
 | RAG 是“开卷查资料” | 检索证据后条件生成 | 找到相关资料不等于答案受证据支持 |
 | 工具像“手和计算器” | 有明确输入输出的程序接口 | 模型请求调用不等于已经获得授权 |
 | 评测像“考试与体检” | 固定题集、分层指标与线上监控 | 一次高分不能保证新场景可靠 |
+:::
 
 ## 2. 一条贯穿全篇的案例
 
@@ -49,6 +59,12 @@ import AiConcept from '../../../.vitepress/theme/components/AiConcept.vue'
 每增加一个组件都问：**它修复了哪类失败？新引入了什么成本和风险？不用它能否完成任务？**
 
 ## 3. 分层阅读地图
+
+<AiVisual title="三层阅读顺序：从能解释到能负责" kind="layers" :nodes="[
+  { label: '基础原理', detail: '数学、注意力、概率：能手算并解释模型为何这样输出。' },
+  { label: '任务工程', detail: '数据、RAG、工具：能定位召回、授权和执行失败。' },
+  { label: '可靠交付', detail: '部署、评估、治理：能测量、回滚，并陈述未验证事项。' }
+]" caption="不是必须线性读完；按现有短板进入，再回查对应原理。" />
 
 ### 第一层：先建立能解释的基础
 
@@ -81,6 +97,7 @@ import AiConcept from '../../../.vitepress/theme/components/AiConcept.vue'
 - [12 Agent 扩展生态知识图谱](./12-Agent扩展生态知识图谱.md)：Rule、Skill、Plugin、MCP 各在什么层，谁负责授权。
 - [13 全栈能力与进阶项目](./13-AI大模型与Agent全栈学习专题.md)：检验短板与源码进阶，不再重复一份入门周计划。
 - [14 官方信息源导航](./14-AI大模型官方信息源导航.md)：追踪发布、接口与研究，区分新闻和实际可用能力。
+- [15 AI 助手与 Agent 生态术语全景](./15-AI助手与Agent生态术语全景.md)：系统认识 `Rule`、`Skill`、`MCP`、`Plugin`、`Hook`、`Harness`、上下文与工作流；先分清层次，再考虑组合。
 
 ## 4. 按你的起点选择入口
 
