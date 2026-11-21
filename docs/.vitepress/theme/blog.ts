@@ -30,6 +30,27 @@ export function summarizeMarkdown(source = ''): string {
     return summary ? `${summary.replace(/\s+/gu, ' ').slice(0, 100)}${summary.length > 100 ? '…' : ''}` : ''
 }
 
+/** 将摘要中的有限行内 Markdown 转成安全 HTML，供文章卡片展示。 */
+export function renderInlineMarkdown(source = ''): string {
+    const htmlEntities: Record<string, string> = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;',
+    }
+    const escaped = source.replace(/[&<>"']/gu, character => htmlEntities[character] ?? character)
+    const codeSpans: string[] = []
+    const protectedSource = escaped.replace(/`([^`\n]+)`/gu, (_, code: string) => {
+        const index = codeSpans.push(`<code>${code}</code>`) - 1
+        return `\u0000${index}\u0000`
+    })
+    const rendered = protectedSource
+        .replace(/\*\*([^*\n]+)\*\*/gu, '<strong>$1</strong>')
+        .replace(/__([^_\n]+)__/gu, '<strong>$1</strong>')
+    return rendered.replace(/\u0000(\d+)\u0000/gu, (_, index: string) => codeSpans[Number(index)] ?? '')
+}
+
 /** 规范化文章元数据并按日期倒序排列，保留无日期文章。 */
 export function mapPosts(pages: BlogSourcePost[]): BlogPost[] {
     return pages.map(({ url, src, frontmatter }) => {

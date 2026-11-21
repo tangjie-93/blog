@@ -3,7 +3,7 @@ title: 15.vue的生命周期
 date: '2020-05-18'
 type: 技术
 tags: vue
-note: vue的生命周期
+note: "按创建、挂载、更新和销毁阶段梳理 `Vue` 生命周期钩子，说明各阶段可访问的数据、适合执行的任务和常见限制。"
 ---
           
 ## 1、`1、beforeCreate()`      

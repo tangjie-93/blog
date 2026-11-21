@@ -3,7 +3,7 @@ title: 5、css实现等分布局的几种方式
 date: '2020-01-14'
 type: 技术
 tags: css
-note: css实现等分布局的几种方式
+note: 通过浮动、`flex`、`grid` 等方案实现等分布局，比较间距处理、响应式表现和代码复杂度。
 ---
 
 ```HTML

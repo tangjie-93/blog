@@ -4,7 +4,7 @@ date: '2024-07-17'
 lastmodifydate: '2024-07-17'
 type: 技术
 tags: threejs
-note: 源码解析之Object3
+note: 解析 `Three.js` `Object3D` 的矩阵更新、世界变换和方向计算，理解三维对象层级变换的实现。
 ---
 
 ## 1、applyMatrix4

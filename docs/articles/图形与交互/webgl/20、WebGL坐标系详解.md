@@ -3,7 +3,7 @@ title: 20.WebGL坐标系详解
 date: '2024-06-12'
 type: 技术
 tags: WebGL
-note: WebGL坐标系详解
+note: 区分本地、世界、视图、裁剪、`NDC` 与屏幕坐标系，说明 `WebGL` 中顶点坐标的转换链路。
 ---
 
 

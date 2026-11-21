@@ -4,7 +4,7 @@ date: '2024-07-16'
 lastmodifydate: '2024-07-16'
 type: 技术
 tags: threejs
-note: 源码解析
+note: 解析 `Three.js` `Quaternion` 四元数的旋转转换方法，说明它与旋转矩阵、欧拉角之间的关系。
 ---
 
 四元数在3D计算机图形学中用于表示旋转，因为它们比欧拉角和旋转矩阵更稳定且不容易产生万向节锁问题

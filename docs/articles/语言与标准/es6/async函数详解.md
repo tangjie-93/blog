@@ -3,7 +3,7 @@ title: async函数详解
 date: '2020-03-16'
 type: 技术
 tags: es6
-note: async函数详解
+note: 介绍 `async/await` 的执行机制、返回值与异常传播，结合 `Promise` 说明串行和并行异步任务的组织方式。
 ---
 
 &#8195;&#8195;**`async`函数是`Generator` 函数的语法糖。`async`函数就是将 `Generator` 函数的星号（*）替换成`async`，将yield替换成`await`**，仅此而已。

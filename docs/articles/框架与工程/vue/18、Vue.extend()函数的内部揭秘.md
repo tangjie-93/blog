@@ -3,7 +3,7 @@ title: 19.Vue.extend()函数的内部揭秘
 date: '2020-06-10'
 type: 技术
 tags: vue
-note: Vue.extend()函数的内部揭秘
+note: "拆解 `Vue.extend` 创建子类构造器的过程，说明选项合并、原型继承和组件复用在运行时如何衔接。"
 ---
 
 ## 1、`Vue.extend()` 的作用与源码

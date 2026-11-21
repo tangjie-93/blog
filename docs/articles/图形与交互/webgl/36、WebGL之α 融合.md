@@ -4,7 +4,7 @@ date: '2024-06-20'
 lastmodifydate: '2024-06-20'
 type: 技术
 tags: WebGL
-note: WebGL之α融合
+note: 演示 `WebGL` α 融合的开启、混合函数配置及透明物体排序，处理透明与不透明物体共存。
 ---
 
 ## 1.如何实现 $\alpha$ 融合

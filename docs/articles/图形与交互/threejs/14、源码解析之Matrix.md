@@ -4,7 +4,7 @@ date: '2024-07-16'
 lastmodifydate: '2024-07-16'
 type: 技术
 tags: threejs
-note: 源码解析
+note: 解析 `Three.js` `Matrix` 变换矩阵的核心方法，涵盖矩阵分解、组合、行列式及旋转转换。
 ---
 `Matrix`是`threejs`中一个比较重要的类，它主要用来处理三维空间中的变换。里面封装了很多工具函数，下面是一些重要函数的解析。[Matrix官方文档地址](https://threejs.org/docs/index.html?q=matrix#api/zh/math/Matrix4)
 

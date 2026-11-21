@@ -3,7 +3,7 @@ title: 5.vue3数据代理功能的实现
 date: '2020-12-7'
 type: 技术
 tags: vue3
-note: vue3数据代理功能的实现
+note: "对比 `Vue` 2 的 `Object.defineProperty` 与 `Vue` 3 的 `Proxy`，结合源码说明数据代理、读写拦截和响应式对象创建过程。"
 ---
 `vue2.x`是通过`Object.defineProperty`对数据进行劫持的,但是因为它的诸多不足，所以`vue3`使用了`ES6`的`Proxy`来对数据进行劫持。
 接下来就是`vue3`对数据实行劫持的源码实现。

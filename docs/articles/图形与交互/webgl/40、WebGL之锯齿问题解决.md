@@ -4,7 +4,7 @@ date: '2024-06-25'
 lastmodifydate: '2024-06-25'
 type: 技术
 tags: WebGL
-note: 锯齿问题解决。
+note: 分析 `WebGL` 画布 `drawingbuffer` 尺寸与 `CSS` 尺寸不一致造成的锯齿，并给出重置画布尺寸的方案。
 ---
 
 ## 1、`WebGL` 重置画布尺寸

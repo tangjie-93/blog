@@ -3,7 +3,7 @@ title: 17、javascript之底层执行机制详解
 date: '2020-08-05'
 type: 技术
 tags: javascript
-note: javascript之底层执行机制详解
+note: "围绕 `JavaScript` 执行上下文、调用栈和任务调度整理底层执行机制的阅读提纲，当前文章仍标记为待完成。"
 ---
 
 

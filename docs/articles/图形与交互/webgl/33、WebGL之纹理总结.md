@@ -4,7 +4,7 @@ date: '2024-06-18'
 lastmodifydate: '2024-06-18'
 type: 技术
 tags: WebGL
-note: WebGL之纹理总结
+note: 系统总结二维纹理、纹理创建、纹理图集和纹理动画，串联 `WebGL` 纹理坐标与采样流程。
 ---
 ## 1、纹理
 ### 1.二维纹理

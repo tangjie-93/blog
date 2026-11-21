@@ -3,7 +3,7 @@ title: shell环境​配置
 date: '2020-01-14'
 type: 技术
 tags: linux
-note: shell环境​配置
+note: "围绕 `Bash` 环境变量、`Shell` 变量和启动配置展开，整理 `printenv`、`set` 等命令及配置文件的作用，帮助定位命令行环境问题。"
 ---
 &#8195;&#8195;`shell`在环境中存储了两种基本类型的数据——**环境变量和`shell`变量**。`shell`变量是`bash`存放的少量数据，剩下的基本都是环境变量。
 

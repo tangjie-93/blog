@@ -3,7 +3,7 @@ title: jquery的缓存处理机制
 date: '2020-11-27'
 type: 技术
 tags: jquery
-note: jquery的缓存处理机制
+note: "围绕缓存的增删改查与数据归属，分析 `jQuery` 缓存处理机制及 `acceptData` 等函数，理解 `DOM` 数据与内部数据的隔离方式。"
 ---
 
 ` jquery `的缓存机制主要包含以下几个方法。不外乎增、删、改、查操作，以及缓存是否存在的情况。

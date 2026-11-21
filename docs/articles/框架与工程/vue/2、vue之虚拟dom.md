@@ -3,7 +3,7 @@ title: 3.vue之虚拟dom
 date: '2020-01-14'
 type: 技术
 tags: vue
-note: vue之虚拟dom
+note: "说明虚拟 `DOM` 如何以对象树抽象真实 `DOM`，并通过 `diff` 与 `patch` 比较新旧节点，理解状态更新到界面变更的过程。"
 ---
 ### 1、什么叫虚拟dom？
 &#8195;&#8195;`virtral Dom`就是将真实Dom的数据抽象处理，以**对象的形式模拟树形结构**。虚拟`DOM`本质上是`JavaScript`对象,是对真实`DOM`的抽象。状态变更时，记录新树和旧树的差异（`diff算法`），最后把差异更新到真正的dom中（`patch算法`）。

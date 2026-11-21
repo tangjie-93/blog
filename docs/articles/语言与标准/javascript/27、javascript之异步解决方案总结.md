@@ -3,7 +3,7 @@ title: 28、javascript之异步解决方案总结
 date: '2020-03-17'
 type: 技术
 tags: javascript
-note: javascript之异步解决方案总结
+note: "按回调、`Promise`、`Generator` 和 `async/await` 梳理 `JavaScript` 异步流程演进与错误处理方式。"
 ---
 
 ### 1、回调函数（callback）

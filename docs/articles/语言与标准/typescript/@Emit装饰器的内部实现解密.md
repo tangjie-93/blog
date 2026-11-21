@@ -3,7 +3,7 @@ title: Emit装饰器的内部实现解密
 date: '2020-06-16'
 type: 技术
 tags: typescript
-note: Emit装饰器的内部实现解密
+note: 拆解 `@Emit` 装饰器如何包装方法、转换返回值并触发 `Vue` 事件，帮助理解装饰器与组件通信的关系。
 ---
 ## 1、@Emit的实现原理
 `@Emit` 装饰器是一个函数装饰器。

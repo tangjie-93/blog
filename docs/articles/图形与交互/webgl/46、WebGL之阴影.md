@@ -4,7 +4,7 @@ date: '2024-06-28'
 lastmodifydate: '2024-06-28'
 type: 技术
 tags: WebGL
-note: WebGL之阴影
+note: 通过深度纹理和离屏渲染生成阴影贴图，演示 `WebGL` 场景中阴影的渲染流程与关键代码。
 ---
 
 在 [平面的投影映射文章](https://github.com/tangjie-93/WebGL/blob/main/fundmantalExamples/%E6%8A%95%E5%BD%B1%E6%98%A0%E5%B0%84/WebGL%E5%B9%B3%E9%9D%A2%E6%8A%95%E5%BD%B1%E6%98%A0%E5%B0%84-%E8%A7%86%E9%94%A5%E4%BD%93-%E4%BD%BF%E7%94%A8%E6%8A%95%E5%BD%B1%E7%9F%A9%E9%98%B5.html) 中，我们知道了如何将一张图像投影到物体上，假如视锥体的顶端有一个光源，而被投影的纹理包含了在该光源视角下的深度信息，那么球体会得到一个更加接近光源的深度值，而平面会得到一个稍微远离光源的深度值。越靠近光源的像素的深度值越小。

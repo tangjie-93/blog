@@ -4,7 +4,7 @@ date: '2024-06-17'
 lastmodifydate: '2024-06-17'
 type: 技术
 tags: WebGL
-note: WebGL之正交投影及矩阵的推导
+note: 说明正交投影的可视空间和近远裁剪面，推导正交投影矩阵及其在 `WebGL` 中的使用。
 ---
 ## 1.正交投影
 

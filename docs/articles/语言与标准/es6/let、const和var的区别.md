@@ -3,7 +3,7 @@ title: let、const和var的区别
 date: '2020-03-15'
 type: 技术
 tags: es6
-note: let、const和var的区别
+note: 从作用域、提升、暂时性死区、重复声明和可变性比较 `let`、`const` 与 `var` 的行为差异。
 ---
 ## 1、`let`和`const`的相同点
 + 不存在变量声明提升。  

@@ -3,7 +3,7 @@ title: ES6之Class详解
 date: '2020-03-15'
 type: 技术
 tags: es6
-note: ES6之Class详解
+note: 介绍 `class`、构造函数、实例方法、静态成员和继承语法，并对比其与原型链实现的对应关系。
 ---
 
 ## 1、`class`的基本语法

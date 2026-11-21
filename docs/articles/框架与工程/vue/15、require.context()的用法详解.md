@@ -3,7 +3,7 @@ title: 16.require.context()的用法详解
 date: '2020-05-18'
 type: 技术
 tags: vue
-note: require.context()的用法详解
+note: "介绍 `require.context` 的目录扫描、匹配规则和模块批量引入方式，说明它在自动注册组件与路由中的使用场景。"
 ---
 
 ## 1、参数说明

@@ -3,7 +3,7 @@ title: 25.vue中key的作用以及工作原理
 date: '2020-06-20'
 type: 技术
 tags: vue
-note: vue中key的作用以及工作原理
+note: "通过列表更新场景解释 `key` 如何帮助 `Vue` 复用和移动节点，分析缺少稳定 `key` 时可能出现的状态错位问题。"
 ---
 
 工作原理可以在源码中找到。源码地址为[src\core\vdom\`patch.js`](https://github.com/vuejs/vue/blob/dev/src/core/vdom/patch.js) 中的 `updateChildren()` 方法和 `sameNode()`方法。

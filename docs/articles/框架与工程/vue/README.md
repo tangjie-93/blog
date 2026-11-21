@@ -3,7 +3,7 @@ title: 1.​vue通信方法EventBus的实现
 date: '2020-01-14'
 type: 技术
 tags: vue
-note: ​vue通信方法EventBus的实现
+note: "以 `EventBus` 为例演示 `Vue` 组件间通信的发布订阅实现，同时梳理通信方式的适用边界与维护成本。"
 ---
 
 ## 1、组件通信与 `EventBus`

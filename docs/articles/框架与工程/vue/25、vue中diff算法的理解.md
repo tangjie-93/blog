@@ -3,7 +3,7 @@ title: 26.vue中diff算法的理解
 date: '2020-06-21'
 type: 技术
 tags: vue
-note: vue中diff算法的理解
+note: "结合 `patchVnode` 等核心函数拆解 `Vue` `diff` 算法，说明节点复用、属性更新、子节点比较和真实 `DOM` 修改的关键步骤。"
 ---
 `diff` 算法主要与以下的几个函数有关。
 

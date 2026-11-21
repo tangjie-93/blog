@@ -3,7 +3,7 @@ title: 25、js数据类型及其常见用法
 date: '2020-03-07'
 type: 技术
 tags: javascript
-note: js数据类型及其常见用法
+note: 系统比较 `JavaScript` 各数据类型、包装对象、显式与隐式转换，归纳相等比较和常见陷阱。
 ---
 &#8195;&#8195;`javascript`中一种有9种数据类型，有7种简单数据类型（也称为基本数据类型）：`undefined、null、boolean、number 和string、symbol、bigint`，还有2种复杂数据类型——`Object`和 `function`。
 <img src="../../../images/js/js数据类型.png">

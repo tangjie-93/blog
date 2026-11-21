@@ -3,7 +3,7 @@ title: 2.Vue3 reactive文件常用方法解读
 date: '2020-12-10'
 type: 技术
 tags: vue3
-note: Vue3 reactive文件常用方法解读
+note: "围绕 `reactive` 文件中的代理创建、嵌套对象转换和只读判断，梳理 `Vue` 3 响应式对象的常用内部方法。"
 ---
 &#8195;&#8195;`reactive.ts`文件`vue3`中实现数据响应式的一个核心库。下面我将对它里面封装的一些方法进行解读。
 ## 1、toRaw

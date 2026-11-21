@@ -3,7 +3,7 @@ title: ES6之模块化详解
 date: '2020-03-15'
 type: 技术
 tags: es6
-note: ES6之模块化详解
+note: 讲清 `ES Module` 的导出、导入、默认成员和动态加载，比较模块作用域与传统脚本的差异。
 ---
 
 

@@ -3,7 +3,7 @@ title: jquery之队列
 date: '2020-11-27'
 type: 技术
 tags: jquery
-note: jquery之队列
+note: "分析 `jQuery` 队列的数据结构与入队、出队、清空和执行流程，说明队列如何串联动画及异步回调。"
 ---
 `jquery`的队列主要包含以下几个方法。`jquery`中队列中存放的都是函数。
 ## 1、入队操作——queue

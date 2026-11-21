@@ -3,7 +3,7 @@ title: react之虚拟dom
 date: '2020-07-06'
 type: 技术
 tags: react
-note: react之虚拟dom
+note: "解释 `React` 虚拟 `DOM` 与协调过程如何用 `JavaScript` 对象描述界面，并说明状态变化后更新真实 `DOM` 的基本机制。"
 ---
 ## 1、什么是虚拟dom？
 用`javascript`对象来表示 `Dom` 信息和结构，当状态变更的时候，重新渲染这个 `javascript` 的对象结构。

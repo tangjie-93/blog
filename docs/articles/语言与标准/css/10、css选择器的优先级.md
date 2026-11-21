@@ -3,7 +3,7 @@ title: 10、css选择器的优先级
 date: '2020-01-14'
 type: 技术
 tags: css
-note: css选择器的优先级
+note: 从选择器权重、来源与书写顺序梳理 `CSS` 优先级，结合常见冲突案例说明如何定位并覆盖样式。
 ---
 
 <script setup>

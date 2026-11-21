@@ -3,7 +3,7 @@ title: 4.vue-router的理解
 date: '2020-03-13'
 type: 技术
 tags: vue
-note: vue-router的理解
+note: "梳理 `vue-router` 的 `hash`、`history` 和 `abstract` 三种模式，结合路由匹配与导航流程说明前端路由的实现基础。"
 ---
 
 vue-router有三种路由模式，`hash、history、abstract`。

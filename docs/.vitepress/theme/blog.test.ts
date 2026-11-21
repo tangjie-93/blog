@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { encodePostPath, filterPosts, getCommentPath, mapPosts, summarizeMarkdown } from './blog.ts'
+import { encodePostPath, filterPosts, getCommentPath, mapPosts, renderInlineMarkdown, summarizeMarkdown } from './blog.ts'
 import { createCommentDocument } from './comments.ts'
 
 test('article paths encode reserved filename characters once and map README to directories', () => {
@@ -40,6 +40,13 @@ test('category README cards use a body summary instead of duplicate frontmatter 
     const [post] = mapPosts([{ url: '/articles/react/README.html', src: '\n## 一、状态管理\n\n本文介绍状态更新。', frontmatter: { title: '重复标题', note: '重复标题' } }])
     assert.equal(post.note, '本文介绍状态更新。')
     assert.equal(summarizeMarkdown('<script setup>\nimport Demo from "./Demo.vue"\n</script>\n\n# 实验包\n\n这是不包含组件源码的实验说明。'), '这是不包含组件源码的实验说明。')
+})
+
+test('inline Markdown renders emphasis and code while escaping HTML', () => {
+    assert.equal(
+        renderInlineMarkdown('**文本** 和 `文本` <script>alert(1)</script>'),
+        '<strong>文本</strong> 和 <code>文本</code> &lt;script&gt;alert(1)&lt;/script&gt;',
+    )
 })
 
 test('comment iframe safely escapes path and title script delimiters', () => {

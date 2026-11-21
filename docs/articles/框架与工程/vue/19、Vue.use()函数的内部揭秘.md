@@ -3,7 +3,7 @@ title: 20.Vue.use()函数的内部实现原理
 date: '2020-06-10'
 type: 技术
 tags: vue
-note: Vue.use()函数的内部实现原理
+note: "结合 `Vue.use` 源码说明插件注册、重复安装检查、参数传递和 `install` 调用流程，帮助理解 `Vue` 插件机制。"
 ---
 `Vue.use()` 一般用来注册插件。如`Vue.use(vueRouter)、Vue.user(Vuex)`。常常通过这种方式将 `Vue`传到插件内部，在插件内部将 `Vue` 构造函数添加原型属性。经常跟 `Vue.extend()` 搭配着使用。其内部代码如下所示。
 ```js

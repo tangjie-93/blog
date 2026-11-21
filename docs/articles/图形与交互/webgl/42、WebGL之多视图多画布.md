@@ -4,7 +4,7 @@ date: '2024-06-28'
 lastmodifydate: '2024-07-018'
 type: 技术
 tags: WebGL
-note: WebGL之多视图多画布
+note: 比较渲染纹理与视口、剪刀测试两种方案，说明 `WebGL` 在同一场景中实现多视图和多画布。
 ---
 
 ## 1. 多视图

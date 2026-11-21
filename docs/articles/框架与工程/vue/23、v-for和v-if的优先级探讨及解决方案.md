@@ -3,7 +3,7 @@ title: 24.v-for和v-if的优先级探讨及解决方案
 date: '2020-06-20'
 type: 技术
 tags: vue
-note: v-for和v-if的优先级探讨及解决方案
+note: "分析 `v-for` 与 `v-if` 同时使用时的编译优先级和重复计算问题，给出通过 `computed`、模板拆分等方式优化的方案。"
 ---
 ## 1、v-for跟v-if同级的情况。
 ```html

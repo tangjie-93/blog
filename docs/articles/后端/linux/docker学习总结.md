@@ -3,7 +3,7 @@ title: docker学习总结
 date: '2020-02-20'
 type: 技术
 tags: docker
-note: docker学习总结
+note: "以容器、镜像和仓库为主线梳理 `Docker` 的工作模型，覆盖常用命令、容器生命周期与部署流程，帮助理解应用如何在一致环境中运行。"
 ---
 ### 1、什么是docker？
 

@@ -3,7 +3,7 @@ title: 8、常见web安全及防护原理
 date: '2020-08-18'
 type: 技术
 tags: http
-note: 常见web安全及防护原理
+note: 从 `XSS`、`CSRF`、点击劫持、注入和会话安全等方面分析攻击原理，并整理前后端防护要点。
 ---
 <img src="../../../images/http/web安全.png" alt="暂无图片" />
 

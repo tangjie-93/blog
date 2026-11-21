@@ -3,7 +3,7 @@ title: 5、HTTP请求方式总结
 date: '2020-08-18'
 type: 技术
 tags: http
-note: HTTP请求方式总结;GET和POST的区别
+note: "梳理 `GET`、`POST` 等 `HTTP` 方法的语义、参数传递与幂等性差异，帮助选择合适的请求方式。"
 ---
 
 ## 1、`HTTP`请求方式？

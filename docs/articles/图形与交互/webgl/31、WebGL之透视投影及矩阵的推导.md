@@ -4,7 +4,7 @@ date: '2024-06-17'
 lastmodifydate: '2024-06-17'
 type: 技术
 tags: WebGL
-note: WebGL之透视投影及矩阵的推导
+note: 从视锥体和透视除法出发推导透视投影矩阵，解释近大远小效果如何在 `WebGL` 中形成。
 ---
 ## 1.三维透视投影的定义
 

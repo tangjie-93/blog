@@ -3,7 +3,7 @@ title: 9.vuex的常用api
 date: '2020-01-14'
 type: 技术
 tags: vue
-note: vuex的常用api及内部原理
+note: "从 `state`、`getter`、`mutation`、`action` 和模块化 `API` 入手，结合源码说明 `Vuex` 状态更新与组件订阅的实现链路。"
 ---
 
 ## 1、什么是 `Vuex`

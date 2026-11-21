@@ -3,7 +3,7 @@ title: 数据类型Symbo及其常见用法
 date: '2020-03-15'
 type: 技术
 tags: es6
-note: 数据类型Symbo及其常见用法
+note: 解释 `Symbol` 的唯一性、全局注册和内置符号，展示其在私有键、迭代协议和对象定制中的应用。
 ---
 &#8195;&#8195;新的原始数据类型`Symbol`，表示独一无二的值，是javascript的第七种数据类型。前六种是：Undefined、Null、布尔值（Boolean）、字符串（String）、数值（`Number`）、对象（`Object`）。
 

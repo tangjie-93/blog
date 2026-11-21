@@ -4,7 +4,7 @@ date: '2024-07-16'
 lastmodifydate: '2024-07-16'
 type: 技术
 tags: threejs
-note: 源码解析之Euler
+note: 解析 `Three.js` `Euler` 欧拉角与旋转矩阵、四元数之间的互转逻辑及旋转顺序处理。
 ---
 
 ## 1、setFromRotationMatrix

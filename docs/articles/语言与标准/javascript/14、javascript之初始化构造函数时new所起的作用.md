@@ -3,7 +3,7 @@ title: 15、javascript之初始化构造函数时new所起的作用
 date: '2020-01-14'
 type: 技术
 tags: javascript
-note: 初始化构造函数时new所起的作用
+note: "分解 `new` 执行时的对象创建、原型关联、构造函数调用和返回值判断，理解它与普通函数调用的区别。"
 ---
 <ul>
     <li><a href="#new">new关键字的作用</a></li>

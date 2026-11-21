@@ -3,7 +3,7 @@ title: 6.Vue3计算属性的实现
 date: '2020-12-8'
 type: 技术
 tags: vue3
-note: Vue3计算属性的实现
+note: "结合 `effect`、惰性执行和缓存机制分析 `Vue` 3 `computed` 的源码，说明 `getter`、`setter` 与依赖变化后的重新计算时机。"
 ---
 &#8195;&#8195;从`vue2.x`的源码中，我们知道`computed`本质上也是`Watch`类的一个实例。只是他在初始化时，传的`lazy`参数为`true`,使的它能够懒加载。从`vue3.x`的源码中我们可以看出它也是依赖`effect`来实现的。`vue3.x`里面的`effect`本质上就是`vue2.x`中的`watch`。以下是`vue3.x`中`computed`的源码分析。
 ## 1、set、get钩子

@@ -3,7 +3,7 @@ title: Protobuf在vue中的使用
 date: '2020-01-14'
 type: 技术
 tags: Protobuf
-note: Protobuf在vue中的使用
+note: 介绍 `Protobuf` 的消息定义、编译生成与序列化流程，结合 `Vue` 项目说明前端接入和接口调用方式。
 ---
 
 ## 1、rpc简介

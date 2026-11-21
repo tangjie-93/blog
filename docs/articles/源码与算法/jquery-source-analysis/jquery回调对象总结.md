@@ -3,7 +3,7 @@ title: jquery回调对象总结
 date: '2020-11-27'
 type: 技术
 tags: jquery
-note: jquery回调对象总结
+note: "拆解 `jQuery.Callbacks` 的回调列表、发布订阅和选项控制，说明一次性执行、锁定、记忆等行为如何组合实现。"
 ---
 &#8195;&#8195;`jquery.CallBacks`是一个在 `jquery`中应用广泛的回调函数列表对象，它对回调函数队列进行了很好的管理。主要用的`发布订阅设计模式`。
 ## 1、`jQuery.Callbacks`

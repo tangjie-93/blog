@@ -4,7 +4,7 @@ date: '2024-06-28'
 lastmodifydate: '2024-06-28'
 type: 技术
 tags: WebGL
-note: WebGL之文字
+note: 介绍将 `HTML`、二维 `Canvas` 或纹理文字叠加到 `WebGL` 场景的方法，重点处理坐标与像素转换。
 ---
 
 ## 1. `WebGL`之文字-`HTML`

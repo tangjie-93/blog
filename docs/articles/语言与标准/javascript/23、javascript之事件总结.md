@@ -3,7 +3,7 @@ title: 24、javascript之事件总结
 date: '2020-10-24'
 type: 技术
 tags: javascript
-note: javascript之事件总结
+note: "从事件流、事件对象、监听器和默认行为入手，整理 `JavaScript` 事件处理与委托的核心知识。"
 ---
 ## 1、什么是事件？
 事件是浏览器赋予元素的默认行为。

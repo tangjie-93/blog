@@ -8,7 +8,7 @@
                         <span class="blog-list__index" aria-hidden="true">{{ String((page - 1) * pageSize + index + 1).padStart(2, '0') }}</span>
                     </div>
                     <h2 class="blog-list__title"><a :href="withBase(post.url)">{{ displayTitle(post.title) }}<span class="blog-list__arrow" aria-hidden="true">↗</span></a></h2>
-                    <p v-if="post.note" class="blog-list__note">{{ post.note }}</p>
+                    <p v-if="post.note" class="blog-list__note" v-html="renderInlineMarkdown(post.note)"></p>
                     <div class="blog-list__meta">
                         <span v-for="tag in post.tags" :key="tag" class="blog-list__tag">{{ tag }}</span>
                         <time v-if="post.date" :datetime="post.date">{{ post.date }}</time>
@@ -38,7 +38,7 @@ import { computed, nextTick, ref, watch } from 'vue'
 import { ElButton, ElSelect, ElOption } from 'element-plus'
 import { withBase } from 'vitepress'
 import { data as posts } from '../../posts.data'
-import { filterPosts } from '../blog'
+import { filterPosts, renderInlineMarkdown } from '../blog'
 import { articleGroups, postCategory } from '../../articleTaxonomy.mjs'
 import { useFitPageSize } from '../useFitPageSize'
 

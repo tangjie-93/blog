@@ -3,7 +3,7 @@ title: jquery之数组循环方法总结
 date: '2020-10-18'
 type: 技术
 tags: jquery
-note: jquery之数组循环方法总结
+note: "分析 `jQuery` 中数组遍历、过滤、合并和索引相关方法的实现，比较不同写法的参数处理与返回值行为。"
 ---
 ## 1、`toType` 数据类型检测
 ```js

@@ -4,7 +4,7 @@ date: '2024-06-20'
 lastmodifydate: '2024-06-20'
 type: 技术
 tags: WebGL
-note: WebGL之上下响应文丢失
+note: 说明 `WebGL` 上下文丢失的常见原因和表现，并给出重新初始化上下文、恢复图形资源的处理思路。
 ---
 
 ## 1.响应上下文丢失

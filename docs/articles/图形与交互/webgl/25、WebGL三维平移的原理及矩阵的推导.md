@@ -4,7 +4,7 @@ date: '2024-06-16'
 lastmodifydate: '2024-06-16'
 type: 技术
 tags: WebGL
-note: WebGL平移的原理及公式的推导
+note: 从坐标变化和公式出发推导三维平移矩阵，并结合 `WebGL` 示例说明平移变换的实现。
 ---
 
 ## 1.平移的概念

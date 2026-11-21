@@ -3,7 +3,7 @@ title: typescript基本知识点总结
 date: '2020-01-14'
 type: 技术
 tags: typescript
-note: typescript基本知识点总结
+note: 按类型系统、接口、泛型、函数、类和工程配置梳理 `TypeScript` 基础，帮助从 `JavaScript` 平滑迁移。
 ---
 ## 1、基本类型和扩展类型
 

@@ -3,7 +3,7 @@ title: 核心模块http详解
 date: '2020-03-19'
 type: 技术
 tags: node
-note: 核心模块http详解
+note: "本文是 `Node.js` `http` 核心模块的待整理草稿，主题涉及 `HTTP` 服务端与客户端接口，当前正文尚未形成可阅读的完整内容。"
 ---
 
 ## 1、内容待整理

@@ -4,7 +4,7 @@ date: '2024-06-28'
 lastmodifydate: '2024-06-28'
 type: 技术
 tags: WebGL
-note: WebGL之性能优化
+note: 以实例化绘制和顶点索引为例，减少 `WebGL` 绘制调用与重复数据，提升大量模型的渲染效率。
 ---
 正常情况下，每绘制一个模型都要调用一次 `gl.uniform4v`，`gl.uniformMatrix4fv` 还有`gl.drawArrays`。加入需要绘制`n`个相同的模型，那么就需要调用`n`次 `gl.uniform4v`，`gl.uniformMatrix4fv` 还有`gl.drawArrays`。如果我们的着色器很复杂的化，那么调用的`WebGL`方法就会很多。
 

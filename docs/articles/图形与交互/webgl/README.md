@@ -3,7 +3,7 @@ title: 0.WebGL基础知识总结
 date: '2021-06-13'
 type: 技术
 tags: WebGL
-note: WebGL基础知识总结
+note: 从 `GLSL`、着色器内置变量、`attribute`、`uniform` 和 `varying` 等概念建立 `WebGL` 基础知识框架。
 ---
 ## 1、什么是`GLSL`？
 

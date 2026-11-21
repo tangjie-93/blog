@@ -3,7 +3,7 @@ title: 18.WebGL渲染和执行流程
 date: '2024-06-11'
 type: 技术
 tags: WebGL
-note: WebGL渲染流程
+note: 梳理 `WebGL` 从数据提交、顶点处理到光栅化和片元输出的渲染管线与执行流程。
 ---
 
 ## 1、`WebGL`渲染流程

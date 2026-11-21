@@ -4,7 +4,7 @@ date: '2024-06-16'
 lastmodifydate: '2024-06-16'
 type: 技术
 tags: WebGL
-note: WebGL缩放的原理及公式的推导
+note: 推导三维缩放的坐标公式与缩放矩阵，展示如何在 `WebGL` 中对模型进行比例或非比例缩放。
 ---
 
 ## 1.缩放

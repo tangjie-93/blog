@@ -3,7 +3,7 @@ title: 3、HTTP是如何基于TCP/IP通信的
 date: '2020-08-18'
 type: 技术
 tags: http
-note: HTTP是如何基于TCP/IP通信的;TCP与UDP的区别
+note: "从 `TCP/IP` 分层和连接建立过程解释 `HTTP` 请求如何传输，并对比 `TCP` 与 `UDP` 的可靠性和适用场景。"
 ---
 ## 1、`HTTP`是如何基于`TCP`/`IP`通信的？
 

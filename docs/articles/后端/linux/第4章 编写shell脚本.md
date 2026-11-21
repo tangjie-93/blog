@@ -3,7 +3,7 @@ title: shell脚本编写
 date: '2020-01-14'
 type: 技术
 tags: linux
-note: shell脚本编写
+note: "从脚本创建、执行条件和变量使用入手，梳理 `Shell` 脚本的控制流程与命令组合方式，帮助把重复的命令操作自动化。"
 ---
 ### 1、什么是`shell`脚本？
 
