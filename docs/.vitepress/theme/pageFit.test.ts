@@ -7,6 +7,15 @@ test('fit page size fills the widest whole number of cards that fits the viewpor
     assert.deepEqual(fitPageSize(1920, 1080, 300, 180, 16, 16), { columns: 6, rows: 5, pageSize: 30, rowHeight: 203 })
 })
 
+test('list mode stays single-column and paginates using complete row heights', () => {
+    const fit = fitPageSize(1600, 700, Number.MAX_SAFE_INTEGER, 72, 6, 6, 76)
+    assert.equal(fit.columns, 1)
+    assert.equal(fit.rows, 9)
+    assert.equal(fit.pageSize, 9)
+    assert.ok(fit.rowHeight >= 72 && fit.rowHeight <= 76)
+    assert.ok(fit.rowHeight * fit.rows + (fit.rows - 1) * 6 <= 700)
+})
+
 test('fit page size never drops below a single card and ignores negative space', () => {
     assert.deepEqual(fitPageSize(0, 0, 300, 180, 16, 16), { columns: 1, rows: 1, pageSize: 1, rowHeight: 0 })
     assert.deepEqual(fitPageSize(-20, -40, 300, 180, -8, -8), { columns: 1, rows: 1, pageSize: 1, rowHeight: 0 })

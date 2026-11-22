@@ -1,12 +1,12 @@
-import { computed, onBeforeUnmount, onMounted, ref, type CSSProperties, type Ref } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, toValue, watch, type CSSProperties, type MaybeRefOrGetter, type Ref } from 'vue'
 import { fitPageSize } from './pageFit.ts'
 
 interface FitPageSizeOptions {
     enabled: boolean
     fallbackSize: number
-    minCardWidth: number
-    minCardHeight: number
-    maxCardHeight?: number
+    minCardWidth: MaybeRefOrGetter<number>
+    minCardHeight: MaybeRefOrGetter<number>
+    maxCardHeight?: MaybeRefOrGetter<number>
     /** 小于该宽度时退回固定分页并允许页面滚动，窄屏一屏放不下几项。 */
     minViewportWidth?: number
 }
@@ -42,11 +42,11 @@ export function useFitPageSize(viewport: Ref<HTMLElement | null>, options: FitPa
         const fit = fitPageSize(
             element.clientWidth,
             element.clientHeight,
-            options.minCardWidth,
-            options.minCardHeight,
+            toValue(options.minCardWidth),
+            toValue(options.minCardHeight),
             gapX,
             gapY,
-            options.maxCardHeight
+            toValue(options.maxCardHeight)
         )
         columns.value = fit.columns
         rowHeight.value = fit.rowHeight
@@ -74,6 +74,11 @@ export function useFitPageSize(viewport: Ref<HTMLElement | null>, options: FitPa
         observer = new ResizeObserver(() => { measure() })
         if (viewport.value) observer.observe(viewport.value)
         syncActive()
+    })
+
+    watch(() => [toValue(options.minCardWidth), toValue(options.minCardHeight), toValue(options.maxCardHeight)], async () => {
+        await nextTick()
+        measure()
     })
 
     onBeforeUnmount(() => {

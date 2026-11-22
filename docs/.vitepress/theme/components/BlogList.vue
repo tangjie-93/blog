@@ -1,19 +1,26 @@
 <template>
-    <section ref="listElement" class="blog-list" :class="{ 'blog-list--fit': fitActive }" aria-label="文章列表">
+    <section ref="listElement" class="blog-list" :class="{ 'blog-list--fit': fitActive, 'blog-list--rows': viewMode === 'list', 'blog-list--grouped': Boolean(props.group) }" aria-label="文章列表">
+        <div class="blog-list__view-toolbar">
+            <p v-if="!props.group" class="blog-list__description">记录前端、AI 与工程实践，让零散知识沉淀为可复用的经验。</p>
+            <div class="blog-list__view-switch" role="group" aria-label="文章展示形式">
+                <button type="button" :aria-pressed="viewMode === 'cards'" @click="setViewMode('cards')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z" /></svg>卡片</button>
+                <button type="button" :aria-pressed="viewMode === 'list'" @click="setViewMode('list')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5h13M8 12h13M8 19h13M3 5h.01M3 12h.01M3 19h.01" /></svg>列表</button>
+            </div>
+        </div>
         <div ref="gridViewport" class="blog-list__viewport">
             <div v-if="filteredPosts.length" :key="`${props.tag || ''}-${props.type || ''}-${page}`" class="blog-list__grid" :style="gridStyle">
-                <article v-for="(post, index) in visiblePosts" :key="post.url" class="blog-list__card">
+                <a v-for="(post, index) in visiblePosts" :key="post.url" class="blog-list__card" :href="withBase(post.url)" :aria-label="displayTitle(post.title)">
                     <div class="blog-list__eyebrow">
                         <span>{{ post.type || '技术笔记' }}</span>
                         <span class="blog-list__index" aria-hidden="true">{{ String((page - 1) * pageSize + index + 1).padStart(2, '0') }}</span>
                     </div>
-                    <h2 class="blog-list__title"><a :href="withBase(post.url)">{{ displayTitle(post.title) }}<span class="blog-list__arrow" aria-hidden="true">↗</span></a></h2>
+                    <h2 class="blog-list__title"><span class="blog-list__title-text">{{ displayTitle(post.title) }}<span v-if="viewMode === 'cards'" class="blog-list__arrow" aria-hidden="true">↗</span></span></h2>
                     <p v-if="post.note" class="blog-list__note" v-html="renderInlineMarkdown(post.note)"></p>
                     <div class="blog-list__meta">
                         <span v-for="tag in post.tags" :key="tag" class="blog-list__tag">{{ tag }}</span>
-                        <time v-if="post.date" :datetime="post.date">{{ post.date }}</time>
+                        <time v-if="post.date" :datetime="post.dateTime || post.date" :title="timestampTitle(post.dateTimeSource)">{{ formatPostDateTime(post.dateTime || post.date) }}</time>
                     </div>
-                </article>
+                </a>
             </div>
             <p v-else class="blog-list__empty">暂无文章</p>
         </div>
@@ -34,11 +41,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { ElButton, ElSelect, ElOption } from 'element-plus'
 import { withBase } from 'vitepress'
 import { data as posts } from '../../posts.data'
-import { filterPosts, renderInlineMarkdown } from '../blog'
+import { filterPosts, formatPostDateTime, renderInlineMarkdown } from '../blog'
 import { articleGroups, postCategory } from '../../articleTaxonomy.mjs'
 import { useFitPageSize } from '../useFitPageSize'
 
@@ -54,6 +61,29 @@ const props = defineProps<{
     /** 设为 0 时，窄屏也保持整屏分页。 */
     fitMinViewportWidth?: number
 }>()
+function timestampTitle(source?: string): string {
+    const labels: Record<string, string> = {
+        frontmatter: '文章声明时间', git: '声明日期当天最早 Git 记录',
+        'git-edit': '缺少发布时间，使用最近 Git 编辑记录',
+        'file-edit': '缺少 Git 记录，使用文件修改时间（非原始发布时间）',
+    }
+    return source ? `北京时间 UTC+8 · ${labels[source] || source}` : '原文仅记录日期，时分秒未知'
+}
+
+type ViewMode = 'cards' | 'list'
+const viewMode = ref<ViewMode>('cards')
+const viewStorageKey = 'blog-article-view'
+function setViewMode(mode: ViewMode): void {
+    if (mode === viewMode.value) return
+    viewMode.value = mode
+    page.value = 1
+    try { localStorage.setItem(viewStorageKey, mode) } catch { /* 存储不可用时仍可正常切换。 */ }
+}
+onMounted(() => {
+    try {
+        if (localStorage.getItem(viewStorageKey) === 'list') viewMode.value = 'list'
+    } catch { /* SSR 和限制存储的浏览器均保留默认卡片视图。 */ }
+})
 const page = ref(1)
 const listElement = ref<HTMLElement | null>(null)
 const gridViewport = ref<HTMLElement | null>(null)
@@ -66,10 +96,10 @@ const filteredPosts = computed(() => filterPosts(posts, props).filter(post => {
 const { pageSize, gridStyle, active: fitActive } = useFitPageSize(gridViewport, {
     enabled: props.fitScreen === true,
     fallbackSize: 24,
-    minCardWidth: 300,
-    // 两行标题、两行摘要及可换行元信息均需完整行高，不能为增加行数挤压文本。
-    minCardHeight: 216,
-    maxCardHeight: 232,
+    minCardWidth: () => viewMode.value === 'list' ? Number.MAX_SAFE_INTEGER : 300,
+    // 卡片保留完整行高；列表固定单列，标题简介与右侧元信息并排展示。
+    minCardHeight: () => viewMode.value === 'list' ? 72 : 216,
+    maxCardHeight: () => viewMode.value === 'list' ? 76 : 232,
     minViewportWidth: props.fitMinViewportWidth ?? 900
 })
 const pageCount = computed(() => Math.max(1, Math.ceil(filteredPosts.value.length / pageSize.value)))
@@ -108,7 +138,7 @@ watch(pageSize, () => { page.value = Math.min(page.value, pageCount.value) })
         & .blog-list__card { padding: 14px 16px; overflow: hidden; }
         & .blog-list__eyebrow { flex-shrink: 0; margin-bottom: 6px; }
         & .blog-list__title { flex-shrink: 0; font-size: 16px; line-height: 1.5; }
-        & .blog-list__title a { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+        & .blog-list__title-text { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
         & .blog-list__note { flex-shrink: 0; margin-top: 6px; font-size: 13px; line-height: 1.55; -webkit-line-clamp: 2; }
         & .blog-list__meta { flex-shrink: 0; padding-top: 12px; gap: 6px; }
         & .blog-list__empty { margin: auto; }
@@ -156,13 +186,18 @@ watch(pageSize, () => { page.value = Math.min(page.value, pageCount.value) })
         border-radius: var(--blog-radius);
         background: var(--blog-panel, var(--vp-c-bg-soft));
         overflow-wrap: anywhere;
+        color: var(--vp-c-text-1);
+        text-decoration: none;
+        cursor: pointer;
         box-shadow: var(--blog-surface-shadow);
         transition: border-color 180ms ease, box-shadow 180ms ease;
 
         &:hover, &:focus-within {
             border-color: var(--blog-border-hover);
             box-shadow: var(--blog-hover-shadow);
+            & .blog-list__title-text { color: var(--vp-c-brand-1); }
         }
+        &:focus-visible { outline: 2px solid var(--blog-focus-ring); outline-offset: 3px; }
     }
     & .blog-list__eyebrow {
         display: flex;
@@ -190,16 +225,12 @@ watch(pageSize, () => { page.value = Math.min(page.value, pageCount.value) })
         line-height: 1.55;
         letter-spacing: -0.02em;
 
-        & a {
+        & .blog-list__title-text {
             display: block;
             position: relative;
             padding-right: 22px;
             color: var(--vp-c-text-1);
-            text-decoration: none;
             transition: color 180ms ease;
-
-            &:hover { color: var(--vp-c-brand-1); }
-            &:focus-visible { outline: 2px solid var(--blog-focus-ring); outline-offset: 3px; border-radius: 3px; }
         }
     }
     & .blog-list__arrow {
@@ -230,7 +261,7 @@ watch(pageSize, () => { page.value = Math.min(page.value, pageCount.value) })
         font-size: 12px;
         color: var(--blog-muted, var(--vp-c-text-2));
 
-        & time { margin-left: auto; font-family: var(--vp-font-family-mono); font-size: 12px; }
+        & time { margin-left: auto; font-family: var(--vp-font-family-mono); font-size: 12px; white-space: nowrap; }
     }
     & .blog-list__tag {
         padding: 2px 8px;
@@ -274,8 +305,51 @@ watch(pageSize, () => { page.value = Math.min(page.value, pageCount.value) })
         & .el-button { min-width: 0; padding-inline: 8px; }
         & .blog-list__page-select { width: 130px; }
     }
+    & .blog-list__view-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 10px 20px; flex-shrink: 0; padding-bottom: 12px; }
+    & .blog-list__description { margin: 0; color: var(--vp-c-text-2); font-size: 13px; line-height: 1.7; }
+    & .blog-list__view-switch { margin-left: auto; flex-shrink: 0; }
+    @media (max-width: 640px) { & .blog-list__view-toolbar { flex-wrap: wrap; } & .blog-list__description { width: 100%; } }
+    &.blog-list--grouped .blog-list__view-toolbar { position: relative; height: 0; padding: 0; overflow: visible; }
+    &.blog-list--grouped .blog-list__view-switch { position: absolute; top: -50px; right: 0; transform: none; }
+    & .blog-list__view-switch {
+        display: inline-flex; gap: 3px; padding: 3px; border: 1px solid var(--blog-border); border-radius: 8px; background: var(--blog-panel);
+        & button { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 5px 10px; border-radius: 5px; color: var(--vp-c-text-2); font-size: 12px; line-height: 1.5; cursor: pointer; }
+        & button:hover { background: var(--blog-hover-bg); color: var(--vp-c-text-1); }
+        & button[aria-pressed='true'] { background: var(--blog-selected-bg); color: var(--blog-selected-text); box-shadow: inset 0 0 0 1px var(--blog-selected-border); }
+        & svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+    }
+    &.blog-list--rows {
+        & .blog-list__grid { grid-template-columns: 1fr; gap: 6px; }
+        & .blog-list__card { display: grid; grid-template-columns: 52px minmax(0, 1fr) minmax(240px, .38fr); grid-template-rows: auto auto; align-content: center; gap: 3px 16px; padding: 8px 14px; border-radius: 8px; }
+        & .blog-list__eyebrow { grid-column: 1; grid-row: 1 / 3; flex-direction: column-reverse; align-items: flex-start; justify-content: flex-end; gap: 5px; margin: 0; padding-top: 2px; letter-spacing: 0; }
+        & .blog-list__index { font-size: 13px; }
+        & .blog-list__title { grid-column: 2; font-size: 16px; line-height: 1.5; min-width: 0; }
+        & .blog-list__title-text { display: block; padding-right: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        & .blog-list__note { grid-column: 2; margin: 0; font-size: 13px; line-height: 1.55; -webkit-line-clamp: 1; }
+        & .blog-list__meta { grid-column: 3; grid-row: 1 / 3; align-self: center; justify-content: flex-end; margin: 0; padding-top: 0; gap: 4px 6px; }
+        & .blog-list__meta time { width: 100%; text-align: right; }
+        @media (max-width: 1100px) {
+            & .blog-list__card { grid-template-columns: 40px minmax(0, 1fr) 200px; }
+            & .blog-list__meta { gap: 2px 4px; }
+            & .blog-list__tag { padding: 1px 4px; font-size: 10px; line-height: 1.4; }
+            & .blog-list__meta time { font-size: 11px; line-height: 1.5; }
+        }
+        @media (max-width: 899px) {
+            & .blog-list__card { grid-template-columns: 40px minmax(0, 1fr); grid-template-rows: auto auto auto; }
+            & .blog-list__eyebrow { grid-row: 1 / 4; }
+            & .blog-list__meta { grid-column: 2; grid-row: 3; justify-content: flex-start; }
+            & .blog-list__tag { display: inline; }
+            & .blog-list__meta time { width: auto; margin-left: auto; text-align: left; }
+        }
+        @media (max-width: 640px) {
+            & .blog-list__card { grid-template-columns: 30px minmax(0, 1fr); gap: 6px 10px; padding: 12px; }
+            & .blog-list__eyebrow > span:first-child { display: none; }
+            & .blog-list__title-text { display: -webkit-box; white-space: normal; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+            & .blog-list__meta time { width: 100%; margin-left: 0; }
+        }
+    }
     @media (prefers-reduced-motion: reduce) {
-        & .blog-list__card, & .blog-list__title a, & .el-button { transition: none; }
+        & .blog-list__card, & .blog-list__title-text, & .el-button { transition: none; }
         & .blog-list__card:hover { transform: none; }
     }
 }

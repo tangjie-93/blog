@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { encodePostPath, filterPosts, getCommentPath, mapPosts, renderInlineMarkdown, summarizeMarkdown } from './blog.ts'
+import { encodePostPath, filterPosts, getCommentPath, mapPosts, formatPostDateTime, renderInlineMarkdown, summarizeMarkdown } from './blog.ts'
 import { createCommentDocument } from './comments.ts'
 
 test('article paths encode reserved filename characters once and map README to directories', () => {
@@ -32,6 +32,22 @@ test('posts sort newest first and support pipe/array tags and combined filters',
     assert.equal(filterPosts(posts, { tag: 'vue' }).length, 2)
     assert.equal(filterPosts(posts, { tag: 'vue', type: '技术' })[0].title, '旧文章')
     assert.equal(filterPosts(posts, { tag: 'missing' }).length, 0)
+})
+
+test('article timestamps retain seconds and sort by exact time without inventing missing precision', () => {
+    const posts = mapPosts([
+        { url: '/early.html', frontmatter: { date: '2026-11-22 08:09:10' } },
+        { url: '/later.html', frontmatter: { date: '2026-11-22' }, gitDateTime: '2026-11-22T12:34:56+08:00' },
+        { url: '/unknown.html', frontmatter: { date: '2026-11-21' } },
+    ])
+    assert.deepEqual(posts.map(post => post.url), ['/later.html', '/early.html', '/unknown.html'])
+    assert.equal(formatPostDateTime(posts[0].dateTime!), '2026-11-22 12:34:56')
+    assert.equal(posts[0].dateTimeSource, 'git')
+    assert.equal(posts[1].dateTimeSource, 'frontmatter')
+    assert.equal(formatPostDateTime(posts[1].dateTime!), '2026-11-22 08:09:10')
+    assert.equal(posts[2].dateTime, undefined)
+    assert.equal(formatPostDateTime(posts[2].date), '2026-11-21')
+    assert.equal(formatPostDateTime('2026-11-21T20:00:01Z'), '2026-11-22 04:00:01')
 })
 
 test('category README cards use a body summary instead of duplicate frontmatter notes', () => {

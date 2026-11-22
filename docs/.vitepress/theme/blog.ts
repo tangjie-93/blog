@@ -51,21 +51,44 @@ export function renderInlineMarkdown(source = ''): string {
     return rendered.replace(/\u0000(\d+)\u0000/gu, (_, index: string) => codeSpans[Number(index)] ?? '')
 }
 
+/** 明确时区的秒级显示，避免构建端与浏览器使用不同本地时区。 */
+export function formatPostDateTime(value: string): string {
+    if (!value || !value.includes('T')) return value
+    const date = new Date(value)
+    if (!Number.isFinite(date.getTime())) return ''
+    return new Intl.DateTimeFormat('sv-SE', {
+        timeZone: 'Asia/Shanghai', year: 'numeric', month: '2-digit', day: '2-digit',
+        hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23',
+    }).format(date)
+}
+
+function preciseTimestamp(value: unknown): string | undefined {
+    const raw = value instanceof Date ? (value.toISOString().endsWith('T00:00:00.000Z') ? '' : value.toISOString()) : String(value ?? '')
+    if (!/^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?(?:Z|[+-]\d{2}:?\d{2})?$/.test(raw)) return undefined
+    const zoned = raw.replace(' ', 'T') + (/(?:Z|[+-]\d{2}:?\d{2})$/.test(raw) ? '' : '+08:00')
+    const date = new Date(zoned)
+    return Number.isFinite(date.getTime()) ? date.toISOString() : undefined
+}
+
 /** 规范化文章元数据并按日期倒序排列，保留无日期文章。 */
 export function mapPosts(pages: BlogSourcePost[]): BlogPost[] {
-    return pages.map(({ url, src, frontmatter }) => {
+    return pages.map(({ url, src, frontmatter, gitDateTime, recordTimeSource }) => {
         const isCategoryIndex = /(?:\/README(?:\.html)?|\/)$/u.test(url)
         const tags = Array.isArray(frontmatter.tags) ? frontmatter.tags : String(frontmatter.tags ?? '').split('|')
         const date = frontmatter.date instanceof Date ? frontmatter.date.toISOString().slice(0, 10) : String(frontmatter.date ?? '')
+        const declaredTime = preciseTimestamp(frontmatter.date)
+        const dateTime = declaredTime || preciseTimestamp(gitDateTime)
         return {
             url: encodePostPath(url.replace(/\/README(?:\.html)?$/, '/')),
             title: String(frontmatter.title || url.split('/').pop()?.replace(/\.html$/, '') || '未命名文章'),
-            date,
+            date: dateTime ? formatPostDateTime(dateTime).slice(0, 10) : date,
+            dateTime,
+            dateTimeSource: dateTime ? (declaredTime ? 'frontmatter' as const : recordTimeSource || 'git' as const) : undefined,
             tags: normalizeTags(tags),
             type: String(frontmatter.type ?? ''),
             note: isCategoryIndex ? summarizeMarkdown(src) || String(frontmatter.note ?? '') : String(frontmatter.note ?? ''),
         }
-    }).sort((a, b) => (Date.parse(b.date) || 0) - (Date.parse(a.date) || 0))
+    }).sort((a, b) => (Date.parse(b.dateTime || b.date) || 0) - (Date.parse(a.dateTime || a.date) || 0))
 }
 
 /** 根据组件筛选条件返回文章，保持构建时的时间顺序。 */
