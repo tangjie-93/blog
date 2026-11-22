@@ -125,6 +125,7 @@ import AiVisual from '../../../.vitepress/theme/components/AiVisual.vue'
 - [Agent 专题](../agent/)：从最小循环到工具权限、上下文、任务系统与安全。
 - [LangChain 专题](../langchain/)：在理解机制后学习框架实现。
 - [Jev 与 System One](../jev/)：进一步了解结构化决策模型与 Agent 的集成边界。
+- [独立开发与出海](/articles/going-global/)：独立的商业实践专题，从需求验证、最小产品到海外收款与获客，不再归入 `AI` 基础章节。
 
 ## 7. 资料与时效约定
 

@@ -1,4 +1,5 @@
 import { readdirSync } from 'node:fs'
+import { relative } from 'node:path'
 import { discoverArticleCategories } from './articleCategories.mjs'
 import { categoryLabels as labels } from './articleTaxonomy.mjs'
 
@@ -29,7 +30,7 @@ export function createNavigation(articlesDir) {
       .map(entry => entry.name)
       .sort((a, b) => a === b ? 0 : a === 'README.md' ? -1 : b === 'README.md' ? 1 : a.localeCompare(b, 'zh-CN', { numeric: true }))
     nav.push({ text, link: files.includes('README.md') ? link : `${link}${encodeURIComponent(files[0].slice(0, -3))}.html` })
-    // 侧栏按源码路径匹配，只有可点击链接需要 URL 编码。
+    // 可点击链接使用公开路径；下方同时注册开发源码路径的侧栏匹配。
     const articleFiles = files.filter(file => file !== 'README.md')
     const articleItems = articleFiles.map((file, index) => ({
       text: `${index + 1}、${(articleLabels[file.slice(0, -3)] || file.slice(0, -3)).replace(/^\d+(?:、|-)\s*/, '').split(/\s*—+\s*/)[0]}`,
@@ -44,6 +45,8 @@ export function createNavigation(articlesDir) {
           }))
         })).filter(group => group.items.length)]
       : [{ text: `${text} 专题`, ...(files.includes('README.md') ? { link } : {}), items: articleItems }]
+    const sourcePath = relative(articlesDir, category.directory).replaceAll('\\', '/')
+    sidebar[`/articles/${sourcePath}/`] = sidebar[`/articles/${category.name}/`]
   }
   return { nav, sidebar }
 }

@@ -10,6 +10,7 @@ import { createMarkdownRenderer } from 'vitepress'
 import { articleRoute, articleSourcePath } from '../docs/.vitepress/articleCategories.mjs'
 
 const root = resolve('docs/articles/人工智能/ai')
+const goingGlobalRoot = resolve('docs/articles/独立开发与出海/going-global')
 const source = readFileSync(resolve('docs/.vitepress/theme/components/AiConcept.vue'), 'utf8')
 const { descriptor } = parse(source)
 const compiled = compileScript(descriptor, { id: 'test-ai-concept', inlineTemplate: true })
@@ -90,6 +91,35 @@ test('AI ecosystem terminology guide covers distinct layers and is discoverable 
   for (const entry of ['README.md', '12-Agent扩展生态知识图谱.md']) {
     assert.ok(readFileSync(resolve(root, entry), 'utf8').includes(`./${file}`))
   }
+})
+
+test('AI overseas guide renders emphasis across paragraphs, lists and tables without raw delimiters', async () => {
+  const markdown = await createMarkdownRenderer(resolve('docs'))
+  const guide = readFileSync(resolve(goingGlobalRoot, '01-AI出海副业从0到1实战指南.md'), 'utf8')
+  const html = markdown.render(guide.replace(/^---\n[\s\S]*?\n---/, ''))
+  assert.match(html, /<p><strong>适合谁<\/strong>：会编程/)
+  assert.match(html, /<p><strong>先说结论<\/strong>：不要从/)
+  assert.match(html, /<li><strong>需求证据<\/strong>：目标用户/)
+  assert.match(html, /<td><strong>不再作为新用户的起步收款推荐<\/strong>。旧课程/)
+  assert.equal(html.match(/\*\*/g)?.length ?? 0, 0, 'Rendered guide must not expose raw bold markers')
+})
+
+test('AI overseas side-business guide is discoverable and includes execution and source boundaries', () => {
+  const file = '01-AI出海副业从0到1实战指南.md'
+  const guide = readFileSync(resolve(goingGlobalRoot, file), 'utf8')
+  assert.ok(readFileSync(resolve(goingGlobalRoot, 'README.md'), 'utf8').includes(`./${file}`))
+  assert.ok(readFileSync(resolve(root, 'README.md'), 'utf8').includes('/articles/going-global/'))
+  const componentPath = guide.match(/import AiVisual from '([^']+)'/)[1]
+  assert.ok(existsSync(resolve(goingGlobalRoot, componentPath)))
+  for (const section of ['视频怎么学', '访谈提纲', '贯穿案例', '海外收款', '定价与预算', '第一批用户', '八周行动计划', '正式上线清单']) {
+    assert.ok(guide.includes(section), `${section} should be covered in the practical guide`)
+  }
+  assert.match(guide, /没有逐一实测播放，也没有看完整视频/)
+  assert.match(guide, /2026-11-16/)
+  assert.match(guide, /2027-03-31/)
+  assert.ok(guide.includes('https://docs.lemonsqueezy.com/migration'))
+  assert.match(guide, /不是净利润/)
+  assert.match(guide, /不是成功概率或收入保证/)
 })
 
 test('AI article links, downloadable examples and diagram modes resolve', () => {

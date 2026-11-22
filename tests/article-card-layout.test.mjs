@@ -10,12 +10,19 @@ const library = readFileSync(new URL('../docs/.vitepress/theme/components/Articl
 
 test('article cards keep full text line heights rather than shrinking title and summary', () => {
   assert.deepEqual(parse(source).errors, [])
-  assert.match(source, /minCardHeight:\s*\(\) => viewMode\.value === 'list' \? 72 : 216/)
+  assert.match(source, /minCardHeight:\s*\(\) => viewMode\.value === 'list' \? 80 : 216/)
   for (const block of ['eyebrow', 'title', 'note', 'meta']) {
     assert.match(source, new RegExp(`\\.blog-list__${block} \\{ flex-shrink: 0;`))
   }
   assert.match(source, /\.blog-list__title-text \{ display: -webkit-box; overflow: hidden;/)
   assert.match(source, /<footer class="blog-list__pagination">[\s\S]*<\/footer>/)
+})
+
+test('article summaries and metadata remain readable without tiny narrow-screen overrides', () => {
+  assert.match(source, /\.blog-list__title \{ grid-column: 2; font-size: 17px/)
+  assert.match(source, /\.blog-list__note \{ grid-column: 2; margin: 0; font-size: 14px/)
+  assert.match(source, /\.blog-list__meta time \{ font-size: 13px/)
+  assert.doesNotMatch(source, /font-size: 10px/)
 })
 
 test('entire article cards and list rows are native links with one keyboard stop', () => {
@@ -39,7 +46,7 @@ test('list rows omit navigation arrows and reclaim the title spacing', () => {
 test('all-articles toolbar balances a short description with the view switch', () => {
   assert.match(source, /<p v-if="!props.group" class="blog-list__description">记录前端、AI 与工程实践，让零散知识沉淀为可复用的经验。<\/p>/)
   assert.match(source, /\.blog-list__view-toolbar \{ display: flex; align-items: center; justify-content: space-between/)
-  assert.match(source, /\.blog-list__description \{ margin: 0; color: var\(--vp-c-text-2\); font-size: 13px/)
+  assert.match(source, /\.blog-list__description \{ margin: 0; color: var\(--vp-c-text-2\); font-size: 14px/)
 })
 
 test('article view switches between cards and rows with safe persisted preferences', () => {

@@ -1,9 +1,11 @@
 import assert from 'node:assert/strict'
 import { existsSync, readFileSync } from 'node:fs'
 import { test } from 'node:test'
+import { runInNewContext } from 'node:vm'
 
 const moved = {
   'docs/articles/框架与工程/git/README.md': 'docs/public/articles/其他/index.html',
+  'docs/articles/独立开发与出海/going-global/01-AI出海副业从0到1实战指南.md': 'docs/public/articles/ai/16-AI出海副业从0到1实战指南.html',
   'docs/articles/语言与标准/javascript/正则表达式总结.md': 'docs/public/articles/其他/正则表达式总结.html',
   'docs/articles/图形与交互/webgl/canvas基础api总结.md': 'docs/public/articles/其他/canvas基础api总结.html',
   'docs/articles/后端/linux/docker学习总结.md': 'docs/public/articles/其他/docker学习总结.html',
@@ -12,11 +14,29 @@ const moved = {
   'docs/articles/框架与工程/webpack/性能优化总结.md': 'docs/public/articles/其他/性能优化总结.html',
 }
 
-test('legacy 其他 articles keep redirect files after category migration', () => {
+test('migrated articles keep redirect files after category changes', () => {
   for (const [article, redirect] of Object.entries(moved)) {
     assert.equal(existsSync(article), true, `${article} should exist`)
     assert.equal(existsSync(redirect), true, `${redirect} should exist`)
   }
   assert.equal(existsSync('docs/articles/其他'), false)
   assert.match(readFileSync('docs/public/_redirects', 'utf8'), /\/articles\/%E5%85%B6%E4%BB%96\//)
+})
+
+test('overseas guide old URLs redirect to the new category at root and blog base', () => {
+  const oldSlug = '16-AI出海副业从0到1实战指南'
+  const newSlug = '01-AI出海副业从0到1实战指南'
+  const oldPath = `/articles/ai/${oldSlug}.html`
+  const target = `/articles/going-global/${newSlug}.html`
+  const html = readFileSync(`docs/public${oldPath}`, 'utf8')
+  assert.equal(existsSync(`docs/articles/人工智能/ai/${oldSlug}.md`), false)
+  assert.ok(html.includes(`href="${target}"`))
+  const script = html.match(/<script>([\s\S]*?)<\/script>/)[1]
+  for (const base of ['', '/blog']) {
+    let destination
+    runInNewContext(script, { location: { pathname: base + oldPath, replace: value => { destination = value } } })
+    assert.equal(destination, base + target)
+  }
+  const redirects = readFileSync('docs/public/_redirects', 'utf8')
+  assert.ok(redirects.includes(`/articles/ai/${encodeURIComponent(oldSlug)}.html /articles/going-global/${encodeURIComponent(newSlug)}.html 301`))
 })

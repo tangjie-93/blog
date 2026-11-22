@@ -10,7 +10,7 @@ test('article library avoids a duplicate heading strip while retaining accessibl
   assert.ok(!source.includes('topicHome'))
   assert.match(source, /:aria-label="`\$\{title\} · 文章浏览`"/)
   assert.match(source, /aria-label="选择文章大类"/)
-  for (const group of ['languages', 'engineering', 'ai', 'backend', 'graphics', 'source']) {
+  for (const group of ['languages', 'engineering', 'ai', 'backend', 'graphics', 'source', 'indie']) {
     assert.match(source, new RegExp(`\\b${group}: '`), `${group} needs a distinct icon`)
   }
   assert.match(source, /:d="groupIcons\[group.id\]"/)

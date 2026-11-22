@@ -4,11 +4,11 @@ import test from 'node:test'
 
 const source = readFileSync(new URL('../docs/.vitepress/theme/components/HomePage.vue', import.meta.url), 'utf8')
 
-test('home topics cover all six categories with compact navigation links', () => {
-  for (const group of ['languages', 'engineering', 'ai', 'backend', 'graphics', 'source']) {
+test('home topics cover all seven categories with compact navigation links', () => {
+  for (const group of ['languages', 'engineering', 'ai', 'backend', 'graphics', 'source', 'indie']) {
     assert.ok(source.includes(`/articles/?group=${group}`), `${group} should be reachable from home`)
   }
-  assert.equal((source.match(/url: '\/articles\/\?group=/g) || []).length, 6)
+  assert.equal((source.match(/url: '\/articles\/\?group=/g) || []).length, 7)
 })
 
 test('desktop home uses available viewport height with equal aligned panels and no clipping', () => {
@@ -31,7 +31,7 @@ test('desktop banner keeps the title on one line and welcome content horizontal'
 })
 
 test('home offers compact categories, six recent notes and expanded reading routes', () => {
-  assert.equal((source.match(/summary: '/g) || []).length, 6)
+  assert.equal((source.match(/summary: '/g) || []).length, 7)
   assert.match(source, /posts\.slice\(0, 6\)/)
   assert.match(source, /<HomeReadingPaths\s*\/>/)
   const readingPaths = readFileSync(new URL('../docs/.vitepress/theme/components/components/HomeReadingPaths.vue', import.meta.url), 'utf8')

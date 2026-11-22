@@ -8,11 +8,11 @@ test('fit page size fills the widest whole number of cards that fits the viewpor
 })
 
 test('list mode stays single-column and paginates using complete row heights', () => {
-    const fit = fitPageSize(1600, 700, Number.MAX_SAFE_INTEGER, 72, 6, 6, 76)
+    const fit = fitPageSize(1600, 700, Number.MAX_SAFE_INTEGER, 80, 6, 6, 84)
     assert.equal(fit.columns, 1)
-    assert.equal(fit.rows, 9)
-    assert.equal(fit.pageSize, 9)
-    assert.ok(fit.rowHeight >= 72 && fit.rowHeight <= 76)
+    assert.equal(fit.rows, 8)
+    assert.equal(fit.pageSize, 8)
+    assert.ok(fit.rowHeight >= 80 && fit.rowHeight <= 84)
     assert.ok(fit.rowHeight * fit.rows + (fit.rows - 1) * 6 <= 700)
 })
 

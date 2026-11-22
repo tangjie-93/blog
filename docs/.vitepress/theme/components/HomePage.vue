@@ -52,6 +52,7 @@ const topics = [
     { icon: '↔', title: '后端开发', summary: '连接服务与数据，补全视角。', description: 'Python · Java · 数据库 · Linux', url: '/articles/?group=backend' },
     { icon: '◈', title: '图形与交互', summary: '理解渲染，探索三维交互。', description: 'WebGL · Three.js · 渲染基础', url: '/articles/?group=graphics' },
     { icon: '</>', title: '源码与算法', summary: '读懂源码，练习拆解问题。', description: '数据结构 · 算法 · jQuery 源码', url: '/articles/?group=source' },
+    { icon: '↗', title: '独立开发与出海', summary: '验证需求，把产品带向市场。', description: '产品验证 · 海外收款 · 获客运营', url: '/articles/?group=indie' },
 ]
 </script>
 

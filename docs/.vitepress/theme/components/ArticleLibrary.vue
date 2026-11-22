@@ -13,6 +13,7 @@ const groupIcons: Record<string, string> = {
     backend: 'M4 3h16v7H4zM4 14h16v7H4zM8 6.5h.01M8 17.5h.01M12 6.5h5M12 17.5h5',
     graphics: 'm12 3 9 5v8l-9 5-9-5V8l9-5Zm-9 5 9 5 9-5m-9 5v8M7.5 5.5l9 5',
     source: 'M6 6v12m0-9h8a4 4 0 0 0 4-4M4 4h4v4H4zM4 16h4v4H4zM16 2h4v4h-4z',
+    indie: 'M14 3h7v7m0-7L10 14M10 5H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5',
 }
 const { theme } = useData()
 /** 复用真实导航入口；没有目录首页的旧专题回退到已配置的首篇文章。 */

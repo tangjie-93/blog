@@ -98,8 +98,8 @@ const { pageSize, gridStyle, active: fitActive } = useFitPageSize(gridViewport, 
     fallbackSize: 24,
     minCardWidth: () => viewMode.value === 'list' ? Number.MAX_SAFE_INTEGER : 300,
     // 卡片保留完整行高；列表固定单列，标题简介与右侧元信息并排展示。
-    minCardHeight: () => viewMode.value === 'list' ? 72 : 216,
-    maxCardHeight: () => viewMode.value === 'list' ? 76 : 232,
+    minCardHeight: () => viewMode.value === 'list' ? 80 : 216,
+    maxCardHeight: () => viewMode.value === 'list' ? 84 : 232,
     minViewportWidth: props.fitMinViewportWidth ?? 900
 })
 const pageCount = computed(() => Math.max(1, Math.ceil(filteredPosts.value.length / pageSize.value)))
@@ -137,9 +137,9 @@ watch(pageSize, () => { page.value = Math.min(page.value, pageCount.value) })
         & .blog-list__grid { flex: 1; min-width: 0; min-height: 0; height: 100%; overflow: hidden; }
         & .blog-list__card { padding: 14px 16px; overflow: hidden; }
         & .blog-list__eyebrow { flex-shrink: 0; margin-bottom: 6px; }
-        & .blog-list__title { flex-shrink: 0; font-size: 16px; line-height: 1.5; }
+        & .blog-list__title { flex-shrink: 0; font-size: 17px; line-height: 1.5; }
         & .blog-list__title-text { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
-        & .blog-list__note { flex-shrink: 0; margin-top: 6px; font-size: 13px; line-height: 1.55; -webkit-line-clamp: 2; }
+        & .blog-list__note { flex-shrink: 0; margin-top: 6px; font-size: 14px; line-height: 1.55; -webkit-line-clamp: 2; }
         & .blog-list__meta { flex-shrink: 0; padding-top: 12px; gap: 6px; }
         & .blog-list__empty { margin: auto; }
     }
@@ -206,7 +206,7 @@ watch(pageSize, () => { page.value = Math.min(page.value, pageCount.value) })
         gap: 12px;
         margin-bottom: 14px;
         color: var(--blog-muted);
-        font-size: 11px;
+        font-size: 12px;
         font-weight: 500;
         letter-spacing: 0.08em;
         text-transform: uppercase;
@@ -261,13 +261,13 @@ watch(pageSize, () => { page.value = Math.min(page.value, pageCount.value) })
         font-size: 12px;
         color: var(--blog-muted, var(--vp-c-text-2));
 
-        & time { margin-left: auto; font-family: var(--vp-font-family-mono); font-size: 12px; white-space: nowrap; }
+        & time { margin-left: auto; font-family: var(--vp-font-family-mono); font-size: 13px; white-space: nowrap; }
     }
     & .blog-list__tag {
         padding: 2px 8px;
         background: var(--blog-hover-bg);
         border-radius: 5px;
-        font-size: 11px;
+        font-size: 12px;
         line-height: 1.6;
     }
     & .blog-list__empty {
@@ -297,7 +297,7 @@ watch(pageSize, () => { page.value = Math.min(page.value, pageCount.value) })
     @media (max-width: 640px) {
         & .blog-list__grid { grid-template-columns: 1fr; gap: 10px; }
         & .blog-list__card { padding: 14px 16px; }
-        & .blog-list__title { font-size: 16px; }
+        & .blog-list__title { font-size: 17px; }
         & .blog-list__toolbar { gap: 10px; padding: 10px; }
         & .blog-list__count { width: 100%; justify-content: space-between; font-size: 13px; }
         & .blog-list__pagination { width: 100%; }
@@ -306,7 +306,7 @@ watch(pageSize, () => { page.value = Math.min(page.value, pageCount.value) })
         & .blog-list__page-select { width: 130px; }
     }
     & .blog-list__view-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 10px 20px; flex-shrink: 0; padding-bottom: 12px; }
-    & .blog-list__description { margin: 0; color: var(--vp-c-text-2); font-size: 13px; line-height: 1.7; }
+    & .blog-list__description { margin: 0; color: var(--vp-c-text-2); font-size: 14px; line-height: 1.7; }
     & .blog-list__view-switch { margin-left: auto; flex-shrink: 0; }
     @media (max-width: 640px) { & .blog-list__view-toolbar { flex-wrap: wrap; } & .blog-list__description { width: 100%; } }
     &.blog-list--grouped .blog-list__view-toolbar { position: relative; height: 0; padding: 0; overflow: visible; }
@@ -323,16 +323,17 @@ watch(pageSize, () => { page.value = Math.min(page.value, pageCount.value) })
         & .blog-list__card { display: grid; grid-template-columns: 52px minmax(0, 1fr) minmax(240px, .38fr); grid-template-rows: auto auto; align-content: center; gap: 3px 16px; padding: 8px 14px; border-radius: 8px; }
         & .blog-list__eyebrow { grid-column: 1; grid-row: 1 / 3; flex-direction: column-reverse; align-items: flex-start; justify-content: flex-end; gap: 5px; margin: 0; padding-top: 2px; letter-spacing: 0; }
         & .blog-list__index { font-size: 13px; }
-        & .blog-list__title { grid-column: 2; font-size: 16px; line-height: 1.5; min-width: 0; }
+        & .blog-list__title { grid-column: 2; font-size: 17px; line-height: 1.5; min-width: 0; }
         & .blog-list__title-text { display: block; padding-right: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        & .blog-list__note { grid-column: 2; margin: 0; font-size: 13px; line-height: 1.55; -webkit-line-clamp: 1; }
+        & .blog-list__note { grid-column: 2; margin: 0; font-size: 14px; line-height: 1.55; -webkit-line-clamp: 1; }
         & .blog-list__meta { grid-column: 3; grid-row: 1 / 3; align-self: center; justify-content: flex-end; margin: 0; padding-top: 0; gap: 4px 6px; }
         & .blog-list__meta time { width: 100%; text-align: right; }
+        & .blog-list__tag { padding: 1px 4px; line-height: 1.4; }
         @media (max-width: 1100px) {
             & .blog-list__card { grid-template-columns: 40px minmax(0, 1fr) 200px; }
             & .blog-list__meta { gap: 2px 4px; }
-            & .blog-list__tag { padding: 1px 4px; font-size: 10px; line-height: 1.4; }
-            & .blog-list__meta time { font-size: 11px; line-height: 1.5; }
+            & .blog-list__tag { padding: 1px 4px; font-size: 12px; line-height: 1.4; }
+            & .blog-list__meta time { font-size: 13px; line-height: 1.5; }
         }
         @media (max-width: 899px) {
             & .blog-list__card { grid-template-columns: 40px minmax(0, 1fr); grid-template-rows: auto auto auto; }

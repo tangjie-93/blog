@@ -17,7 +17,7 @@ test('AI toolbox belongs to AI and the global header stays compact', () => {
   const ai = articleGroups.find(group => group.id === 'ai')
   assert.deepEqual(ai.categories, ['ai', 'agent', 'agent-projects', 'rag', 'jev'])
   assert.deepEqual(ai.resources.map(resource => resource.link), ['/skills/'])
-  assert.equal(articleGroups.length, 6)
+  assert.equal(articleGroups.length, 7)
   assert.equal(articleSourcePath('rag'), '人工智能/rag')
   const config = readFileSync(new URL('../docs/.vitepress/config.mts', import.meta.url), 'utf8')
   const nav = config.slice(config.indexOf('    nav: ['), config.indexOf('    sidebar,'))
@@ -39,6 +39,40 @@ test('grouped article sources keep legacy routes, nested paths and README indexe
   assert.equal(rewriteArticlePath('skills/README.md'), 'skills/index.md')
   const categories = articleGroups.flatMap(group => group.categories)
   assert.equal(categories.length, new Set(categories).size, 'each topic belongs to exactly one group')
+})
+
+test('indie development has its own group, topic index and migrated article navigation', () => {
+  const indie = articleGroups.find(group => group.id === 'indie')
+  assert.equal(indie.text, '独立开发与出海')
+  assert.deepEqual(indie.categories, ['going-global'])
+  assert.ok(!articleGroups.find(group => group.id === 'ai').categories.includes('going-global'))
+  assert.equal(articleSourcePath('going-global'), '独立开发与出海/going-global')
+  assert.equal(rewriteArticlePath('articles/独立开发与出海/going-global/README.md'), 'articles/going-global/index.md')
+  const { nav, sidebar } = createNavigation(new URL('../docs/articles', import.meta.url).pathname)
+  assert.ok(nav.some(item => item.text === '出海实战' && item.link === '/articles/going-global/'))
+  const items = sidebar['/articles/going-global/'][0].items
+  assert.equal(items.length, 1)
+  assert.equal(items[0].text, '1、AI出海副业从0到1实战指南')
+  assert.equal(items[0].link, `/articles/going-global/${encodeURIComponent('01-AI出海副业从0到1实战指南')}.html`)
+  assert.equal(postCategory(items[0].link), 'going-global')
+  assert.ok(!sidebar['/articles/ai/'][0].items.some(item => item.link.includes('出海') || decodeURIComponent(item.link).includes('出海')))
+})
+
+test('grouped development paths and public routes resolve the same sidebar for every topic', () => {
+  const { sidebar } = createNavigation(new URL('../docs/articles', import.meta.url).pathname)
+  for (const group of articleGroups) {
+    for (const category of group.categories) {
+      const publicKey = `/articles/${category}/`
+      const sourceKey = `/articles/${group.directory}/${category}/`
+      assert.ok(sidebar[publicKey]?.length, `${category}: missing public sidebar`)
+      assert.strictEqual(sidebar[sourceKey], sidebar[publicKey], `${category}: source route must share its public sidebar`)
+      for (const prefix of [publicKey, sourceKey]) {
+        const path = `${prefix}README.md`
+        const key = Object.keys(sidebar).sort((a, b) => b.split('/').length - a.split('/').length).find(key => path.startsWith(key))
+        assert.strictEqual(sidebar[key], sidebar[publicKey], `${path}: wrong sidebar match`)
+      }
+    }
+  }
 })
 
 test('grouped physical directories produce unchanged navigation and sidebar URLs', () => {
