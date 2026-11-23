@@ -184,19 +184,23 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
         & .VPMenuGroup .VPMenuLink .text { white-space: nowrap; }
     }
 }
-/* 保留整页滚动：VitePress 的锚点跳转和目录高亮依赖 window 滚动。 */
-html {
-    /* shortcut: 轨道偏移仅支持 Chromium / Safari，需兼容 Firefox 时再适配滚动容器。 */
+html, .blog-scrollbar {
     &::-webkit-scrollbar { width: 10px; height: 10px; background: var(--vp-c-bg); }
-    &::-webkit-scrollbar-track:vertical {
-        margin-top: calc(var(--vp-nav-height) + var(--vp-layout-top-height, 0px));
-    }
     &::-webkit-scrollbar-thumb {
         border: 2px solid var(--vp-c-bg);
         border-radius: 5px;
         background: var(--blog-border);
     }
     &::-webkit-scrollbar-thumb:hover { background: var(--blog-muted); }
+    @supports not selector(::-webkit-scrollbar) {
+        scrollbar-width: thin;
+        scrollbar-color: var(--blog-border) var(--vp-c-bg);
+    }
+}
+/* 保留整页滚动：VitePress 的锚点跳转和目录高亮依赖 window 滚动。 */
+/* shortcut: 轨道偏移仅支持 Chromium / Safari，需兼容 Firefox 时再适配滚动容器。 */
+html::-webkit-scrollbar-track:vertical {
+    margin-top: calc(var(--vp-nav-height) + var(--vp-layout-top-height, 0px));
 }
 .VPDoc {
     & .vp-doc { line-height: 1.8; overflow-wrap: break-word; }
@@ -331,10 +335,10 @@ html {
     }
     & > .VPContent { max-width: none; }
 }
-/* 归档与工具箱铺满一屏：页面占满视口高度，分页数量由组件测量网格可用空间决定。
+/* 归档铺满一屏：页面占满视口高度，分页数量由组件测量网格可用空间决定。
    窄屏一屏放不下几项，900px 以下退回普通滚动列表（与 useFitPageSize 的断点一致）。 */
 @media (min-width: 900px) {
-    .Layout:is(.blog-archive--screen, .blog-toolbox) {
+    .Layout.blog-archive--screen {
         height: 100vh;
         height: 100dvh;
         overflow: hidden;

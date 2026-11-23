@@ -9,6 +9,7 @@
                 <p class="home-page__description"><span>你好，我是 Tang Jie。记录前端、AI 与工程实践，</span><span>把知识写下来，把原理弄明白。</span></p>
                 <div class="home-page__actions">
                     <a class="home-page__primary" :href="withBase('/articles/')">探索文章 <span aria-hidden="true">↗</span></a>
+                    <a class="home-page__secondary" :href="withBase('/skills/')">AI 工具箱 <span aria-hidden="true">↗</span></a>
                     <a class="home-page__secondary" :href="withBase('/mindmap/')">文章脑图 <span aria-hidden="true">↗</span></a>
                 </div>
             </div>

@@ -42,6 +42,7 @@ export default defineConfig({
     nav: [
       { text: '首页', link: '/' },
       { text: '文章', link: '/articles/' },
+      { text: 'AI 工具箱', link: '/skills/' },
       { text: '脑图', link: '/mindmap/' },
       { text: '标签', link: '/tags/' },
       { text: '留言板', link: '/comments/' }

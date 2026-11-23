@@ -5,7 +5,7 @@
         <p>{{ entry.summary }}</p>
         <p class="tool-card__status">{{ entry.status }}<span v-if="entry.skillCount !== undefined"> · {{ entry.skillCount }} 项技能</span></p>
         <ul><li v-for="scenario in entry.scenarios" :key="scenario">{{ scenario }}</li></ul>
-        <div class="tool-card__action"><ElButton text type="primary" native-type="button" aria-haspopup="dialog" :aria-label="`查看 ${entry.name} 配置与用法`" @click="openDialog">查看配置与用法 ↗</ElButton></div>
+        <div class="tool-card__action"><ElButton text type="primary" native-type="button" aria-haspopup="dialog" :aria-label="`预览 ${entry.name} 文档`" @click="openDialog">预览文档 ↗</ElButton></div>
         <ElDialog v-if="dialogCreated" v-model="dialogVisible" :title="entry.name" width="min(720px, calc(100vw - 24px))" align-center append-to-body destroy-on-close @closed="dialogCreated = false">
             <div class="tool-card__details">
                 <p>{{ entry.summary }}</p>
@@ -18,8 +18,9 @@
                 <div class="tool-card__prompt-heading"><strong>复制后替换【】中的内容</strong><ElButton type="primary" plain native-type="button" :aria-label="`复制 ${entry.name} 提示词`" @click="copyPrompt">复制提示词</ElButton></div>
                 <pre tabindex="0" :aria-label="`${entry.name} 提示词`">{{ entry.prompt }}</pre>
                 <p v-if="copyMessage" role="status">{{ copyMessage }}</p>
-                <small>来源：{{ entry.source }}<span v-if="entry.skillCount !== undefined"> · {{ entry.skillCount }} 项技能</span></small>
+                <small>公开整理的使用说明 · 来源：{{ entry.source }}<span v-if="entry.skillCount !== undefined"> · {{ entry.skillCount }} 项技能</span></small>
             </div>
+            <template #footer><ElButton @click="dialogVisible = false">关闭预览</ElButton><ElButton type="primary" @click="downloadToolboxDocument(entry.id, toolDocument(entry))">下载 Markdown</ElButton></template>
         </ElDialog>
     </article>
 </template>
@@ -28,6 +29,7 @@
 import type { ToolboxEntry } from '../../../../src/types/toolbox'
 import { ref } from 'vue'
 import { ElButton, ElDialog } from 'element-plus'
+import { downloadToolboxDocument, toolDocument } from '../toolboxDocuments'
 
 const props = defineProps<{ entry: ToolboxEntry; compact?: boolean }>()
 const dialogCreated = ref(false)
@@ -69,7 +71,7 @@ async function copyPrompt(): Promise<void> {
     & .tool-card__status { padding: 10px; border: 1px dashed var(--blog-border); border-radius: 6px; font-size: 12px; }
 }
 .tool-card__details {
-    max-height: calc(100dvh - 160px); overflow: auto; overscroll-behavior: contain; overflow-wrap: anywhere; padding: 4px;
+    max-height: calc(100dvh - 208px); overflow: auto; overscroll-behavior: contain; overflow-wrap: anywhere; padding: 4px;
     & dt { font-weight: 600; margin-top: 14px; font-size: 14px; color: var(--vp-c-text-1); }
     & dd { margin: 4px 0 0; white-space: pre-line; }
     & .tool-card__prompt-heading { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; justify-content: space-between; margin-top: 18px; font-size: 12px; }

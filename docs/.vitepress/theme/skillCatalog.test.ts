@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import { readFileSync } from 'node:fs'
-import { filterSkills, skillCategories, skillInvocation, skills, skillSnapshot } from './skillCatalog.ts'
+import { agents, filterSkills, rules, skillCategories, skillDistribution, skillInvocation, skills, skillSnapshot, toolboxStats } from './skillCatalog.ts'
 
 test('every discovered skill has exactly one complete public explanation', () => {
     const content = ['personal', 'cloud', 'plugins'].flatMap(name => JSON.parse(readFileSync(new URL(`./data/skills/${name}.json`, import.meta.url), 'utf8')))
@@ -21,6 +21,19 @@ test('every discovered skill has exactly one complete public explanation', () =>
         assert.match(skill.sourceHash, /^[a-f0-9]{64}$/)
     }
     assert.doesNotMatch(JSON.stringify(skills), /\/Users\/|\/home\/|sk-[a-zA-Z0-9]{20,}|AIza[a-zA-Z0-9_-]{30,}/)
+})
+
+test('overview stats and skill distribution stay consistent with the catalog', () => {
+    assert.equal(agents.length, 0)
+    assert.equal(rules.length, 0)
+    assert.equal(toolboxStats.skills, skills.length)
+    assert.equal(toolboxStats.categories, skillCategories.length)
+    assert.equal(toolboxStats.agents, agents.length)
+    assert.equal(toolboxStats.documents, 2)
+    const distribution = skillDistribution()
+    assert.equal(distribution.length, skillCategories.length)
+    assert.equal(distribution.reduce((sum, category) => sum + category.count, 0), skills.length)
+    assert.ok(distribution.every(category => category.count > 0))
 })
 
 test('search combines words, category and source and keeps same-name skills distinct', () => {

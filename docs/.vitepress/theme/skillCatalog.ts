@@ -1,4 +1,4 @@
-import type { SkillEntry } from '../../../src/types/skills.ts'
+import type { AgentEntry, CapabilityDocument, RuleEntry, SkillEntry } from '../../../src/types/skills.ts'
 import inventory from './data/skills/inventory.json' with { type: 'json' }
 import personal from './data/skills/personal.json' with { type: 'json' }
 import cloud from './data/skills/cloud.json' with { type: 'json' }
@@ -33,4 +33,31 @@ export function filterSkills(entries: SkillEntry[], query = '', category = '', s
         const text = [skillInvocation(skill), skill.title, skill.summary, ...skill.scenarios, skill.inputs, skill.output, skill.requirements].join(' ').toLocaleLowerCase()
         return words.every(word => text.includes(word))
     })
+}
+
+/** 博客当前尚未沉淀独立 Agent 与 Rule 条目；保留维度与类型，内容后续按能力手册模型补充。 */
+export const agents: AgentEntry[] = []
+export const rules: RuleEntry[] = []
+
+/** 工具箱自身关联的说明文档，作为 overview「关联文档」统计来源。 */
+export const toolboxDocuments: CapabilityDocument[] = [
+    { path: '/skills/guide.md', title: '技能库使用指南' },
+    { path: '/skills/connections.md', title: '插件与 MCP 使用指南' },
+]
+
+/** overview 四项统计：可复用 Skills、技能分类、专家 Agent、关联文档。 */
+export const toolboxStats = {
+    skills: skills.length,
+    categories: skillCategories.length,
+    agents: agents.length,
+    documents: toolboxDocuments.length,
+}
+
+/** 技能分布：按分类聚合计数，供 overview 分布图与点击过滤使用。 */
+export function skillDistribution(): { id: string; label: string; count: number }[] {
+    return skillCategories.map(category => ({
+        id: category.id,
+        label: category.title,
+        count: skills.filter(skill => skill.category === category.id).length,
+    }))
 }

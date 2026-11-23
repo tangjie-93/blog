@@ -6,7 +6,7 @@ pageClass: blog-toolbox
 ---
 
 <script setup>
-import SkillLibrary from '../.vitepress/theme/components/SkillLibrary.vue'
+import ToolboxHandbook from '../.vitepress/theme/components/ToolboxHandbook.vue'
 </script>
 
-<SkillLibrary />
+<ToolboxHandbook />

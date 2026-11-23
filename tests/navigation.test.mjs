@@ -26,7 +26,9 @@ test('AI toolbox belongs to AI and the global header stays compact', () => {
   assert.ok(!nav.includes("text: '更多'"))
   assert.ok(!nav.includes('充电站'))
   assert.ok(!nav.includes('/summarize/'))
-  for (const label of ['语言与标准', '框架与工程', 'AI 工具箱']) assert.ok(!nav.includes(`text: '${label}'`))
+  for (const label of ['语言与标准', '框架与工程']) assert.ok(!nav.includes(`text: '${label}'`))
+  // 工具箱是全局资源入口，而非文章分组，允许进入头部导航；其余文章分组仍只留在文章库侧栏。
+  assert.match(nav, /text: 'AI 工具箱', link: '\/skills\/'/)
 })
 
 test('grouped article sources keep legacy routes, nested paths and README indexes', () => {
