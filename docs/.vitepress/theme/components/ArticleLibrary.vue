@@ -59,19 +59,22 @@ onUnmounted(() => { window.removeEventListener('popstate', restore) })
             <p class="library-sidebar__hint">分类找方向，搜索找问题。</p>
         </aside>
         <main class="library-content" :aria-label="`${title} · 文章浏览`">
-            <div v-if="activeGroup" class="library-toolbar">
-                <div class="library-topics" role="group" aria-label="选择具体专题">
-                    <button type="button" class="blog-choice" :aria-pressed="!selectedCategory" @click="select(selectedGroup)">全部</button>
-                    <div v-for="category in activeGroup.categories" :key="category" class="library-topic" :class="{ 'is-selected': selectedCategory === category }">
-                        <button type="button" class="blog-choice" :aria-pressed="selectedCategory === category" @click="select(selectedGroup, category)">{{ categoryLabels[category] || category }}</button>
-                        <a v-if="categoryHome(category)" class="library-topic__home" :href="withBase(categoryHome(category))" :aria-label="`${categoryLabels[category] || category} 专题首页`" :title="`打开 ${categoryLabels[category] || category} 专题首页`"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m3 10 9-7 9 7M5 9v11h5v-6h4v6h5V9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            <BlogList fit-screen :group="selectedGroup" :category="selectedCategory">
+                <template v-if="activeGroup" #toolbar>
+                    <div class="library-toolbar-content">
+                        <div class="library-topics" role="group" aria-label="选择具体专题">
+                            <button type="button" class="blog-choice" :aria-pressed="!selectedCategory" @click="select(selectedGroup)">全部</button>
+                            <div v-for="category in activeGroup.categories" :key="category" class="library-topic" :class="{ 'is-selected': selectedCategory === category }">
+                                <button type="button" class="blog-choice" :aria-pressed="selectedCategory === category" @click="select(selectedGroup, category)">{{ categoryLabels[category] || category }}</button>
+                                <a v-if="categoryHome(category)" class="library-topic__home" :href="withBase(categoryHome(category))" :aria-label="`${categoryLabels[category] || category} 专题首页`" :title="`打开 ${categoryLabels[category] || category} 专题首页`"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m3 10 9-7 9 7M5 9v11h5v-6h4v6h5V9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                            </div>
+                        </div>
+                        <div v-if="activeGroup.resources?.length" class="library-resources">
+                            <a v-for="resource in activeGroup.resources" :key="resource.link" :href="withBase(resource.link)" :title="resource.description">{{ resource.text }} <span aria-hidden="true">↗</span></a>
+                        </div>
                     </div>
-                </div>
-                <div v-if="activeGroup.resources?.length" class="library-resources">
-                    <a v-for="resource in activeGroup.resources" :key="resource.link" :href="withBase(resource.link)" :title="resource.description">{{ resource.text }} <span aria-hidden="true">↗</span></a>
-                </div>
-            </div>
-            <BlogList fit-screen :group="selectedGroup" :category="selectedCategory" />
+                </template>
+            </BlogList>
         </main>
     </div>
 </template>
@@ -102,7 +105,7 @@ onUnmounted(() => { window.removeEventListener('popstate', restore) })
     }
     & .library-sidebar__hint { font-size: 12px; color: var(--blog-muted); margin: 24px 12px 0; line-height: 1.8; }
     & .library-content { display: flex; flex-direction: column; min-height: 0; min-width: 0; padding-top: 20px; }
-    & .library-toolbar { display: flex; flex-shrink: 0; flex-wrap: wrap; align-items: center; gap: 8px 20px; padding: 4px var(--blog-page-gutter) 12px; }
+    & .library-toolbar-content { display: flex; flex: 1 1 auto; flex-wrap: wrap; align-items: center; gap: 8px 20px; min-width: 0; }
     & .library-topics {
         display: flex; flex: 1; flex-wrap: wrap; gap: 6px; min-width: 0;
         & button { min-height: 34px; padding: 6px 12px; border-radius: 8px; font-size: 12px; cursor: pointer; }
@@ -117,7 +120,7 @@ onUnmounted(() => { window.removeEventListener('popstate', restore) })
         &:hover { background: var(--vp-c-brand-soft); }
     }
     & .library-resources {
-        display: flex; flex-shrink: 0; gap: 8px; margin-left: auto;
+        display: flex; flex-wrap: wrap; gap: 8px; margin-left: auto;
         & a { display: inline-flex; align-items: center; gap: 8px; min-height: 34px; padding: 6px 10px; border-radius: 6px; color: var(--vp-c-brand-1); font-size: 12px; white-space: nowrap; transition: background-color 160ms ease; }
         & a:hover { background: var(--vp-c-brand-soft); }
     }

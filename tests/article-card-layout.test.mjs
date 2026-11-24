@@ -10,7 +10,8 @@ const library = readFileSync(new URL('../docs/.vitepress/theme/components/Articl
 
 test('article cards keep full text line heights rather than shrinking title and summary', () => {
   assert.deepEqual(parse(source).errors, [])
-  assert.match(source, /minCardHeight:\s*\(\) => viewMode\.value === 'list' \? 80 : 216/)
+  assert.match(source, /minCardHeight:\s*\(\) => viewMode\.value === 'list' \? 64 : 216/)
+  assert.match(source, /maxCardHeight:\s*\(\) => viewMode\.value === 'list' \? 68 : 232/)
   for (const block of ['eyebrow', 'title', 'note', 'meta']) {
     assert.match(source, new RegExp(`\\.blog-list__${block} \\{ flex-shrink: 0;`))
   }
@@ -62,17 +63,17 @@ test('article view switches between cards and rows with safe persisted preferenc
   assert.match(source, /viewMode\.value = mode\s+page\.value = 1/)
   assert.match(source, /minCardWidth: \(\) => viewMode\.value === 'list' \? Number\.MAX_SAFE_INTEGER : 300/)
   assert.match(source, /&\.blog-list--rows[\s\S]*grid-template-columns: 1fr/)
-  assert.match(source, /&\.blog-list--grouped \.blog-list__view-toolbar \{ position: relative; height: 0; padding: 0; overflow: visible; \}/)
-  assert.match(source, /&\.blog-list--grouped \.blog-list__view-switch \{ position: absolute; top: -50px; right: 0; transform: none; \}/)
 })
 
-test('resource links share the topic toolbar instead of occupying a full-width banner', () => {
+test('article topics and resources use the same toolbar as the view switch', () => {
   assert.deepEqual(parse(library).errors, [])
-  const toolbar = library.indexOf('class="library-toolbar"')
+  const toolbar = library.indexOf('<template v-if="activeGroup" #toolbar>')
+  assert.match(source, /class="blog-list__view-toolbar">\s*<slot name="toolbar">[\s\S]*?<\/slot>\s*<div class="blog-list__view-switch"/)
+  assert.ok(library.indexOf('<BlogList') < toolbar)
   const topics = library.indexOf('class="library-topics"', toolbar)
   const resources = library.indexOf('class="library-resources"', topics)
-  const list = library.indexOf('<BlogList', resources)
-  assert.ok(toolbar > -1 && topics > toolbar && resources > topics && list > resources)
+  const toolbarEnd = library.indexOf('</template>', resources)
+  assert.ok(toolbar > -1 && topics > toolbar && resources > topics && toolbarEnd > resources)
   assert.match(library, /:title="resource.description"/)
   assert.match(library, /margin-left: auto/)
   assert.ok(!library.includes('<strong>{{ resource.text }}</strong>'))

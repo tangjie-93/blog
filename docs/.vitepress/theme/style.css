@@ -321,8 +321,8 @@ html::-webkit-scrollbar-track:vertical {
 }
 /* 浏览型页面使用全宽，阅读正文仍保留独立的排版约束。 */
 .Layout:is(.blog-archive--screen, .blog-tags-page, .blog-toolbox) { --blog-page-max-width: 100%; }
-/* 主题目录在所有屏幕上按可用空间分页，沿 page 布局传递剩余高度。 */
-.Layout.blog-tags-page {
+/* 首页和主题目录沿 page 布局传递可用视口高度。 */
+.Layout:is(.tech-home, .blog-tags-page) {
     height: 100vh;
     height: 100dvh;
     overflow: hidden;

@@ -1,7 +1,7 @@
 <template>
     <section class="skill-library" aria-label="能力搜索和结果">
-        <ElInput v-model="query" size="large" clearable aria-label="搜索任务或工具" placeholder="搜索名称、场景或关键词…" />
         <div ref="resultsHeader" class="skill-library__toolbar">
+            <ElInput v-model="query" class="skill-library__search" size="large" clearable aria-label="搜索任务或工具" placeholder="搜索名称、场景或关键词…" />
             <div class="skill-library__kinds" role="group" aria-label="资产类型">
                 <button v-for="item in kinds" :key="item.id" type="button" class="blog-choice" :aria-pressed="kind === item.id" @click="selectKind(item.id)">
                     {{ item.label }} <small>{{ item.count }}</small>
@@ -19,33 +19,40 @@
             </div>
             <p class="skill-library__count" role="status">匹配 {{ results.length }} 项<span v-if="results.length"> · 展示 {{ visible.length }} 项</span></p>
         </div>
-        <div v-if="results.length" id="toolbox-results" ref="resultsGrid" class="skill-library__grid">
-            <template v-for="row in visible" :key="`${row.kind}:${row.entry.id}`">
-                <SkillCard v-if="row.kind === 'skill'" :skill="row.entry" compact />
-                <ToolCard v-else-if="row.kind === 'tool'" :entry="row.entry" compact />
-                <article v-else class="skill-library__card">
-                    <h2>{{ row.entry.title }}</h2><p>{{ row.entry.summary }}</p>
-                    <details><summary>预览说明</summary><pre>{{ row.entry.prompt }}</pre></details>
-                </article>
-            </template>
+        <div id="toolbox-results" ref="resultsViewport" class="skill-library__viewport blog-scrollbar">
+            <div v-show="results.length" class="skill-library__grid" :style="fittedGridStyle">
+                <template v-for="row in visible" :key="`${row.kind}:${row.entry.id}`">
+                    <SkillCard v-if="row.kind === 'skill'" :skill="row.entry" compact />
+                    <ToolCard v-else-if="row.kind === 'tool'" :entry="row.entry" compact />
+                    <article v-else class="skill-library__card">
+                        <h2>{{ row.entry.title }}</h2><p>{{ row.entry.summary }}</p>
+                        <details><summary>预览说明</summary><pre>{{ row.entry.prompt }}</pre></details>
+                    </article>
+                </template>
+            </div>
+            <ElEmpty v-if="!results.length" :description="query || category || source ? '没有找到匹配的能力' : '这个类型暂无内容'">
+                <ElButton v-if="query || category || source" @click="clearFilters">清除筛选</ElButton>
+                <ElButton v-else @click="selectKind('all')">查看全部能力</ElButton>
+            </ElEmpty>
         </div>
-        <ElEmpty v-else :description="query || category || source ? '没有找到匹配的能力' : '这个类型暂无内容'">
-            <ElButton v-if="query || category || source" @click="clearFilters">清除筛选</ElButton>
-            <ElButton v-else @click="selectKind('all')">查看全部能力</ElButton>
-        </ElEmpty>
-        <button v-if="results.length > previewLimit" type="button" class="skill-library__expand" aria-controls="toolbox-results" :aria-expanded="expanded" @click="toggleExpanded">
-            {{ expanded ? '收起能力目录 ↑' : '展开全部能力 ↓' }}
-        </button>
+        <nav v-if="results.length" class="skill-library__pagination" aria-label="能力目录分页">
+            <ElButton native-type="button" :disabled="currentPage === 1" aria-controls="toolbox-results" @click="changePage(currentPage - 1)">上一页</ElButton>
+            <ElSelect :model-value="currentPage" class="skill-library__page-select" aria-label="选择页码" @change="changePage">
+                <ElOption v-for="number in pageCount" :key="number" :value="number" :label="`第 ${number} / ${pageCount} 页`" />
+            </ElSelect>
+            <ElButton native-type="button" :disabled="currentPage === pageCount" aria-controls="toolbox-results" @click="changePage(currentPage + 1)">下一页</ElButton>
+        </nav>
     </section>
 </template>
 
 <script setup lang="ts">
-import { computed, shallowRef, useTemplateRef, watch } from 'vue'
+import { computed, nextTick, shallowRef, useTemplateRef, watch } from 'vue'
 import { ElButton, ElEmpty, ElInput, ElOption, ElSelect } from 'element-plus'
 import { filterTools, pluginEntries, mcpEntries } from '../toolbox'
 import { filterSkills, skillCategories, skills, agents, rules } from '../skillCatalog'
 import type { CapabilityKind } from '../../../../src/types/skills'
 import { useToolboxHistory } from '../useToolboxHistory'
+import { useFitPageSize } from '../useFitPageSize'
 import SkillCard from './SkillCard.vue'
 import ToolCard from './ToolCard.vue'
 
@@ -62,10 +69,17 @@ const kind = shallowRef(props.initialKind === 'all' && props.initialCategory ? '
 const query = shallowRef('')
 const category = shallowRef(props.initialCategory)
 const source = shallowRef('')
-const expanded = shallowRef(false)
+const page = shallowRef(1)
 const resultsHeader = useTemplateRef<HTMLElement>('resultsHeader')
-const resultsGrid = useTemplateRef<HTMLElement>('resultsGrid')
-const previewLimit = shallowRef(6)
+const resultsViewport = useTemplateRef<HTMLElement>('resultsViewport')
+const { pageSize, rowHeight, gridStyle, active: fitActive } = useFitPageSize(resultsViewport, {
+    enabled: true,
+    fallbackSize: 6,
+    minCardWidth: 288,
+    minCardHeight: () => kind.value === 'plugin' || kind.value === 'mcp' ? 230 : 200,
+    maxColumns: 5,
+    minViewportWidth: 960,
+})
 const sources = computed(() => {
     const entries = kind.value === 'skill' ? skills : kind.value === 'plugin' ? pluginEntries : mcpEntries
     return [...new Set(entries.map(entry => entry.source))]
@@ -87,17 +101,15 @@ const results = computed(() => {
     }
     return rows
 })
-const visible = computed(() => expanded.value ? results.value : results.value.slice(0, previewLimit.value))
-
-// 按实际列数保留两行预览，避免在脚本中重复定义断点。
-watch(resultsGrid, (grid, _, onCleanup) => {
-    if (!grid || typeof ResizeObserver === 'undefined') return
-    const observer = new ResizeObserver(() => {
-        const columns = getComputedStyle(grid).gridTemplateColumns.split(' ').length
-        previewLimit.value = columns * 2
-    })
-    observer.observe(grid)
-    onCleanup(() => observer.disconnect())
+const fittedGridStyle = computed(() => gridStyle.value && {
+    gridTemplateColumns: gridStyle.value.gridTemplateColumns,
+    gridAutoRows: `minmax(min-content, ${rowHeight.value}px)`,
+})
+const pageCount = computed(() => Math.max(1, Math.ceil(results.value.length / pageSize.value)))
+const currentPage = computed(() => Math.min(page.value, pageCount.value))
+const visible = computed(() => {
+    const start = (currentPage.value - 1) * pageSize.value
+    return results.value.slice(start, start + pageSize.value)
 })
 
 /** 切换类型时保留搜索关键词并重置类型专属筛选。 */
@@ -122,43 +134,60 @@ function sourceLabel(value: string): string {
     return kind.value === 'skill' ? `${value} 插件` : value
 }
 
-/** 展开全部结果，收起时将焦点移回筛选区。 */
-function toggleExpanded(): void {
-    expanded.value = !expanded.value
-    if (!expanded.value) resultsHeader.value?.querySelector<HTMLButtonElement>('button[aria-pressed="true"]')?.focus()
+/**
+ * 切换能力目录页码，更新卡片后回到结果顶部。
+ * @param nextPage 分页控件选中的页码。
+ */
+async function changePage(nextPage: number): Promise<void> {
+    page.value = nextPage
+    await nextTick()
+    if (!fitActive.value) resultsHeader.value?.scrollIntoView({ block: 'start', behavior: 'instant' })
 }
 
-watch([kind, query, category, source], () => { expanded.value = false }, { flush: 'sync' })
-useToolboxHistory(props.entryHash, () => ({ kind: kind.value, query: query.value, category: category.value, source: source.value, expanded: expanded.value }), state => {
+watch([currentPage, kind, query, category, source], () => resultsViewport.value?.scrollTo({ top: 0, behavior: 'instant' }), { flush: 'post' })
+watch([kind, query, category, source], () => { page.value = 1 }, { flush: 'sync' })
+useToolboxHistory(props.entryHash, () => ({ kind: kind.value, query: query.value, category: category.value, source: source.value, page: page.value }), state => {
     kind.value = state.kind
     query.value = state.query
     category.value = state.category
     source.value = state.source
-    expanded.value = state.expanded
+    page.value = state.page ?? 1
 })
 </script>
 
 <style scoped>
 .skill-library {
+    display: flex;
+    flex-direction: column;
     min-width: 0;
     container-type: inline-size;
-    & .skill-library__toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin: 10px 0 16px; padding-bottom: 12px; border-bottom: 1px solid var(--blog-border); }
+    & .skill-library__toolbar { display: flex; flex: none; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--blog-border); scroll-margin-top: calc(var(--vp-nav-height) + 12px); }
+    & .skill-library__search { flex: 0 0 150px; min-width: 0; }
     & .skill-library__kinds, & .skill-library__filters { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
     & .skill-library__kinds button { min-height: 34px; padding: 5px 9px; border-radius: 6px; font-size: 13px; }
     & .skill-library__kinds small { font: 11px var(--vp-font-family-mono); }
     & .skill-library__filters :deep(.el-select) { width: 150px; }
-    & .skill-library__count { margin-left: auto; color: var(--blog-muted); font-size: 13px; }
+    & .skill-library__count { flex: none; margin-left: auto; color: var(--blog-muted); font-size: 13px; }
+    & .skill-library__viewport { flex: 1; min-height: 0; }
     & .skill-library__grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
-    & .skill-library__card, & .skill-library__expand { border: 1px solid var(--blog-border); border-radius: var(--blog-radius); background: var(--blog-panel); }
-    & .skill-library__card { padding: 16px; overflow-wrap: anywhere; }
+    & .skill-library__card { padding: 16px; border: 1px solid var(--blog-border); border-radius: var(--blog-radius); background: var(--blog-panel); overflow-wrap: anywhere; }
     & .skill-library__card pre { white-space: pre-wrap; }
-    & .skill-library__expand { width: 100%; min-height: 42px; margin-top: 16px; font-size: 14px; }
-    & .skill-library__expand:hover { border-color: var(--blog-border-hover); color: var(--vp-c-brand-1); }
+    & .skill-library__pagination { display: flex; flex: none; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; min-height: 32px; margin-top: 12px; }
+    & .skill-library__pagination .el-button { margin: 0; }
+    & .skill-library__page-select { width: 120px; }
+    @media (min-width: 960px) {
+        height: 100%;
+        & .skill-library__viewport { overflow: auto; }
+    }
     @container (min-width: 580px) { & .skill-library__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
     @container (min-width: 880px) { & .skill-library__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-    @container (min-width: 1180px) { & .skill-library__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+    @container (min-width: 1180px) {
+        & .skill-library__search { flex-basis: 320px; }
+        & .skill-library__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
     @container (min-width: 1500px) { & .skill-library__grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
     @media (max-width: 580px) {
+        & .skill-library__search { flex-basis: 100%; }
         & .skill-library__filters :deep(.el-select) { width: min(142px, 100%); }
         & .skill-library__count { margin-left: 0; }
     }

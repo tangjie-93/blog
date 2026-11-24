@@ -7,6 +7,12 @@ test('fit page size fills the widest whole number of cards that fits the viewpor
     assert.deepEqual(fitPageSize(1920, 1080, 300, 180, 16, 16), { columns: 6, rows: 5, pageSize: 30, rowHeight: 203 })
 })
 
+test('a wide toolbox page fills the available rows without exceeding five columns', () => {
+    assert.deepEqual(fitPageSize(2000, 640, 288, 200, 14, 14, undefined, 5), {
+        columns: 5, rows: 3, pageSize: 15, rowHeight: 204,
+    })
+})
+
 test('list mode stays single-column and paginates using complete row heights', () => {
     const fit = fitPageSize(1600, 700, Number.MAX_SAFE_INTEGER, 80, 6, 6, 84)
     assert.equal(fit.columns, 1)

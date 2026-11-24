@@ -7,6 +7,7 @@ interface FitPageSizeOptions {
     minCardWidth: MaybeRefOrGetter<number>
     minCardHeight: MaybeRefOrGetter<number>
     maxCardHeight?: MaybeRefOrGetter<number>
+    maxColumns?: number
     /** 小于该宽度时退回固定分页并允许页面滚动，窄屏一屏放不下几项。 */
     minViewportWidth?: number
 }
@@ -46,7 +47,8 @@ export function useFitPageSize(viewport: Ref<HTMLElement | null>, options: FitPa
             toValue(options.minCardHeight),
             gapX,
             gapY,
-            toValue(options.maxCardHeight)
+            toValue(options.maxCardHeight),
+            options.maxColumns
         )
         columns.value = fit.columns
         rowHeight.value = fit.rowHeight
@@ -86,5 +88,5 @@ export function useFitPageSize(viewport: Ref<HTMLElement | null>, options: FitPa
         media?.removeEventListener('change', syncActive)
     })
 
-    return { pageSize, columns, active, gridStyle, measure }
+    return { pageSize, columns, rowHeight, active, gridStyle, measure }
 }

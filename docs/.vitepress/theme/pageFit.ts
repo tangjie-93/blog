@@ -16,13 +16,14 @@ export function fitPageSize(
     minCardHeight: number,
     gapX: number,
     gapY: number,
-    maxCardHeight = Number.POSITIVE_INFINITY
+    maxCardHeight = Number.POSITIVE_INFINITY,
+    maxColumns = Number.POSITIVE_INFINITY
 ): FitPageSize {
     const availableWidth = Math.max(0, width)
     const availableHeight = Math.max(0, height)
     const columnGap = Math.max(0, gapX)
     const rowGap = Math.max(0, gapY)
-    const columns = Math.max(1, Math.floor((availableWidth + columnGap) / (Math.max(1, minCardWidth) + columnGap)))
+    const columns = Math.max(1, Math.min(maxColumns, Math.floor((availableWidth + columnGap) / (Math.max(1, minCardWidth) + columnGap))))
     const rows = Math.max(1, Math.floor((availableHeight + rowGap) / (Math.max(1, minCardHeight) + rowGap)))
     const rowHeight = Math.max(0, Math.min(maxCardHeight, Math.floor((availableHeight - (rows - 1) * rowGap) / rows)))
 

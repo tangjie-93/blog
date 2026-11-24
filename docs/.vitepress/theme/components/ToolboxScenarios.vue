@@ -20,7 +20,7 @@
             <ElButton size="small" :disabled="page === pageCount" @click="goToPage(page + 1)">下一页</ElButton>
         </nav>
         <article v-if="selected" ref="detail" class="toolbox-scenarios__detail" aria-labelledby="toolbox-scenario-title">
-            <div class="toolbox-scenarios__main">
+            <div ref="guidePanel" class="toolbox-scenarios__main blog-scrollbar" tabindex="0" role="region" aria-labelledby="toolbox-scenario-title">
                 <p class="toolbox-scenarios__eyebrow">Skill · 使用指南</p>
                 <h2 id="toolbox-scenario-title" ref="detailHeading" tabindex="-1">{{ selected.title }}</h2>
                 <code class="toolbox-scenarios__invocation">{{ skillInvocation(selected) }}</code>
@@ -54,7 +54,7 @@
                     </li>
                 </ol>
             </div>
-            <aside class="toolbox-scenarios__prompt" aria-labelledby="toolbox-prompt-title">
+            <aside ref="promptPanel" class="toolbox-scenarios__prompt blog-scrollbar" tabindex="0" aria-labelledby="toolbox-prompt-title">
                 <p class="toolbox-scenarios__prompt-eyebrow">先添加文档或调用技能，再复制下面的需求</p>
                 <div class="toolbox-scenarios__prompt-head">
                     <h3 id="toolbox-prompt-title">复制到对话框使用</h3>
@@ -92,10 +92,13 @@ const copyMessage = shallowRef('')
 const page = shallowRef(1)
 const columns = shallowRef(8)
 const detail = useTemplateRef<HTMLElement>('detail')
+const guidePanel = useTemplateRef<HTMLElement>('guidePanel')
+const promptPanel = useTemplateRef<HTMLElement>('promptPanel')
 const detailHeading = useTemplateRef<HTMLHeadingElement>('detailHeading')
 const matches = computed(() => filterSkills(skills, query.value, category.value))
-const pageCount = computed(() => Math.max(1, Math.ceil(matches.value.length / columns.value)))
-const visibleMatches = computed(() => matches.value.slice((page.value - 1) * columns.value, page.value * columns.value))
+const pageSize = computed(() => columns.value * 2)
+const pageCount = computed(() => Math.max(1, Math.ceil(matches.value.length / pageSize.value)))
+const visibleMatches = computed(() => matches.value.slice((page.value - 1) * pageSize.value, page.value * pageSize.value))
 const selected = computed(() => matches.value.find(skill => skill.id === selectedId.value) ?? visibleMatches.value[0] ?? matches.value[0])
 const examples = computed(() => {
     if (selected.value?.examples?.length) return selected.value.examples
@@ -186,6 +189,10 @@ function scenarioCount(skill: SkillEntry): number {
 }
 
 watch(selected, () => { exampleIndex.value = 0 }, { flush: 'sync' })
+watch(selected, () => {
+    guidePanel.value?.scrollTo({ top: 0, behavior: 'instant' })
+    promptPanel.value?.scrollTo({ top: 0, behavior: 'instant' })
+}, { flush: 'post' })
 watch([query, category], () => { page.value = 1 }, { flush: 'sync' })
 watch(columns, () => { page.value = Math.min(page.value, pageCount.value) }, { flush: 'sync' })
 onMounted(() => {
@@ -207,12 +214,12 @@ useToolboxHistory(props.entryHash, () => ({ query: query.value, category: catego
     display: flex;
     flex-direction: column;
     min-width: 0;
-    min-height: calc(100svh - var(--vp-nav-height) - 48px);
+    min-height: calc(100svh - var(--vp-nav-height) - var(--vp-layout-top-height, 0px) - 48px);
     & .toolbox-scenarios__browse { padding-bottom: 14px; border-bottom: 1px solid var(--blog-border); }
     & .toolbox-scenarios__categories { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
     & .toolbox-scenarios__categories button { min-height: 34px; padding: 5px 10px; border-radius: 6px; font-size: 13px; }
     & .toolbox-scenarios__categories small { color: var(--blog-muted); font: 11px var(--vp-font-family-mono); }
-    & .toolbox-scenarios__grid { display: grid; grid-auto-rows: 62px; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 7px; margin: 12px 0 8px; }
+    & .toolbox-scenarios__grid { display: grid; grid-template-rows: repeat(2, 62px); grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 7px; margin: 12px 0 8px; }
     & .toolbox-scenarios__pager { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 34px; margin-bottom: 10px; color: var(--blog-muted); font-size: 12px; }
     & .toolbox-scenarios__pager .el-button { min-height: 30px; font-size: 12px; }
 }
@@ -240,16 +247,18 @@ useToolboxHistory(props.entryHash, () => ({ query: query.value, category: catego
     flex: 1;
     grid-template-columns: minmax(0, 1fr) minmax(300px, .92fr);
     gap: clamp(14px, 1.6vw, 22px);
-    align-items: start;
     margin-top: 14px;
-    padding: clamp(14px, 1.6vw, 20px);
-    border: 1px solid var(--blog-border);
-    border-radius: var(--blog-radius);
-    background: var(--blog-panel);
     overflow-wrap: anywhere;
 }
-.toolbox-scenarios__main {
+.toolbox-scenarios__main,
+.toolbox-scenarios__prompt {
     min-width: 0;
+    padding: 12px;
+    border: 1px solid var(--blog-border);
+    border-radius: 10px;
+    background: var(--vp-c-bg-soft);
+}
+.toolbox-scenarios__main {
     & .toolbox-scenarios__eyebrow { margin: 0; color: var(--blog-muted); font-size: 11px; }
     & h2 { margin: 2px 0 4px; font-size: clamp(19px, 1.6vw, 23px); line-height: 1.25; }
     & h2:focus-visible { outline: 2px solid var(--blog-focus-ring); outline-offset: 4px; }
@@ -323,13 +332,9 @@ useToolboxHistory(props.entryHash, () => ({ query: query.value, category: catego
     & .toolbox-scenarios__example-cta { color: var(--vp-c-brand-1); font-size: 11px; }
 }
 .toolbox-scenarios__prompt {
-    position: sticky;
-    top: calc(var(--vp-nav-height) + 16px);
-    min-width: 0;
-    padding: 12px;
-    border: 1px solid var(--blog-border);
-    border-radius: 10px;
-    background: var(--vp-c-bg-soft);
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
     & .toolbox-scenarios__prompt-eyebrow { margin: 0; color: var(--blog-muted); font-size: 11px; }
     & .toolbox-scenarios__prompt-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px; margin-top: 1px; }
     & h3 { margin: 0; font-size: 15px; }
@@ -337,9 +342,27 @@ useToolboxHistory(props.entryHash, () => ({ query: query.value, category: catego
     & .toolbox-scenarios__steps li { color: var(--vp-c-text-2); font-size: 12px; line-height: 1.6; }
     & code { color: var(--vp-c-brand-1); font-size: 11px; }
     & .toolbox-scenarios__prompt-note { margin: 8px 0 0; padding: 6px 8px; border: 1px solid var(--blog-border); border-radius: 6px; background: var(--blog-panel); color: var(--vp-c-text-2); font-size: 11px; line-height: 1.6; }
-    & pre { margin: 8px 0 0; padding: 10px; border-radius: 6px; background: var(--blog-panel); color: var(--vp-c-text-1); font-size: 12px; line-height: 1.65; white-space: pre-wrap; user-select: text; }
+    & pre { flex: 1; margin: 8px 0 0; padding: 10px; border-radius: 6px; background: var(--blog-panel); color: var(--vp-c-text-1); font-size: 12px; line-height: 1.65; white-space: pre-wrap; user-select: text; }
     & pre:focus-visible { outline: 2px solid var(--blog-focus-ring); outline-offset: 2px; }
     & .toolbox-scenarios__status { margin: 6px 0 0; color: var(--blog-selected-text); font-size: 11px; }
+}
+@media (min-width: 1280px) {
+    .toolbox-scenarios {
+        height: max(550px, calc(100dvh - var(--vp-nav-height) - var(--vp-layout-top-height, 0px) - 48px));
+        & .toolbox-scenarios__browse,
+        & .toolbox-scenarios__grid,
+        & .toolbox-scenarios__pager { flex-shrink: 0; }
+        & .toolbox-scenarios__detail {
+            min-height: 0;
+            grid-template-rows: minmax(0, 1fr);
+        }
+        & .toolbox-scenarios__main,
+        & .toolbox-scenarios__prompt {
+            min-height: 0;
+            overflow: auto;
+            overscroll-behavior: contain;
+        }
+    }
 }
 @media (max-width: 1599px) {
     .toolbox-scenarios {
@@ -359,7 +382,6 @@ useToolboxHistory(props.entryHash, () => ({ query: query.value, category: catego
 @media (max-width: 1050px) {
     .toolbox-scenarios {
         & .toolbox-scenarios__detail { grid-template-columns: minmax(0, 1fr); }
-        & .toolbox-scenarios__prompt { position: static; }
     }
 }
 @media (max-width: 639px) {

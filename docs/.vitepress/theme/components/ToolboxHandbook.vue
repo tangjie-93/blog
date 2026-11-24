@@ -1,5 +1,5 @@
 <template>
-    <div class="toolbox-handbook vp-raw" @click="followSectionLink">
+    <div class="toolbox-handbook vp-raw" :class="{ 'toolbox-handbook--library': section === 'library' }" @click="followSectionLink">
         <aside class="toolbox-handbook__sidebar">
             <nav aria-label="工具箱导航">
                 <a href="#/library" :aria-current="section === 'library' ? 'page' : undefined">能力目录</a>
@@ -69,6 +69,13 @@ onUnmounted(() => {
     & nav a:hover { background: var(--blog-hover-bg); }
     & nav a[aria-current] { color: var(--blog-selected-text); background: var(--blog-selected-bg); font-weight: 600; }
     & .toolbox-handbook__main { min-width: 0; padding: 24px clamp(16px, 2.2vw, 24px); }
+    @media (min-width: 960px) {
+        &.toolbox-handbook--library {
+            height: calc(100dvh - var(--vp-nav-height) - var(--vp-layout-top-height, 0px));
+            min-height: 0;
+            grid-template-rows: minmax(0, 1fr);
+        }
+    }
     @media (max-width: 767px) {
         grid-template-columns: minmax(0, 1fr);
         align-content: start;
