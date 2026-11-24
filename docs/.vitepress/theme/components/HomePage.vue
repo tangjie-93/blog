@@ -207,8 +207,12 @@ function selectPanel(id: (typeof panels)[number]['id']): void {
     .home-page__topics { --topic-columns: 4; }
 }
 @media (min-width: 1280px) and (min-height: 800px) {
-    .home-page__hero { grid-template-columns: max-content minmax(0, 1fr); }
+    .home-page__hero { grid-template-columns: max-content max-content minmax(0, 1fr); gap: 0 12px; }
+    .home-page__intro { display: contents; }
+    .home-page__eyebrow { grid-column: 1 / -1; }
+    .home-page__description { margin-top: 0; }
     .home-page__actions { flex: 1; }
+    .home-page__actions a { gap: 4px; padding-inline: 6px; white-space: nowrap; }
 }
 @media (min-width: 1280px) and (max-height: 860px) {
     .home-page__eyebrow { display: none; }
