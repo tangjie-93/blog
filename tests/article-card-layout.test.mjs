@@ -32,7 +32,7 @@ test('entire article cards and list rows are native links with one keyboard stop
   assert.doesNotMatch(source, /<h2 class="blog-list__title"><a/)
   assert.match(source, /&:focus-visible \{ outline: 2px solid var\(--blog-focus-ring\)/)
   for (const [file, pattern] of [
-    ['HomePage.vue', /<a v-for="\(post, index\) in recentPosts"[^>]+class="home-page__post"[^>]+:href=/],
+    ['HomePage.vue', /<a v-for="(?:post|\(post,\s*index\)) in recentPosts"[^>]+class="home-page__post"[^>]+:href="withBase\(post\.url\)"/],
     ['Tags.vue', /<a :href="withBase\(post.url\)">/],
     ['components/HomeReadingPaths.vue', /<a v-for="path in paths"[^>]+class="home-reading-paths__card"[^>]+:href=/],
   ]) assert.match(readFileSync(new URL(`../docs/.vitepress/theme/components/${file}`, import.meta.url), 'utf8'), pattern)

@@ -94,12 +94,13 @@ pnpm exec wrangler pages project create tangjie-blog --production-branch dev
 pnpm run deploy
 ```
 
-`pnpm run deploy` 等价于：
+只发布到 `Cloudflare Pages`：
 
 ```sh
-pnpm run docs:build
-pnpm exec wrangler pages deploy docs/.vitepress/dist --project-name tangjie-blog
+npm run deploy:cloudflare
 ```
+
+该命令构建站点后使用 `wrangler` 发布；`npm run deploy` 则是文末说明的三平台统一发布，不是仅发布到 `Cloudflare`。
 
 查看部署记录：
 
@@ -178,7 +179,21 @@ vercel inspect <部署地址>
 npm run deploy
 ```
 
-这个命令会先推送 `dev` 触发 `GitHub Pages`，再构建并发布 `Cloudflare Pages`，最后发布 `Vercel` 生产环境。它会把同一个当前 commit 传给三个平台，因此站点页脚显示的 commit 可以用来核对版本。
+这个命令会先推送 `dev` 触发 `GitHub Pages`，再运行全量测试、构建并发布 `Cloudflare Pages`，最后发布 `Vercel` 生产环境。测试失败会阻止后续手动发布；`GitHub Pages` 是独立的异步工作流，必须另外检查结果，脚本不会将推送成功等同于该平台部署成功。站点页脚显示的提交可以用来核对版本。
+
+`Vercel` 单独发布和统一发布共用 `scripts/deploy-vercel.mjs`。默认使用 `https://api.vercel.com`，固定使用已验证的 `vercel@50.8.1`，避免 `pnpm dlx vercel` 随最新版切换到不同运行时。不要把 `https://vercel.com/api` 直接传给 CLI 的 `--api`：其 URL 拼接会丢失 `/api` 前缀，拿到网页而非用户对象。
+
+### Vercel 连接超时的处理
+
+脚本先在不携带凭据的情况下探测 API。直接连接失败时，会验证 `vercel.com` 解析得到的候选地址；只有通过原 API 域名的 HTTPS 校验后，才在本次 CLI 进程中使用该地址。它不修改系统 DNS，不改请求域名、HTTP Host 或 TLS SNI，也不关闭证书验证。
+
+如系统 DNS 返回的候选地址也无法连接，可指定网络诊断中已验证的 Vercel 地址：
+
+```sh
+VERCEL_API_CONNECT_ADDRESS=<已验证的IP地址> npm run deploy:vercel
+```
+
+该地址仍会在发送凭据前经过 HTTPS 探测，不应把临时 IP 写死到仓库或 `/etc/hosts`。默认地址和候选地址均不可达时，脚本会报错停止；不要反复创建部署或关闭 TLS 校验。可先切换到正常网络，再使用平台 CLI 的登录流程刷新过期凭据。令牌只保存在 CLI 的凭据目录，不放进仓库、命令参数或日志。
 
 如果只需要发布单个平台：
 

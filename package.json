@@ -14,7 +14,7 @@
     "docs:preview": "vitepress preview docs",
     "deploy:github": "git push origin dev",
     "deploy:cloudflare": "pnpm run build && wrangler pages deploy docs/.vitepress/dist --project-name tangjie-blog --branch dev",
-    "deploy:vercel": "vercel --prod --yes",
+    "deploy:vercel": "node scripts/deploy-vercel.mjs",
     "deploy": "node scripts/deploy-all.mjs",
     "test": "node --test tests/*.test.mjs docs/.vitepress/theme/*.test.ts"
   },

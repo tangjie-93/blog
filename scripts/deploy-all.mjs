@@ -1,4 +1,5 @@
 import { execFileSync } from 'node:child_process'
+import { deployVercel } from './deploy-vercel.mjs'
 
 const run = (command, args) => {
   console.log(`\n$ ${command} ${args.join(' ')}`)
@@ -16,9 +17,9 @@ console.log(`Publishing commit ${commit.slice(0, 7)} from ${branch}`)
 // GitHub Pages is published by the repository workflow after this push.
 run('git', ['push', 'origin', 'dev'])
 const pnpm = process.platform === 'win32' ? 'pnpm.cmd' : 'pnpm'
-const vercelApi = process.env.VERCEL_API_URL || 'https://vercel.com/api'
+run(pnpm, ['test'])
 run(pnpm, ['run', 'build'])
 run(pnpm, ['exec', 'wrangler', 'pages', 'deploy', 'docs/.vitepress/dist', '--project-name', 'tangjie-blog', '--branch', 'dev', '--commit-hash', commit])
-run(pnpm, ['dlx', 'vercel', '--api', vercelApi, '--prod', '--yes'])
+await deployVercel()
 
-console.log(`\nPublished commit ${commit.slice(0, 7)} to GitHub Pages, Cloudflare Pages and Vercel.`)
+console.log(`\nPublished commit ${commit.slice(0, 7)} to Cloudflare Pages and Vercel. GitHub Pages is managed separately by GitHub Actions; verify its workflow result.`)
