@@ -53,7 +53,19 @@ test('indie development has its own group, topic index and migrated article navi
   const { nav, sidebar } = createNavigation(new URL('../docs/articles', import.meta.url).pathname)
   assert.ok(nav.some(item => item.text === '出海实战' && item.link === '/articles/going-global/'))
   const items = sidebar['/articles/going-global/'][0].items
-  assert.equal(items.length, 1)
+  assert.equal(items.length, 10)
+  assert.deepEqual(items.map(item => item.text), [
+    '1、AI出海副业从0到1实战指南',
+    '2、需求验证与付费试点',
+    '3、最小产品与上线验收',
+    '4、海外收款与支付状态机',
+    '5、定价与单位经济模型',
+    '6、首批用户与发布渠道实验',
+    '7、SEO与本地化实战',
+    '8、激活留存与经营指标',
+    '9、客服故障与持续经营',
+    '10、视频跟练与项目实操路线'
+  ])
   assert.equal(items[0].text, '1、AI出海副业从0到1实战指南')
   assert.equal(items[0].link, `/articles/going-global/${encodeURIComponent('01-AI出海副业从0到1实战指南')}.html`)
   assert.equal(postCategory(items[0].link), 'going-global')
