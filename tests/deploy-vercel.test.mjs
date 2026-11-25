@@ -23,12 +23,17 @@ test('Vercel fallback selects a verified address without changing the API URL', 
   assert.equal(await selectConnection('https://api.vercel.com', async (...args) => {
     calls.push(args)
     return args[1] === '192.0.2.2'
-  }, resolve), '192.0.2.2')
+  }, resolve, ''), '192.0.2.2')
   assert.deepEqual(calls, [['https://api.vercel.com'], ['https://api.vercel.com', '192.0.2.1'], ['https://api.vercel.com', '192.0.2.2']])
 })
 
+test('Vercel verifies an explicit address and rejects non-IP overrides', async () => {
+  assert.equal(await selectConnection('https://api.vercel.com', async (_url, address) => address === '192.0.2.3', resolve, '192.0.2.3'), '192.0.2.3')
+  await assert.rejects(selectConnection('https://api.vercel.com', async () => false, resolve, 'not-an-ip'), /must be an IP/)
+})
+
 test('Vercel refuses deployment when neither route is reachable or a custom endpoint fails', async () => {
-  await assert.rejects(selectConnection('https://api.vercel.com', async () => false, resolve), /Cannot reach/)
+  await assert.rejects(selectConnection('https://api.vercel.com', async () => false, resolve, ''), /Cannot reach/)
   const calls = []
   await assert.rejects(selectConnection('https://custom.example', async (...args) => {
     calls.push(args)

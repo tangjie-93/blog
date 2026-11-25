@@ -28,11 +28,10 @@ export function probeApi(url, connectHost) {
 }
 
 /** Select the alternate connection address only when the default API is unreachable. */
-export async function selectConnection(url, probe = probeApi, resolve = lookupAsync) {
+export async function selectConnection(url, probe = probeApi, resolve = lookupAsync, configured = process.env.VERCEL_API_CONNECT_ADDRESS) {
   if (await probe(url)) return undefined
   if (url === 'https://api.vercel.com') {
     const addresses = await resolve('vercel.com', { all: true })
-    const configured = process.env.VERCEL_API_CONNECT_ADDRESS
     if (configured && !isIP(configured)) throw new Error('VERCEL_API_CONNECT_ADDRESS must be an IP address.')
     if (configured) addresses.unshift({ address: configured })
     const results = await Promise.all(addresses.map(async ({ address }) =>
