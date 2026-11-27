@@ -4,6 +4,7 @@ import { lookup as lookupAsync } from 'node:dns/promises'
 import { isIP } from 'node:net'
 import { get } from 'node:https'
 import { fileURLToPath } from 'node:url'
+import { writeArticleTimestampSnapshot } from '../docs/.vitepress/articleTimestamps.mjs'
 
 const apiUrl = process.env.VERCEL_API_URL || 'https://api.vercel.com'
 
@@ -53,9 +54,15 @@ export async function deployVercel() {
     console.log('Using Vercel alternate connection address; API hostname and TLS verification are unchanged.')
   }
   const pnpm = process.platform === 'win32' ? 'pnpm.cmd' : 'pnpm'
-  execFileSync(pnpm, ['dlx', 'vercel@50.8.1', '--api', apiUrl, '--prod', '--yes'], {
-    stdio: 'inherit', env, shell: pnpm.endsWith('.cmd'),
-  })
+  // 源码上传不含 .git；Vercel CLI 不使用 .gitignore 筛选上传文件。
+  const cleanup = writeArticleTimestampSnapshot(fileURLToPath(new URL('../', import.meta.url)))
+  try {
+    execFileSync(pnpm, ['dlx', 'vercel@50.8.1', '--api', apiUrl, '--prod', '--yes'], {
+      stdio: 'inherit', env, shell: pnpm.endsWith('.cmd'),
+    })
+  } finally {
+    cleanup()
+  }
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) await deployVercel()

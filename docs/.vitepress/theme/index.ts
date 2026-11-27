@@ -6,6 +6,9 @@ import 'element-plus/dist/index.css'
 import 'element-plus/theme-chalk/dark/css-vars.css'
 import DefaultTheme from 'vitepress/theme'
 import BlogList from './components/BlogList.vue'
+import ArticleDates from './components/ArticleDates.vue'
+import { data as posts } from '../posts.data'
+import { getPostPageUrl } from './blog'
 import Tags from './components/Tags.vue'
 import Valine from './components/Valine.vue'
 import HomePage from './components/HomePage.vue'
@@ -51,6 +54,12 @@ export default {
     Layout: () => {
         const { page } = useData()
         return h(ElConfigProvider, { locale: zhCn }, () => h(DefaultTheme.Layout, null, {
+            'doc-before': () => {
+                if (!page.value.relativePath.startsWith('articles/')) return null
+                const url = getPostPageUrl(page.value.relativePath)
+                const post = posts.find(post => post.url === url)
+                return post ? h(ArticleDates, { post }) : null
+            },
             'doc-after': () => page.value.relativePath.startsWith('articles/') && !hasPageClass(page.value.frontmatter.pageClass, 'blog-archive') ? h(Valine) : null,
         }))
     },

@@ -1,10 +1,14 @@
 export interface BlogPost {
     url: string
     title: string
+    /** 文章创建日期（北京时间），用于归档。 */
     date: string
-    /** 有依据的完整时间；旧文章无记录时不捏造时分秒。 */
+    createdYear?: number
     dateTime?: string
-    dateTimeSource?: 'frontmatter' | 'git' | 'git-edit' | 'file-edit'
+    dateSource?: 'frontmatter' | 'git'
+    updated?: string
+    updatedTime?: string
+    updatedSource?: 'frontmatter' | 'git' | 'creation'
     tags: string[]
     type: string
     note: string
@@ -13,8 +17,11 @@ export interface BlogPost {
 export interface BlogSourcePost {
     url: string
     src?: string
-    gitDateTime?: string
-    recordTimeSource?: 'git' | 'git-edit' | 'file-edit'
+    gitDates?: {
+        first: string
+        byDay: Record<string, string>
+        updated?: string
+    }
     frontmatter: Record<string, unknown>
 }
 

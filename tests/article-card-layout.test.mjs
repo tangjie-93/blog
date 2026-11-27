@@ -7,22 +7,22 @@ const require = createRequire(import.meta.url)
 const { parse } = require('vue/compiler-sfc')
 const source = readFileSync(new URL('../docs/.vitepress/theme/components/BlogList.vue', import.meta.url), 'utf8')
 const library = readFileSync(new URL('../docs/.vitepress/theme/components/ArticleLibrary.vue', import.meta.url), 'utf8')
+const dates = readFileSync(new URL('../docs/.vitepress/theme/components/ArticleDates.vue', import.meta.url), 'utf8')
 
 test('article cards keep full text line heights rather than shrinking title and summary', () => {
   assert.deepEqual(parse(source).errors, [])
-  assert.match(source, /minCardHeight:\s*\(\) => viewMode\.value === 'list' \? 64 : 216/)
-  assert.match(source, /maxCardHeight:\s*\(\) => viewMode\.value === 'list' \? 68 : 232/)
+  assert.match(source, /minCardHeight:\s*\(\) => viewMode\.value === 'list' \? 80 : 240/)
+  assert.match(source, /maxCardHeight:\s*\(\) => viewMode\.value === 'list' \? 84 : 256/)
   for (const block of ['eyebrow', 'title', 'note', 'meta']) {
     assert.match(source, new RegExp(`\\.blog-list__${block} \\{ flex-shrink: 0;`))
   }
   assert.match(source, /\.blog-list__title-text \{ display: -webkit-box; overflow: hidden;/)
-  assert.match(source, /<footer class="blog-list__pagination">[\s\S]*<\/footer>/)
 })
 
 test('article summaries and metadata remain readable without tiny narrow-screen overrides', () => {
   assert.match(source, /\.blog-list__title \{ grid-column: 2; font-size: 17px/)
   assert.match(source, /\.blog-list__note \{ grid-column: 2; margin: 0; font-size: 14px/)
-  assert.match(source, /\.blog-list__meta time \{ font-size: 13px/)
+  assert.match(dates, /& time \{[^}]*font-size: 13px/)
   assert.doesNotMatch(source, /font-size: 10px/)
 })
 
@@ -44,10 +44,30 @@ test('list rows omit navigation arrows and reclaim the title spacing', () => {
   assert.match(rows, /\.blog-list__title-text \{ display: block; padding-right: 0;/)
 })
 
-test('all-articles toolbar balances a short description with the view switch', () => {
-  assert.match(source, /<p v-if="!props.group" class="blog-list__description">记录前端、AI 与工程实践，让零散知识沉淀为可复用的经验。<\/p>/)
-  assert.match(source, /\.blog-list__view-toolbar \{ display: flex; align-items: center; justify-content: space-between/)
-  assert.match(source, /\.blog-list__description \{ margin: 0; color: var\(--vp-c-text-2\); font-size: 14px/)
+test('article toolbar pairs the active title and result count with time and view controls', () => {
+  const template = parse(source).descriptor.template.content
+  const toolbar = template.slice(template.indexOf('class="blog-list__view-toolbar"'), template.indexOf('ref="gridViewport"'))
+  assert.match(toolbar, /<h1>\{\{ props.title \|\| '全部文章' \}\}<\/h1><span>\{\{ filteredPosts.length \}\} 篇<\/span>/)
+  assert.match(toolbar, /class="blog-list__view-controls"[\s\S]*v-model="selectedYear"[^>]+aria-label="筛选创建年份"/)
+  assert.match(toolbar, /<template #header><span class="blog-list__year-hint">按创建日期统计<\/span><\/template>/)
+  assert.match(toolbar, /v-model="dateOrder"[^>]+aria-label="按创建日期排序"/)
+  assert.match(toolbar, /class="blog-list__view-switch"/)
+})
+
+test('pagination follows the natural-height grid inside the measured viewport', () => {
+  assert.match(source, /ref="gridViewport"[\s\S]*class="blog-list__grid"[\s\S]*<footer ref="pagination" class="blog-list__pagination"/)
+  assert.match(source, /\.blog-list__grid \{ flex: none; \}/)
+  assert.match(source, /footer: pagination/)
+})
+
+test('fitted cards reserve room for both dates below a single tag row', () => {
+  assert.match(source, /:not\(\.blog-list--rows\) \.blog-list__tags \{ max-height: 24px; overflow: hidden; \}/)
+  assert.match(source, /\.blog-list__meta \.article-dates \{ width: 100%; flex-direction: column;/)
+  assert.match(source, /<ArticleDates :post="post" \/>/)
+  assert.deepEqual(parse(dates).errors, [])
+  assert.match(dates, /创建 <time[^>]+:datetime="post.dateTime \|\| post.date"/)
+  assert.match(dates, /更新 <time[^>]+:datetime="post.updatedTime \|\| post.updated"/)
+  assert.match(dates, /无后续修改记录，使用创建日期/)
 })
 
 test('article view switches between cards and rows with safe persisted preferences', () => {
@@ -65,10 +85,13 @@ test('article view switches between cards and rows with safe persisted preferenc
   assert.match(source, /&\.blog-list--rows[\s\S]*grid-template-columns: 1fr/)
 })
 
-test('article topics and resources use the same toolbar as the view switch', () => {
+test('article topics, resources and time controls share one scrollable toolbar row', () => {
   assert.deepEqual(parse(library).errors, [])
   const toolbar = library.indexOf('<template v-if="activeGroup" #toolbar>')
-  assert.match(source, /class="blog-list__view-toolbar">\s*<slot name="toolbar">[\s\S]*?<\/slot>\s*<div class="blog-list__view-switch"/)
+  const template = parse(source).descriptor.template.content
+  assert.match(template, /class="blog-list__view-toolbar"[\s\S]*<slot name="toolbar" \/>\s*<div class="blog-list__view-controls">/)
+  assert.match(source, /\.blog-list__view-toolbar \{[^}]*overflow-x: auto;/)
+  assert.doesNotMatch(source, /\.blog-list__view-toolbar \{[^}]*flex-wrap: wrap/)
   assert.ok(library.indexOf('<BlogList') < toolbar)
   const topics = library.indexOf('class="library-topics"', toolbar)
   const resources = library.indexOf('class="library-resources"', topics)

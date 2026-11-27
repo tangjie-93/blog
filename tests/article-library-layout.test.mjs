@@ -16,7 +16,7 @@ test('article library avoids a duplicate heading strip while retaining accessibl
   assert.match(source, /:d="groupIcons\[group.id\]"/)
   assert.match(source, /class="library-group-icon"[^>]+aria-hidden="true"/)
   assert.match(source, /aria-label="选择具体专题"/)
-  assert.match(source, /<BlogList fit-screen :group="selectedGroup" :category="selectedCategory"/)
+  assert.match(source, /<BlogList fit-screen :title="title" :group="selectedGroup" :category="selectedCategory"/)
 })
 
 test('each topic offers an independent homepage link using real configured navigation', () => {

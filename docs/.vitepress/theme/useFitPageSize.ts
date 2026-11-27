@@ -10,6 +10,10 @@ interface FitPageSizeOptions {
     maxColumns?: number
     /** 小于该宽度时退回固定分页并允许页面滚动，窄屏一屏放不下几项。 */
     minViewportWidth?: number
+    /** 小于该高度时退回固定分页，避免压缩卡片。 */
+    minViewportHeight?: number
+    /** 位于测量区内、需要预留空间的分页栏。 */
+    footer?: Ref<HTMLElement | null>
 }
 
 /**
@@ -42,7 +46,7 @@ export function useFitPageSize(viewport: Ref<HTMLElement | null>, options: FitPa
         const gapY = Number.parseFloat(rowGap) || gapX
         const fit = fitPageSize(
             element.clientWidth,
-            element.clientHeight,
+            element.clientHeight - (options.footer?.value?.offsetHeight ?? 0),
             toValue(options.minCardWidth),
             toValue(options.minCardHeight),
             gapX,
@@ -55,7 +59,7 @@ export function useFitPageSize(viewport: Ref<HTMLElement | null>, options: FitPa
         pageSize.value = fit.pageSize
     }
 
-    /** 宽度跨过断点时切换模式；退出整屏时恢复固定分页和默认网格。 */
+    /** 跨过视口断点时切换模式；退出整屏时恢复固定分页和默认网格。 */
     function syncActive(): void {
         active.value = options.enabled && (!media || media.matches)
         if (!active.value) {
@@ -69,12 +73,17 @@ export function useFitPageSize(viewport: Ref<HTMLElement | null>, options: FitPa
 
     onMounted(() => {
         if (!options.enabled || typeof ResizeObserver === 'undefined') return
-        if (options.minViewportWidth) {
-            media = window.matchMedia(`(min-width: ${options.minViewportWidth}px)`)
+        const conditions = [
+            options.minViewportWidth && `(min-width: ${options.minViewportWidth}px)`,
+            options.minViewportHeight && `(min-height: ${options.minViewportHeight}px)`
+        ].filter(Boolean)
+        if (conditions.length) {
+            media = window.matchMedia(conditions.join(' and '))
             media.addEventListener('change', syncActive)
         }
         observer = new ResizeObserver(() => { measure() })
         if (viewport.value) observer.observe(viewport.value)
+        if (options.footer?.value) observer.observe(options.footer.value, { box: 'border-box' })
         syncActive()
     })
 

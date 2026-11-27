@@ -1,6 +1,7 @@
 node_modules/
 docs/.vitepress/dist/
 docs/.vitepress/cache/
+docs/.vitepress/article-history.generated.json
 .wrangler/
 .playwright-cli/
 output/

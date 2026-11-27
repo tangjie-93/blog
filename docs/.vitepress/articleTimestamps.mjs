@@ -1,57 +1,91 @@
 import { execFileSync } from 'node:child_process'
-import { statSync } from 'node:fs'
+import { readFileSync, writeFileSync, unlinkSync } from 'node:fs'
 import { resolve } from 'node:path'
-import { articleSourcePath } from './articleCategories.mjs'
 import { articleRoute } from './articleCategories.mjs'
 
-/** 只采纳文章声明日期当天的最早 Git 记录；不把后续迁移或修改时间当发布时间。 */
+const snapshotPath = 'docs/.vitepress/article-history.generated.json'
+const snapshotVersion = 1
+const dayFormat = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Asia/Shanghai', year: 'numeric', month: '2-digit', day: '2-digit' })
+
+function historyKey(path) {
+  if (!path.startsWith('docs/articles/') || !path.endsWith('.md')) return undefined
+  return `/${articleRoute(path.slice(5)).replace(/(^|\/)index\.md$/, '$1').replace(/\.md$/, '.html')}`
+}
+
+/** Git 按从新到旧的拓扑顺序输出。重命名把较旧的路径映射到文章的新路径。 */
 export function parseArticleTimestamps(history) {
   const timestamps = new Map()
+  const aliases = new Map()
+  const fields = history.split('\0')
   let timestamp = ''
-  for (const line of history.split(/\r?\n/)) {
-    if (line.startsWith('@@DATE@@')) {
-      timestamp = line.slice(8)
+  let time = NaN
+  let day = ''
+  for (let index = 0; index < fields.length; index++) {
+    const field = fields[index].trim()
+    if (field.startsWith('@@DATE@@')) {
+      timestamp = field.slice(8)
+      time = Date.parse(timestamp)
+      day = Number.isFinite(time) ? dayFormat.format(time) : ''
       continue
     }
-    if (!timestamp || !line.startsWith('docs/articles/') || !line.endsWith('.md')) continue
-    const route = `/${articleRoute(line.slice(5)).replace(/\.md$/, '.html')}`
-    const day = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Shanghai', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(timestamp))
-    const key = `${route}|${day}`
-    const previous = timestamps.get(key)
-    if (!previous || Date.parse(timestamp) < Date.parse(previous)) timestamps.set(key, timestamp)
-    const latestKey = `${route}|latest`
-    const latest = timestamps.get(latestKey)
-    if (!latest || Date.parse(timestamp) > Date.parse(latest)) timestamps.set(latestKey, timestamp)
+    if (!field.startsWith(':')) continue
+    const [, , oldBlob, newBlob, status] = field.split(' ')
+    const oldKey = historyKey(fields[++index])
+    const renamed = status.startsWith('R')
+    const key = renamed ? historyKey(fields[++index]) : oldKey
+    if (!day || !key || !/^[AMR]/.test(status)) continue
+    const target = aliases.get(key) ?? key
+    if (renamed && oldKey && oldKey !== key) aliases.set(oldKey, target)
+    // 内容未变的移动或权限变更不参与创建、更新时间计算。
+    if (oldBlob === newBlob) continue
+    const record = timestamps.get(target) ?? { first: timestamp, byDay: {} }
+    if (time < Date.parse(record.first)) record.first = timestamp
+    if (!record.byDay[day] || time < Date.parse(record.byDay[day])) record.byDay[day] = timestamp
+    if (status !== 'A' && (!record.updated || time > Date.parse(record.updated))) record.updated = timestamp
+    timestamps.set(target, record)
   }
   return timestamps
 }
 
-export function loadArticleTimestamps(root) {
+function git(root, args) {
+  return execFileSync('git', args, { cwd: root, encoding: 'utf8', maxBuffer: 8 * 1024 * 1024, stdio: ['ignore', 'pipe', 'pipe'] })
+}
+
+function sourceCommit(root) {
   try {
-    return parseArticleTimestamps(execFileSync('git', ['-c', 'core.quotepath=false', 'log', '--format=@@DATE@@%aI', '--name-only', '--no-renames', '--', 'docs/articles'], { cwd: root, encoding: 'utf8', maxBuffer: 8 * 1024 * 1024 }))
-  } catch {
-    // 无 Git 历史的发布环境仍能构建；没有依据就保留日期精度。
+    if (git(root, ['rev-parse', '--is-shallow-repository']).trim() === 'false') {
+      return git(root, ['rev-parse', 'HEAD']).trim()
+    }
+  } catch { /* 发布环境可能没有 Git。 */ }
+}
+
+function readHistory(root, commit) {
+  return parseArticleTimestamps(git(root, ['log', '--topo-order', '--format=%x00@@DATE@@%aI', '--raw', '--no-abbrev', '-z', '--find-renames', commit, '--', 'docs/articles']))
+}
+
+export function loadArticleTimestamps(root) {
+  const commit = sourceCommit(root)
+  if (commit) return readHistory(root, commit)
+  try {
+    const snapshot = JSON.parse(readFileSync(resolve(root, snapshotPath), 'utf8'))
+    if (snapshot.version === snapshotVersion && /^[a-f0-9]{40,64}$/.test(snapshot.commit) && Array.isArray(snapshot.records)) {
+      return new Map(snapshot.records)
+    }
+    throw new Error('不支持的文章 Git 日期快照格式')
+  } catch (error) {
+    console.warn(error.code === 'ENOENT'
+      ? '[文章日期] 无完整 Git 历史或日期快照，仅使用文章声明的日期。'
+      : `[文章日期] 无法读取 Git 日期快照，仅使用文章声明的日期：${error.message}`)
     return new Map()
   }
 }
 
-export function resolveArticleTimestamp(url, date, timestamps, root) {
-  const day = date instanceof Date ? date.toISOString().slice(0, 10) : String(date ?? '')
-  if (day && !/^\d{4}-\d{2}-\d{2}$/.test(day)) return undefined
-  const sameDay = timestamps.get(`${url}|${day}`)
-  if (sameDay) return { value: sameDay, source: 'git' }
-  const latest = timestamps.get(`${url}|latest`)
-  if (latest) return { value: latest, source: 'git-edit' }
-  if (!root) return undefined
-  // 仅无 Git 记录的文件使用工作区修改时间，不能把构建机 checkout 时间覆盖真实历史。
-  const segments = decodeURIComponent(url).replace(/^\/articles\//, '').split('/')
-  const category = segments.shift()
-  const relative = segments.join('/').replace(/\.html$/, '.md')
-  if (!category || !relative || segments.includes('..')) return undefined
-  const file = resolve(root, 'docs/articles', articleSourcePath(category), relative)
-  try {
-    return { value: statSync(file).mtime.toISOString(), source: 'file-edit' }
-  } catch {
-    return undefined
-  }
+/** Vercel 上传源码时临时附带快照；文件不提交，也不覆盖已有文件。 */
+export function writeArticleTimestampSnapshot(root) {
+  const commit = sourceCommit(root)
+  if (!commit) throw new Error('生成文章日期快照需要完整的 Git 历史')
+  const path = resolve(root, snapshotPath)
+  const records = [...readHistory(root, commit)]
+  writeFileSync(path, JSON.stringify({ version: snapshotVersion, commit, records }), { flag: 'wx' })
+  return () => unlinkSync(path)
 }

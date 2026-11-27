@@ -335,9 +335,9 @@ html::-webkit-scrollbar-track:vertical {
     }
     & > .VPContent { max-width: none; }
 }
-/* 归档铺满一屏：页面占满视口高度，分页数量由组件测量网格可用空间决定。
-   窄屏一屏放不下几项，900px 以下退回普通滚动列表（与 useFitPageSize 的断点一致）。 */
-@media (min-width: 900px) {
+/* 归档铺满一屏：分页数量按网格可用空间测量。
+   窄屏或矮窗口退回滚动列表，断点与 BlogList 的整屏配置一致。 */
+@media (min-width: 900px) and (min-height: 640px) {
     .Layout.blog-archive--screen {
         height: 100vh;
         height: 100dvh;

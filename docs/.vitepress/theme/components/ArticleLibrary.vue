@@ -59,7 +59,7 @@ onUnmounted(() => { window.removeEventListener('popstate', restore) })
             <p class="library-sidebar__hint">分类找方向，搜索找问题。</p>
         </aside>
         <main class="library-content" :aria-label="`${title} · 文章浏览`">
-            <BlogList fit-screen :group="selectedGroup" :category="selectedCategory">
+            <BlogList fit-screen :title="title" :group="selectedGroup" :category="selectedCategory">
                 <template v-if="activeGroup" #toolbar>
                     <div class="library-toolbar-content">
                         <div class="library-topics" role="group" aria-label="选择具体专题">
@@ -105,9 +105,9 @@ onUnmounted(() => { window.removeEventListener('popstate', restore) })
     }
     & .library-sidebar__hint { font-size: 12px; color: var(--blog-muted); margin: 24px 12px 0; line-height: 1.8; }
     & .library-content { display: flex; flex-direction: column; min-height: 0; min-width: 0; padding-top: 20px; }
-    & .library-toolbar-content { display: flex; flex: 1 1 auto; flex-wrap: wrap; align-items: center; gap: 8px 20px; min-width: 0; }
+    & .library-toolbar-content { display: flex; flex-shrink: 0; align-items: center; gap: 16px; }
     & .library-topics {
-        display: flex; flex: 1; flex-wrap: wrap; gap: 6px; min-width: 0;
+        display: flex; gap: 6px; white-space: nowrap;
         & button { min-height: 34px; padding: 6px 12px; border-radius: 8px; font-size: 12px; cursor: pointer; }
     }
     & .library-topic {
@@ -123,6 +123,10 @@ onUnmounted(() => { window.removeEventListener('popstate', restore) })
         display: flex; flex-wrap: wrap; gap: 8px; margin-left: auto;
         & a { display: inline-flex; align-items: center; gap: 8px; min-height: 34px; padding: 6px 10px; border-radius: 6px; color: var(--vp-c-brand-1); font-size: 12px; white-space: nowrap; transition: background-color 160ms ease; }
         & a:hover { background: var(--vp-c-brand-soft); }
+    }
+    @media (min-width: 900px) and (min-height: 640px) {
+        grid-template-rows: minmax(0, 1fr);
+        & .library-sidebar { overflow-y: auto; }
     }
     @media (max-width: 899px) {
         display: block;
