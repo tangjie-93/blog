@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 500" font-family="system-ui, 'Microsoft YaHei', sans-serif" role="img" aria-labelledby="title desc">
+  <title id="title">判断、查资料和执行操作是三件事</title>
+  <desc id="desc">模型提出查资料、查订单或人工复核建议，代码按白名单与权限选择路径。检索后证据不足则不编答案，查订单前核验身份和归属。</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0 0 10 5 0 10z" fill="#546c82"/>
+    </marker>
+  </defs>
+  <rect width="520" height="500" rx="20" fill="#f3f7fb"/>
+  <text x="24" y="39" fill="#182c44" font-size="23" font-weight="700">客服 Agent：模型不拿操作钥匙</text>
+  <g stroke="#c8d5e3" fill="#fff">
+    <rect x="24" y="60" width="472" height="61" rx="11" fill="#dcecff" stroke="#9fc0e9"/>
+    <rect x="24" y="152" width="472" height="61" rx="11" fill="#d9f4ea" stroke="#92cab8"/>
+    <rect x="24" y="258" width="146" height="125" rx="11"/>
+    <rect x="187" y="258" width="146" height="125" rx="11"/>
+    <rect x="350" y="258" width="146" height="125" rx="11" fill="#fff1db" stroke="#dfbf8c"/>
+    <rect x="24" y="417" width="472" height="58" rx="11"/>
+  </g>
+  <g fill="#182c44" font-size="19" font-weight="700" text-anchor="middle">
+    <text x="260" y="85">Jev：建议走哪条路？</text>
+    <text x="260" y="177">代码：校验结果、白名单和权限</text>
+    <text x="97" y="288">查帮助文档</text><text x="260" y="288">查当前订单</text><text x="423" y="288">人工复核</text>
+    <text x="260" y="442">权限不是模型分出来的</text>
+  </g>
+  <g fill="#3b536b" font-size="16" text-anchor="middle">
+    <text x="260" y="107">选项固定，不接受随意生成的工具名</text>
+    <text x="260" y="199">请求失败或拿不准时，也有明确去处</text>
+    <text x="97" y="321">找政策条款</text><text x="97" y="346">证据足才回答</text>
+    <text x="260" y="321">校验身份与归属</text><text x="260" y="346">只读获取状态</text>
+    <text x="423" y="321">重复扣款疑虑</text><text x="423" y="346">发起复核</text>
+    <text x="260" y="465">判断不等于证据，更不等于允许退款</text>
+  </g>
+  <g fill="none" stroke="#546c82" stroke-width="2" marker-end="url(#arrow)">
+    <path d="M260 123 V147"/><path d="M260 215 V233 H97 V253"/><path d="M260 215 V253"/><path d="M260 233 H423 V253"/>
+  </g>
+</svg>
