@@ -1,6 +1,7 @@
 ---
 title: 17、源码解析之Euler
 date: '2024-07-16'
+updated: '2026-11-21'
 lastmodifydate: '2024-07-16'
 type: 技术
 tags: threejs

@@ -1,6 +1,7 @@
 ---
 title: 32、Object.freeze和Object.Seal()的区别
 date: '2020-01-14'
+updated: '2026-10-18'
 type: 技术
 tags: javascript
 note: Object.freeze和Object.Seal()的区别。

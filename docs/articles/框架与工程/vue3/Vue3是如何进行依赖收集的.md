@@ -1,6 +1,7 @@
 ---
 title: 4.Vue3是如何进行依赖收集的
 date: '2020-12-7'
+updated: '2026-11-21'
 type: 技术
 tags: vue3
 note: "围绕 `track`、`trigger` 和 `effect` 解释 `Vue` 3 响应式系统如何在读取时收集依赖、写入时触发更新，并梳理相关源码关系。"

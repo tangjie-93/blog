@@ -1,6 +1,7 @@
 ---
 title: 28、javascript之异步解决方案总结
 date: '2020-03-17'
+updated: '2026-11-21'
 type: 技术
 tags: javascript
 note: "按回调、`Promise`、`Generator` 和 `async/await` 梳理 `JavaScript` 异步流程演进与错误处理方式。"

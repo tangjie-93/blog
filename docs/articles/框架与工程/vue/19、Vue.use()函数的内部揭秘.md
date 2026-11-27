@@ -1,6 +1,7 @@
 ---
 title: 20.Vue.use()函数的内部实现原理
 date: '2020-06-10'
+updated: '2026-11-21'
 type: 技术
 tags: vue
 note: "结合 `Vue.use` 源码说明插件注册、重复安装检查、参数传递和 `install` 调用流程，帮助理解 `Vue` 插件机制。"

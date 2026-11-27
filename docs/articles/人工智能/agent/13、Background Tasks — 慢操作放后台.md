@@ -1,6 +1,7 @@
 ---
 title: "13、Background Tasks — 慢操作放后台"
 date: "2026-10-14"
+updated: "2026-10-19"
 type: "技术"
 tags: "Agent|AI Coding"
 note: "把耗时操作交给后台线程，先返回占位结果，再通过通知回填完成状态。"

@@ -1,6 +1,7 @@
 ---
 title: 高级 RAG：哪些模式值得引入
 date: '2026-11-14'
+updated: '2026-11-27'
 type: 技术
 tags: RAG|高级|Agent
 note: HyDE、多查询、RAPTOR、GraphRAG、Self-RAG、CRAG、Agentic RAG、多模态与长上下文取舍。

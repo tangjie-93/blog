@@ -1,6 +1,7 @@
 ---
 title: 12.computed和watch的区别
 date: '2020-07-24'
+updated: '2026-11-21'
 type: 技术
 tags: vue
 note: "从求值时机、缓存、依赖追踪和副作用职责比较 `computed` 与 `watch`，结合源码说明两者的选型边界。"

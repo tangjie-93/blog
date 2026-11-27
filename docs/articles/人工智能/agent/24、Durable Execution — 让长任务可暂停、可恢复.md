@@ -1,6 +1,7 @@
 ---
 title: "24、Durable Execution — 让长任务可暂停、可恢复"
 date: "2026-10-17"
+updated: "2026-10-19"
 type: "技术"
 tags: "Agent|AI Coding"
 note: "用检查点、幂等步骤和人工中断让长时间 Agent 在故障后从正确位置继续。"

@@ -1,6 +1,7 @@
 ---
 title: 21、浏览器的执行原理
 date: '2020-01-14'
+updated: '2026-11-21'
 type: 技术
 tags: javascript
 note: 从解析、编译、执行到事件循环梳理浏览器运行 `JavaScript` 的过程，解释任务队列和渲染协作。

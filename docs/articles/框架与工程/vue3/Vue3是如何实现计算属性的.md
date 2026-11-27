@@ -1,6 +1,7 @@
 ---
 title: 6.Vue3计算属性的实现
 date: '2020-12-8'
+updated: '2026-11-21'
 type: 技术
 tags: vue3
 note: "结合 `effect`、惰性执行和缓存机制分析 `Vue` 3 `computed` 的源码，说明 `getter`、`setter` 与依赖变化后的重新计算时机。"

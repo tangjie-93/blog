@@ -1,6 +1,7 @@
 ---
 title: 43.WebGL之性能优化
 date: '2024-06-28'
+updated: '2026-11-21'
 lastmodifydate: '2024-06-28'
 type: 技术
 tags: WebGL

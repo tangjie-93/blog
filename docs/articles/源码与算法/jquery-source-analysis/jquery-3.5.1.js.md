@@ -1,6 +1,7 @@
 ---
 title: jquer3.5.1源码
 date: '2020-11-27'
+updated: '2026-11-21'
 type: 技术
 tags: jquery
 note: "提供 `jQuery 3.5.1` 完整源码及版本入口，适合作为配套源码阅读、函数定位和实现细节对照材料。"

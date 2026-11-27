@@ -1,6 +1,7 @@
 ---
 title: "FastAPI 完整知识点总结"
 date: "2026-04-15"
+updated: "2026-10-19"
 type: "技术"
 tags: "Python"
 note: "系统整理路由、参数、依赖注入、安全、数据库、异步与部署知识。"

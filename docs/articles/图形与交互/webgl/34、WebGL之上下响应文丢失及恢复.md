@@ -1,6 +1,7 @@
 ---
 title: 34.WebGL之上下响应文丢失
 date: '2024-06-20'
+updated: '2026-11-21'
 lastmodifydate: '2024-06-20'
 type: 技术
 tags: WebGL

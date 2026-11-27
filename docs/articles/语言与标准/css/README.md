@@ -1,6 +1,7 @@
 ---
 title: 1、css之盒模型
 date: '2020-01-14'
+updated: '2026-11-21'
 type: 技术
 tags: css
 note: css有两种常见的盒模型，W3C标准盒模型和 IE怪异盒模型

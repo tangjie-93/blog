@@ -1,6 +1,7 @@
 ---
 title: "Agent 架构全景：20 章核心机制回顾"
 date: "2026-10-14"
+updated: "2026-10-19"
 type: "技术"
 tags: "Agent|OpenAI"
 note: "从 Agent Loop 到综合系统，查阅 20 个章节的核心机制与代码。"

@@ -1,6 +1,7 @@
 ---
 title: LangChain 生态总览
 date: '2026-08-24'
+updated: '2026-10-19'
 type: 技术
 tags: LangChain|RAG
 note: 从生态分层到企业 RAG 工程化，建立完整学习地图。

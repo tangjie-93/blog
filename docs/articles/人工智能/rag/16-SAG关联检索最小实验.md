@@ -1,6 +1,7 @@
 ---
 title: "SAG 关联检索最小实验：用 SQLite 串起三份证据"
 date: '2026-11-27'
+updated: '2026-11-27'
 type: 技术
 tags: RAG|SAG|SAG2|Python|工程实践
 note: 零第三方依赖的关联检索实验，观察逐跳扩展、干扰资料、范围隔离和删除后的证据断链。

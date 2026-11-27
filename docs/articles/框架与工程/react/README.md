@@ -1,6 +1,7 @@
 ---
 title: react基本知识点总结
 date: '2020-06-21'
+updated: '2026-11-21'
 type: 技术
 tags: react
 note: "汇总 `React` 组件状态更新相关知识，重点说明 `setState` 的参数形式、合并行为与回调时机，便于理解状态驱动渲染。"

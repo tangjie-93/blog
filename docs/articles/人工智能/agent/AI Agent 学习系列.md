@@ -1,6 +1,7 @@
 ---
 title: "AI Agent 学习系列"
 date: "2026-07-08"
+updated: "2026-10-18"
 type: "技术"
 tags: "Agent"
 note: "面向前端工程师的 AI Agent 系列选题与学习计划。"

@@ -1,6 +1,7 @@
 ---
 title: 企业 RAG 工程化
 date: '2026-08-24'
+updated: '2026-10-19'
 type: 技术
 tags: LangChain|RAG
 note: 补齐企业 RAG 的权限、更新、引用、成本与失败兜底。

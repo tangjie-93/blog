@@ -1,6 +1,7 @@
 ---
 title: Set和Map用法总结
 date: '2020-03-15'
+updated: '2026-11-21'
 type: 技术
 tags: es6
 note: 对比 `Set`、`Map`、`WeakSet` 和 `WeakMap` 的数据结构特性，整理去重、键值映射及对象关联场景。

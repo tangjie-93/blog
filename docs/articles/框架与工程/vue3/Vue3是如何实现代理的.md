@@ -1,6 +1,7 @@
 ---
 title: 5.vue3数据代理功能的实现
 date: '2020-12-7'
+updated: '2026-11-21'
 type: 技术
 tags: vue3
 note: "对比 `Vue` 2 的 `Object.defineProperty` 与 `Vue` 3 的 `Proxy`，结合源码说明数据代理、读写拦截和响应式对象创建过程。"

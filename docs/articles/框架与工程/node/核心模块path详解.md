@@ -1,6 +1,7 @@
 ---
 title: 核心模块path详解
 date: '2020-03-19'
+updated: '2026-11-21'
 type: 技术
 tags: node
 note: "围绕 `Node.js` `path.join`、`path.resolve` 等方法说明路径拼接、绝对化和跨平台分隔符处理，帮助避免文件路径解析错误。"

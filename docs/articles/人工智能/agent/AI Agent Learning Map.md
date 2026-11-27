@@ -1,6 +1,7 @@
 ---
 title: "AI Agent Learning Map"
 date: "2026-07-06"
+updated: "2026-11-18"
 type: "技术"
 tags: "Agent"
 note: "按基础概念、核心机制、工程化、前端结合与项目实践组织学习地图。"

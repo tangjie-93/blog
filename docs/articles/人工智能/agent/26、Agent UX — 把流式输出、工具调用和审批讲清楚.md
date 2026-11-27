@@ -1,6 +1,7 @@
 ---
 title: "26、Agent UX — 把流式输出、工具调用和审批讲清楚"
 date: "2026-10-17"
+updated: "2026-10-18"
 type: "技术"
 tags: "Agent|AI Coding"
 note: "用事件协议展示流式文本、工具进度、等待审批和失败恢复，让用户知道 Agent 正在做什么。"

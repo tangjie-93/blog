@@ -1,6 +1,7 @@
 ---
 title: DataBase 专题
 date: '2026-10-19'
+updated: '2026-10-19'
 type: 技术
 tags: 数据库|PostgreSQL
 note: 从 PostgreSQL 安装配置、命令操作到日常维护，整理数据库基础实践。

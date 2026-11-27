@@ -1,6 +1,7 @@
 ---
 title: LangGraph 编排
 date: '2026-08-24'
+updated: '2026-10-19'
 type: 技术
 tags: LangChain|LangGraph
 note: 用 State、Node、Edge 和 Checkpointer 编排复杂流程。

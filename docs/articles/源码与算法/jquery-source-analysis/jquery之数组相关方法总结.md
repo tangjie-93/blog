@@ -1,6 +1,7 @@
 ---
 title: jquery之数组循环方法总结
 date: '2020-10-18'
+updated: '2026-11-21'
 type: 技术
 tags: jquery
 note: "分析 `jQuery` 中数组遍历、过滤、合并和索引相关方法的实现，比较不同写法的参数处理与返回值行为。"

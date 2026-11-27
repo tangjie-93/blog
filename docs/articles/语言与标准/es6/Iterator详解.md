@@ -1,6 +1,7 @@
 ---
 title: Iterator详解
 date: '2020-03-16'
+updated: '2026-11-21'
 type: 技术
 tags: es6
 note: 解释迭代器协议、`Symbol.iterator` 与 `next` 方法，说明如何让自定义对象支持 `for...of` 遍历。

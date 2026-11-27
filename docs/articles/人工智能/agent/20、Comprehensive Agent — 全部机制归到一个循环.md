@@ -1,6 +1,7 @@
 ---
 title: "20、Comprehensive Agent — 全部机制归到一个循环"
 date: "2026-10-14"
+updated: "2026-10-19"
 type: "技术"
 tags: "Agent|AI Coding"
 note: "把工具、权限、记忆、任务、团队、后台和 MCP 统一接回同一个执行循环。"

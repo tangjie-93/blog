@@ -1,6 +1,7 @@
 ---
 title: 25.WebGL平移的原理及公式的推导
 date: '2024-06-16'
+updated: '2026-11-21'
 lastmodifydate: '2024-06-16'
 type: 技术
 tags: WebGL

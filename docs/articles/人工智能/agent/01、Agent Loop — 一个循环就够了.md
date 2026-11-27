@@ -1,6 +1,7 @@
 ---
 title: "01、Agent Loop — 一个循环就够了"
 date: "2026-10-14"
+updated: "2026-10-19"
 type: "技术"
 tags: "Agent|AI Coding"
 note: "用一个稳定的模型—工具—结果循环驱动 Agent 持续完成任务。"

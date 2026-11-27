@@ -1,6 +1,7 @@
 ---
 title: jquery之样式获取兼容总结
 date: '2020-11-25'
+updated: '2026-11-21'
 type: 技术
 tags: jquery
 note: "围绕节点类型和浏览器差异，梳理 `jQuery` 获取元素样式与尺寸时的兼容处理，说明统一 `API` 背后的判断逻辑。"

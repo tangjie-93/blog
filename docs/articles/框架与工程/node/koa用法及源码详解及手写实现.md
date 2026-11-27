@@ -1,6 +1,7 @@
 ---
 title: koa用法及源码详解
 date: '2020-01-14'
+updated: '2026-11-21'
 type: 技术
 tags: node
 note: "从 `Koa` 中间件模型和 `Generator`/异步流程入手，结合源码与手写实现说明请求链路、洋葱模型和错误处理机制。"

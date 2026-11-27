@@ -1,6 +1,7 @@
 ---
 title: 对reflect的理解及其常见用法
 date: '2020-01-14'
+updated: '2026-11-21'
 type: 技术
 tags: es6
 note: 梳理 `Reflect` 的统一对象操作 `API`，说明它与 `Proxy` 的配合方式及返回值、异常处理差异。

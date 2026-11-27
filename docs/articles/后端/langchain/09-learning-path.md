@@ -1,6 +1,7 @@
 ---
 title: 学习和实践路径
 date: '2026-08-24'
+updated: '2026-10-19'
 type: 技术
 tags: LangChain|RAG
 note: 从普通 RAG 到 Agent 和工程化上线的学习路线。

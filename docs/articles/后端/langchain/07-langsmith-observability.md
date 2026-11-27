@@ -1,6 +1,7 @@
 ---
 title: LangSmith 观测和评估
 date: '2026-08-24'
+updated: '2026-10-19'
 type: 技术
 tags: LangChain|LangSmith
 note: 用 LangSmith 追踪、评估和监控 LLM 应用。

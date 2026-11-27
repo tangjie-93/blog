@@ -1,6 +1,7 @@
 ---
 title: "25、Cost and Reliability — 让 Agent 跑得稳、算得清"
 date: "2026-10-17"
+updated: "2026-10-19"
 type: "技术"
 tags: "Agent|AI Coding"
 note: "把 token、延迟、并发、限流和失败预算纳入 Agent 运行时，控制质量与成本的交换。"

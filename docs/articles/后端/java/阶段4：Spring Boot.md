@@ -1,6 +1,7 @@
 ---
 title: 阶段四：Spring Boot
 date: '2026-10-19'
+updated: '2026-11-18'
 type: 技术
 tags: Java|Spring Boot
 note: Spring Boot 配置、Web 开发、数据访问和工程实践。

@@ -1,6 +1,7 @@
 ---
 title: 模型调用
 date: '2026-08-24'
+updated: '2026-10-19'
 type: 技术
 tags: LangChain|LLM
 note: 统一理解 Chat Model、Embedding、流式与批量调用。

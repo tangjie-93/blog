@@ -1,6 +1,7 @@
 ---
 title: 35.WebGL之选中物体
 date: '2024-06-20'
+updated: '2026-10-16'
 lastmodifydate: '2024-06-28'
 type: 技术
 tags: WebGL

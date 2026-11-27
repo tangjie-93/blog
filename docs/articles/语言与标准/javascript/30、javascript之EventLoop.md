@@ -1,6 +1,7 @@
 ---
 title: 31、javascript之EventLoop
 date: '2020-01-14'
+updated: '2026-11-21'
 type: 技术
 tags: javascript
 note: 我们知道js的最大特点就是单线程，就是同一时间只能做一件事。即便HTML5提出Web Worker允许JavaScript脚本创建多个线程，但是子线程完全受主线程控制，且不得操作DOM。所以，这个新标准并没有改变JavaScript单线程的本质。

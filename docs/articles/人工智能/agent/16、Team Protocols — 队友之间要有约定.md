@@ -1,6 +1,7 @@
 ---
 title: "16、Team Protocols — 队友之间要有约定"
 date: "2026-10-14"
+updated: "2026-10-19"
 type: "技术"
 tags: "Agent|AI Coding"
 note: "通过消息、计划提交和审批约定协调队友，避免重复认领与无序修改。"

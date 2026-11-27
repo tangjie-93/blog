@@ -1,6 +1,7 @@
 ---
 title: "03、Permission — 执行前做权限判断"
 date: "2026-10-14"
+updated: "2026-10-19"
 type: "技术"
 tags: "Agent|AI Coding"
 note: "在工具执行前设置拒绝、规则匹配和用户审批，建立安全边界。"

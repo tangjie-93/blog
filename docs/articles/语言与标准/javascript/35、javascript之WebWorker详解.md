@@ -1,6 +1,7 @@
 ---
 title: 36、javascript之WebWorker详解
 date: '2020-03-23'
+updated: '2026-10-19'
 type: 技术
 tags: javascript
 note: 我们知道js的最大特点就是单线程，就是同一时间只能做一件事。即便HTML5提出Web Worker允许JavaScript脚本创建多个线程，但是子线程完全受主线程控制，且不得操作DOM。下面就来详细了解一下这个新API的用途。

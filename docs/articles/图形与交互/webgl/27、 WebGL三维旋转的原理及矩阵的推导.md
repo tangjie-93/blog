@@ -1,6 +1,7 @@
 ---
 title: 27.WebGL三维旋转的原理及矩阵的推导
 date: '2024-06-16'
+updated: '2026-11-21'
 lastmodifydate: '2024-06-16'
 type: 技术
 tags: WebGL

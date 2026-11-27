@@ -1,6 +1,7 @@
 ---
 title: react之虚拟dom
 date: '2020-07-06'
+updated: '2026-11-21'
 type: 技术
 tags: react
 note: "解释 `React` 虚拟 `DOM` 与协调过程如何用 `JavaScript` 对象描述界面，并说明状态变化后更新真实 `DOM` 的基本机制。"

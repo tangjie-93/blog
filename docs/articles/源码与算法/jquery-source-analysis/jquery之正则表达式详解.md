@@ -1,6 +1,7 @@
 ---
 title: jquery之正则表达式详解
 date: '2020-10-28'
+updated: '2026-11-21'
 type: 技术
 tags: jquery
 note: "以 `jQuery` 源码中的正则为例，解释分隔、匹配、过滤和标记位的含义，帮助理解正则如何服务于字符串与 `HTML` 解析。"

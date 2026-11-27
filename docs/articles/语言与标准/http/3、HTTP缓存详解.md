@@ -1,6 +1,7 @@
 ---
 title: 4、HTTP缓存详解
 date: '2020-08-04'
+updated: '2026-11-21'
 type: 技术
 tags: http
 note: 缓存的分类,包括强制缓存(Expires和cache-control)和协商缓存

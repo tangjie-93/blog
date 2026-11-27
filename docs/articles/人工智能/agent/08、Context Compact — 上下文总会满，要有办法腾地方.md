@@ -1,6 +1,7 @@
 ---
 title: "08、Context Compact — 上下文总会满，要有办法腾地方"
 date: "2026-10-14"
+updated: "2026-10-19"
 type: "技术"
 tags: "Agent|AI Coding"
 note: "在上下文接近上限时压缩历史与工具输出，保留继续执行所需的信息。"

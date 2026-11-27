@@ -1,6 +1,7 @@
 ---
 title: Agent 架构基础与设计方法
 date: '2026-10-13'
+updated: '2026-10-19'
 type: 技术
 tags: Agent
 note: 从模型调用、工具使用到状态管理和评测，理解 Agent 系统如何可靠地完成任务。

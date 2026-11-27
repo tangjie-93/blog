@@ -1,6 +1,7 @@
 ---
 title: shell环境​配置
 date: '2020-01-14'
+updated: '2026-11-21'
 type: 技术
 tags: linux
 note: "围绕 `Bash` 环境变量、`Shell` 变量和启动配置展开，整理 `printenv`、`set` 等命令及配置文件的作用，帮助定位命令行环境问题。"

@@ -1,6 +1,7 @@
 ---
 title: langchain_core 基础对象
 date: '2026-08-24'
+updated: '2026-10-19'
 type: 技术
 tags: LangChain|Python
 note: 掌握 Message、Prompt、Runnable、Tool 与 OutputParser 等核心对象。

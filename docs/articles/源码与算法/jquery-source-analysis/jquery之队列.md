@@ -1,6 +1,7 @@
 ---
 title: jquery之队列
 date: '2020-11-27'
+updated: '2026-11-21'
 type: 技术
 tags: jquery
 note: "分析 `jQuery` 队列的数据结构与入队、出队、清空和执行流程，说明队列如何串联动画及异步回调。"

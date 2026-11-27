@@ -1,6 +1,7 @@
 ---
 title: "SAG 与 SAG2 对比及选型：把召回、成本和证据分开看"
 date: '2026-11-27'
+updated: '2026-11-27'
 type: 技术
 tags: RAG|SAG|SAG2|GraphRAG|评估
 note: 对照向量 RAG、GraphRAG、SAG 和 SAG2，区分官方报告、教学验证与待复现实验。

@@ -1,6 +1,7 @@
 ---
 title: 17.WebGL知识图谱
 date: '2024-06-11'
+updated: '2026-11-21'
 type: 技术
 tags: WebGL
 note: 以知识图谱梳理 `WebGL` 的核心概念与学习路径，帮助建立从着色器到渲染管线的整体框架。

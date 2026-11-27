@@ -1,6 +1,7 @@
 ---
 title: 21.WebGL之深度缓冲区
 date: '2024-06-13'
+updated: '2026-11-21'
 type: 技术
 tags: WebGL
 note: 介绍顶点绘制顺序、深度测试和深度冲突，说明投影矩阵如何影响 `WebGL` 的可见性判断。

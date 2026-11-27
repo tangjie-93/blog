@@ -1,6 +1,7 @@
 ---
 title: 18、源码解析之Object3
 date: '2024-07-17'
+updated: '2026-11-21'
 lastmodifydate: '2024-07-17'
 type: 技术
 tags: threejs

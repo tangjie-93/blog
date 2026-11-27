@@ -1,6 +1,7 @@
 ---
 title: async函数详解
 date: '2020-03-16'
+updated: '2026-11-21'
 type: 技术
 tags: es6
 note: 介绍 `async/await` 的执行机制、返回值与异常传播，结合 `Promise` 说明串行和并行异步任务的组织方式。

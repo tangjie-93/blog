@@ -1,6 +1,7 @@
 ---
 title: "Poetry 命令详解"
 date: "2026-03-25"
+updated: "2026-10-19"
 type: "技术"
 tags: "Python"
 note: "整理 Poetry 项目创建、依赖管理、打包发布与常见工作流。"

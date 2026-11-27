@@ -1,6 +1,7 @@
 ---
 title: "白话 SAG 与 SAG2：从相似片段到跨文档证据"
 date: '2026-11-27'
+updated: '2026-11-27'
 type: 技术
 tags: RAG|SAG|SAG2|Jev|检索
 note: 用三份虚构文档解释事件实体索引、词项扩展和决策模型，分清 SAG、SAG2 与 SAG-Wiki。

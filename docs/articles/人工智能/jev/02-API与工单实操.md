@@ -1,6 +1,7 @@
 ---
 title: "02 Jev API 与工单实操：一道选择题如何变成一个队列"
 date: "2026-11-27"
+updated: "2026-11-27"
 type: 技术
 tags: Jev|API|Agent
 note: 按官方 HTTP 契约写一组 Choice、Score、Noul 请求，再用离线测试验证低分、缺字段和人工回退。

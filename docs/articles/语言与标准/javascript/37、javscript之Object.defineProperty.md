@@ -1,6 +1,7 @@
 ---
 title: 38、Object.defineProperty​详解
 date: '2020-01-14'
+updated: '2026-10-18'
 type: 技术
 tags: javascript
 note: 自己在使用vue的过程中经常会用到听到`数据双向绑定`这个词，而且我们还可以直接通过调用`this.msg`(this表示vue实例),来获取data上的数据，以前一直不太明白为什么可以这样获取，直到有一天我在论坛里看到了`寻找海蓝96`这位大佬写的文章,才明白其原理，所以在此记录一下。

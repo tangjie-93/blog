@@ -1,6 +1,7 @@
 ---
 title: Agent 和工具调用
 date: '2026-08-24'
+updated: '2026-10-19'
 type: 技术
 tags: LangChain|Agent
 note: 理解 Agent 如何选择工具并在边界内完成任务。

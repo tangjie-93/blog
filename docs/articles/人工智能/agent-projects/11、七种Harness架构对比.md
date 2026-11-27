@@ -1,6 +1,7 @@
 ---
 title: 七种 Agent Harness 架构对比：从业务需求选择运行底座
 date: '2026-11-08'
+updated: '2026-11-08'
 type: 技术
 tags: ['AI Agent', 'Harness', '架构选型']
 note: 比较七个 Agent 项目在 SDK、运行框架、编程工具与个人助手方面的定位、上下文和扩展方式。

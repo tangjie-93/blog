@@ -1,6 +1,7 @@
 ---
 title: "21、Agent Patterns — 不同任务用不同模式"
 date: "2026-10-17"
+updated: "2026-10-18"
 type: "技术"
 tags: "Agent|AI Coding"
 note: "用路由、串行、并行、反思和评审器模式组织 Agent，避免把所有任务都塞进一个循环。"

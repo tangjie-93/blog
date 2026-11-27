@@ -1,6 +1,7 @@
 ---
 title: 24、javascript之事件总结
 date: '2020-10-24'
+updated: '2026-11-21'
 type: 技术
 tags: javascript
 note: "从事件流、事件对象、监听器和默认行为入手，整理 `JavaScript` 事件处理与委托的核心知识。"

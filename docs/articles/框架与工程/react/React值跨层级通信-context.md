@@ -1,6 +1,7 @@
 ---
 title: react基本知识点总结
 date: '2020-07-05'
+updated: '2026-11-21'
 type: 技术
 tags: react
 note: "通过 `Context` 的创建、`Provider` 注入和消费流程说明 `React` 跨层级共享数据的方式，并给出适合使用与应避免使用的场景。"

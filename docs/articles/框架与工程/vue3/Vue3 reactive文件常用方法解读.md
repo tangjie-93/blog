@@ -1,6 +1,7 @@
 ---
 title: 2.Vue3 reactive文件常用方法解读
 date: '2020-12-10'
+updated: '2026-11-21'
 type: 技术
 tags: vue3
 note: "围绕 `reactive` 文件中的代理创建、嵌套对象转换和只读判断，梳理 `Vue` 3 响应式对象的常用内部方法。"

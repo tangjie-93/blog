@@ -1,6 +1,7 @@
 ---
 title: Python 基础与工程实践学习路线
 date: '2026-10-13'
+updated: '2026-10-20'
 type: 技术
 tags: Python
 note: 从语言基础、标准库到 Web、数据处理和 AI 应用，建立可维护的 Python 工程能力。

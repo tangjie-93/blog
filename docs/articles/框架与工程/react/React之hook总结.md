@@ -1,6 +1,7 @@
 ---
 title: react之hook总结
 date: '2020-07-06'
+updated: '2026-11-21'
 type: 技术
 tags: react
 note: "介绍 `React Hooks` 的设计目的和常用规则，梳理状态、生命周期与逻辑复用方式，帮助从类组件迁移到函数组件。"

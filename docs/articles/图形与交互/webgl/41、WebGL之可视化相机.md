@@ -1,6 +1,7 @@
 ---
 title: 41.WebGL之可视化相机
 date: '2024-06-28'
+updated: '2026-11-21'
 lastmodifydate: '2024-07-02'
 type: 技术
 tags: WebGL

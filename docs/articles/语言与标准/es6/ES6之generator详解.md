@@ -1,6 +1,7 @@
 ---
 title: ES6之generator详解
 date: '2020-03-15'
+updated: '2026-11-21'
 type: 技术
 tags: es6
 note: 从生成器函数、`yield` 暂停恢复机制到迭代器协议，结合示例说明 `Generator` 在异步流程中的用法。

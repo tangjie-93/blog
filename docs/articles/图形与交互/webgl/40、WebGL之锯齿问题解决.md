@@ -1,6 +1,7 @@
 ---
 title: 40.WebGL之锯齿问题解决
 date: '2024-06-25'
+updated: '2026-11-21'
 lastmodifydate: '2024-06-25'
 type: 技术
 tags: WebGL

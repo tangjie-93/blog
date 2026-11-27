@@ -1,6 +1,7 @@
 ---
 title: "23、Agent Security — 从提示注入到沙箱隔离"
 date: "2026-10-17"
+updated: "2026-10-18"
 type: "技术"
 tags: "Agent|AI Coding"
 note: "把提示注入、工具投毒、数据外泄和执行隔离纳入 Agent 的纵深防御。"

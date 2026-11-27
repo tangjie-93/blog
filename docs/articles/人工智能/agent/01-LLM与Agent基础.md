@@ -1,6 +1,7 @@
 ---
 title: "01. LLM 与 Agent 基础"
 date: "2026-07-04"
+updated: "2026-10-19"
 type: "技术"
 tags: "Agent"
 note: "理解 Token、上下文、结构化输出、工具调用与 Agent 最小执行循环。"

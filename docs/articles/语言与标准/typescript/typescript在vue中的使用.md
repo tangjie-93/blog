@@ -1,6 +1,7 @@
 ---
 title: typescript在vue中的使用
 date: '2020-01-14'
+updated: '2026-11-21'
 type: 技术
 tags: typescript
 note: 介绍 `TypeScript` 在 `Vue` 组件、`props`、`emit`、`ref` 和组合式 `API` 中的类型标注方式。

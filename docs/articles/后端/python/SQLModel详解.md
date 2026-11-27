@@ -1,6 +1,7 @@
 ---
 title: "SQLModel 详解"
 date: "2026-04-14"
+updated: "2026-10-19"
 type: "技术"
 tags: "Python"
 note: "学习模型定义、会话管理、CRUD、关系模型与工程实践。"

@@ -1,6 +1,7 @@
 ---
 title: "PostgreSQL 命令参考"
 date: "2026-04-02"
+updated: "2026-10-19"
 type: "技术"
 tags: "Python"
 note: "数据库管理、权限、查询、备份恢复和故障排查命令速查。"

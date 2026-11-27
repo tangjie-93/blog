@@ -1,6 +1,7 @@
 ---
 title: jquery获取窗口大小的兼容性处理
 date: '2020-11-25'
+updated: '2026-11-21'
 type: 技术
 tags: jquery
 note: "结合窗口、文档和元素三类对象，说明 `jQuery` 获取宽高时对 `innerWidth`、`outerWidth` 等属性的兼容封装。"

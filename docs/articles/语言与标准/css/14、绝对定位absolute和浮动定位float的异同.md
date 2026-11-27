@@ -1,6 +1,7 @@
 ---
 title: 14、绝对定位absolute和浮动定位float的区别
 date: '2020-01-14'
+updated: '2026-11-21'
 type: 技术
 tags: css
 note: "从脱离文档流、定位参考系和空间占用等角度比较 `absolute` 与 `float`，帮助根据布局目标选择定位方式。"

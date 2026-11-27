@@ -1,6 +1,7 @@
 ---
 title: 1、js变量声明提升
 date: '2020-01-14'
+updated: '2026-10-19'
 type: 技术
 tags: javascript
 note: 变量提升是将变量声明提升到它所在作用域的最开始的部分。

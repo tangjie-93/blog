@@ -1,6 +1,7 @@
 ---
 title: jquery回调对象总结
 date: '2020-11-27'
+updated: '2026-11-21'
 type: 技术
 tags: jquery
 note: "拆解 `jQuery.Callbacks` 的回调列表、发布订阅和选项控制，说明一次性执行、锁定、记忆等行为如何组合实现。"

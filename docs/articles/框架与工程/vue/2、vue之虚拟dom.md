@@ -1,6 +1,7 @@
 ---
 title: 3.vue之虚拟dom
 date: '2020-01-14'
+updated: '2026-11-21'
 type: 技术
 tags: vue
 note: "说明虚拟 `DOM` 如何以对象树抽象真实 `DOM`，并通过 `diff` 与 `patch` 比较新旧节点，理解状态更新到界面变更的过程。"

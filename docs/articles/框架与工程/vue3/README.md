@@ -1,6 +1,7 @@
 ---
 title: 1.vue3响应式源码之ref.js源码分析
 date: '2020-11-22'
+updated: '2026-11-21'
 type: 技术
 tags: vue3
 note: "以 `ref` 源码为入口梳理 `Vue` 3 响应式引用的创建、读取和写入流程，并说明它与 `reactive` 的使用差异。"

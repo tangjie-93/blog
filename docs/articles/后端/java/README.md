@@ -1,6 +1,7 @@
 ---
 title: Java 专题
 date: '2026-10-19'
+updated: '2026-10-20'
 type: 技术
 tags: Java|Spring|JVM
 note: 从 Java 语言基础到 Spring Boot、微服务、中间件和性能调优的系统学习专题。

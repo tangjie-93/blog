@@ -1,6 +1,7 @@
 ---
 title: 25、js数据类型及其常见用法
 date: '2020-03-07'
+updated: '2026-11-21'
 type: 技术
 tags: javascript
 note: 系统比较 `JavaScript` 各数据类型、包装对象、显式与隐式转换，归纳相等比较和常见陷阱。

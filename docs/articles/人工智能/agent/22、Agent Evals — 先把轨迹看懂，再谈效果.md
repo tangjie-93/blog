@@ -1,6 +1,7 @@
 ---
 title: "22、Agent Evals — 先把轨迹看懂，再谈效果"
 date: "2026-10-17"
+updated: "2026-10-19"
 type: "技术"
 tags: "Agent|AI Coding"
 note: "用任务集、轨迹断言和线上指标评估 Agent，避免只凭最终答案判断系统质量。"

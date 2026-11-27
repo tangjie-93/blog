@@ -1,6 +1,7 @@
 ---
 title: jquery整体封装设计总结
 date: '2020-10-18'
+updated: '2026-11-21'
 type: 技术
 tags: javascript
 note: "从立即执行函数和闭包结构入手，拆解 `jQuery` 的整体封装、全局暴露和模块组织方式，帮助建立阅读大型库源码的入口。"

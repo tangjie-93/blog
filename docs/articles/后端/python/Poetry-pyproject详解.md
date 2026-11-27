@@ -1,6 +1,7 @@
 ---
 title: "Poetry pyproject.toml 配置文件详解"
 date: "2026-03-25"
+updated: "2026-10-19"
 type: "技术"
 tags: "Python"
 note: "详解 pyproject.toml 的项目元数据、依赖组、构建与工具配置。"

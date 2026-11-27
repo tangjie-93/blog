@@ -1,6 +1,7 @@
 ---
 title: "FastAPI 学习行动指南"
 date: "2026-04-14"
+updated: "2026-11-18"
 type: "技术"
 tags: "Python"
 note: "从基础接口、数据库到认证、测试和部署的六周行动计划。"

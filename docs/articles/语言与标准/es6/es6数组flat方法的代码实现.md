@@ -1,6 +1,7 @@
 ---
 title: es6数组flat方法的代码实现
 date: '2020-01-14'
+updated: '2026-11-21'
 type: 技术
 tags: es6
 note: 拆解 `Array.prototype.flat` 的递归展平、深度控制和稀疏数组处理，并手写兼容实现以理解其原理。

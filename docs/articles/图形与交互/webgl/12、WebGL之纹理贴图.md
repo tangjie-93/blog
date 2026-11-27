@@ -1,6 +1,7 @@
 ---
 title: 12.纹理贴图
 date: "2021-06-21"
+updated: "2026-11-21"
 type: 技术
 tags: WebGL
 note: 从顶点着色器、片元着色器和 `JavaScript` 三部分演示 `WebGL` 纹理坐标、纹理采样与图片贴图。

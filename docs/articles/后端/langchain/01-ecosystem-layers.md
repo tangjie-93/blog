@@ -1,6 +1,7 @@
 ---
 title: LangChain 生态分层
 date: '2026-08-24'
+updated: '2026-10-19'
 type: 技术
 tags: LangChain
 note: 理解 langchain_core、langchain、langgraph、langsmith 与集成包的职责边界。

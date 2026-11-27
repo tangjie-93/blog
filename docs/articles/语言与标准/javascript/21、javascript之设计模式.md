@@ -1,6 +1,7 @@
 ---
 title: 22、avascript之设计模式
 date: '2020-01-14'
+updated: '2026-11-21'
 type: 技术
 tags: javascript
 note: "以 `JavaScript` 示例梳理单例、工厂、观察者等常见设计模式，说明它们解决的协作与解耦问题。"

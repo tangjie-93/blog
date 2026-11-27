@@ -1,6 +1,7 @@
 ---
 title: 23、javascript之深浅拷贝的区别
 date: '2020-10-19'
+updated: '2026-11-21'
 type: 技术
 tags: javascript
 note: "通过引用关系、嵌套对象和数组场景比较深拷贝与浅拷贝，说明常见实现方式及循环引用等边界。"

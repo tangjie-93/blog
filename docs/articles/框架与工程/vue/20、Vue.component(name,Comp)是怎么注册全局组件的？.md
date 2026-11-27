@@ -1,6 +1,7 @@
 ---
 title: 21.Vue.component(name,Comp)是怎么注册全局组件的？
 date: '2020-06-10'
+updated: '2026-10-18'
 type: 技术
 tags: vue
 note: Vue.component(name,Comp)是怎么注册全局组件的？

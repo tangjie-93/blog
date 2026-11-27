@@ -1,6 +1,7 @@
 ---
 title: 29、javascript之执行上下文详解
 date: '2020-10-22'
+updated: '2026-11-21'
 type: 技术
 tags: javascript
 note: "解释全局、函数和 `eval` 执行上下文的创建过程，梳理词法环境、变量提升与作用域链之间的关系。"

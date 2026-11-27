@@ -1,6 +1,7 @@
 ---
 title: "Pydantic 详解"
 date: "2026-04-14"
+updated: "2026-10-19"
 type: "技术"
 tags: "Python"
 note: "学习类型验证、字段系统、模型配置、序列化与版本迁移。"

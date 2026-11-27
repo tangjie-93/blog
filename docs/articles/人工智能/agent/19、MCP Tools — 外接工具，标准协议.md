@@ -1,6 +1,7 @@
 ---
 title: "19、MCP Tools — 外接工具，标准协议"
 date: "2026-10-14"
+updated: "2026-10-19"
 type: "技术"
 tags: "Agent|AI Coding"
 note: "通过 MCP 标准协议发现和调用外部服务，并以命名空间组装进工具池。"

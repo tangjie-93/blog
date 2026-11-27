@@ -1,6 +1,7 @@
 ---
 title: jquery之工具函数总结
 date: '2020-10-22'
+updated: '2026-11-21'
 type: 技术
 tags: jquery
 note: "结合源码整理 `jQuery` 的类型检测、数组操作、对象扩展等工具函数，提炼可复用的实现技巧与兼容性处理方式。"

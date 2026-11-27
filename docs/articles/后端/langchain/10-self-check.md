@@ -1,6 +1,7 @@
 ---
 title: LangChain 生态自测清单
 date: '2026-08-24'
+updated: '2026-10-19'
 type: 技术
 tags: LangChain|RAG
 note: 用问题和动手验收检查 LangChain 生态知识掌握情况。

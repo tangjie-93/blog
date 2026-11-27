@@ -1,6 +1,7 @@
 ---
 title: 2、HTTPS详解​
 date: '2020-01-14'
+updated: '2026-10-18'
 type: 技术
 tags: http
 note: HTTP 与 HTTPS 的区别;加密算法;HTTPS中间人攻击;客户端和服务器端建立安全连接的握手过程

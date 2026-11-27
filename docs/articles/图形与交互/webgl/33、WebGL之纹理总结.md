@@ -1,6 +1,7 @@
 ---
 title: 33.WebGL之纹理总结
 date: '2024-06-18'
+updated: '2026-11-21'
 lastmodifydate: '2024-06-18'
 type: 技术
 tags: WebGL

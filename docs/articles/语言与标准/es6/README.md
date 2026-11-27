@@ -1,6 +1,7 @@
 ---
 title: 我所理解的promise
 date: '2020-01-14'
+updated: '2026-11-21'
 type: 技术
 tags: es6
 note: 以 `Promise` 的状态流转、链式调用、错误处理和并发组合为主线，建立异步编程的完整理解框架。

@@ -1,6 +1,7 @@
 ---
 title: 从小白到资深 Java 开发的学习路线
 date: '2026-10-19'
+updated: '2026-10-19'
 type: 技术
 tags: Java|学习路线
 note: 从语言基础到服务端工程的 Java 学习路线规划。

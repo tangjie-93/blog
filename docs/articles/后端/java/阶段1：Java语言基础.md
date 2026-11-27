@@ -1,6 +1,7 @@
 ---
 title: 阶段一：Java 语言基础
 date: '2026-10-19'
+updated: '2026-11-18'
 type: 技术
 tags: Java|基础
 note: Java 语言、面向对象、集合、异常和并发基础。

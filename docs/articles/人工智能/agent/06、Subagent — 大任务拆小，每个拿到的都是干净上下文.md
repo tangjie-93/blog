@@ -1,6 +1,7 @@
 ---
 title: "06、Subagent — 大任务拆小，每个拿到的都是干净上下文"
 date: "2026-10-14"
+updated: "2026-10-19"
 type: "技术"
 tags: "Agent|AI Coding"
 note: "将复杂工作拆给独立上下文的子 Agent，并通过受控结果回传协作。"

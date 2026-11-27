@@ -1,6 +1,7 @@
 ---
 title: "PostgreSQL 数据库配置与 DBeaver 连接指南"
 date: "2026-04-15"
+updated: "2026-10-19"
 type: "技术"
 tags: "Python"
 note: "在 macOS 上安装 PostgreSQL，配置数据库并使用 DBeaver 连接。"

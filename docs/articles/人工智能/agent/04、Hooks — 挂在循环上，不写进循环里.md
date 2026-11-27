@@ -1,6 +1,7 @@
 ---
 title: "04、Hooks — 挂在循环上，不写进循环里"
 date: "2026-10-14"
+updated: "2026-10-19"
 type: "技术"
 tags: "Agent|AI Coding"
 note: "用 UserPromptSubmit、PreToolUse、PostToolUse 和 Stop 把扩展逻辑挂到循环外。"

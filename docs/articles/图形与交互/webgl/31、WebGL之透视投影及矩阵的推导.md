@@ -1,6 +1,7 @@
 ---
 title: 31.WebGL之透视投影及矩阵的推导
 date: '2024-06-17'
+updated: '2026-11-21'
 lastmodifydate: '2024-06-17'
 type: 技术
 tags: WebGL

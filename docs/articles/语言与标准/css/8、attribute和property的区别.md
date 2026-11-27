@@ -1,6 +1,7 @@
 ---
 title: 8、attribute和property的区别
 date: '2025-03-21'
+updated: '2026-11-21'
 type: 技术
 tags: css
 note: "解释 `HTML` `attribute` 与 `DOM` `property` 的来源、同步关系和读取差异，帮助避免表单状态判断中的常见错误。"

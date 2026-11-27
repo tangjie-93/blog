@@ -1,6 +1,7 @@
 ---
 title: Maven 命令行总结
 date: '2026-10-19'
+updated: '2026-10-19'
 type: 技术
 tags: Java|Maven
 note: Maven 生命周期、常用命令和项目构建操作。

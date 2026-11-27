@@ -1,6 +1,7 @@
 ---
 title: RAG 基础链路
 date: '2026-08-24'
+updated: '2026-10-19'
 type: 技术
 tags: LangChain|RAG
 note: 从文档加载、切分、向量检索到回答引用，跑通 RAG 链路。

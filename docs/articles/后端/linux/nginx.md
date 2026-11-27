@@ -1,6 +1,7 @@
 ---
 title: nginx常用知识点总结
 date: '2020-01-14'
+updated: '2026-11-21'
 type: 技术
 tags: nginx
 note: "介绍 `Nginx` 的事件驱动模型及其与 `Node.js` 的分工，重点说明静态资源服务、反向代理和负载均衡等常见场景。"

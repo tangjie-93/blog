@@ -1,6 +1,7 @@
 ---
 title: Redis 详细介绍与使用
 date: '2026-10-19'
+updated: '2026-10-19'
 type: 技术
 tags: Java|Redis
 note: Redis 基础概念、数据结构、Java 集成、持久化和高可用实践。

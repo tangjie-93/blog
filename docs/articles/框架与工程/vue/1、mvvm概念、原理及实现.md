@@ -1,6 +1,7 @@
 ---
 title: 2.mvvm概念、原理及实现
 date: '2020-01-14'
+updated: '2026-11-21'
 type: 技术
 tags: vue
 note: "从 `Model`、`View`、`ViewModel` 的职责划分出发，结合数据劫持和发布订阅模式解释 `MVVM` 的绑定原理与简易实现思路。"

@@ -1,6 +1,7 @@
 ---
 title: 10、WebGL性能提升
 date: '2024-07-11'
+updated: '2026-11-21'
 lastmodifydate: '2024-07-11'
 type: 技术
 tags: threejs

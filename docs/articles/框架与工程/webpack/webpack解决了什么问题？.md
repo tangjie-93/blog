@@ -1,6 +1,7 @@
 ---
 title: webpack解决了什么问题？
 date: '2020-05-25'
+updated: '2026-10-19'
 type: 技术
 tags: webpack
 note: 前端模块化的演变过程，以及webpack的作用。

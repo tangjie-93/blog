@@ -1,6 +1,7 @@
 ---
 title: "Python 后端全栈行动指南"
 date: "2026-04-14"
+updated: "2026-11-18"
 type: "技术"
 tags: "Python"
 note: "把后端全栈学习路线拆解为每周任务、检查清单和项目产出。"

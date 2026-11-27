@@ -1,6 +1,7 @@
 ---
 title: "Python 后端全栈学习路线"
 date: "2026-03-25"
+updated: "2026-11-18"
 type: "技术"
 tags: "Python"
 note: "从 Python 后端、数据库到 AI 应用、部署监控的阶段学习路线。"

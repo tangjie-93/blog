@@ -1,6 +1,7 @@
 ---
 title: "15、Agent Teams — 一个搞不定，组队来"
 date: "2026-10-14"
+updated: "2026-10-19"
 type: "技术"
 tags: "Agent|AI Coding"
 note: "把一次性子 Agent 与持久队友结合，分别解决隔离上下文和长期协作。"

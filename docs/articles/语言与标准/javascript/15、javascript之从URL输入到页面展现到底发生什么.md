@@ -1,6 +1,7 @@
 ---
 title: 16、从URL输入到页面展现到底发生什么
 date: '2020-01-14'
+updated: '2026-11-21'
 type: 技术
 tags: javascript
 note: 输入url后，总的来说经历了如下几个过程 1、DNS解析（将域名解析成IP地址） 2、TCP连接（TCP三次握手） 3、发送HTTP请求 4、服务器处理HTTP请求，并返回请求报文 5、浏览器渲染解析界面 6、断开TCP连接（TCP四次挥手）

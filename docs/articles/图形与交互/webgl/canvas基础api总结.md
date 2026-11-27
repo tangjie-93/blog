@@ -1,6 +1,7 @@
 ---
 title: canvas基础api总结
 date: '2020-01-4'
+updated: '2026-11-21'
 type: 技术
 tags: canvas
 note: 汇总 `Canvas` 绘图 `API` 的样式、形状、变换、文本、图像以及状态保存与恢复等常用能力。

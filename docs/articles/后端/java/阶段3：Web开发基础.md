@@ -1,6 +1,7 @@
 ---
 title: 阶段三：Web 开发基础
 date: '2026-10-19'
+updated: '2026-11-18'
 type: 技术
 tags: Java|Web
 note: Java Web、Spring Framework 和 Spring MVC 基础。

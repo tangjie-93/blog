@@ -1,6 +1,7 @@
 ---
 title: 14、源码解析之Scene
 date: '2024-07-11'
+updated: '2026-11-21'
 lastmodifydate: '2024-07-11'
 type: 技术
 tags: threejs
