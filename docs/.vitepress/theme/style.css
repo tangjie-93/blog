@@ -204,9 +204,17 @@ html::-webkit-scrollbar-track:vertical {
 }
 .VPDoc {
     & .vp-doc { line-height: 1.8; overflow-wrap: break-word; }
+    & .article-footer-dates { margin-block: 20px 8px; padding-top: 12px; border-top: 1px solid var(--blog-border); }
     & .vp-doc h1 { letter-spacing: -.8px; line-height: 1.45; }
     & .vp-doc > div > h2 { margin-top: 44px; border-top-color: var(--blog-border); }
     & .vp-doc p, & .vp-doc li { line-height: 1.8; }
+    & .vp-doc img[src*='/image/jev/'][src$='.svg'] {
+        width: auto;
+        height: auto;
+        max-width: min(100%, 560px);
+        max-height: 65vh;
+        margin-inline: auto;
+    }
     & .vp-doc div[class*='language-'] { border: 1px solid var(--blog-border); border-radius: 10px; }
     & .vp-doc :not(pre) > code { color: var(--vp-c-brand-1); }
     & .vp-doc blockquote { border-left-color: var(--vp-c-brand-1); background: var(--vp-c-brand-soft); padding: 8px 18px; border-radius: 0 8px 8px 0; }

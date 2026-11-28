@@ -12,8 +12,8 @@
                         <ElOption v-for="{ value, count } in yearCounts" :key="value" :value="value" :label="`${yearLabel(value)} · ${count} 篇`" />
                     </ElSelect>
                     <ElSelect v-model="dateOrder" class="blog-list__sort-select" aria-label="按创建日期排序">
-                        <ElOption value="newest" label="创建：从新到旧" />
-                        <ElOption value="oldest" label="创建：从旧到新" />
+                        <ElOption value="newest" label="从新到旧" />
+                        <ElOption value="oldest" label="从旧到新" />
                     </ElSelect>
                 </div>
                 <div class="blog-list__view-switch" role="group" aria-label="文章展示形式">
@@ -29,8 +29,8 @@
                         <span>{{ post.type || '技术笔记' }}</span>
                         <span class="blog-list__index" aria-hidden="true">{{ String((page - 1) * pageSize + index + 1).padStart(2, '0') }}</span>
                     </div>
-                    <h2 class="blog-list__title"><span class="blog-list__title-text">{{ displayTitle(post.title) }}<span v-if="viewMode === 'cards'" class="blog-list__arrow" aria-hidden="true">↗</span></span></h2>
-                    <p v-if="post.note" class="blog-list__note" v-html="renderInlineMarkdown(post.note)"></p>
+                    <h2 class="blog-list__title" :title="displayTitle(post.title)"><span class="blog-list__title-text">{{ displayTitle(post.title) }}<span v-if="viewMode === 'cards'" class="blog-list__arrow" aria-hidden="true">↗</span></span></h2>
+                    <p v-if="post.note" class="blog-list__note"><span class="blog-list__summary" v-html="renderInlineMarkdown(post.note)"></span></p>
                     <div class="blog-list__meta">
                         <div class="blog-list__tags" :title="post.tags.join(' · ')">
                             <span v-for="tag in post.tags" :key="tag" class="blog-list__tag">{{ tag }}</span>
@@ -58,7 +58,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { ElButton, ElSelect, ElOption } from 'element-plus'
 import { withBase } from 'vitepress'
 import { data as posts } from '../../posts.data'
@@ -123,15 +123,38 @@ const { pageSize, gridStyle, active: fitActive } = useFitPageSize(gridViewport, 
     enabled: props.fitScreen === true,
     fallbackSize: 24,
     minCardWidth: () => viewMode.value === 'list' ? Number.MAX_SAFE_INTEGER : 300,
-    // 卡片保留完整行高；列表固定单列，标题简介与右侧元信息并排展示。
-    minCardHeight: () => viewMode.value === 'list' ? 80 : 240,
-    maxCardHeight: () => viewMode.value === 'list' ? 84 : 256,
+    // 按紧凑高度计算排数，再均分可用高度铺满视口；列表仍保持紧凑行高。
+    minCardHeight: () => viewMode.value === 'list' ? 60 : 140,
+    maxCardHeight: () => viewMode.value === 'list' ? 64 : undefined,
+    maxRows: () => viewMode.value === 'list' ? Number.POSITIVE_INFINITY : 4,
     minViewportWidth: props.fitMinViewportWidth ?? 900,
     minViewportHeight: 640,
     footer: pagination
 })
 const pageCount = computed(() => Math.max(1, Math.ceil(filteredPosts.value.length / pageSize.value)))
 const visiblePosts = computed(() => filteredPosts.value.slice((page.value - 1) * pageSize.value, page.value * pageSize.value))
+
+let summaryObserver: ResizeObserver | undefined
+function observeSummaries(): void {
+    summaryObserver?.disconnect()
+    if (!fitActive.value || viewMode.value !== 'cards') return
+    gridViewport.value?.querySelectorAll<HTMLElement>('.blog-list__note').forEach(note => summaryObserver?.observe(note))
+}
+onMounted(() => {
+    if (typeof ResizeObserver === 'undefined') return
+    // 摘要占用标题与元信息之间的剩余空间，按完整行截断，不在有空位时提前省略。
+    summaryObserver = new ResizeObserver(entries => {
+        for (const { target, contentRect } of entries) {
+            const note = target as HTMLElement
+            const lineHeight = Number.parseFloat(getComputedStyle(note).lineHeight)
+            const lines = Math.max(1, Math.floor((contentRect.height + 0.1) / lineHeight))
+            note.style.setProperty('--blog-summary-lines', String(lines))
+        }
+    })
+    observeSummaries()
+})
+watch([visiblePosts, fitActive, viewMode], observeSummaries, { flush: 'post' })
+onBeforeUnmount(() => summaryObserver?.disconnect())
 
 /** 归档卡片已用右上角编号表示顺序，标题保留正文名称即可。 */
 function displayTitle(title: string): string {
@@ -164,15 +187,30 @@ watch(pageSize, () => { page.value = Math.min(page.value, pageCount.value) })
         min-height: 0;
 
         & .blog-list__viewport { display: flex; flex: 1; flex-direction: column; min-height: 0; }
-        & .blog-list__grid { flex: none; }
-        & .blog-list__card { padding: 14px 16px; overflow: hidden; }
-        & .blog-list__eyebrow { flex-shrink: 0; margin-bottom: 6px; line-height: 1.5; }
-        & .blog-list__title { flex-shrink: 0; font-size: 17px; line-height: 1.5; }
+        & .blog-list__grid { flex: none; gap: 8px; }
+        & .blog-list__pagination { flex-shrink: 0; margin-top: auto; }
+        &:not(.blog-list--rows) {
+            & .blog-list__card { min-height: 140px; }
+            & .blog-list__eyebrow { line-height: 1.2; }
+            & .blog-list__title-text { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+            & .blog-list__note { display: block; flex: 1; min-height: 0; margin-top: 3px; }
+            & .blog-list__summary { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: var(--blog-summary-lines, 3); overflow: hidden; }
+            & .blog-list__meta { padding-top: 4px; gap: 3px; }
+            & .blog-list__tags { flex-wrap: nowrap; overflow: hidden; }
+            & .blog-list__tag { flex-shrink: 0; padding: 1px 5px; font-size: 11px; line-height: 1.35; }
+        }
+    }
+    &:not(.blog-list--rows) {
+        & .blog-list__grid { grid-auto-rows: 1fr; align-items: stretch; }
+        & .blog-list__card { min-height: 150px; padding: 5px 12px; }
+        & .blog-list__eyebrow, & .blog-list__title, & .blog-list__note, & .blog-list__meta { flex-shrink: 0; }
+        & .blog-list__eyebrow { margin-bottom: 2px; line-height: 1.35; }
+        & .blog-list__title { font-size: 16px; font-weight: 600; line-height: 1.3; }
         & .blog-list__title-text { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
-        & .blog-list__note { flex-shrink: 0; margin-top: 6px; font-size: 14px; line-height: 1.55; -webkit-line-clamp: 2; }
-        & .blog-list__meta { flex-shrink: 0; padding-top: 10px; gap: 6px; }
-        & .blog-list__pagination { flex-shrink: 0; }
-        &:not(.blog-list--rows) .blog-list__tags { max-height: 24px; overflow: hidden; }
+        & .blog-list__note { margin-top: 3px; color: var(--vp-c-text-2); font-size: 12px; line-height: 1.4; -webkit-line-clamp: 3; }
+        & .blog-list__meta { margin-top: auto; padding-top: 3px; gap: 3px; font-size: 11px; }
+        & .blog-list__meta .article-dates { justify-content: space-between; }
+        & :deep(.article-dates > span:last-child) { margin-left: auto; }
     }
     & .blog-list__count {
         display: flex;
@@ -198,7 +236,7 @@ watch(pageSize, () => { page.value = Math.min(page.value, pageCount.value) })
         flex-direction: column;
         position: relative;
         min-width: 0;
-        padding: 22px;
+        padding: 12px 14px;
         border: 1px solid var(--blog-border, var(--vp-c-divider));
         border-radius: var(--blog-radius);
         background: var(--blog-panel, var(--vp-c-bg-soft));
@@ -221,7 +259,8 @@ watch(pageSize, () => { page.value = Math.min(page.value, pageCount.value) })
         align-items: center;
         justify-content: space-between;
         gap: 12px;
-        margin-bottom: 14px;
+        margin-bottom: 4px;
+        line-height: 1.5;
         color: var(--blog-muted);
         font-size: 12px;
         font-weight: 500;
@@ -260,25 +299,25 @@ watch(pageSize, () => { page.value = Math.min(page.value, pageCount.value) })
     }
     & .blog-list__note {
         display: -webkit-box;
-        margin: 8px 0 0;
+        margin: 6px 0 0;
         color: var(--vp-c-text-2);
         font-size: 14px;
-        line-height: 1.65;
-        -webkit-line-clamp: 2;
+        line-height: 1.55;
+        -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
         overflow: hidden;
     }
+    & .blog-list__summary { display: contents; }
     & .blog-list__meta {
         display: flex;
         flex-wrap: wrap;
         align-items: center;
-        gap: 8px;
-        margin-top: auto;
-        padding-top: 20px;
+        gap: 5px;
+        margin-top: 10px;
         font-size: 12px;
         color: var(--blog-muted, var(--vp-c-text-2));
     }
-    & .blog-list__meta .article-dates { width: 100%; flex-direction: column; align-items: flex-end; }
+    & .blog-list__meta .article-dates { width: 100%; justify-content: flex-end; }
     & .blog-list__tags { display: contents; }
     &:not(.blog-list--rows) {
         & .blog-list__tags { display: flex; flex-wrap: wrap; gap: inherit; width: 100%; }
@@ -336,7 +375,7 @@ watch(pageSize, () => { page.value = Math.min(page.value, pageCount.value) })
     & .blog-list__year-select { width: 160px; }
     & .blog-list__sort-select { width: 136px; }
     & .blog-list__view-switch {
-        display: inline-flex; flex-shrink: 0; gap: 3px; padding: 3px; border: 1px solid var(--blog-border); border-radius: 8px; background: var(--blog-panel);
+        display: inline-flex; flex-shrink: 0; gap: 3px; height: 44px; box-sizing: border-box; padding: 3px; border: 1px solid var(--blog-border); border-radius: 8px; background: var(--blog-panel);
         & button { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 5px 10px; border-radius: 5px; color: var(--vp-c-text-2); font-size: 12px; line-height: 1.5; cursor: pointer; }
         & button:hover { background: var(--blog-hover-bg); color: var(--vp-c-text-1); }
         & button[aria-pressed='true'] { background: var(--blog-selected-bg); color: var(--blog-selected-text); box-shadow: inset 0 0 0 1px var(--blog-selected-border); }
@@ -344,12 +383,12 @@ watch(pageSize, () => { page.value = Math.min(page.value, pageCount.value) })
     }
     &.blog-list--rows {
         & .blog-list__grid { grid-template-columns: 1fr; gap: 6px; }
-        & .blog-list__card { display: grid; grid-template-columns: 52px minmax(0, 1fr) minmax(240px, .38fr); grid-template-rows: auto auto; align-content: center; gap: 3px 16px; padding: 5px 14px; border-radius: 8px; }
+        & .blog-list__card { display: grid; grid-template-columns: 52px minmax(0, 1fr) minmax(270px, .38fr); grid-template-rows: auto auto; align-content: center; gap: 3px 16px; padding: 5px 14px; border-radius: 8px; }
         & .blog-list__eyebrow { grid-column: 1; grid-row: 1 / 3; flex-direction: column-reverse; align-items: flex-start; justify-content: flex-end; gap: 4px; margin: 0; padding-top: 2px; line-height: 1.5; letter-spacing: 0; }
         & .blog-list__index { font-size: 13px; }
-        & .blog-list__title { grid-column: 2; font-size: 17px; line-height: 1.5; min-width: 0; }
+        & .blog-list__title { grid-column: 2; font-size: 17px; line-height: 1.4; min-width: 0; }
         & .blog-list__title-text { display: block; padding-right: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        & .blog-list__note { grid-column: 2; margin: 0; font-size: 14px; line-height: 1.55; -webkit-line-clamp: 1; }
+        & .blog-list__note { grid-column: 2; margin: 0; font-size: 14px; line-height: 1.45; -webkit-line-clamp: 1; }
         & .blog-list__meta { grid-column: 3; grid-row: 1 / 3; align-self: center; justify-content: flex-end; margin: 0; padding-top: 0; gap: 4px 6px; }
         & .blog-list__tag { padding: 1px 4px; line-height: 1.4; }
         @media (min-width: 900px) {
@@ -357,7 +396,7 @@ watch(pageSize, () => { page.value = Math.min(page.value, pageCount.value) })
             & .blog-list__tag { flex-shrink: 0; }
         }
         @media (max-width: 1100px) {
-            & .blog-list__card { grid-template-columns: 40px minmax(0, 1fr) 200px; }
+            & .blog-list__card { grid-template-columns: 40px minmax(0, 1fr) 270px; }
             & .blog-list__meta { gap: 2px 4px; }
         }
         @media (max-width: 899px) {
@@ -365,7 +404,7 @@ watch(pageSize, () => { page.value = Math.min(page.value, pageCount.value) })
             & .blog-list__eyebrow { grid-row: 1 / 4; }
             & .blog-list__meta { grid-column: 2; grid-row: 3; justify-content: flex-start; }
             & .blog-list__tag { display: inline; }
-            & .blog-list__meta .article-dates { flex-direction: row; }
+            & .blog-list__meta .article-dates { justify-content: flex-start; }
         }
         @media (max-width: 640px) {
             & .blog-list__card { grid-template-columns: 30px minmax(0, 1fr); gap: 6px 10px; padding: 12px; }

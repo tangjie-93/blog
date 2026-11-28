@@ -11,18 +11,22 @@ const dates = readFileSync(new URL('../docs/.vitepress/theme/components/ArticleD
 
 test('article cards keep full text line heights rather than shrinking title and summary', () => {
   assert.deepEqual(parse(source).errors, [])
-  assert.match(source, /minCardHeight:\s*\(\) => viewMode\.value === 'list' \? 80 : 240/)
-  assert.match(source, /maxCardHeight:\s*\(\) => viewMode\.value === 'list' \? 84 : 256/)
-  for (const block of ['eyebrow', 'title', 'note', 'meta']) {
-    assert.match(source, new RegExp(`\\.blog-list__${block} \\{ flex-shrink: 0;`))
-  }
+  assert.match(source, /minCardHeight:\s*\(\) => viewMode\.value === 'list' \? 60 : 140/)
+  assert.match(source, /maxCardHeight:\s*\(\) => viewMode\.value === 'list' \? 64 : undefined/)
+  assert.match(source, /maxRows: \(\) => viewMode\.value === 'list' \? Number\.POSITIVE_INFINITY : 4/)
+  assert.match(source, /\.blog-list__note \{ display: block; flex: 1; min-height: 0;/)
+  assert.match(source, /-webkit-line-clamp: var\(--blog-summary-lines, 3\)/)
+  assert.match(source, /\.blog-list__grid \{ grid-auto-rows: 1fr; align-items: stretch; \}/)
+  assert.match(source, /\.blog-list__meta \{ margin-top: auto; padding-top: 3px; gap: 3px; font-size: 11px; \}/)
+  assert.match(source, /\.blog-list__meta \.article-dates \{ justify-content: space-between; \}/)
   assert.match(source, /\.blog-list__title-text \{ display: -webkit-box; overflow: hidden;/)
 })
 
 test('article summaries and metadata remain readable without tiny narrow-screen overrides', () => {
   assert.match(source, /\.blog-list__title \{ grid-column: 2; font-size: 17px/)
   assert.match(source, /\.blog-list__note \{ grid-column: 2; margin: 0; font-size: 14px/)
-  assert.match(dates, /& time \{[^}]*font-size: 13px/)
+  assert.match(dates, /font-size: 12px/)
+  assert.match(dates, /& time \{[^}]*font-variant-numeric: tabular-nums/)
   assert.doesNotMatch(source, /font-size: 10px/)
 })
 
@@ -56,18 +60,21 @@ test('article toolbar pairs the active title and result count with time and view
 
 test('pagination follows the natural-height grid inside the measured viewport', () => {
   assert.match(source, /ref="gridViewport"[\s\S]*class="blog-list__grid"[\s\S]*<footer ref="pagination" class="blog-list__pagination"/)
-  assert.match(source, /\.blog-list__grid \{ flex: none; \}/)
+  assert.match(source, /\.blog-list__grid \{ flex: none; gap: 8px; \}/)
+  assert.match(source, /\.blog-list__pagination \{ flex-shrink: 0; margin-top: auto; \}/)
   assert.match(source, /footer: pagination/)
 })
 
 test('fitted cards reserve room for both dates below a single tag row', () => {
-  assert.match(source, /:not\(\.blog-list--rows\) \.blog-list__tags \{ max-height: 24px; overflow: hidden; \}/)
-  assert.match(source, /\.blog-list__meta \.article-dates \{ width: 100%; flex-direction: column;/)
+  assert.match(source, /\.blog-list__tags \{ flex-wrap: nowrap; overflow: hidden; \}/)
+  assert.match(source, /\.blog-list__meta \.article-dates \{ width: 100%; justify-content: flex-end;/)
+  assert.match(dates, /\.article-dates \{\s*display: flex;\s*flex-wrap: wrap;/)
+  assert.doesNotMatch(source, /\.article-dates \{[^}]*flex-direction: column/)
   assert.match(source, /<ArticleDates :post="post" \/>/)
   assert.deepEqual(parse(dates).errors, [])
   assert.match(dates, /创建 <time[^>]+:datetime="post.dateTime \|\| post.date"/)
   assert.match(dates, /更新 <time[^>]+:datetime="post.updatedTime \|\| post.updated"/)
-  assert.match(dates, /无后续修改记录，使用创建日期/)
+  assert.match(dates, /无后续修改记录，沿用创建时间/)
 })
 
 test('article view switches between cards and rows with safe persisted preferences', () => {

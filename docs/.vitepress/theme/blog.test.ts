@@ -52,20 +52,21 @@ test('example documents stay out of article feeds while nested articles remain',
     ])
 })
 
-test('article timestamps retain seconds and sort by exact time without inventing missing precision', () => {
+test('article dates display minutes while sorting by exact time', () => {
     const posts = mapPosts([
-        { url: '/early.html', frontmatter: { date: '2026-11-22 08:09:10' } },
+        { url: '/early.html', frontmatter: { date: '2026-11-22 12:34:10' } },
         { url: '/later.html', frontmatter: { date: '2026-11-22' }, gitDates: { first: '2026-01-01T04:34:56Z', byDay: { '2026-11-22': '2026-11-22T04:34:56Z' } } },
         { url: '/unknown.html', frontmatter: { date: '2026-11-21' } },
     ])
     assert.deepEqual(posts.map(post => post.url), ['/later.html', '/early.html', '/unknown.html'])
-    assert.equal(formatPostDateTime(posts[0].dateTime!), '2026-11-22 12:34:56')
+    assert.equal(posts[0].dateTime, '2026-11-22T04:34:56.000Z')
+    assert.equal(formatPostDateTime(posts[0].dateTime!), '2026-11-22 12:34')
     assert.equal(posts[0].dateSource, 'git')
     assert.equal(posts[1].dateSource, 'frontmatter')
-    assert.equal(formatPostDateTime(posts[1].dateTime!), '2026-11-22 08:09:10')
+    assert.equal(formatPostDateTime(posts[1].dateTime!), '2026-11-22 12:34')
     assert.equal(posts[2].dateTime, undefined)
     assert.equal(formatPostDateTime(posts[2].date), '2026-11-21')
-    assert.equal(formatPostDateTime('2026-11-21T20:00:01Z'), '2026-11-22 04:00:01')
+    assert.equal(formatPostDateTime('2026-11-21T20:00:01Z'), '2026-11-22 04:00')
 })
 
 test('archive years use creation, with earliest Git history only as a fallback', () => {
@@ -99,14 +100,19 @@ test('updates use the newer declared or Git date without inventing time or prece
         { url: '/invalid.html', frontmatter: { date: '2026-06-01', updated: '2026-02-30' } },
         { url: '/earlier.html', frontmatter: { date: '2026-06-05T08:00:00+08:00' }, gitDates },
         { url: '/absent.html', frontmatter: { date: '2026-06-01' } },
+        { url: '/initial.html', frontmatter: { date: '2026-06-05', updated: '2026-06-05' }, gitDates: { first: gitDates.updated, byDay: { '2026-06-05': gitDates.updated } } },
+        { url: '/explicit.html', frontmatter: { date: '2026-06-05 07:00', updated: '2026-06-05 09:15' } },
     ])
     const byUrl = new Map(posts.map(post => [post.url, post]))
     assert.equal(byUrl.get('/same-day.html')?.updated, '2026-06-05')
     assert.equal(byUrl.get('/same-day.html')?.updatedSource, 'git')
-    assert.equal(formatPostDateTime(byUrl.get('/same-day.html')!.updatedTime!), '2026-06-05 07:00:00')
+    assert.equal(formatPostDateTime(byUrl.get('/same-day.html')!.updatedTime!), '2026-06-05 07:00')
     assert.equal(byUrl.get('/later.html')?.updated, '2026-06-06')
     assert.equal(byUrl.get('/later.html')?.updatedTime, undefined)
     assert.equal(byUrl.get('/fallback.html')?.updatedSource, 'frontmatter')
+    assert.equal(byUrl.get('/initial.html')?.updatedTime, byUrl.get('/initial.html')?.dateTime)
+    assert.equal(byUrl.get('/initial.html')?.updatedSource, 'creation')
+    assert.equal(byUrl.get('/explicit.html')?.updatedTime, '2026-06-05T01:15:00.000Z')
     for (const url of ['/invalid.html', '/earlier.html', '/absent.html']) {
         const post = byUrl.get(url)!
         assert.equal(post.updated, post.date)

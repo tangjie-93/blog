@@ -54,13 +54,12 @@ export default {
     Layout: () => {
         const { page } = useData()
         return h(ElConfigProvider, { locale: zhCn }, () => h(DefaultTheme.Layout, null, {
-            'doc-before': () => {
-                if (!page.value.relativePath.startsWith('articles/')) return null
+            'doc-after': () => {
+                if (!page.value.relativePath.startsWith('articles/') || hasPageClass(page.value.frontmatter.pageClass, 'blog-archive')) return null
                 const url = getPostPageUrl(page.value.relativePath)
                 const post = posts.find(post => post.url === url)
-                return post ? h(ArticleDates, { post }) : null
+                return [post ? h(ArticleDates, { post, class: 'article-footer-dates' }) : null, h(Valine)]
             },
-            'doc-after': () => page.value.relativePath.startsWith('articles/') && !hasPageClass(page.value.frontmatter.pageClass, 'blog-archive') ? h(Valine) : null,
         }))
     },
     /** 保留旧文章中的组件标签，使迁移无需修改正文。 */

@@ -59,14 +59,14 @@ export function renderInlineMarkdown(source = ''): string {
     return rendered.replace(/\u0000(\d+)\u0000/gu, (_, index: string) => codeSpans[Number(index)] ?? '')
 }
 
-/** 明确时区的秒级显示，避免构建端与浏览器使用不同本地时区。 */
+/** 以北京时间显示到分钟，保留原始时间戳供排序。 */
 export function formatPostDateTime(value: string): string {
     if (!value || !value.includes('T')) return value
     const date = new Date(value)
     if (!Number.isFinite(date.getTime())) return ''
     return new Intl.DateTimeFormat('sv-SE', {
         timeZone: 'Asia/Shanghai', year: 'numeric', month: '2-digit', day: '2-digit',
-        hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23',
+        hour: '2-digit', minute: '2-digit', hourCycle: 'h23',
     }).format(date)
 }
 
@@ -114,12 +114,11 @@ function resolvePostDates(frontmatter: BlogSourcePost['frontmatter'], gitDates: 
     const declaredUpdate = declaredPostDate(frontmatter.updated)
     const gitUpdate = gitDates?.updated ? timestampDate(gitDates.updated, 'git') : undefined
     const updated = declaredUpdate && (!gitUpdate || comparePostDates(declaredUpdate, gitUpdate) > 0) ? declaredUpdate : gitUpdate
-    return {
-        created,
-        updated: updated && (!created || comparePostDates(updated, created) >= 0)
-            ? updated
-            : created && { ...created, source: 'creation' as const },
+    if (created && (!updated || comparePostDates(updated, created) < 0 ||
+        (!updated.time && created.time && updated.date === created.date))) {
+        return { created, updated: { ...created, source: 'creation' as const } }
     }
+    return { created, updated }
 }
 
 /**
