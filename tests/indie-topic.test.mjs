@@ -23,7 +23,7 @@ test('indie series relative links and local source anchors resolve', async () =>
   for (const file of ['README.md', ...articles]) {
     const content = readFileSync(resolve(root, file), 'utf8')
     assert.doesNotMatch(content, /\]\(\.\/README(?:\.md)?(?:#[^)]*)?\)/, `${file}: use the rewritten topic index route`)
-    const html = markdown.render(content.replace(/^---\n[\s\S]*?\n---/, ''))
+    const html = markdown.render(content.replace(/^---\r?\n[\s\S]*?\r?\n---/, ''))
     for (const match of content.matchAll(/\]\((\.[^\s)]+|#[^\s)]+)\)/g)) {
       const target = decodeURIComponent(match[1])
       if (target.startsWith('#')) {
@@ -33,7 +33,7 @@ test('indie series relative links and local source anchors resolve', async () =>
         const destination = resolve(root, path)
         assert.ok(existsSync(destination), `${file}: missing ${target}`)
         if (fragment && path.endsWith('.md')) {
-          const destinationHtml = markdown.render(readFileSync(destination, 'utf8').replace(/^---\n[\s\S]*?\n---/, ''))
+          const destinationHtml = markdown.render(readFileSync(destination, 'utf8').replace(/^---\r?\n[\s\S]*?\r?\n---/, ''))
           assert.ok(destinationHtml.includes(`id="${fragment}"`), `${file}: missing destination anchor ${target}`)
         }
       }
@@ -45,7 +45,7 @@ test('indie series relative links and local source anchors resolve', async () =>
 test('video lab renders opt-in platform links with intact episode and timestamp targets', async () => {
   const markdown = await createMarkdownRenderer(resolve('docs'))
   const content = readFileSync(resolve(root, articles.at(-1)), 'utf8')
-  const html = markdown.render(content.replace(/^---\n[\s\S]*?\n---/, ''))
+  const html = markdown.render(content.replace(/^---\r?\n[\s\S]*?\r?\n---/, ''))
   assert.doesNotMatch(html, /<(?:iframe|video)\b/i)
   for (const target of [
     'https://www.bilibili.com/video/BV1GD7GzUExH/?p=3',
@@ -81,7 +81,7 @@ test('video lab provides direct video links, actionable exercises and verificati
 test('social video resources distinguish verified Douyin pages from unverified Xiaohongshu leads', async () => {
   const markdown = await createMarkdownRenderer(resolve('docs'))
   const content = readFileSync(resolve(root, articles.at(-1)), 'utf8')
-  const html = markdown.render(content.replace(/^---\n[\s\S]*?\n---/, ''))
+  const html = markdown.render(content.replace(/^---\r?\n[\s\S]*?\r?\n---/, ''))
   const douyinIds = new Set([...content.matchAll(/https:\/\/www\.douyin\.com\/video\/(\d+)/g)].map(match => match[1]))
   assert.deepEqual([...douyinIds].sort(), ['7501171626013117696', '7569067873889574591'])
   for (const id of douyinIds) assert.ok(html.includes(`href="https://www.douyin.com/video/${id}"`))
@@ -98,7 +98,7 @@ test('new indie chapters expose metadata, an example, an acceptance checklist an
   for (const [position, file] of articles.entries()) {
     if (position === 0) continue
     const content = readFileSync(resolve(root, file), 'utf8')
-    const metadata = content.match(/^---\n([\s\S]*?)\n---/)
+    const metadata = content.match(/^---\r?\n([\s\S]*?)\r?\n---/)
     assert.ok(metadata, `${file}: missing frontmatter`)
     for (const key of ['title', 'date', 'updated', 'type', 'tags', 'note']) {
       assert.match(metadata[1], new RegExp(`^${key}: .+`, 'm'), `${file}: missing ${key}`)

@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict'
 import { mkdtempSync, mkdirSync, writeFileSync, rmSync, readFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
+import { fileURLToPath } from 'node:url'
 import { join } from 'node:path'
 import { test } from 'node:test'
 import { createNavigation } from '../docs/.vitepress/navigation.mjs'
@@ -50,7 +51,7 @@ test('indie development has its own group, topic index and migrated article navi
   assert.ok(!articleGroups.find(group => group.id === 'ai').categories.includes('going-global'))
   assert.equal(articleSourcePath('going-global'), '独立开发与出海/going-global')
   assert.equal(rewriteArticlePath('articles/独立开发与出海/going-global/README.md'), 'articles/going-global/index.md')
-  const { nav, sidebar } = createNavigation(new URL('../docs/articles', import.meta.url).pathname)
+  const { nav, sidebar } = createNavigation(fileURLToPath(new URL('../docs/articles', import.meta.url)))
   assert.ok(nav.some(item => item.text === '出海实战' && item.link === '/articles/going-global/'))
   const items = sidebar['/articles/going-global/'][0].items
   assert.equal(items.length, 10)
@@ -73,7 +74,7 @@ test('indie development has its own group, topic index and migrated article navi
 })
 
 test('grouped development paths and public routes resolve the same sidebar for every topic', () => {
-  const { sidebar } = createNavigation(new URL('../docs/articles', import.meta.url).pathname)
+  const { sidebar } = createNavigation(fileURLToPath(new URL('../docs/articles', import.meta.url)))
   for (const group of articleGroups) {
     for (const category of group.categories) {
       const publicKey = `/articles/${category}/`

@@ -5,7 +5,7 @@ import { test } from 'node:test'
 
 function example(file, name) {
   const source = readFileSync(new URL(`../docs/articles/源码与算法/算法/${file}.md`, import.meta.url), 'utf8')
-  const blocks = [...source.matchAll(/^```js\n([\s\S]*?)^```/gm)]
+  const blocks = [...source.matchAll(/^```js\r?\n([\s\S]*?)^```/gm)]
     .map(match => match[1]).filter(code => code.includes(`function ${name}(`))
   assert.equal(blocks.length, 1)
   return runInNewContext(`'use strict';\n${blocks[0]}\n${name}`, {}, { timeout: 1000 })

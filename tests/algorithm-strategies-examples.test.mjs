@@ -4,7 +4,7 @@ import { runInNewContext } from 'node:vm'
 import { test } from 'node:test'
 
 const files = ['算法基本思想之动态规划', '动态规划之背包问题总结', 'leetcode之动态规划专题', 'leetcode之数组连续递增序列题目总结', '算法基本思想之回溯算法', '算法基本思想之贪心算法', '算法基本思想之分治算法']
-const blocks = files.flatMap(file => [...readFileSync(new URL(`../docs/articles/源码与算法/算法/${file}.md`, import.meta.url), 'utf8').matchAll(/^```js\n([\s\S]*?)^```/gm)].map(match => match[1]))
+const blocks = files.flatMap(file => [...readFileSync(new URL(`../docs/articles/源码与算法/算法/${file}.md`, import.meta.url), 'utf8').matchAll(/^```js\r?\n([\s\S]*?)^```/gm)].map(match => match[1]))
 const exercised = new Set()
 function load(name) {
   const matches = blocks.filter(code => code.startsWith(`function ${name}(`))
